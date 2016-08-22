@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme.Base" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/Green</item>
+        <item name="colorPrimaryDark">@color/Green</item>
+        <item name="colorAccent">@android:color/transparent</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+
+    <style name="AppTheme" parent="@style/AppTheme.Base"/>
+
+    <style name="AppTheme.NoActionBar" parent="@style/AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="@style/ThemeOverlay.AppCompat.Light"/>
+
+
+    <style name="TitleBar">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@color/Green</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">50.0dip</item>
+    </style>
+
+    <style name="TitleBarText" parent="@style/TextAppearance.AppCompat.Title">
+        <item name="android:textColor">@color/White</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="WeekCheckbox">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textColor">@color/Black</item>
+    </style>
+
+    <style name="ButtonBlue" parent="@style/TextAppearance.AppCompat.Button">
+        <item name="android:textColor">@color/skin_color_button_green</item>
+        <item name="android:background">@drawable/common_btn_blue</item>
+        <item name="android:minHeight">50.0dip</item>
+    </style>
+
+    <style name="TextStyle_login1">
+        <item name="android:textSize">@dimen/text_mix</item>
+        <item name="android:textColor">@color/Gray</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">10.0dip</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+</resources>

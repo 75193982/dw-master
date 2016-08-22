@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="Black">#ff111111</color>
+    <color name="DeepPurple">#ff673ab7</color>
+    <color name="DeepPurple900">#ff311b92</color>
+    <color name="Gray">#ff888888</color>
+    <color name="Gray100">#ffdddddd</color>
+    <color name="Gray600">#ff999999</color>
+    <color name="Green">#ff00706b</color>
+    <color name="Orange">#ffff5722</color>
+    <color name="White">#ffffffff</color>
+    <color name="colorAccent">#ffff4081</color>
+    <color name="colorPrimary">#ff3f51b5</color>
+    <color name="colorPrimaryDark">#ff303f9f</color>
+    <color name="disabled_color">#44000000</color>
+    <color name="dot_color">#ffff0000</color>
+    <color name="error_color">#ffe7492e</color>
+    <color name="item_bg">#ffe0e4e7</color>
+    <color name="line_color">#ffbeb9b9</color>
+    <color name="tab_color">#ff848282</color>
+    <color name="tab_color_s">#ff1fc3a5</color>
+</resources>
