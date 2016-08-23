@@ -61,6 +61,7 @@ public class BaseApplication extends Application {
     private void initImageLoader() {
         File cacheDir = StorageUtils.getOwnCacheDirectory(getApplicationContext(), "imageloader/Cache");
 
+
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().cacheInMemory(true) // 加载图片时会在内存中加载缓存
                 .cacheOnDisk(true) // 加载图片时会在磁盘中加载缓存
                 .build();
