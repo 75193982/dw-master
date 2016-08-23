@@ -151,6 +151,8 @@ public class CreateSpotPricingAcvitity extends BaseAppCompatActivity implements 
             showToast("保存成功");
             finish();
         }
+
+
     }
 
 }
