@@ -29,6 +29,7 @@ public class BaseApplication extends Application {
     private static BaseApplication mInstance;
 
 
+
     /**
      * 屏幕宽度
      */
