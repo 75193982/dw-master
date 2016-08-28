@@ -9,6 +9,8 @@ import android.widget.EditText;
 
 import com.xgx.dw.R;
 import com.xgx.dw.UserBean;
+import com.xgx.dw.app.G;
+import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseActivity;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.dao.UserBeanDaoHelper;
@@ -51,6 +53,9 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView {
 
     public void loginCallback(UserInfo paramUserInfo) {
         hideProgress();
+        //登录成功后，将登录信息保存到偏好设置中
+        Setting setting = new Setting(this);
+        setting.saveString(G.currentUsername, paramUserInfo.bianhao);
         startActivity(new Intent(this, MainActivity.class));
     }
 
@@ -62,5 +67,6 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView {
         localLoginRequest.bianhao = loginUsername.getText().toString();
         localLoginRequest.mima = loginPassword.getText().toString();
         this.loginPresenter.login(this, localLoginRequest);
+
     }
 }

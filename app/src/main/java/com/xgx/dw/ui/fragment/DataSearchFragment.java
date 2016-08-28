@@ -69,6 +69,9 @@ public class DataSearchFragment extends BaseFragment implements MyOnItemClickLis
 
     public void onrRecyclerViewItemClick(int paramInt) {
         switch (paramInt) {
+            case 1:
+                startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", 41));
+                break;
             case 2:
                 startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", 42));
                 break;

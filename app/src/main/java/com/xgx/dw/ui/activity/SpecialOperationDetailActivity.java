@@ -24,9 +24,11 @@ import android.widget.Toast;
 import com.andexert.library.RippleView;
 import com.xgx.dw.R;
 import com.xgx.dw.app.BaseApplication;
+import com.xgx.dw.app.G;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.ble.BlueOperationContact;
 import com.xgx.dw.ui.activity.DeviceListActivity;
+import com.xgx.dw.utils.MyUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -110,9 +112,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
     @Override
     public void initPresenter() {
         //查询是否有配对成功的设备，如果配对成功则自动连接
-        if (!TextUtils.isEmpty(BaseApplication.getSetting().loadString("bleAddress"))) {
-            connect(BaseApplication.getSetting().loadString("bleAddress"));
-        }
+
         title = getIntent().getIntExtra("type", -1);
         switch (title) {
             case 0:
@@ -153,6 +153,10 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                 setToolbarTitle("电价录入");
                 OperationStr = BlueOperationContact.HeZaSend;
                 break;
+            case 41:
+                setToolbarTitle("电费查询");
+                OperationStr = BlueOperationContact.DianFeiCxSend;
+                break;
             case 42:
                 setToolbarTitle("电量查询");
                 OperationStr = BlueOperationContact.DianLiangCxSend;
@@ -166,6 +170,9 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         resultTitle.setText(getToolbarTitle() + "结果");
         sendTitle.setText(getToolbarTitle() + "发送参数");
         sendTv.setText(OperationStr);
+        if (!TextUtils.isEmpty(BaseApplication.getSetting().loadString(BaseApplication.getSetting().loadString(G.currentUsername) + "_bleAddress"))) {
+            connect(BaseApplication.getSetting().loadString(BaseApplication.getSetting().loadString(G.currentUsername) + "_bleAddress"));
+        }
     }
 
 
@@ -187,10 +194,10 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
     }
 
     private void connect(String address) {
-        _device = _bluetooth.getRemoteDevice(address);
 
         // 用服务号得到socket
         try {
+            _device = _bluetooth.getRemoteDevice(address);
             _socket = _device.createRfcommSocketToServiceRecord(UUID.fromString(MY_UUID));
         } catch (IOException e) {
             Toast.makeText(this, "连接失败！", Toast.LENGTH_SHORT).show();
@@ -198,7 +205,8 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         //连接socket
         try {
             _socket.connect();
-            BaseApplication.getSetting().saveString("bleAddress", address);
+
+            BaseApplication.getSetting().saveString(BaseApplication.getSetting().loadString(G.currentUsername) + "_bleAddress", address);
             Toast.makeText(this, "连接" + _device.getName() + "成功！", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             try {
@@ -276,7 +284,9 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                     buf.append(' ');
                 }
             }
-            resultTv.setText(buf.toString());   //显示数据
+            //这里对接受到的数据进行解析
+            //首先解析
+            resultTv.setText(MyUtils.decodeHex367(title, buf.toString()));   //显示数据
             mBuffer.clear();
         }
     };

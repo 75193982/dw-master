@@ -60,6 +60,10 @@ public class G {
      */
     public static final int ACTION_ADDRESSLIST = 0x05;
 
+    /**
+     * 当前姓名偏好设置
+     */
+    public static final String currentUsername = "currentUsername";
 
     @SuppressLint("SimpleDateFormat")
     public static String getPhoneCurrentTime() {

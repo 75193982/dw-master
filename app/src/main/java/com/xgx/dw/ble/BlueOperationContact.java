@@ -15,8 +15,10 @@ public class BlueOperationContact {
     public static String BaoDianJcSend = "68 8A 00 8A 00 68 6A 00 00 FF FF 21 05 EC 00 00 01 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 0D 40 37 17 04 05 23 16";
 
     //电量查询 发送
-    public static String DianLiangCxSend = "68 4A 00 4A 00 68 4B 00 00 FF FF 21 0C E3 01 01 40 02 04 35 30 17 04 05 26 16";
+    public static String DianLiangCxSend = "68 4A 00 4A 00 68 4B 00 00 FF FF 21 0C E1 01 01 01 04 02 16 59 14 22 05 0A 16";
     //电压电流功率因数读取数据格式 发送
-    public static String DianLvCxSend = "68 4A 00 4A 00 68 4B 00 00 FF FF 21 0C E5 01 01 01 03 06 46 32 17 04 05 FF 16";
+    public static String DianLvCxSend = "68 4A 00 4A 00 68 4B 00 00 FF FF 21 0C E3 01 01 01 03 04 26 21 15 22 05 E6 16";
 
+    //电费查询发送
+    public static String DianFeiCxSend = "68 4A 00 4A 00 68 4B 00 00 FF FF 21 0C E3 01 01 40 02 04 35 30 17 04 05 26 16";
 }
