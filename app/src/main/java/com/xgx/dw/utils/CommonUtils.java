@@ -39,6 +39,7 @@ public class CommonUtils {
     public static SimpleDateFormat formatDay = new SimpleDateFormat("d", Locale.getDefault());
     public static SimpleDateFormat formatMonthDay = new SimpleDateFormat("M-d", Locale.getDefault());
     public static SimpleDateFormat formatDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+    public static SimpleDateFormat formatDateTime1 = new SimpleDateFormat("ss mm HH dd MM yy", Locale.getDefault());
 
     private CommonUtils() {
     }
@@ -76,6 +77,16 @@ public class CommonUtils {
      */
     public static String formatDateTime(Date date) {
         return formatDateTime.format(date);
+    }
+
+    /**
+     * 格式化日期
+     *
+     * @param date
+     * @return "秒 分 时 日 月 年"
+     */
+    public static String formatDateTime1(Date date) {
+        return formatDateTime1.format(date);
     }
 
     /**
@@ -289,18 +300,17 @@ public class CommonUtils {
 
     /**
      * 获取联系人电话
+     *
      * @param cursor
      * @return
      */
-    private String getContactPhone(Context context, Cursor cursor)
-    {
+    private String getContactPhone(Context context, Cursor cursor) {
 
         int phoneColumn = cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER);
         int phoneNum = cursor.getInt(phoneColumn);
-        String phoneResult="";
+        String phoneResult = "";
         //System.out.print(phoneNum);
-        if (phoneNum > 0)
-        {
+        if (phoneNum > 0) {
             // 获得联系人的ID号
             int idColumn = cursor.getColumnIndex(ContactsContract.Contacts._ID);
             String contactId = cursor.getString(idColumn);
@@ -308,29 +318,25 @@ public class CommonUtils {
             Cursor phones = context.getContentResolver().query(
                     ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                     null,
-                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID+ " = " + contactId,
+                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId,
                     null, null);
             //int phoneCount = phones.getCount();
             //allPhoneNum = new ArrayList<String>(phoneCount);
-            if (phones.moveToFirst())
-            {
+            if (phones.moveToFirst()) {
                 // 遍历所有的电话号码
-                for (;!phones.isAfterLast();phones.moveToNext())
-                {
+                for (; !phones.isAfterLast(); phones.moveToNext()) {
                     int index = phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
                     int typeindex = phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE);
                     int phone_type = phones.getInt(typeindex);
                     String phoneNumber = phones.getString(index);
-                    switch(phone_type)
-                    {
+                    switch (phone_type) {
                         case 2:
-                            phoneResult=phoneNumber;
+                            phoneResult = phoneNumber;
                             break;
                     }
                     //allPhoneNum.add(phoneNumber);
                 }
-                if (!phones.isClosed())
-                {
+                if (!phones.isClosed()) {
                     phones.close();
                 }
             }

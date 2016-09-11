@@ -2,54 +2,50 @@ package com.xgx.dw.ui.activity;
 
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
+import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ScrollView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andexert.library.RippleView;
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.xgx.dw.R;
 import com.xgx.dw.app.BaseApplication;
 import com.xgx.dw.app.G;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.ble.BlueOperationContact;
-import com.xgx.dw.ui.activity.DeviceListActivity;
+import com.xgx.dw.utils.CommonUtils;
 import com.xgx.dw.utils.MyUtils;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
+import butterknife.Bind;
+import butterknife.OnClick;
 
 //import android.view.Menu;            //如使用菜单加入此三包
 //import android.view.MenuInflater;
 //import android.view.MenuItem;
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
 
     private final static int REQUEST_CONNECT_DEVICE = 1;    //宏定义查询设备句柄
-
+    private String beilvType = "4A";
+    private int beilvNum = 0;
     private final static String MY_UUID = "00001101-0000-1000-8000-00805F9B34FB";   //SPP服务UUID号
     @Bind(R.id.sendTitle)
     TextView sendTitle;
@@ -63,6 +59,18 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
     RippleView actionSave;
     @Bind(R.id.btnTv)
     TextView btnTv;
+    @Bind(R.id.dyblEt)
+    MaterialEditText dyblEt;
+    @Bind(R.id.dlblEt)
+    MaterialEditText dlblEt;
+    @Bind(R.id.eddyEt)
+    MaterialEditText eddyEt;
+    @Bind(R.id.eddlEt)
+    MaterialEditText eddlEt;
+    @Bind(R.id.edfhEt)
+    MaterialEditText edfhEt;
+    @Bind(R.id.inputBeilvLayout)
+    LinearLayout inputBeilvLayout;
 
     private InputStream is;    //输入流，用来接收蓝牙数据
 
@@ -107,6 +115,92 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             }
         });
         mBuffer = new ArrayList<Integer>();
+        dyblEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                changStr();
+            }
+
+
+        });
+        dlblEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                changStr();
+            }
+
+
+        });
+    }
+
+    private void changStr() {
+        String dl = "";
+        String dy = "";
+        String eddy = "";
+        if (TextUtils.isEmpty(dlblEt.getText().toString())) {
+            dl = "00 00";
+        } else {
+            //先转换成int型 再转成16进制
+            dl = toHexString(dlblEt.getText().toString()).toUpperCase();
+        }
+        if (TextUtils.isEmpty(dyblEt.getText().toString())) {
+            dy = "00 00";
+        } else {
+            dy = toHexString(dyblEt.getText().toString()).toUpperCase();
+        }
+        eddy = "00 10";
+        eddyEt.setText("100");
+        String currentTime = CommonUtils.formatDateTime1(new Date());
+        String temp = String.format(BlueOperationContact.BeiLvLuruSend, dy, dl, eddy, CommonUtils.formatDateTime1(new Date()), "00");
+        String code = MyUtils.getJyCode(temp);
+        OperationStr = String.format(BlueOperationContact.BeiLvLuruSend, dy, dl, eddy, currentTime, MyUtils.getJyCode(temp));
+        sendTv.setText(OperationStr);
+
+    }
+
+    private String toHexString(String tempStr) {
+        String dlbl = tempStr;
+        try {
+            int bl = Integer.valueOf(dlbl);
+            dlbl = Integer.toHexString(bl);
+            //自动补全4位
+            if (dlbl.length() == 0) {
+                dlbl = "00 00";
+            } else if (dlbl.length() == 1) {
+                dlbl = "0" + dlbl + " 00";
+            } else if (dlbl.length() == 2) {
+                dlbl = dlbl + " 00";
+            } else if (dlbl.length() == 3) {
+                dlbl = "0" + dlbl.substring(2, 3) + " " + dlbl.substring(0, 2);
+            } else if (dlbl.length() == 4) {
+                dlbl = dlbl.substring(2, 4) + " " + dlbl.substring(0, 2);
+            } else if (dlbl.length() > 4) {
+                dlbl = "";
+            }
+        } catch (Exception e) {
+
+        }
+        return dlbl;
     }
 
     @Override
@@ -135,21 +229,13 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
 
                 break;
             case 4:
-                setToolbarTitle("报警解除");
-                OperationStr = BlueOperationContact.HeZaSend;
+                setToolbarTitle("倍率录入");
+                OperationStr = BlueOperationContact.BeiLvLuruSend;
+                inputBeilvLayout.setVisibility(View.VISIBLE);
+                changStr();
 
                 break;
             case 5:
-                setToolbarTitle("倍率录入");
-                OperationStr = BlueOperationContact.HeZaSend;
-
-                break;
-            case 6:
-                setToolbarTitle("电表地址");
-                OperationStr = BlueOperationContact.HeZaSend;
-
-                break;
-            case 7:
                 setToolbarTitle("电价录入");
                 OperationStr = BlueOperationContact.HeZaSend;
                 break;
@@ -171,7 +257,9 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         sendTitle.setText(getToolbarTitle() + "发送参数");
         sendTv.setText(OperationStr);
         if (!TextUtils.isEmpty(BaseApplication.getSetting().loadString(BaseApplication.getSetting().loadString(G.currentUsername) + "_bleAddress"))) {
+            showProgress("连接设备中");
             connect(BaseApplication.getSetting().loadString(BaseApplication.getSetting().loadString(G.currentUsername) + "_bleAddress"));
+            hideProgress();
         }
     }
 
@@ -204,7 +292,9 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         }
         //连接socket
         try {
-            _socket.connect();
+            if (!_socket.isConnected()) {
+                _socket.connect();
+            }
 
             BaseApplication.getSetting().saveString(BaseApplication.getSetting().loadString(G.currentUsername) + "_bleAddress", address);
             Toast.makeText(this, "连接" + _device.getName() + "成功！", Toast.LENGTH_SHORT).show();
@@ -239,33 +329,52 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
     Thread ReadThread = new Thread() {
 
         public void run() {
-            byte[] buffer = new byte[256];
-            int bytes;
-            bRun = true;
-            //接收线程
-            while (true) {
-                try {
-                    while (is.available() == 0) {
-                        while (bRun == false) {
-                        }
-                    }
-                    while (true) {
-
-                        bytes = is.read(buffer);
-                        synchronized (mBuffer) {
-                            for (int i = 0; i < bytes; i++) {
-                                mBuffer.add(buffer[i] & 0xFF);
-                            }
-                        }
-
-                        if (is.available() == 0) break;  //短时间没有数据才跳出进行显示
-                    }
-
-                    //发送显示消息，进行显示刷新
-                    handler.sendMessage(handler.obtainMessage());
-                } catch (IOException e) {
+            try {
+                int count = 0;
+                while (count == 0) {
+                    count = is.available();
                 }
+                byte[] bytes = new byte[count];
+                int readCount = 0; // 已经成功读取的字节的个数
+                while (readCount < count) {
+                    readCount += is.read(bytes, readCount, count - readCount);
+                    synchronized (mBuffer) {
+                        for (int i = 0; i < readCount; i++) {
+                            mBuffer.add(bytes[i] & 0xFF);
+                        }
+                    }
+                }
+                //发送显示消息，进行显示刷新
+                handler.sendMessage(handler.obtainMessage());
+            } catch (IOException e) {
             }
+//            byte[] buffer = new byte[1024];
+//            int bytes;
+//            bRun = true;
+//            //接收线程
+//            while (true) {
+//                try {
+//                    while (is.available() == 0) {
+//                        while (bRun == false) {
+//                        }
+//                    }
+//                    while (true) {
+//
+//                        bytes = is.read(buffer);
+//                        synchronized (mBuffer) {
+//                            for (int i = 0; i < bytes; i++) {
+//                                mBuffer.add(buffer[i] & 0xFF);
+//                            }
+//                        }
+//
+//                        if (is.available() == 0) break;  //短时间没有数据才跳出进行显示
+//                    }
+//
+//                    //发送显示消息，进行显示刷新
+//                    handler.sendMessage(handler.obtainMessage());
+//                } catch (IOException e) {
+//                }
+//            }
         }
     };
     List<Integer> mBuffer;
@@ -286,7 +395,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             }
             //这里对接受到的数据进行解析
             //首先解析
-            resultTv.setText(MyUtils.decodeHex367(title, buf.toString()));   //显示数据
+            resultTv.setText("报文返回数据为：" + buf.toString() + "\n" + MyUtils.decodeHex367(title, buf.toString()));   //显示数据
             mBuffer.clear();
         }
     };
@@ -309,7 +418,6 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             Toast.makeText(this, " 打开蓝牙中...", Toast.LENGTH_LONG).show();
             return;
         }
-
 
         //如未连接设备则打开DeviceListActivity进行设备搜索
         if (_socket == null) {
@@ -338,6 +446,9 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             }
             OutputStream os = _socket.getOutputStream();   //蓝牙连接输出流
             String input = OperationStr;
+            if (title == 5) {
+
+            }
             String[] data = input.split(" ");
             byte[] tmp = new byte[data.length];
             for (int i = 0; i < data.length; i++) {
@@ -348,4 +459,5 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         } catch (IOException e) {
         }
     }
+
 }

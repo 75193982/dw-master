@@ -1,32 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
 
-            android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/dp_10"
-        >
+        android:padding="@dimen/dp_10">
 
         <TextView
             android:id="@+id/sendTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_10"
-            android:text="发送参数">
-        </TextView>
+            android:text="发送参数"></TextView>
 
         <TextView
             android:id="@+id/sendTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_10"
-            android:textIsSelectable="true">
-        </TextView>
+            android:textIsSelectable="true"></TextView>
+
+        <LinearLayout
+            android:id="@+id/inputBeilvLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="电压倍率：" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/dyblEt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:hint="请输入电压倍率参数"
+                    android:inputType="numberDecimal"
+                    android:textSize="@dimen/dp_14" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="电流倍率：" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/dlblEt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:hint="请输入电流倍率参数"
+                    android:inputType="numberDecimal"
+                    android:textSize="@dimen/dp_14" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="额定电压(V)：" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/eddyEt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:enabled="false"
+                    android:hint="根据电压倍率改变"
+                    android:inputType="numberDecimal"
+                    android:textSize="@dimen/dp_14" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="额定电流(A)：" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/eddlEt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:enabled="false"
+                    android:hint="5.0 "
+                    android:inputType="numberDecimal"
+                    android:textSize="@dimen/dp_14" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="额定负荷(KVA)" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/edfhEt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:hint="30.0000"
+                    android:inputType="numberDecimal"
+                    android:textSize="@dimen/dp_14" />
+            </LinearLayout>
+        </LinearLayout>
+
 
         <com.andexert.library.RippleView
             android:id="@id/action_save"
@@ -44,7 +158,7 @@
                 android:gravity="center"
                 android:text="合闸"
                 android:textColor="@color/White"
-                android:textSize="@dimen/text_second"/>
+                android:textSize="@dimen/text_second" />
         </com.andexert.library.RippleView>
 
         <TextView
@@ -52,15 +166,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_10"
-            android:text="合闸结果">
-        </TextView>
+            android:text="合闸结果"></TextView>
 
         <TextView
             android:id="@+id/resultTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_10"
-            android:textIsSelectable="true">
-        </TextView>
+            android:textIsSelectable="true"></TextView>
     </LinearLayout>
 </ScrollView>

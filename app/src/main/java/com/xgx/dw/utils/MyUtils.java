@@ -1,8 +1,10 @@
 package com.xgx.dw.utils;
 
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,7 +15,6 @@ public class MyUtils {
         long kb = 1024;
         long mb = kb * 1024;
         long gb = mb * 1024;
-
 
 
         if (size >= gb) {
@@ -44,10 +45,7 @@ public class MyUtils {
             case 3://保电解除
                 resultString.append("保电解除成功");
                 break;
-            case 4://报警解除
-                resultString.append("报警解除成功");
-                break;
-            case 5://倍率录入
+            case 4://倍率录入
                 resultString.append("倍率录入成功");
                 break;
             case 41://剩余电费
@@ -59,16 +57,15 @@ public class MyUtils {
                     resultString = new StringBuilder();
                     resultString.append("当前没有剩余电费信息");
                 }
-
                 break;
             case 42://电量查询
                 //获取时间格式
                 try {
-                    mBuffer = mBuffer.subList(23, 75);
-                    getHexDyTime(resultString, mBuffer);
+                    mBuffer = mBuffer.subList(31, 99);
+                    getHexDlTime(resultString, mBuffer);
                 } catch (Exception e) {
                     resultString = new StringBuilder();
-                    resultString.append("当前没有功率信息");
+                    resultString.append("当前没有电量信息");
                 }
                 break;
             case 43://电压电流功率查询
@@ -85,17 +82,41 @@ public class MyUtils {
         return resultString.toString();
     }
 
+    private static void getHexDlTime(StringBuilder resultString, List<String> mBuffer) {
+        resultString.append(String.format("当前谷无功电能(kvarh)：%.2f\n", Float.valueOf(mBuffer.get(0) + mBuffer.get(1) + mBuffer.get(2) + mBuffer.get(3)) / 100));
+        resultString.append(String.format("当前平无功电能(kvarh)：%.2f\n", Float.valueOf(mBuffer.get(4) + mBuffer.get(5) + mBuffer.get(6) + mBuffer.get(7)) / 100));
+        resultString.append(String.format("当前峰无功电能(kvarh)：%.2f\n", Float.valueOf(mBuffer.get(8) + mBuffer.get(9) + mBuffer.get(10) + mBuffer.get(11)) / 100));
+        resultString.append(String.format("当前尖无功电能(kvarh)：%.2f\n", Float.valueOf(mBuffer.get(12) + mBuffer.get(13) + mBuffer.get(14) + mBuffer.get(15)) / 100));
+        resultString.append(String.format("当前无功总电能(kvarh)：%.2f\n", Float.valueOf(mBuffer.get(16) + mBuffer.get(17) + mBuffer.get(18) + mBuffer.get(19)) / 100));
+        String gStr = mBuffer.get(22).startsWith("0") ? "0" : "";
+        String pStr = mBuffer.get(27).startsWith("0") ? "0" : "";
+        String fStr = mBuffer.get(32).startsWith("0") ? "0" : "";
+        String jStr = mBuffer.get(37).startsWith("0") ? "0" : "";
+        String zStr = mBuffer.get(42).startsWith("0") ? "0" : "";
+
+        resultString.append(String.format("当前谷有功电能(kwh)：%s%.4f\n", Integer.valueOf(mBuffer.get(20) + mBuffer.get(21)) + gStr, Float.valueOf(Integer.valueOf(mBuffer.get(22) + mBuffer.get(23) + mBuffer.get(24))) / 10000));
+        resultString.append(String.format("当前平有功电能(kwh)：%s%.4f\n", Integer.valueOf(mBuffer.get(25) + mBuffer.get(26)) + pStr, Float.valueOf(Integer.valueOf(mBuffer.get(27) + mBuffer.get(28) + mBuffer.get(29))) / 10000));
+        resultString.append(String.format("当前峰有功电能(kwh)：%s%.4f\n", Integer.valueOf(mBuffer.get(30) + mBuffer.get(31)) + fStr, Float.valueOf(Integer.valueOf(mBuffer.get(32) + mBuffer.get(33) + mBuffer.get(34))) / 10000));
+        resultString.append(String.format("当前尖有功电能(kwh)：%s%.4f\n", Integer.valueOf(mBuffer.get(35) + mBuffer.get(36)) + jStr, Float.valueOf(Integer.valueOf(mBuffer.get(37) + mBuffer.get(38) + mBuffer.get(39))) / 10000));
+        resultString.append(String.format("当前正向有功总电能(kwh)：%s%.4f\n", Integer.valueOf(mBuffer.get(40) + mBuffer.get(41)) + zStr, Float.valueOf(Integer.valueOf(mBuffer.get(42) + mBuffer.get(43) + mBuffer.get(44))) / 10000));
+        resultString.append(String.format("费率数M（1≤M≤12）：%s\n", Integer.valueOf(mBuffer.get(45)) + ""));
+        resultString.append(String.format("时间为：%s年%s月%s日 %s时%s分\n", mBuffer.get(46), mBuffer.get(47), mBuffer.get(48), mBuffer.get(49), mBuffer.get(50)));
+    }
+
     private static void getHexDfTime(StringBuilder resultString, List<String> mBuffer) {
         //46 00 00 76
         if (mBuffer.get(0).startsWith("0")) {
             //厘单位 需要除以100
-            resultString.append(String.format("当前剩余电量（费）kWh：%.3f元\n", Float.valueOf(mBuffer.get(0).substring(1) + mBuffer.get(1) + mBuffer.get(2) + mBuffer.get(3)) / 100));
+            resultString.append(String.format("当前剩余电量（费）kWh：%.3f元\n", Float.valueOf(mBuffer.get(0).substring(1) + mBuffer.get(1) + mBuffer.get(2) + mBuffer.get(3)) / 1000));
 
         } else if (mBuffer.get(0).startsWith("4")) {
             resultString.append(String.format("当前剩余电量（费）kWh：%.3f元\n", Float.valueOf(mBuffer.get(0).substring(1) + mBuffer.get(1) + mBuffer.get(2) + mBuffer.get(3))));
 
         } else if (mBuffer.get(0).startsWith("5")) {
             resultString.append(String.format("当前剩余电量（费）kWh：-%.3f元\n", Float.valueOf(mBuffer.get(0).substring(1) + mBuffer.get(1) + mBuffer.get(2) + mBuffer.get(3))));
+
+        } else if (mBuffer.get(0).startsWith("1")) {
+            resultString.append(String.format("当前剩余电量（费）kWh：-%.3f元\n", Float.valueOf(mBuffer.get(0).substring(1) + mBuffer.get(1) + mBuffer.get(2) + mBuffer.get(3)) / 1000));
 
         }
     }
@@ -135,6 +156,19 @@ public class MyUtils {
 
 
     public static void main(String args[]) throws Exception {
-        System.out.println(decodeHex367(43, "123"));
+        // System.out.println(decodeHex367(42, " b6 01 b6 01 68 88 00 41 02 00 20 0c e1 01 01 01 04 34 11 07 09 16 04 00 13 02 39 00 00 21 48 06 00 00 65 54 07 00 00 31 39 14 00 00 94 59 10 00 44 18 05 00 45 91 00 00 65 86 00 00 18 81 01 00 14 59 01 00 ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee"));
+        // System.out.println(decodeHex367(41, "68 5A 00 5A 00 68 88 00 41 01 00 20 0C E6 01 01 40 02 40 90 70 08 09 29 19 11 04 05 cf 16"));
+        System.out.println(getJyCode(""));
+    }
+
+    public static String getJyCode(String temp) {
+        temp = "6A 00 00 FF FF 21 04 E0 01 01 01 03 5E 01 3C 00 00 10 50 00 00 30 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 47 27 17 10 05";
+        List<String> mBuffer = Arrays.asList(temp.split(" "));
+        int sum = 0;
+        for (int i = 0; i < mBuffer.size(); i++) {
+            sum += Integer.valueOf(mBuffer.get(i), 16);
+        }
+        sum = sum - (sum / 256) * 256;
+        return Integer.toHexString(sum);
     }
 }

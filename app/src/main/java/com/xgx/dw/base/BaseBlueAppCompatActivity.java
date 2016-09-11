@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -20,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.xgx.dw.R;
 import com.xgx.dw.net.AsyncHttpNetCenter;
 import com.xgx.dw.ui.custom.CustomConfirmDialog;
@@ -28,7 +26,7 @@ import com.xgx.dw.ui.custom.CustomConfirmDialog;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public abstract class BaseAppCompatActivity extends AppCompatActivity implements IBaseView {
+public abstract class BaseBlueAppCompatActivity extends AppCompatActivity implements IBaseView {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.toolbar_title)
@@ -69,8 +67,10 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         initView();
         initPresenter();
+
     }
 
 
