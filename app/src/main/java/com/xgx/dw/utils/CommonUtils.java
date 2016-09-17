@@ -39,7 +39,7 @@ public class CommonUtils {
     public static SimpleDateFormat formatDay = new SimpleDateFormat("d", Locale.getDefault());
     public static SimpleDateFormat formatMonthDay = new SimpleDateFormat("M-d", Locale.getDefault());
     public static SimpleDateFormat formatDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-    public static SimpleDateFormat formatDateTime1 = new SimpleDateFormat("ss mm HH dd MM yy", Locale.getDefault());
+    public static SimpleDateFormat formatDateTime1 = new SimpleDateFormat("ss mm HH dd MM", Locale.getDefault());
 
     private CommonUtils() {
     }

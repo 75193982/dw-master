@@ -58,10 +58,11 @@ public class SpecialOperationFragment extends BaseFragment implements MyOnItemCl
         localArrayList.add(new DummyContent("1", "分闸", "分闸", this.drawableInt[1]));
         localArrayList.add(new DummyContent("2", "保电投入", "保电投入", this.drawableInt[2]));
         localArrayList.add(new DummyContent("3", "保电解除", "保电解除", this.drawableInt[3]));
-        // localArrayList.add(new DummyContent("4", "报警解除", "报警解除", this.drawableInt[5]));
-        localArrayList.add(new DummyContent("5", "倍率录入", "倍率录入", this.drawableInt[6]));
+        localArrayList.add(new DummyContent("4", "倍率录入", "倍率录入", this.drawableInt[6]));
         // localArrayList.add(new DummyContent("6", "电表地址", "电表地址", this.drawableInt[6]));
-        localArrayList.add(new DummyContent("7", "电价录入", "电价录入", this.drawableInt[6]));
+        localArrayList.add(new DummyContent("5", "电价录入", "电价录入", this.drawableInt[6]));
+       // localArrayList.add(new DummyContent("6", "电费录入", "电费录入", this.drawableInt[6]));
+
         final DataSearchItemAdapter localDataSearchItemAdapter = new DataSearchItemAdapter(localView, localArrayList);
         this.recyclerView.setAdapter(localDataSearchItemAdapter);
         localDataSearchItemAdapter.setOnItemClickListner(this);

@@ -53,7 +53,9 @@ public class DataSearchFragment extends BaseFragment implements MyOnItemClickLis
         localArrayList.add(new DummyContent("3", "功率查询", "功率查询", this.drawableInt[3]));
         localArrayList.add(new DummyContent("4", "电量报表", "电量报表", this.drawableInt[4]));
         localArrayList.add(new DummyContent("5", "功率报表", "功率报表", this.drawableInt[5]));
-        localArrayList.add(new DummyContent("6", "个人资料", "个人资料", this.drawableInt[5]));
+        localArrayList.add(new DummyContent("6", "倍率查询", "倍率查询", this.drawableInt[5]));
+        localArrayList.add(new DummyContent("7", "电价查询", "电价查询", this.drawableInt[5]));
+        localArrayList.add(new DummyContent("8", "个人资料", "个人资料", this.drawableInt[5]));
         this.adapter = new DataSearchItemAdapter(localView, localArrayList);
         this.recyclerView.setAdapter(this.adapter);
         this.adapter.setOnItemClickListner(this);
@@ -77,6 +79,12 @@ public class DataSearchFragment extends BaseFragment implements MyOnItemClickLis
                 break;
             case 3:
                 startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", 43));
+                break;
+            case 6:
+                startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", 47));
+                break;
+            case 7:
+                startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", 48));
                 break;
         }
     }

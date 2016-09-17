@@ -142,6 +142,184 @@
         </LinearLayout>
 
 
+        <!--电价-->
+        <LinearLayout
+            android:id="@+id/inputDianjiaLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="尖电价(元)：" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/jdjEt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:hint="请输入尖电价"
+                    android:inputType="numberDecimal"
+                    android:textSize="@dimen/dp_14"
+                    app:met_maxCharacters="9" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="峰电价(元)：" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/fdjEt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:hint="请输入峰电价"
+                    android:inputType="numberDecimal"
+                    android:textSize="@dimen/dp_14"
+                    app:met_maxCharacters="9" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="平电价(元)：" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/pdjEt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:hint="请输入平电价"
+                    android:inputType="numberDecimal"
+                    android:textSize="@dimen/dp_14"
+                    app:met_maxCharacters="9" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="谷电价(元)：" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/gdjEt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:hint="请输入谷电价"
+                    android:inputType="numberDecimal"
+                    android:textSize="@dimen/dp_14"
+                    app:met_maxCharacters="9" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!--下发电费-->
+        <LinearLayout
+            android:id="@+id/inputDianfeiLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="购电量(元)：" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/gdlEt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:hint="请输入购电量"
+                    android:inputType="number"
+                    android:minEms="6"
+                    android:textSize="@dimen/dp_14"
+                    app:met_maxCharacters="6" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="报警电量(元)：" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/bjEt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:hint="请输入报警电量"
+                    android:inputType="number"
+                    android:minEms="6"
+                    android:textSize="@dimen/dp_14"
+                    app:met_maxCharacters="6" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="跳闸电量(元)：" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/tzEt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:hint="请输入跳闸电量"
+                    android:inputType="number"
+                    android:minEms="6"
+                    android:textSize="@dimen/dp_14"
+                    app:met_maxCharacters="6" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+        <!--end-->
         <com.andexert.library.RippleView
             android:id="@id/action_save"
             rv_centered="true"

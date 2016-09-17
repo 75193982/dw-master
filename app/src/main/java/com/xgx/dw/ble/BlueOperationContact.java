@@ -24,9 +24,20 @@ public class BlueOperationContact {
     //读取倍率
     public static String BeiLvDuquSend = "68 4A 00 4A 00 68 6B 00 00 FF FF 21 0A E0 01 01 01 03 01 24 58 15 22 05 33 16";
     //读取倍率
-    public static String BeiLvLuruSend = "68 B6 00 B6 00 68 6A 00 41 02 00 21 04 E0 01 01 01 03 %s %s %s 50 00 00 30 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s %s 16";
+    public static String BeiLvLuruSend = "68 B6 00 B6 00 68 6A 00 00 FF FF 21 04 E0 01 01 01 03 %s %s %s 50 00 00 30 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s %s 16";
+    public static String BeiLvLuruSendTemp = "6A 00 00 FF FF 21 04 E0 01 01 01 03 %s %s %s 50 00 00 30 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s";
 
     //电价录入
-    public static String DianjiaLuruSend = "68 CE 00 CE 00 68 6A 00 00 FF FF 21 04 E0 00 00 20 02 04 34 12 00 00 78 09 00 00 82 06 00 00 55 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 34 40 17 22 05 EE 16";
+    public static String DianjiaLuruSend = "68 CE 00 CE 00 68 6A 00 00 FF FF 21 04 E0 00 00 20 02 04 %s %s %s %s 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s %s 16";
+    public static String DianjiaLuruSendTemp = "6A 00 00 FF FF 21 04 E0 00 00 20 02 04 %s %s %s %s 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s";
 
+
+    //电价录入 第一个s 是 单号 第二个s是 55 是追加 AA 是刷新 第三个s 是购电量 以40 结尾是元  第四个s 是报警电量 以40 结尾是元  第五个s 是跳闸电量 以40 结尾是元 第6个 是 时间 第7个是验证码
+
+    public static String DianfeiLuruSend = "68 CE 00 CE 00 68 6A 00 00 FF FF 21 04 E0 01 01 40 05 %s %s %s %s %s 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s %s 16";
+    public static String DianfeiLuruSendTemp = "6A 00 00 FF FF 21 04 E0 01 01 40 05 %s %s %s %s %s 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s";
+
+
+    public static String beiLvCxSend = "68 4A 00 4A 00 68 6B 00 00 FF FF 21 0A E0 01 01 01 03 01 24 58 15 22 05 33 16";
+    public static String DianjiaCxSend = "68 4A 00 4A 00 68 6B 00 00 FF FF 21 0A E0 00 00 20 02 01 03 57 17 22 05 2F 16";
 }

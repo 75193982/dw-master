@@ -64,6 +64,10 @@ public class G {
      * 当前姓名偏好设置
      */
     public static final String currentUsername = "currentUsername";
+    /**
+     * 购电单号
+     */
+    public static final String currentOrderId = "currentOrderId";
 
     @SuppressLint("SimpleDateFormat")
     public static String getPhoneCurrentTime() {

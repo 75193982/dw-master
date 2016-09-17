@@ -1,5 +1,6 @@
 package com.xgx.dw.ui.fragment;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,13 +17,14 @@ import butterknife.Bind;
 import com.xgx.dw.R;
 import com.xgx.dw.adapter.DataSearchItemAdapter;
 import com.xgx.dw.base.BaseFragment;
+import com.xgx.dw.ui.activity.SpecialOperationDetailActivity;
 import com.xgx.dw.ui.custom.TitleBar;
 import com.xgx.dw.ui.fragment.dummy.DummyContent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BuyItemFragment extends BaseFragment {
+public class BuyItemFragment extends BaseFragment implements DataSearchItemAdapter.MyOnItemClickListner {
     private int[] drawableInt = {R.drawable.home_paylists_big, R.drawable.home_useelesafe_unrule_big, R.drawable.home_set_serviceauthorize, R.drawable.home_elecri_big, R.drawable.home_paylists_big, R.drawable.home_elecri_big, R.drawable.home_analysis};
     private ImageView headLogo;
     @Bind({R.id.list})
@@ -52,6 +54,7 @@ public class BuyItemFragment extends BaseFragment {
         localArrayList.add(new DummyContent("2", "购电录入", "购电录入", this.drawableInt[2]));
         final DataSearchItemAdapter localDataSearchItemAdapter = new DataSearchItemAdapter(localView, localArrayList);
         this.recyclerView.setAdapter(localDataSearchItemAdapter);
+        localDataSearchItemAdapter.setOnItemClickListner(this);
         localGridLayoutManager.setSpanSizeLookup(new SpanSizeLookup() {
             public int getSpanSize(int paramAnonymousInt) {
                 if (localDataSearchItemAdapter.isHeader(paramAnonymousInt)) {
@@ -60,6 +63,15 @@ public class BuyItemFragment extends BaseFragment {
                 return 1;
             }
         });
+    }
+
+    @Override
+    public void onrRecyclerViewItemClick(int paramInt) {
+        switch (paramInt) {
+            case 2:
+                startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", 6));
+                break;
+        }
     }
 }
 

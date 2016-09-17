@@ -6,9 +6,11 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
@@ -35,6 +37,7 @@ import java.util.List;
 import java.util.UUID;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 //import android.view.Menu;            //如使用菜单加入此三包
@@ -44,6 +47,24 @@ import butterknife.OnClick;
 public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
 
     private final static int REQUEST_CONNECT_DEVICE = 1;    //宏定义查询设备句柄
+    @Bind(R.id.jdjEt)
+    MaterialEditText jdjEt;
+    @Bind(R.id.fdjEt)
+    MaterialEditText fdjEt;
+    @Bind(R.id.pdjEt)
+    MaterialEditText pdjEt;
+    @Bind(R.id.gdjEt)
+    MaterialEditText gdjEt;
+    @Bind(R.id.inputDianjiaLayout)
+    LinearLayout inputDianjiaLayout;
+    @Bind(R.id.gdlEt)
+    MaterialEditText gdlEt;
+    @Bind(R.id.bjEt)
+    MaterialEditText bjEt;
+    @Bind(R.id.tzEt)
+    MaterialEditText tzEt;
+    @Bind(R.id.inputDianfeiLayout)
+    LinearLayout inputDianfeiLayout;
     private String beilvType = "4A";
     private int beilvNum = 0;
     private final static String MY_UUID = "00001101-0000-1000-8000-00805F9B34FB";   //SPP服务UUID号
@@ -115,42 +136,15 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             }
         });
         mBuffer = new ArrayList<Integer>();
-        dyblEt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                changStr();
-            }
-
-
-        });
-        dlblEt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                changStr();
-            }
-
-
-        });
+        dyblEt.addTextChangedListener(new MyTextWather());
+        dlblEt.addTextChangedListener(new MyTextWather());
+        jdjEt.addTextChangedListener(new MyDjTextWather());
+        fdjEt.addTextChangedListener(new MyDjTextWather());
+        pdjEt.addTextChangedListener(new MyDjTextWather());
+        gdjEt.addTextChangedListener(new MyDjTextWather());
+        gdlEt.addTextChangedListener(new MyDlTextWather());
+        bjEt.addTextChangedListener(new MyDlTextWather());
+        tzEt.addTextChangedListener(new MyDlTextWather());
     }
 
     private void changStr() {
@@ -171,8 +165,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         eddy = "00 10";
         eddyEt.setText("100");
         String currentTime = CommonUtils.formatDateTime1(new Date());
-        String temp = String.format(BlueOperationContact.BeiLvLuruSend, dy, dl, eddy, CommonUtils.formatDateTime1(new Date()), "00");
-        String code = MyUtils.getJyCode(temp);
+        String temp = String.format(BlueOperationContact.BeiLvLuruSendTemp, dy, dl, eddy, currentTime);
         OperationStr = String.format(BlueOperationContact.BeiLvLuruSend, dy, dl, eddy, currentTime, MyUtils.getJyCode(temp));
         sendTv.setText(OperationStr);
 
@@ -191,11 +184,11 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             } else if (dlbl.length() == 2) {
                 dlbl = dlbl + " 00";
             } else if (dlbl.length() == 3) {
-                dlbl = "0" + dlbl.substring(2, 3) + " " + dlbl.substring(0, 2);
+                dlbl = dlbl.substring(1, 3) + " 0" + dlbl.substring(0, 1);
             } else if (dlbl.length() == 4) {
                 dlbl = dlbl.substring(2, 4) + " " + dlbl.substring(0, 2);
             } else if (dlbl.length() > 4) {
-                dlbl = "";
+                dlbl = "00 00";
             }
         } catch (Exception e) {
 
@@ -233,11 +226,18 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                 OperationStr = BlueOperationContact.BeiLvLuruSend;
                 inputBeilvLayout.setVisibility(View.VISIBLE);
                 changStr();
-
                 break;
             case 5:
                 setToolbarTitle("电价录入");
-                OperationStr = BlueOperationContact.HeZaSend;
+                OperationStr = BlueOperationContact.DianjiaLuruSend;
+                inputDianjiaLayout.setVisibility(View.VISIBLE);
+                changDjStr();
+                break;
+            case 6:
+                setToolbarTitle("电费录入");
+                OperationStr = BlueOperationContact.DianfeiLuruSend;
+                inputDianfeiLayout.setVisibility(View.VISIBLE);
+                changDlStr();
                 break;
             case 41:
                 setToolbarTitle("电费查询");
@@ -251,6 +251,14 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                 setToolbarTitle("功率查询");
                 OperationStr = BlueOperationContact.DianLvCxSend;
                 break;
+            case 47:
+                setToolbarTitle("倍率查询");
+                OperationStr = BlueOperationContact.beiLvCxSend;
+                break;
+            case 48:
+                setToolbarTitle("电价查询");
+                OperationStr = BlueOperationContact.DianjiaCxSend;
+                break;
         }
         btnTv.setText(getToolbarTitle());
         resultTitle.setText(getToolbarTitle() + "结果");
@@ -263,6 +271,39 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         }
     }
 
+    private void changDjStr() {
+        String fdj = "";
+        String pdj = "";
+        String gdj = "";
+        String jdj = "";
+
+        jdj = MyUtils.changeDjStr(jdjEt.getText().toString());
+
+        pdj = MyUtils.changeDjStr(pdjEt.getText().toString());
+        fdj = MyUtils.changeDjStr(fdjEt.getText().toString());
+        gdj = MyUtils.changeDjStr(gdjEt.getText().toString());
+        String currentTime = CommonUtils.formatDateTime1(new Date());
+        String temp = String.format(BlueOperationContact.DianjiaLuruSendTemp, jdj, fdj, pdj, gdj, currentTime);
+        OperationStr = String.format(BlueOperationContact.DianjiaLuruSend, jdj, fdj, pdj, gdj, currentTime, MyUtils.getJyCode(temp));
+        sendTv.setText(OperationStr);
+    }
+
+    private void changDlStr() {
+        String gdl = "";
+        String bjdl = "";
+        String tzdl = "";
+
+        gdl = MyUtils.changeDlStr(gdlEt.getText().toString());
+
+        bjdl = MyUtils.changeDlStr(bjEt.getText().toString());
+        tzdl = MyUtils.changeDlStr(tzEt.getText().toString());
+        String currentTime = CommonUtils.formatDateTime1(new Date());
+        //获取当前单号+1
+        String newId = MyUtils.getNewOrderId();
+        String temp = String.format(BlueOperationContact.DianfeiLuruSendTemp, newId, "55", gdl, bjdl, tzdl, currentTime);
+        OperationStr = String.format(BlueOperationContact.DianfeiLuruSend, newId, "55", gdl, bjdl, tzdl, currentTime, MyUtils.getJyCode(temp));
+        sendTv.setText(OperationStr);
+    }
 
     //接收活动结果，响应startActivityForResult()
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -395,7 +436,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             }
             //这里对接受到的数据进行解析
             //首先解析
-            resultTv.setText("报文返回数据为：" + buf.toString() + "\n" + MyUtils.decodeHex367(title, buf.toString()));   //显示数据
+            resultTv.setText(Html.fromHtml("报文返回数据为：" + buf.toString() + "<br/>" + MyUtils.decodeHex367(title, buf.toString())));   //显示数据
             mBuffer.clear();
         }
     };
@@ -460,4 +501,64 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         }
     }
 
+
+    class MyTextWather implements TextWatcher
+
+    {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            changStr();
+        }
+
+    }
+
+    class MyDjTextWather implements TextWatcher
+
+    {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            changDjStr();
+        }
+
+    }
+
+    class MyDlTextWather implements TextWatcher
+
+    {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            changDlStr();
+        }
+
+    }
 }
