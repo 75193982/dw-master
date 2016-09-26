@@ -216,11 +216,7 @@ public class MainActivity extends BaseActivity implements IMainView {
     }
 
     public void switchAddressBook() {
-        if ("2".contains(currentUserType)) {
-            viewPage.setCurrentItem(0, false);
-        } else {
-            viewPage.setCurrentItem(1, false);
-        }
+        viewPage.setCurrentItem(1, false);
         addressBookS.setAlpha(1.0F);
         tabAddressS.setAlpha(1.0F);
     }
@@ -235,7 +231,7 @@ public class MainActivity extends BaseActivity implements IMainView {
     }
 
     public void switchFind() {
-        if ("2,30,31,32".contains(currentUserType)) {
+        if ("20,30,31,32".contains(currentUserType)) {
             viewPage.setCurrentItem(0, false);
         } else {
             viewPage.setCurrentItem(2, false);
@@ -245,7 +241,7 @@ public class MainActivity extends BaseActivity implements IMainView {
     }
 
     public void switchMe() {
-        if ("2,30,32".contains(currentUserType)) {
+        if ("20,30,32".contains(currentUserType)) {
             viewPage.setCurrentItem(1, false);
         } else {
             viewPage.setCurrentItem(3, false);

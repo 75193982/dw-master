@@ -45,7 +45,7 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView {
 
         UserBean localUserBean11 = new UserBean("4101101", "一级台区管理员", "888888", "11");
 
-        UserBean localUserBean2 = new UserBean("4102001", "二级账户", "888888", "2");
+        UserBean localUserBean2 = new UserBean("4102001", "二级账户", "888888", "20");
 
         UserBean localUserBean30 = new UserBean("4103001", "公司调试账户", "888888", "30");
 
