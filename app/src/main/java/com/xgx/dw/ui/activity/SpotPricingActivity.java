@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import butterknife.Bind;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseQuickAdapter.OnRecyclerViewItemClickListener;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.xgx.dw.R;
 import com.xgx.dw.SpotPricingBean;
 import com.xgx.dw.adapter.SpotPricingAdapter;
@@ -28,7 +28,7 @@ import com.xgx.dw.ui.view.interfaces.ISpotPricingView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpotPricingActivity extends BaseAppCompatActivity implements ISpotPricingView, Toolbar.OnMenuItemClickListener, BaseQuickAdapter.OnRecyclerViewItemClickListener {
+public class SpotPricingActivity extends BaseAppCompatActivity implements ISpotPricingView, Toolbar.OnMenuItemClickListener {
     private static int REFRESH_RECYCLERVIEW = 0;
     private SpotPricingAdapter adapter;
     private List<SpotPricingBean> beans;
@@ -56,8 +56,16 @@ public class SpotPricingActivity extends BaseAppCompatActivity implements ISpotP
         this.adapter.openLoadAnimation();
         View localView = LayoutInflater.from(this).inflate(R.layout.base_empty_view, (ViewGroup) this.recyclerView.getParent(), false);
         this.adapter.setEmptyView(localView);
-        this.adapter.setOnRecyclerViewItemClickListener(this);
         this.recyclerView.setAdapter(this.adapter);
+        recyclerView.addOnItemTouchListener(new OnItemClickListener() {
+            @Override
+            public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                SpotPricingBean localSpotPricingBean = (SpotPricingBean) baseQuickAdapter.getItem(i);
+                Intent localIntent = new Intent(getContext(), CreateSpotPricingAcvitity.class);
+                localIntent.putExtra("bean", localSpotPricingBean);
+                startActivityForResult(localIntent, REFRESH_RECYCLERVIEW);
+            }
+        });
     }
 
     protected void onActivityResult(int paramInt1, int paramInt2, Intent paramIntent) {
@@ -73,12 +81,6 @@ public class SpotPricingActivity extends BaseAppCompatActivity implements ISpotP
         return true;
     }
 
-    public void onItemClick(View paramView, int paramInt) {
-        SpotPricingBean localSpotPricingBean = (SpotPricingBean) this.adapter.getItem(paramInt);
-        Intent localIntent = new Intent(this, CreateSpotPricingAcvitity.class);
-        localIntent.putExtra("bean", localSpotPricingBean);
-        startActivityForResult(localIntent, REFRESH_RECYCLERVIEW);
-    }
 
     public boolean onMenuItemClick(MenuItem paramMenuItem) {
         switch (paramMenuItem.getItemId()) {

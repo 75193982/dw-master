@@ -17,10 +17,14 @@ import butterknife.Bind;
 import com.xgx.dw.R;
 import com.xgx.dw.adapter.DataSearchItemAdapter;
 import com.xgx.dw.adapter.DataSearchItemAdapter.MyOnItemClickListner;
+import com.xgx.dw.app.G;
+import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseFragment;
+import com.xgx.dw.ui.activity.CreateUserOneAcvitity;
 import com.xgx.dw.ui.activity.SpotPricingActivity;
 import com.xgx.dw.ui.activity.StoresMgrActivity;
 import com.xgx.dw.ui.activity.TransformerActivity;
+import com.xgx.dw.ui.activity.UserMgrActivity;
 import com.xgx.dw.ui.custom.TitleBar;
 import com.xgx.dw.ui.fragment.dummy.DummyContent;
 
@@ -52,10 +56,21 @@ public class ResouceMgrFragment extends BaseFragment implements MyOnItemClickLis
             }
         });
         ArrayList localArrayList = new ArrayList();
-        localArrayList.add(new DummyContent("0", "营业厅管理", "营业厅管理", this.drawableInt[0]));
-        localArrayList.add(new DummyContent("1", "台区管理", "台区管理", this.drawableInt[1]));
-        localArrayList.add(new DummyContent("2", "电价管理", "电价管理", this.drawableInt[2]));
-        localArrayList.add(new DummyContent("3", "用户资料", "用户资料", this.drawableInt[3]));
+        Setting setting = new Setting(getContext());
+        String currentUserType = setting.loadString(G.currentUserType);
+        if (currentUserType.equals("10")) {
+            localArrayList.add(new DummyContent(1, "台区管理", "台区管理", this.drawableInt[1]));
+            localArrayList.add(new DummyContent(2, "电价管理", "电价管理", this.drawableInt[2]));
+            localArrayList.add(new DummyContent(3, "用户资料", "用户资料", this.drawableInt[3]));
+        } else if (currentUserType.equals("11")) {
+            localArrayList.add(new DummyContent(2, "电价管理", "电价管理", this.drawableInt[2]));
+            localArrayList.add(new DummyContent(3, "用户资料", "用户资料", this.drawableInt[3]));
+        } else {
+            localArrayList.add(new DummyContent(0, "营业厅管理", "营业厅管理", this.drawableInt[0]));
+            localArrayList.add(new DummyContent(1, "台区管理", "台区管理", this.drawableInt[1]));
+            localArrayList.add(new DummyContent(2, "电价管理", "电价管理", this.drawableInt[2]));
+            localArrayList.add(new DummyContent(3, "用户资料", "用户资料", this.drawableInt[3]));
+        }
         final DataSearchItemAdapter localDataSearchItemAdapter = new DataSearchItemAdapter(localView, localArrayList);
         this.recyclerView.setAdapter(localDataSearchItemAdapter);
         localDataSearchItemAdapter.setOnItemClickListner(this);
@@ -80,6 +95,9 @@ public class ResouceMgrFragment extends BaseFragment implements MyOnItemClickLis
                 return;
             case 2:
                 startActivity(new Intent(getActivity(), SpotPricingActivity.class));
+                return;
+            case 3:
+                startActivity(new Intent(getActivity(), UserMgrActivity.class));
                 return;
             default:
                 return;

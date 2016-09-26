@@ -14,7 +14,7 @@ public class TransformerPresenterImpl extends BasePresenter implements ITransfor
         if (isEmpty(paramTransformerBean.getId(), paramICreateTransformerView, "台区编号不能为空")) return;
         if (isEmpty(paramTransformerBean.getName(), paramICreateTransformerView, "台区名称不能为空"))
             return;
-        if (TransformerBeanDaoHelper.getInstance().hasKey(paramTransformerBean.getId())) {
+        if (TransformerBeanDaoHelper.getInstance().hasKey(paramTransformerBean.getId()) && paramBoolean == true) {
             paramICreateTransformerView.showToast("已有相同编号的台区");
             paramICreateTransformerView.saveTransformer(false);
             return;

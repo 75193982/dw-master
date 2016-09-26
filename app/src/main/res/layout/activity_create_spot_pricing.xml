@@ -43,7 +43,7 @@
                 app:ms_floatingLabelColor="@color/disabled_color"
                 app:ms_floatingLabelText="@string/transformer_cotainStore"
                 app:ms_highlightColor="@color/Green"
-                app:ms_hint="@string/selected_transformer"
+                app:ms_hint="@string/selected_store"
                 app:ms_multiline="false"/>
         </LinearLayout>
 

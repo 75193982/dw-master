@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/create_storemgr_user"
+        android:icon="@drawable/iconfont_add"
+        android:orderInCategory="80"
+        android:title="@string/create_storemgr_user"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/create_transformermgr_user"
+        android:icon="@drawable/iconfont_add"
+        android:orderInCategory="90"
+        android:title="@string/create_transformermgr_user"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/create_device_user"
+        android:icon="@drawable/iconfont_add"
+        android:orderInCategory="100"
+        android:title="@string/create_device_user"
+        app:showAsAction="never"/>
+</menu>

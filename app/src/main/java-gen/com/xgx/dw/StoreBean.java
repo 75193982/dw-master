@@ -30,6 +30,11 @@ public class StoreBean implements Serializable {
         this.contact_way = contact_way;
     }
 
+    public StoreBean(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public String getId() {
         return id;
     }

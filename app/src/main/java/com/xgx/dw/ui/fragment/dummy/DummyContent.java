@@ -3,10 +3,10 @@ package com.xgx.dw.ui.fragment.dummy;
 public class DummyContent {
     public String content;
     public String details;
-    public String id;
+    public int id;
     public int res;
 
-    public DummyContent(String paramString1, String paramString2, String paramString3, int paramInt) {
+    public DummyContent(int paramString1, String paramString2, String paramString3, int paramInt) {
         this.id = paramString1;
         this.content = paramString2;
         this.details = paramString3;
@@ -21,7 +21,7 @@ public class DummyContent {
         return this.details;
     }
 
-    public String getId() {
+    public int getId() {
         return this.id;
     }
 
@@ -37,7 +37,7 @@ public class DummyContent {
         this.details = paramString;
     }
 
-    public void setId(String paramString) {
+    public void setId(int paramString) {
         this.id = paramString;
     }
 

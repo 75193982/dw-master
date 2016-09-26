@@ -6,7 +6,6 @@ import com.xgx.dw.dao.UserBeanDaoHelper;
 import com.xgx.dw.presenter.interfaces.ILoginPresenter;
 import com.xgx.dw.ui.view.interfaces.ILoginView;
 import com.xgx.dw.vo.request.LoginRequest;
-import com.xgx.dw.vo.response.UserInfo;
 
 import javax.xml.validation.Schema;
 
@@ -20,11 +19,8 @@ public class LoginPresenterImpl extends BasePresenter implements ILoginPresenter
             paramILoginView.hideProgress();
             return;
         }
-        if (paramLoginRequest.mima.equals(localUserBean.getMima())) {
-            UserInfo localUserInfo = new UserInfo();
-            localUserInfo.xingming = paramLoginRequest.bianhao;
-            localUserInfo.mima = paramLoginRequest.mima;
-            paramILoginView.loginCallback(localUserInfo);
+        if (paramLoginRequest.mima.equals(localUserBean.getPassword())) {
+            paramILoginView.loginCallback(localUserBean);
             // return;
             // } else {
             //     paramILoginView.showToast("当前密码错误");

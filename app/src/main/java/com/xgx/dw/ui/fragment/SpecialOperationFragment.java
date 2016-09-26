@@ -17,6 +17,8 @@ import butterknife.Bind;
 import com.xgx.dw.R;
 import com.xgx.dw.adapter.DataSearchItemAdapter;
 import com.xgx.dw.adapter.DataSearchItemAdapter.MyOnItemClickListner;
+import com.xgx.dw.app.G;
+import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseFragment;
 import com.xgx.dw.ui.activity.DeviceListActivity;
 import com.xgx.dw.ui.activity.MainActivity;
@@ -54,14 +56,40 @@ public class SpecialOperationFragment extends BaseFragment implements MyOnItemCl
             }
         });
         ArrayList localArrayList = new ArrayList();
-        localArrayList.add(new DummyContent("0", "合闸", "合闸", this.drawableInt[0]));
-        localArrayList.add(new DummyContent("1", "分闸", "分闸", this.drawableInt[1]));
-        localArrayList.add(new DummyContent("2", "保电投入", "保电投入", this.drawableInt[2]));
-        localArrayList.add(new DummyContent("3", "保电解除", "保电解除", this.drawableInt[3]));
-        localArrayList.add(new DummyContent("4", "倍率录入", "倍率录入", this.drawableInt[6]));
-        // localArrayList.add(new DummyContent("6", "电表地址", "电表地址", this.drawableInt[6]));
-        localArrayList.add(new DummyContent("5", "电价录入", "电价录入", this.drawableInt[6]));
-       // localArrayList.add(new DummyContent("6", "电费录入", "电费录入", this.drawableInt[6]));
+        Setting setting = new Setting(getContext());
+        String currentUserType = setting.loadString(G.currentUserType);
+        if (currentUserType.equals("20")) {
+            localArrayList.add(new DummyContent(0, "合闸", "合闸", this.drawableInt[0]));
+            localArrayList.add(new DummyContent(1, "分闸", "分闸", this.drawableInt[1]));
+            localArrayList.add(new DummyContent(6, "电费录入", "电费录入", this.drawableInt[6]));
+        } else if (currentUserType.equals("30")) {
+            localArrayList.add(new DummyContent(0, "合闸", "合闸", this.drawableInt[0]));
+            localArrayList.add(new DummyContent(1, "分闸", "分闸", this.drawableInt[1]));
+            localArrayList.add(new DummyContent(3, "保电解除", "保电解除", this.drawableInt[3]));
+
+        } else if (currentUserType.equals("31")) {
+            localArrayList.add(new DummyContent(0, "合闸", "合闸", this.drawableInt[0]));
+            localArrayList.add(new DummyContent(1, "分闸", "分闸", this.drawableInt[1]));
+            localArrayList.add(new DummyContent(3, "保电解除", "保电解除", this.drawableInt[3]));
+
+        } else if (currentUserType.equals("32")) {
+            localArrayList.add(new DummyContent(0, "合闸", "合闸", this.drawableInt[0]));
+            localArrayList.add(new DummyContent(1, "分闸", "分闸", this.drawableInt[1]));
+            localArrayList.add(new DummyContent(2, "保电投入", "保电投入", this.drawableInt[2]));
+            localArrayList.add(new DummyContent(3, "保电解除", "保电解除", this.drawableInt[3]));
+
+        } else {
+            localArrayList.add(new DummyContent(0, "合闸", "合闸", this.drawableInt[0]));
+            localArrayList.add(new DummyContent(1, "分闸", "分闸", this.drawableInt[1]));
+            localArrayList.add(new DummyContent(2, "保电投入", "保电投入", this.drawableInt[2]));
+            localArrayList.add(new DummyContent(3, "保电解除", "保电解除", this.drawableInt[3]));
+            localArrayList.add(new DummyContent(4, "倍率录入", "倍率录入", this.drawableInt[6]));
+            // localArrayList.add(new DummyContent("6", "电表地址", "电表地址", this.drawableInt[6]));
+            localArrayList.add(new DummyContent(5, "电价录入", "电价录入", this.drawableInt[6]));
+            localArrayList.add(new DummyContent(6, "电费录入", "电费录入", this.drawableInt[6]));
+
+        }
+
 
         final DataSearchItemAdapter localDataSearchItemAdapter = new DataSearchItemAdapter(localView, localArrayList);
         this.recyclerView.setAdapter(localDataSearchItemAdapter);

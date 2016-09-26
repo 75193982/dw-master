@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import butterknife.Bind;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseQuickAdapter.OnRecyclerViewItemClickListener;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.xgx.dw.R;
 import com.xgx.dw.TransformerBean;
 import com.xgx.dw.adapter.TransformerAdapter;
@@ -28,7 +28,7 @@ import com.xgx.dw.ui.view.interfaces.ITransformerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransformerActivity extends BaseAppCompatActivity implements ITransformerView, Toolbar.OnMenuItemClickListener, BaseQuickAdapter.OnRecyclerViewItemClickListener {
+public class TransformerActivity extends BaseAppCompatActivity implements ITransformerView, Toolbar.OnMenuItemClickListener {
     private static int REFRESH_RECYCLERVIEW = 0;
     private TransformerAdapter adapter;
     private List<TransformerBean> beans;
@@ -56,8 +56,16 @@ public class TransformerActivity extends BaseAppCompatActivity implements ITrans
         this.adapter.openLoadAnimation();
         View localView = LayoutInflater.from(this).inflate(R.layout.base_empty_view, (ViewGroup) this.recyclerView.getParent(), false);
         this.adapter.setEmptyView(localView);
-        this.adapter.setOnRecyclerViewItemClickListener(this);
         this.recyclerView.setAdapter(this.adapter);
+        recyclerView.addOnItemTouchListener(new OnItemClickListener() {
+            @Override
+            public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                TransformerBean localTransformerBean = (TransformerBean) baseQuickAdapter.getItem(i);
+                Intent localIntent = new Intent(getContext(), CreateTransformerAcvitity.class);
+                localIntent.putExtra("bean", localTransformerBean);
+                startActivityForResult(localIntent, REFRESH_RECYCLERVIEW);
+            }
+        });
     }
 
     protected void onActivityResult(int paramInt1, int paramInt2, Intent paramIntent) {
@@ -73,12 +81,6 @@ public class TransformerActivity extends BaseAppCompatActivity implements ITrans
         return true;
     }
 
-    public void onItemClick(View paramView, int paramInt) {
-        TransformerBean localTransformerBean = (TransformerBean) this.adapter.getItem(paramInt);
-        Intent localIntent = new Intent(this, CreateTransformerAcvitity.class);
-        localIntent.putExtra("bean", localTransformerBean);
-        startActivityForResult(localIntent, REFRESH_RECYCLERVIEW);
-    }
 
     public boolean onMenuItemClick(MenuItem paramMenuItem) {
         switch (paramMenuItem.getItemId()) {

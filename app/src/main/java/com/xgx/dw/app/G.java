@@ -65,6 +65,26 @@ public class G {
      */
     public static final String currentUsername = "currentUsername";
     /**
+     * 当前用户类型
+     */
+    public static final String currentUserType = "currentUserType";
+    /**
+     * 当前用户营业厅ID
+     */
+    public static final String currentStoreId = "currentStoreId";
+    /**
+     * 当前用户营业厅NAME
+     */
+    public static final String currentStoreName = "currentStoreName";
+    /**
+     * 当前用户台区ID
+     */
+    public static final String currentTransformId = "currentTransformId";
+    /**
+     * 当前用户台区NAME
+     */
+    public static final String currentTransformName = "currentTransformName";
+    /**
      * 购电单号
      */
     public static final String currentOrderId = "currentOrderId";

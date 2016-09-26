@@ -2,6 +2,8 @@ package com.xgx.dw.dao;
 
 import android.text.TextUtils;
 
+import com.xgx.dw.SpotPricingBean;
+import com.xgx.dw.SpotPricingBeanDao;
 import com.xgx.dw.StoreBean;
 import com.xgx.dw.StoreBeanDao;
 import com.xgx.dw.THDaoHelperInterface;
@@ -12,6 +14,7 @@ import com.xgx.dw.TransformerBeanDao;
 import java.util.List;
 
 import de.greenrobot.dao.query.QueryBuilder;
+import de.greenrobot.dao.query.WhereCondition;
 
 public class TransformerBeanDaoHelper implements THDaoHelperInterface {
     private static TransformerBeanDaoHelper instance;
@@ -92,4 +95,9 @@ public class TransformerBeanDaoHelper implements THDaoHelperInterface {
         }
     }
 
+    public List<TransformerBean> testQueryBy(String storeid) {
+        QueryBuilder localQueryBuilder = this.userBeanDao.queryBuilder();
+        localQueryBuilder.where(TransformerBeanDao.Properties.Store_id.eq(storeid));
+        return localQueryBuilder.list();
+    }
 }

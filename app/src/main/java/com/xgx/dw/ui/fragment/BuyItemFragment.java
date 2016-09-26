@@ -49,9 +49,9 @@ public class BuyItemFragment extends BaseFragment implements DataSearchItemAdapt
             }
         });
         ArrayList localArrayList = new ArrayList();
-        localArrayList.add(new DummyContent("0", "用户购电", "用户购电", this.drawableInt[0]));
-        localArrayList.add(new DummyContent("1", "自助购电", "自助购电", this.drawableInt[1]));
-        localArrayList.add(new DummyContent("2", "购电录入", "购电录入", this.drawableInt[2]));
+        localArrayList.add(new DummyContent(0, "用户购电", "用户购电", this.drawableInt[0]));
+        localArrayList.add(new DummyContent(1, "自助购电", "自助购电", this.drawableInt[1]));
+        localArrayList.add(new DummyContent(2, "购电录入", "购电录入", this.drawableInt[2]));
         final DataSearchItemAdapter localDataSearchItemAdapter = new DataSearchItemAdapter(localView, localArrayList);
         this.recyclerView.setAdapter(localDataSearchItemAdapter);
         localDataSearchItemAdapter.setOnItemClickListner(this);

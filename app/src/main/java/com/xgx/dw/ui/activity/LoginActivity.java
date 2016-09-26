@@ -18,7 +18,6 @@ import com.xgx.dw.presenter.impl.LoginPresenterImpl;
 import com.xgx.dw.presenter.interfaces.ILoginPresenter;
 import com.xgx.dw.ui.view.interfaces.ILoginView;
 import com.xgx.dw.vo.request.LoginRequest;
-import com.xgx.dw.vo.response.UserInfo;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -40,22 +39,42 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView {
     public void initPresenter() {
         setToolbarTitle("登录");
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        UserBean localUserBean = new UserBean();
-        localUserBean.setBianhao("admin");
-        localUserBean.setXingming("admin");
-        localUserBean.setMima("888888");
+        UserBean localUserBean = new UserBean("admin", "超级管理员", "888888", "admin");
+
+        UserBean localUserBean10 = new UserBean("4101001", "一级营业厅管理员", "888888", "10");
+
+        UserBean localUserBean11 = new UserBean("4101101", "一级台区管理员", "888888", "11");
+
+        UserBean localUserBean2 = new UserBean("4102001", "二级账户", "888888", "2");
+
+        UserBean localUserBean30 = new UserBean("4103001", "公司调试账户", "888888", "30");
+
+        UserBean localUserBean31 = new UserBean("4103101", "供电局调试1", "888888", "31");
+
+        UserBean localUserBean32 = new UserBean("4103201", "供电局调试2", "888888", "32");
         UserBeanDaoHelper.getInstance().addData(localUserBean);
+        UserBeanDaoHelper.getInstance().addData(localUserBean10);
+        UserBeanDaoHelper.getInstance().addData(localUserBean11);
+        UserBeanDaoHelper.getInstance().addData(localUserBean2);
+        UserBeanDaoHelper.getInstance().addData(localUserBean30);
+        UserBeanDaoHelper.getInstance().addData(localUserBean31);
+        UserBeanDaoHelper.getInstance().addData(localUserBean32);
         this.loginPresenter = new LoginPresenterImpl();
     }
 
     public void initView() {
     }
 
-    public void loginCallback(UserInfo paramUserInfo) {
+    public void loginCallback(UserBean userBean) {
         hideProgress();
         //登录成功后，将登录信息保存到偏好设置中
         Setting setting = new Setting(this);
-        setting.saveString(G.currentUsername, paramUserInfo.bianhao);
+        setting.saveString(G.currentUsername, userBean.getUserId());
+        setting.saveString(G.currentUserType, userBean.getType());
+        setting.saveString(G.currentStoreId, userBean.getStoreId());
+        setting.saveString(G.currentStoreName, userBean.getStoreName());
+        setting.saveString(G.currentTransformId, userBean.getTransformerId());
+        setting.saveString(G.currentTransformName, userBean.getTransformerName());
         startActivity(new Intent(this, MainActivity.class));
     }
 

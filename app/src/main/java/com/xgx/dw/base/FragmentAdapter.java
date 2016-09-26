@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.xgx.dw.app.G;
+import com.xgx.dw.app.Setting;
 import com.xgx.dw.ui.fragment.FragmentFactory;
 
 /**
@@ -11,9 +13,17 @@ import com.xgx.dw.ui.fragment.FragmentFactory;
  */
 public class FragmentAdapter extends FragmentStatePagerAdapter {
     private FragmentFactory mFragmentFactory = new FragmentFactory(4);
+    private String type;
 
-    public FragmentAdapter(FragmentManager paramFragmentManager) {
+    public FragmentAdapter(FragmentManager paramFragmentManager, String type) {
         super(paramFragmentManager);
+        this.type = type;
+        if (("20,30,32").contains(type)) {
+            mFragmentFactory = new FragmentFactory(2);
+        } else if ("31".contains(type)) {
+            mFragmentFactory = new FragmentFactory(1);
+        }
+
     }
 
     public int getCount() {
@@ -21,6 +31,6 @@ public class FragmentAdapter extends FragmentStatePagerAdapter {
     }
 
     public Fragment getItem(int paramInt) {
-        return this.mFragmentFactory.createFragment(paramInt);
+        return this.mFragmentFactory.createFragment(paramInt, type);
     }
 }

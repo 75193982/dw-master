@@ -17,8 +17,7 @@ import com.xgx.dw.ui.fragment.dummy.DummyContent;
 
 import java.util.List;
 
-public class DataSearchItemAdapter
-        extends RecyclerView.Adapter<TextViewHolder> {
+public class DataSearchItemAdapter extends RecyclerView.Adapter<TextViewHolder> {
     private static final int ITEM_VIEW_TYPE_HEADER = 0;
     private static final int ITEM_VIEW_TYPE_ITEM = 1;
     private final View header;
@@ -62,7 +61,7 @@ public class DataSearchItemAdapter
         paramTextViewHolder.item_layout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View paramAnonymousView) {
                 if (DataSearchItemAdapter.this.onItemClickListner != null) {
-                    DataSearchItemAdapter.this.onItemClickListner.onrRecyclerViewItemClick(paramInt - 1);
+                    DataSearchItemAdapter.this.onItemClickListner.onrRecyclerViewItemClick(labels.get(paramInt - 1).getId());
                 }
             }
         });

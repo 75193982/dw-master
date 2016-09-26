@@ -25,6 +25,8 @@
     <string name="create_spotpricing">创建电价</string>
     <string name="create_store">创建营业厅</string>
     <string name="create_transformer">创建台区</string>
+    <string name="create_userone">创建营业厅管理员</string>
+    <string name="create_usertwo">创建台区管理员</string>
     <string name="define_roundedimageview"/>
     <string name="empty"/>
     <string name="error_field_required">This field is required</string>
@@ -52,7 +54,8 @@
     <string name="prompt_password">密码</string>
     <string name="register">立即注册</string>
     <string name="save">保存</string>
-    <string name="selected_transformer">选择营业厅</string>
+    <string name="selected_store">选择营业厅</string>
+    <string name="selected_transformer">选择台区</string>
     <string name="spotpricing">电价</string>
     <string name="spotpricing_flatPrice">平电价(元)</string>
     <string name="spotpricing_peakPrice">峰电价(元)</string>
@@ -73,8 +76,13 @@
     <string name="title_activity_bluetooth_operation">BluetoothOperationActivity</string>
     <string name="transformer">台区</string>
     <string name="transformer_cotainStore">所属营业厅</string>
+    <string name="transformer_cotain">所属台区</string>
     <string name="upgrade_spotpricing">编辑电价</string>
     <string name="upgrade_store">编辑营业厅</string>
     <string name="upgrade_transformer">编辑台区</string>
     <string name="device_list">检测设备</string>
+    <string name="user_one">营业厅管理员</string>
+    <string name="create_storemgr_user">创建营业厅管理员</string>
+    <string name="create_transformermgr_user">创建台区管理员</string>
+    <string name="create_device_user">创建设备用户</string>
 </resources>

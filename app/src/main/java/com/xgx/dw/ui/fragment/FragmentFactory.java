@@ -10,20 +10,37 @@ public class FragmentFactory {
         this.mSize = paramInt;
     }
 
-    public Fragment createFragment(int paramInt) {
-        switch (paramInt) {
-            case 0:
-                this.mFragment = new ResouceMgrFragment();
-                break;
-            case 1:
-                this.mFragment = new BuyItemFragment();
-                break;
-            case 2:
-                this.mFragment = new SpecialOperationFragment();
-                break;
-            case 3:
-                this.mFragment = new DataSearchFragment();
-                break;
+    public Fragment createFragment(int paramInt, String type) {
+        if (type.equals("20") || type.equals("30") || type.equals("32")) {
+            switch (paramInt) {
+                case 0:
+                    this.mFragment = new SpecialOperationFragment();
+                    break;
+                case 1:
+                    this.mFragment = new DataSearchFragment();
+                    break;
+            }
+        } else if (type.equals("31")) {
+            switch (paramInt) {
+                case 0:
+                    this.mFragment = new SpecialOperationFragment();
+                    break;
+            }
+        } else {
+            switch (paramInt) {
+                case 0:
+                    this.mFragment = new ResouceMgrFragment();
+                    break;
+                case 1:
+                    this.mFragment = new BuyItemFragment();
+                    break;
+                case 2:
+                    this.mFragment = new SpecialOperationFragment();
+                    break;
+                case 3:
+                    this.mFragment = new DataSearchFragment();
+                    break;
+            }
         }
         return this.mFragment;
 

@@ -20,25 +20,22 @@ public class MyDaoGenerator {
     private static void initUserBean(Schema schema) {
         Entity userBean = schema.addEntity("UserBean");
         userBean.setTableName("user");
-        userBean.addStringProperty("bianhao").primaryKey();
-        userBean.addStringProperty("xingming");
-        userBean.addStringProperty("mima");
-        userBean.addStringProperty("bumen");
-        userBean.addStringProperty("bumenmc");
-        userBean.addStringProperty("shenfenzheng");
-        userBean.addStringProperty("lianxifangshi");
-        userBean.addStringProperty("zhuzhi");
-        userBean.addStringProperty("recid");
-        userBean.addStringProperty("createtime");
-        userBean.addStringProperty("deleted");
-        userBean.addStringProperty("countyid");
-        userBean.addStringProperty("countyname");
-        userBean.addStringProperty("audiotype");
-        userBean.addStringProperty("bumenmcfull");
-        userBean.addStringProperty("bumenbhfull");
-        userBean.addStringProperty("sg186pwd");
-        userBean.addStringProperty("handleno");
-        userBean.addStringProperty("operno");
+        userBean.addStringProperty("userId").primaryKey();
+        userBean.addStringProperty("userName");
+        userBean.addStringProperty("password");
+        userBean.addStringProperty("type");
+        userBean.addStringProperty("storeId");
+        userBean.addStringProperty("storeName");
+        userBean.addStringProperty("isBuy");
+        userBean.addStringProperty("isTest");
+        userBean.addStringProperty("transformerId");
+        userBean.addStringProperty("transformerName");
+        userBean.addStringProperty("voltageRatio");
+        userBean.addStringProperty("currentRatio");
+        userBean.addStringProperty("meterNum");
+        userBean.addStringProperty("price");
+        userBean.addStringProperty("phone");
+        userBean.addStringProperty("createTime");
         userBean.addStringProperty("remark");
     }
 

@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import butterknife.Bind;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseQuickAdapter.OnRecyclerViewItemClickListener;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.xgx.dw.R;
 import com.xgx.dw.StoreBean;
 import com.xgx.dw.adapter.StoresAdapter;
@@ -29,7 +29,7 @@ import com.xgx.dw.vo.request.StoresRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StoresMgrActivity extends BaseAppCompatActivity implements IStoresView, Toolbar.OnMenuItemClickListener, BaseQuickAdapter.OnRecyclerViewItemClickListener {
+public class StoresMgrActivity extends BaseAppCompatActivity implements IStoresView, Toolbar.OnMenuItemClickListener {
     private static int REFRESH_RECYCLERVIEW = 0;
     private StoresAdapter adapter;
     private List<StoreBean> beans;
@@ -57,8 +57,16 @@ public class StoresMgrActivity extends BaseAppCompatActivity implements IStoresV
         this.adapter.openLoadAnimation();
         View localView = LayoutInflater.from(this).inflate(R.layout.base_empty_view, (ViewGroup) this.recyclerView.getParent(), false);
         this.adapter.setEmptyView(localView);
-        this.adapter.setOnRecyclerViewItemClickListener(this);
         this.recyclerView.setAdapter(this.adapter);
+        recyclerView.addOnItemTouchListener(new OnItemClickListener() {
+            @Override
+            public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                StoreBean localStoreBean = (StoreBean) baseQuickAdapter.getItem(i);
+                Intent localIntent = new Intent(getContext(), CreateStoreActivity.class);
+                localIntent.putExtra("bean", localStoreBean);
+                startActivityForResult(localIntent, REFRESH_RECYCLERVIEW);
+            }
+        });
     }
 
     protected void onActivityResult(int paramInt1, int paramInt2, Intent paramIntent) {
@@ -74,12 +82,6 @@ public class StoresMgrActivity extends BaseAppCompatActivity implements IStoresV
         return true;
     }
 
-    public void onItemClick(View paramView, int paramInt) {
-        StoreBean localStoreBean = (StoreBean) this.adapter.getItem(paramInt);
-        Intent localIntent = new Intent(this, CreateStoreActivity.class);
-        localIntent.putExtra("bean", localStoreBean);
-        startActivityForResult(localIntent, REFRESH_RECYCLERVIEW);
-    }
 
     public boolean onMenuItemClick(MenuItem paramMenuItem) {
         switch (paramMenuItem.getItemId()) {

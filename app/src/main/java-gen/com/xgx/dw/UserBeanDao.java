@@ -23,26 +23,23 @@ public class UserBeanDao extends AbstractDao<UserBean, String> {
      * Can be used for QueryBuilder and for referencing column names.
     */
     public static class Properties {
-        public final static Property Bianhao = new Property(0, String.class, "bianhao", true, "BIANHAO");
-        public final static Property Xingming = new Property(1, String.class, "xingming", false, "XINGMING");
-        public final static Property Mima = new Property(2, String.class, "mima", false, "MIMA");
-        public final static Property Bumen = new Property(3, String.class, "bumen", false, "BUMEN");
-        public final static Property Bumenmc = new Property(4, String.class, "bumenmc", false, "BUMENMC");
-        public final static Property Shenfenzheng = new Property(5, String.class, "shenfenzheng", false, "SHENFENZHENG");
-        public final static Property Lianxifangshi = new Property(6, String.class, "lianxifangshi", false, "LIANXIFANGSHI");
-        public final static Property Zhuzhi = new Property(7, String.class, "zhuzhi", false, "ZHUZHI");
-        public final static Property Recid = new Property(8, String.class, "recid", false, "RECID");
-        public final static Property Createtime = new Property(9, String.class, "createtime", false, "CREATETIME");
-        public final static Property Deleted = new Property(10, String.class, "deleted", false, "DELETED");
-        public final static Property Countyid = new Property(11, String.class, "countyid", false, "COUNTYID");
-        public final static Property Countyname = new Property(12, String.class, "countyname", false, "COUNTYNAME");
-        public final static Property Audiotype = new Property(13, String.class, "audiotype", false, "AUDIOTYPE");
-        public final static Property Bumenmcfull = new Property(14, String.class, "bumenmcfull", false, "BUMENMCFULL");
-        public final static Property Bumenbhfull = new Property(15, String.class, "bumenbhfull", false, "BUMENBHFULL");
-        public final static Property Sg186pwd = new Property(16, String.class, "sg186pwd", false, "SG186PWD");
-        public final static Property Handleno = new Property(17, String.class, "handleno", false, "HANDLENO");
-        public final static Property Operno = new Property(18, String.class, "operno", false, "OPERNO");
-        public final static Property Remark = new Property(19, String.class, "remark", false, "REMARK");
+        public final static Property UserId = new Property(0, String.class, "userId", true, "USER_ID");
+        public final static Property UserName = new Property(1, String.class, "userName", false, "USER_NAME");
+        public final static Property Password = new Property(2, String.class, "password", false, "PASSWORD");
+        public final static Property Type = new Property(3, String.class, "type", false, "TYPE");
+        public final static Property StoreId = new Property(4, String.class, "storeId", false, "STORE_ID");
+        public final static Property StoreName = new Property(5, String.class, "storeName", false, "STORE_NAME");
+        public final static Property IsBuy = new Property(6, String.class, "isBuy", false, "IS_BUY");
+        public final static Property IsTest = new Property(7, String.class, "isTest", false, "IS_TEST");
+        public final static Property TransformerId = new Property(8, String.class, "transformerId", false, "TRANSFORMER_ID");
+        public final static Property TransformerName = new Property(9, String.class, "transformerName", false, "TRANSFORMER_NAME");
+        public final static Property VoltageRatio = new Property(10, String.class, "voltageRatio", false, "VOLTAGE_RATIO");
+        public final static Property CurrentRatio = new Property(11, String.class, "currentRatio", false, "CURRENT_RATIO");
+        public final static Property MeterNum = new Property(12, String.class, "meterNum", false, "METER_NUM");
+        public final static Property Price = new Property(13, String.class, "price", false, "PRICE");
+        public final static Property Phone = new Property(14, String.class, "phone", false, "PHONE");
+        public final static Property CreateTime = new Property(15, String.class, "createTime", false, "CREATE_TIME");
+        public final static Property Remark = new Property(16, String.class, "remark", false, "REMARK");
     };
 
 
@@ -58,26 +55,23 @@ public class UserBeanDao extends AbstractDao<UserBean, String> {
     public static void createTable(SQLiteDatabase db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'user' (" + //
-                "'BIANHAO' TEXT PRIMARY KEY NOT NULL ," + // 0: bianhao
-                "'XINGMING' TEXT," + // 1: xingming
-                "'MIMA' TEXT," + // 2: mima
-                "'BUMEN' TEXT," + // 3: bumen
-                "'BUMENMC' TEXT," + // 4: bumenmc
-                "'SHENFENZHENG' TEXT," + // 5: shenfenzheng
-                "'LIANXIFANGSHI' TEXT," + // 6: lianxifangshi
-                "'ZHUZHI' TEXT," + // 7: zhuzhi
-                "'RECID' TEXT," + // 8: recid
-                "'CREATETIME' TEXT," + // 9: createtime
-                "'DELETED' TEXT," + // 10: deleted
-                "'COUNTYID' TEXT," + // 11: countyid
-                "'COUNTYNAME' TEXT," + // 12: countyname
-                "'AUDIOTYPE' TEXT," + // 13: audiotype
-                "'BUMENMCFULL' TEXT," + // 14: bumenmcfull
-                "'BUMENBHFULL' TEXT," + // 15: bumenbhfull
-                "'SG186PWD' TEXT," + // 16: sg186pwd
-                "'HANDLENO' TEXT," + // 17: handleno
-                "'OPERNO' TEXT," + // 18: operno
-                "'REMARK' TEXT);"); // 19: remark
+                "'USER_ID' TEXT PRIMARY KEY NOT NULL ," + // 0: userId
+                "'USER_NAME' TEXT," + // 1: userName
+                "'PASSWORD' TEXT," + // 2: password
+                "'TYPE' TEXT," + // 3: type
+                "'STORE_ID' TEXT," + // 4: storeId
+                "'STORE_NAME' TEXT," + // 5: storeName
+                "'IS_BUY' TEXT," + // 6: isBuy
+                "'IS_TEST' TEXT," + // 7: isTest
+                "'TRANSFORMER_ID' TEXT," + // 8: transformerId
+                "'TRANSFORMER_NAME' TEXT," + // 9: transformerName
+                "'VOLTAGE_RATIO' TEXT," + // 10: voltageRatio
+                "'CURRENT_RATIO' TEXT," + // 11: currentRatio
+                "'METER_NUM' TEXT," + // 12: meterNum
+                "'PRICE' TEXT," + // 13: price
+                "'PHONE' TEXT," + // 14: phone
+                "'CREATE_TIME' TEXT," + // 15: createTime
+                "'REMARK' TEXT);"); // 16: remark
     }
 
     /** Drops the underlying database table. */
@@ -91,104 +85,89 @@ public class UserBeanDao extends AbstractDao<UserBean, String> {
     protected void bindValues(SQLiteStatement stmt, UserBean entity) {
         stmt.clearBindings();
  
-        String bianhao = entity.getBianhao();
-        if (bianhao != null) {
-            stmt.bindString(1, bianhao);
+        String userId = entity.getUserId();
+        if (userId != null) {
+            stmt.bindString(1, userId);
         }
  
-        String xingming = entity.getXingming();
-        if (xingming != null) {
-            stmt.bindString(2, xingming);
+        String userName = entity.getUserName();
+        if (userName != null) {
+            stmt.bindString(2, userName);
         }
  
-        String mima = entity.getMima();
-        if (mima != null) {
-            stmt.bindString(3, mima);
+        String password = entity.getPassword();
+        if (password != null) {
+            stmt.bindString(3, password);
         }
  
-        String bumen = entity.getBumen();
-        if (bumen != null) {
-            stmt.bindString(4, bumen);
+        String type = entity.getType();
+        if (type != null) {
+            stmt.bindString(4, type);
         }
  
-        String bumenmc = entity.getBumenmc();
-        if (bumenmc != null) {
-            stmt.bindString(5, bumenmc);
+        String storeId = entity.getStoreId();
+        if (storeId != null) {
+            stmt.bindString(5, storeId);
         }
  
-        String shenfenzheng = entity.getShenfenzheng();
-        if (shenfenzheng != null) {
-            stmt.bindString(6, shenfenzheng);
+        String storeName = entity.getStoreName();
+        if (storeName != null) {
+            stmt.bindString(6, storeName);
         }
  
-        String lianxifangshi = entity.getLianxifangshi();
-        if (lianxifangshi != null) {
-            stmt.bindString(7, lianxifangshi);
+        String isBuy = entity.getIsBuy();
+        if (isBuy != null) {
+            stmt.bindString(7, isBuy);
         }
  
-        String zhuzhi = entity.getZhuzhi();
-        if (zhuzhi != null) {
-            stmt.bindString(8, zhuzhi);
+        String isTest = entity.getIsTest();
+        if (isTest != null) {
+            stmt.bindString(8, isTest);
         }
  
-        String recid = entity.getRecid();
-        if (recid != null) {
-            stmt.bindString(9, recid);
+        String transformerId = entity.getTransformerId();
+        if (transformerId != null) {
+            stmt.bindString(9, transformerId);
         }
  
-        String createtime = entity.getCreatetime();
-        if (createtime != null) {
-            stmt.bindString(10, createtime);
+        String transformerName = entity.getTransformerName();
+        if (transformerName != null) {
+            stmt.bindString(10, transformerName);
         }
  
-        String deleted = entity.getDeleted();
-        if (deleted != null) {
-            stmt.bindString(11, deleted);
+        String voltageRatio = entity.getVoltageRatio();
+        if (voltageRatio != null) {
+            stmt.bindString(11, voltageRatio);
         }
  
-        String countyid = entity.getCountyid();
-        if (countyid != null) {
-            stmt.bindString(12, countyid);
+        String currentRatio = entity.getCurrentRatio();
+        if (currentRatio != null) {
+            stmt.bindString(12, currentRatio);
         }
  
-        String countyname = entity.getCountyname();
-        if (countyname != null) {
-            stmt.bindString(13, countyname);
+        String meterNum = entity.getMeterNum();
+        if (meterNum != null) {
+            stmt.bindString(13, meterNum);
         }
  
-        String audiotype = entity.getAudiotype();
-        if (audiotype != null) {
-            stmt.bindString(14, audiotype);
+        String price = entity.getPrice();
+        if (price != null) {
+            stmt.bindString(14, price);
         }
  
-        String bumenmcfull = entity.getBumenmcfull();
-        if (bumenmcfull != null) {
-            stmt.bindString(15, bumenmcfull);
+        String phone = entity.getPhone();
+        if (phone != null) {
+            stmt.bindString(15, phone);
         }
  
-        String bumenbhfull = entity.getBumenbhfull();
-        if (bumenbhfull != null) {
-            stmt.bindString(16, bumenbhfull);
-        }
- 
-        String sg186pwd = entity.getSg186pwd();
-        if (sg186pwd != null) {
-            stmt.bindString(17, sg186pwd);
-        }
- 
-        String handleno = entity.getHandleno();
-        if (handleno != null) {
-            stmt.bindString(18, handleno);
-        }
- 
-        String operno = entity.getOperno();
-        if (operno != null) {
-            stmt.bindString(19, operno);
+        String createTime = entity.getCreateTime();
+        if (createTime != null) {
+            stmt.bindString(16, createTime);
         }
  
         String remark = entity.getRemark();
         if (remark != null) {
-            stmt.bindString(20, remark);
+            stmt.bindString(17, remark);
         }
     }
 
@@ -202,26 +181,23 @@ public class UserBeanDao extends AbstractDao<UserBean, String> {
     @Override
     public UserBean readEntity(Cursor cursor, int offset) {
         UserBean entity = new UserBean( //
-            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // bianhao
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // xingming
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // mima
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // bumen
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // bumenmc
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // shenfenzheng
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // lianxifangshi
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // zhuzhi
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // recid
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // createtime
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // deleted
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // countyid
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // countyname
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // audiotype
-            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // bumenmcfull
-            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // bumenbhfull
-            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // sg186pwd
-            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // handleno
-            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18), // operno
-            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19) // remark
+            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // userId
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // userName
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // password
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // type
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // storeId
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // storeName
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // isBuy
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // isTest
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // transformerId
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // transformerName
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // voltageRatio
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // currentRatio
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // meterNum
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // price
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // phone
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // createTime
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16) // remark
         );
         return entity;
     }
@@ -229,39 +205,36 @@ public class UserBeanDao extends AbstractDao<UserBean, String> {
     /** @inheritdoc */
     @Override
     public void readEntity(Cursor cursor, UserBean entity, int offset) {
-        entity.setBianhao(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
-        entity.setXingming(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setMima(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setBumen(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setBumenmc(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setShenfenzheng(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setLianxifangshi(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setZhuzhi(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setRecid(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setCreatetime(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setDeleted(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setCountyid(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setCountyname(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
-        entity.setAudiotype(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
-        entity.setBumenmcfull(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
-        entity.setBumenbhfull(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
-        entity.setSg186pwd(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
-        entity.setHandleno(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
-        entity.setOperno(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
-        entity.setRemark(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
+        entity.setUserId(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
+        entity.setUserName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setPassword(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setType(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setStoreId(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setStoreName(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setIsBuy(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setIsTest(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setTransformerId(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setTransformerName(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setVoltageRatio(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setCurrentRatio(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setMeterNum(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setPrice(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setPhone(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setCreateTime(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setRemark(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
      }
     
     /** @inheritdoc */
     @Override
     protected String updateKeyAfterInsert(UserBean entity, long rowId) {
-        return entity.getBianhao();
+        return entity.getUserId();
     }
     
     /** @inheritdoc */
     @Override
     public String getKey(UserBean entity) {
         if(entity != null) {
-            return entity.getBianhao();
+            return entity.getUserId();
         } else {
             return null;
         }

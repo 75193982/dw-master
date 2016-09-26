@@ -14,8 +14,7 @@ import java.util.List;
 
 import de.greenrobot.dao.query.QueryBuilder;
 
-public class UserBeanDaoHelper
-        implements THDaoHelperInterface {
+public class UserBeanDaoHelper implements THDaoHelperInterface {
     private static UserBeanDaoHelper instance;
     private UserBeanDao userBeanDao;
 
@@ -72,7 +71,7 @@ public class UserBeanDaoHelper
         }
 
         QueryBuilder<UserBean> qb = userBeanDao.queryBuilder();
-        qb.where(StoreBeanDao.Properties.Id.eq(id));
+        qb.where(UserBeanDao.Properties.UserId.eq(id));
         long count = qb.buildCount().count();
         return count > 0 ? true : false;
     }
