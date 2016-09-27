@@ -63,6 +63,7 @@ public class AES {
         return decrypted;
     }
 
+
     public static String toHex(String txt) {
         return toHex(txt.getBytes());
     }
