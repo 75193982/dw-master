@@ -64,6 +64,7 @@ public class AES {
     }
 
 
+
     public static String toHex(String txt) {
         return toHex(txt.getBytes());
     }
