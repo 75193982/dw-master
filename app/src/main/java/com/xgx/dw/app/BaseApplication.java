@@ -15,6 +15,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.squareup.leakcanary.LeakCanary;
+import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 import com.xgx.dw.THDatabaseLoader;
 
 import java.io.File;
@@ -27,7 +28,6 @@ import java.util.Locale;
  */
 public class BaseApplication extends Application {
     private static BaseApplication mInstance;
-
 
 
     /**
@@ -46,6 +46,7 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        ZXingLibrary.initDisplayOpinion(this);
         LeakCanary.install(this);
         mInstance = this;
         initImageLoader();
