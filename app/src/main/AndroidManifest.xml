@@ -67,7 +67,6 @@
         <activity android:name=".ui.activity.CreateUserOneAcvitity"></activity>
         <activity android:name=".ui.activity.CreateUserTwoAcvitity"></activity>
         <activity android:name=".ui.activity.CreateUserThreeAcvitity"></activity>
-        <activity android:name=".ui.activity.TestScanActivity"></activity>
         <activity android:name=".ui.activity.TestGeneratectivity"></activity>
         <activity
             android:name=".ui.activity.SpecialOperationDetailActivity"

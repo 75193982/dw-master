@@ -2,13 +2,20 @@ package com.xgx.dw.ui.activity;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.uuzuche.lib_zxing.activity.CaptureActivity;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.xgx.dw.R;
 import com.xgx.dw.UserBean;
 import com.xgx.dw.app.G;
@@ -18,6 +25,7 @@ import com.xgx.dw.dao.UserBeanDaoHelper;
 import com.xgx.dw.presenter.impl.LoginPresenterImpl;
 import com.xgx.dw.presenter.interfaces.ILoginPresenter;
 import com.xgx.dw.ui.view.interfaces.ILoginView;
+import com.xgx.dw.utils.AES;
 import com.xgx.dw.vo.request.LoginRequest;
 
 import java.util.List;
@@ -25,6 +33,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -41,6 +50,8 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
     TextView loginRegister;
     @Bind(R.id.login_forget)
     TextView loginForget;
+    @Bind(R.id.login_from)
+    TextView loginFrom;
 
 
     public void initContentView() {
@@ -118,7 +129,7 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
     }
 
 
-    @OnClick({R.id.login_btn, R.id.login_register, R.id.login_forget})
+    @OnClick({R.id.login_btn, R.id.login_register, R.id.login_forget, R.id.login_from})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_btn:
@@ -132,8 +143,70 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                 startActivity(new Intent(this, TestGeneratectivity.class));
                 break;
             case R.id.login_forget:
-                startActivity(new Intent(this, TestScanActivity.class));
+                Intent intent = new Intent(this, CaptureActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
+                break;
+            case R.id.login_from:
+                startActivityForResult(BGAPhotoPickerActivity.newIntent(this, null, 1, null), REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY);
                 break;
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE) {
+            //处理扫描结果（在界面上显示）
+            if (null != data) {
+                Bundle bundle = data.getExtras();
+                if (bundle == null) {
+                    return;
+                }
+                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+                    String result = bundle.getString(CodeUtils.RESULT_STRING);
+                    String decryptString = "";
+                    try {
+                        decryptString = AES.decrypt("1396198677119910", result);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    Toast.makeText(this, decryptString, Toast.LENGTH_SHORT).show();
+                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+                    Toast.makeText(this, "解析二维码失败", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY) {
+            final String picturePath = BGAPhotoPickerActivity.getSelectedImages(data).get(0);
+            try {
+                CodeUtils.analyzeBitmap(picturePath, new CodeUtils.AnalyzeCallback() {
+                    @Override
+                    public void onAnalyzeSuccess(Bitmap mBitmap, String result) {
+                        String decryptString = "";
+                        try {
+                            decryptString = AES.decrypt("1396198677119910", result);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        Toast.makeText(LoginActivity.this, decryptString, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onAnalyzeFailed() {
+                        Toast.makeText(LoginActivity.this, "解析二维码失败", Toast.LENGTH_LONG).show();
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(LoginActivity.this, "解析二维码失败", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private static final int REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY = 666;
+
+    int REQUEST_CODE = 1001;
 }
+

@@ -1,5 +1,7 @@
 package com.xgx.dw.ui.activity;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -25,10 +27,10 @@ import com.xgx.dw.utils.FileInfoUtils;
 import com.xgx.dw.utils.SdCardUtil;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-import cn.bingoogolapple.qrcode.core.BGAQRCodeUtil;
-import cn.bingoogolapple.qrcode.zxing.QRCodeDecoder;
-import cn.bingoogolapple.qrcode.zxing.QRCodeEncoder;
 
 public class TestGeneratectivity extends AppCompatActivity {
     private ImageView mChineseIv;
@@ -86,16 +88,36 @@ public class TestGeneratectivity extends AppCompatActivity {
         这里为了偷懒，就没有处理匿名 AsyncTask 内部类导致 Activity 泄漏的问题
         请开发在使用时自行处理匿名内部类导致Activity内存泄漏的问题，处理方式可参考 https://github.com/GeniusVJR/LearningNotes/blob/master/Part1/Android/Android%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E6%80%BB%E7%BB%93.md
          */
-        File file = new File(SdCardUtil.getDataPath(), "ecodeEr.jpg");
-        if (file.exists()) {
-            file.delete();
+        String image_dir = Environment.getExternalStorageDirectory() + "/dw/Cache/ecodeEr";
+        File image_dirs = new File(image_dir);
+        if (!image_dirs.exists()) {
+            image_dirs.mkdirs();
         }
-        boolean b = BitmapUtil.saveBitmap(bitmap, file);
+
+        String filenewpath = image_dir + "/ecodeEr.jpg";
+        File imageFile = new File(filenewpath);
+
+        if (!imageFile.exists()) {
+            try {
+                imageFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        boolean b = BitmapUtil.saveBitmap(bitmap, imageFile);
+        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + imageFile)));
         try {
-            CodeUtils.analyzeBitmap(file.getAbsolutePath(), new CodeUtils.AnalyzeCallback() {
+            CodeUtils.analyzeBitmap(filenewpath, new CodeUtils.AnalyzeCallback() {
                 @Override
                 public void onAnalyzeSuccess(Bitmap mBitmap, String result) {
-                    Toast.makeText(TestGeneratectivity.this, "解析结果:" + result, Toast.LENGTH_LONG).show();
+                    String decryptString = "";
+                    try {
+                        decryptString = AES.decrypt("1396198677119910", result);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    Toast.makeText(TestGeneratectivity.this, decryptString, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -128,5 +150,12 @@ public class TestGeneratectivity extends AppCompatActivity {
 //                }
 //            }
 //        }.execute();
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private String getPhotoFileName() {
+        Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("'IMAGE'_yyyyMMdd_HHmmss");
+        return dateFormat.format(date) + ".jpg";
     }
 }
