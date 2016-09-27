@@ -85,4 +85,13 @@
     <string name="create_storemgr_user">创建营业厅管理员</string>
     <string name="create_transformermgr_user">创建台区管理员</string>
     <string name="create_device_user">创建设备用户</string>
+    <string name="input_voltageRatio">请输入电压倍率</string>
+    <string name="voltageRatio">电压倍率</string>
+    <string name="input_currentRatio">请输入电流倍率</string>
+    <string name="currentRatio">电流倍率</string>
+    <string name="input_price">请输入电价</string>
+    <string name="price">电价</string>
+    <string name="input_meterNum">请输入设备编号</string>
+    <string name="input_phone">请输入手机号码</string>
+    <string name="phone">手机号码</string>
 </resources>
