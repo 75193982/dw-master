@@ -19,4 +19,7 @@
     <color name="line_color">#ffbeb9b9</color>
     <color name="tab_color">#ff848282</color>
     <color name="tab_color_s">#ff1fc3a5</color>
+
+    <color name="navigationBarColor">#f46444</color>
+    <color name="colorPrimaryDarkTrans">#CCf57257</color>
 </resources>

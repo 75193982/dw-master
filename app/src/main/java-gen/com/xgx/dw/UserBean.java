@@ -56,6 +56,29 @@ public class UserBean implements Serializable {
         this.remark = remark;
     }
 
+    @Override
+    public String toString() {
+        return "UserBean{" +
+                "userId='" + userId + '\'' +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", type='" + type + '\'' +
+                ", storeId='" + storeId + '\'' +
+                ", storeName='" + storeName + '\'' +
+                ", isBuy='" + isBuy + '\'' +
+                ", isTest='" + isTest + '\'' +
+                ", transformerId='" + transformerId + '\'' +
+                ", transformerName='" + transformerName + '\'' +
+                ", voltageRatio='" + voltageRatio + '\'' +
+                ", currentRatio='" + currentRatio + '\'' +
+                ", meterNum='" + meterNum + '\'' +
+                ", price='" + price + '\'' +
+                ", phone='" + phone + '\'' +
+                ", createTime='" + createTime + '\'' +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
+
     public UserBean(String userId, String userName, String password, String type) {
         this.userId = userId;
         this.userName = userName;
