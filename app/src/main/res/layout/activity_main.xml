@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                 android:id="@id/coordinatorLayout"
-                                                 android:layout_width="fill_parent"
-                                                 android:layout_height="fill_parent"
-                                                 android:fitsSystemWindows="true">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@id/coordinatorLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true">
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -35,7 +35,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@drawable/icon_resmgr"
-                        android:contentDescription="@string/empty"/>
+                        android:contentDescription="@string/empty" />
 
                     <ImageView
                         android:id="@id/wei_xin_s"
@@ -43,7 +43,7 @@
                         android:layout_height="wrap_content"
                         android:alpha="0.0"
                         android:background="@drawable/icon_resmgr_"
-                        android:contentDescription="@string/empty"/>
+                        android:contentDescription="@string/empty" />
                 </FrameLayout>
 
                 <FrameLayout
@@ -58,7 +58,7 @@
                         android:layout_gravity="center"
                         android:text="@string/tab_me"
                         android:textColor="@color/tab_color"
-                        android:textSize="@dimen/text_five"/>
+                        android:textSize="@dimen/text_five" />
 
                     <TextView
                         android:id="@id/tab_weiXin_s"
@@ -68,7 +68,7 @@
                         android:alpha="0.0"
                         android:text="@string/tab_me"
                         android:textColor="@color/tab_color_s"
-                        android:textSize="@dimen/text_five"/>
+                        android:textSize="@dimen/text_five" />
                 </FrameLayout>
             </LinearLayout>
 
@@ -89,7 +89,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@drawable/icon_jd"
-                        android:contentDescription="@string/empty"/>
+                        android:contentDescription="@string/empty" />
 
                     <ImageView
                         android:id="@id/address_book_s"
@@ -98,7 +98,7 @@
                         android:layout_gravity="center"
                         android:alpha="0.0"
                         android:background="@drawable/icon_jd_"
-                        android:contentDescription="@string/empty"/>
+                        android:contentDescription="@string/empty" />
                 </FrameLayout>
 
                 <FrameLayout
@@ -113,7 +113,7 @@
                         android:layout_gravity="center"
                         android:text="@string/tab_buy"
                         android:textColor="@color/tab_color"
-                        android:textSize="@dimen/text_five"/>
+                        android:textSize="@dimen/text_five" />
 
                     <TextView
                         android:id="@id/tab_address_s"
@@ -123,7 +123,7 @@
                         android:alpha="0.0"
                         android:text="@string/tab_buy"
                         android:textColor="@color/tab_color_s"
-                        android:textSize="@dimen/text_five"/>
+                        android:textSize="@dimen/text_five" />
                 </FrameLayout>
             </LinearLayout>
 
@@ -144,7 +144,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@drawable/icon_cz"
-                        android:contentDescription="@string/empty"/>
+                        android:contentDescription="@string/empty" />
 
                     <ImageView
                         android:id="@id/find_s"
@@ -153,7 +153,7 @@
                         android:layout_gravity="center"
                         android:alpha="0.0"
                         android:background="@drawable/icon_cz_"
-                        android:contentDescription="@string/empty"/>
+                        android:contentDescription="@string/empty" />
                 </FrameLayout>
 
                 <FrameLayout
@@ -168,7 +168,7 @@
                         android:layout_gravity="center"
                         android:text="@string/tab_action"
                         android:textColor="@color/tab_color"
-                        android:textSize="@dimen/text_five"/>
+                        android:textSize="@dimen/text_five" />
 
                     <TextView
                         android:id="@id/tab_find_s"
@@ -178,7 +178,7 @@
                         android:alpha="0.0"
                         android:text="@string/tab_action"
                         android:textColor="@color/tab_color_s"
-                        android:textSize="@dimen/text_five"/>
+                        android:textSize="@dimen/text_five" />
                 </FrameLayout>
             </LinearLayout>
 
@@ -199,7 +199,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@drawable/icon_search"
-                        android:contentDescription="@string/empty"/>
+                        android:contentDescription="@string/empty" />
 
                     <ImageView
                         android:id="@id/me_s"
@@ -208,7 +208,7 @@
                         android:layout_gravity="center"
                         android:alpha="0.0"
                         android:background="@drawable/icon_search_"
-                        android:contentDescription="@string/empty"/>
+                        android:contentDescription="@string/empty" />
                 </FrameLayout>
 
                 <FrameLayout
@@ -223,7 +223,7 @@
                         android:layout_gravity="center"
                         android:text="@string/tab_search"
                         android:textColor="@color/tab_color"
-                        android:textSize="@dimen/text_five"/>
+                        android:textSize="@dimen/text_five" />
 
                     <TextView
                         android:id="@id/tab_me_s"
@@ -233,7 +233,7 @@
                         android:alpha="0.0"
                         android:text="@string/tab_search"
                         android:textColor="@color/tab_color_s"
-                        android:textSize="@dimen/text_five"/>
+                        android:textSize="@dimen/text_five" />
                 </FrameLayout>
             </LinearLayout>
         </LinearLayout>
@@ -243,13 +243,13 @@
             android:layout_width="fill_parent"
             android:layout_height="0.5dip"
             android:layout_above="@id/ll_tab"
-            android:background="@color/line_color"/>
+            android:background="@color/line_color" />
 
         <android.support.v4.view.ViewPager
             android:id="@id/viewPage"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_above="@id/line"/>
+            android:layout_above="@id/line" />
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -262,5 +262,5 @@
         android:src="@drawable/ic_bluetooth_searching_black_24dp"
         android:tint="@color/White"
         android:visibility="visible"
-        app:backgroundTint="@color/material_deep_teal_500"/>
+        app:backgroundTint="@color/material_deep_teal_500" />
 </android.support.design.widget.CoordinatorLayout>

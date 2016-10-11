@@ -3,17 +3,20 @@ package com.xgx.dw.ui.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.ContextMenu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.xgx.dw.R;
@@ -21,11 +24,16 @@ import com.xgx.dw.UserBean;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
+import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.dao.UserBeanDaoHelper;
 import com.xgx.dw.presenter.impl.LoginPresenterImpl;
+import com.xgx.dw.presenter.impl.UserPresenterImpl;
 import com.xgx.dw.presenter.interfaces.ILoginPresenter;
+import com.xgx.dw.presenter.interfaces.IUserPresenter;
 import com.xgx.dw.ui.view.interfaces.ILoginView;
 import com.xgx.dw.utils.AES;
+import com.xgx.dw.utils.Logger;
+import com.xgx.dw.utils.MyUtils;
 import com.xgx.dw.vo.request.LoginRequest;
 
 import java.util.List;
@@ -61,26 +69,14 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
     public void initPresenter() {
         setToolbarTitle("登录");
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        UserBean localUserBean = new UserBean("admin", "超级管理员", "888888", "admin");
-
-        UserBean localUserBean10 = new UserBean("4101001", "一级营业厅管理员", "888888", "10");
-
-        UserBean localUserBean11 = new UserBean("4101101", "一级台区管理员", "888888", "11");
-
-        UserBean localUserBean2 = new UserBean("4102001", "二级账户", "888888", "20");
-
-        UserBean localUserBean30 = new UserBean("4103001", "公司调试账户", "888888", "30");
-
-        UserBean localUserBean31 = new UserBean("4103101", "供电局调试1", "888888", "31");
-
-        UserBean localUserBean32 = new UserBean("4103201", "供电局调试2", "888888", "32");
+        UserBean localUserBean = new UserBean("admin", "超级管理员", "888888", "admin", MyUtils.getuniqueId(getContext()));
+//        UserBean localUserBean10 = new UserBean("4101001", "一级营业厅管理员", "888888", "10");
+//        UserBean localUserBean11 = new UserBean("4101101", "一级台区管理员", "888888", "11");
+//        UserBean localUserBean2 = new UserBean("4102001", "二级账户", "888888", "20");
+//        UserBean localUserBean30 = new UserBean("4103001", "公司调试账户", "888888", "30");
+//        UserBean localUserBean31 = new UserBean("4103101", "供电局调试1", "888888", "31");
+//        UserBean localUserBean32 = new UserBean("4103201", "供电局调试2", "888888", "32");
         UserBeanDaoHelper.getInstance().addData(localUserBean);
-        UserBeanDaoHelper.getInstance().addData(localUserBean10);
-        UserBeanDaoHelper.getInstance().addData(localUserBean11);
-        UserBeanDaoHelper.getInstance().addData(localUserBean2);
-        UserBeanDaoHelper.getInstance().addData(localUserBean30);
-        UserBeanDaoHelper.getInstance().addData(localUserBean31);
-        UserBeanDaoHelper.getInstance().addData(localUserBean32);
         this.loginPresenter = new LoginPresenterImpl();
     }
 
@@ -97,6 +93,8 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
         setting.saveString(G.currentStoreName, userBean.getStoreName());
         setting.saveString(G.currentTransformId, userBean.getTransformerId());
         setting.saveString(G.currentTransformName, userBean.getTransformerName());
+        setting.saveString("user", new Gson().toJson(userBean));
+        LoginInformation.getInstance().setUser(userBean);
         startActivity(new Intent(this, MainActivity.class));
     }
 
@@ -140,7 +138,7 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                 this.loginPresenter.login(this, localLoginRequest);
                 break;
             case R.id.login_register:
-                startActivity(new Intent(this, TestGeneratectivity.class));
+                startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 0));
                 break;
             case R.id.login_forget:
                 Intent intent = new Intent(this, CaptureActivity.class);
@@ -166,12 +164,24 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                     String result = bundle.getString(CodeUtils.RESULT_STRING);
                     String decryptString = "";
                     try {
-                        decryptString = AES.decrypt("1396198677119910", result);
+                        decryptString = AES.decrypt(G.appsecret, result);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                    Logger.e(getContext(), "扫描结果：" + decryptString);
+                    UserBean bean = new Gson().fromJson(decryptString, UserBean.class);
+                    if (bean.getEcodeType().equals("1")) {
+                        //保存用户 方便登录
+                        UserBeanDaoHelper.getInstance().addData(bean);
+                        //自动登录 比较 ime账号
+                        if (MyUtils.getuniqueId(getContext()).equals(bean.getIme())) {
+                            //则登录成功 当前账号为 bean.getUserName
+                            loginCallback(bean);
 
-                    Toast.makeText(this, decryptString, Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        showToast("二维码信息错误，请选择正确二维码");
+                    }
                 } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
                     Toast.makeText(this, "解析二维码失败", Toast.LENGTH_LONG).show();
                 }
@@ -189,7 +199,6 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
                         Toast.makeText(LoginActivity.this, decryptString, Toast.LENGTH_SHORT).show();
                     }
 
@@ -204,6 +213,7 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
             }
         }
     }
+
 
     private static final int REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY = 666;
 

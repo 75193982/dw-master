@@ -17,13 +17,14 @@ public class UserAdapter extends BaseQuickAdapter<UserBean> {
         paramBaseViewHolder.setText(R.id.title, "用户编号：" + userBean.getUserId() + "   名称：" + userBean.getUserName());
         if (userBean.getType().equals("0")) {
             paramBaseViewHolder.setText(R.id.subtitle, "用户类型：超级管理员");
+            paramBaseViewHolder.setText(R.id.content, "");
         } else if (userBean.getType().equals("10")) {
             paramBaseViewHolder.setText(R.id.subtitle, "用户类型：营业厅管理员");
             paramBaseViewHolder.setText(R.id.content, "所属营业厅：" + userBean.getStoreName());
         } else if (userBean.getType().equals("11")) {
             paramBaseViewHolder.setText(R.id.subtitle, "用户类型：台区管理员");
             paramBaseViewHolder.setText(R.id.content, "所属营业厅：" + userBean.getStoreName() + "\n" + "所属台区：" + userBean.getTransformerName());
-        } else if (userBean.getType().equals("2")) {
+        } else if (userBean.getType().equals("20")) {
             paramBaseViewHolder.setText(R.id.subtitle, "用户类型：2级用户");
             paramBaseViewHolder.setText(R.id.content, "所属营业厅：" + userBean.getStoreName() +
                     "\n" + "所属台区：" + userBean.getTransformerName() +

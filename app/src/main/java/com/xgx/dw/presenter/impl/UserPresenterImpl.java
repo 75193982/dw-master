@@ -38,7 +38,8 @@ public class UserPresenterImpl extends BasePresenter implements IUserPresenter {
 
     @Override
     public void saveUser(IUserView IBaseView, UserBean userBean, int type, boolean isSave) {
-        IBaseView.hideProgress();
+        IBaseView.showProgress("保存用户中...");
+
         if (isEmpty(userBean.getUserId(), IBaseView, "用户编号不能为空")) return;
         if (isEmpty(userBean.getUserName(), IBaseView, "用户名称不能为空")) return;
         if (isEmpty(userBean.getStoreName(), IBaseView, "请选择营业厅")) return;
@@ -49,15 +50,23 @@ public class UserPresenterImpl extends BasePresenter implements IUserPresenter {
         if (UserBeanDaoHelper.getInstance().hasKey(userBean.getUserId()) && isSave == true) {
             IBaseView.showToast("已有相同编号的用户");
             IBaseView.saveTransformer(false);
+            IBaseView.hideProgress();
             return;
         }
         userBean.setType(type + "");
         UserBeanDaoHelper.getInstance().addData(userBean);
         IBaseView.saveTransformer(true);
+        IBaseView.hideProgress();
     }
 
     @Override
     public void searchUser(IUserListView IBaseView) {
-        IBaseView.getUserList(UserBeanDaoHelper.getInstance().getAllData());
+        if (G.currentUserType.equals("10")) {//营业厅管理员 查看当前营业厅下的人
+            IBaseView.getUserList(UserBeanDaoHelper.getInstance().queryByStoreId(G.currentStoreId));
+        } else if (G.currentUserType.equals("11")) {
+            IBaseView.getUserList(UserBeanDaoHelper.getInstance().queryByTransFormId(G.currentTransformId));
+        } else {
+            IBaseView.getUserList(UserBeanDaoHelper.getInstance().getAllData());
+        }
     }
 }

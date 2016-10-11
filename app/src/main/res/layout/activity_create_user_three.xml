@@ -13,6 +13,11 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
 
+        <TextView
+            android:id="@+id/imeTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"></TextView>
 
         <LinearLayout
             android:id="@+id/store_layout"
@@ -46,9 +51,9 @@
                 app:ms_enableFloatingLabel="false"
                 app:ms_errorColor="@color/error_color"
                 app:ms_floatingLabelColor="@color/disabled_color"
-                app:ms_floatingLabelText="@string/transformer_cotain"
+                app:ms_floatingLabelText="@string/selected_store"
                 app:ms_highlightColor="@color/Green"
-                app:ms_hint="@string/selected_transformer"
+                app:ms_hint="@string/selected_store"
                 app:ms_multiline="false" />
         </LinearLayout>
 
@@ -161,7 +166,7 @@
             android:inputType="numberDecimal"
             android:textSize="@dimen/text_third"
             app:met_floatingLabel="highlight"
-            app:met_floatingLabelText="@string/price"
+            app:met_floatingLabelText="@string/meterNum"
             app:met_singleLineEllipsis="true" />
 
         <com.rengwuxian.materialedittext.MaterialEditText

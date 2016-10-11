@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:orientation="vertical">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
     <ImageView
         android:layout_width="140.0dip"
@@ -11,7 +11,7 @@
         android:layout_marginTop="10.0dip"
         android:contentDescription="@string/empty"
         android:scaleType="fitCenter"
-        android:src="@mipmap/logo"/>
+        android:src="@mipmap/logo" />
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -34,7 +34,7 @@
             android:singleLine="true"
             android:textColor="#ff000000"
             android:textCursorDrawable="@null"
-            android:textSize="16.0sp"/>
+            android:textSize="16.0sp" />
     </RelativeLayout>
 
     <View
@@ -42,7 +42,7 @@
         android:layout_height="1.0px"
         android:layout_marginLeft="20.0dip"
         android:layout_marginRight="20.0dip"
-        android:background="@mipmap/input_divideline"/>
+        android:background="@mipmap/input_divideline" />
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -65,7 +65,7 @@
             android:singleLine="true"
             android:textColor="#ff000000"
             android:textCursorDrawable="@null"
-            android:textSize="16.0sp"/>
+            android:textSize="16.0sp" />
     </RelativeLayout>
 
     <Button
@@ -76,7 +76,7 @@
         android:layout_marginLeft="20.0dip"
         android:layout_marginRight="20.0dip"
         android:layout_marginTop="10.0dip"
-        android:text="@string/action_sign_in_short"/>
+        android:text="@string/action_sign_in_short" />
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -88,31 +88,33 @@
         <TextView
             android:id="@id/login_register"
             style="@style/TextStyle_login1"
-            android:text="@string/register"/>
+            android:text="@string/register" />
 
         <View
             android:layout_width="1.0dip"
             android:layout_height="10.0dip"
             android:layout_marginLeft="10.0dip"
             android:layout_marginRight="10.0dip"
-            android:background="@color/Gray"/>
+            android:background="@color/Gray" />
 
         <TextView
             android:id="@+id/login_forget"
             style="@style/TextStyle_login1"
-            android:text="扫描二维码"/>
+            android:text="获取账号" />
 
         <View
             android:layout_width="1.0dip"
             android:layout_height="10.0dip"
             android:layout_marginLeft="10.0dip"
             android:layout_marginRight="10.0dip"
-            android:background="@color/Gray"/>
+            android:background="@color/Gray"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/login_from"
             style="@style/TextStyle_login1"
-            android:text="从相册选择"/>
+            android:text="从相册选择"
+            android:visibility="gone" />
     </LinearLayout>
 
     <RelativeLayout
@@ -123,6 +125,6 @@
             style="@style/TextStyle_login1"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:text="@string/login_detail"/>
+            android:text="@string/login_detail" />
     </RelativeLayout>
 </LinearLayout>

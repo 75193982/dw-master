@@ -17,13 +17,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.xgx.dw.R;
 import com.xgx.dw.UserBean;
+import com.xgx.dw.app.G;
 import com.xgx.dw.dao.UserBeanDaoHelper;
 import com.xgx.dw.utils.AES;
 import com.xgx.dw.utils.BitmapUtil;
 import com.xgx.dw.utils.FileInfoUtils;
+import com.xgx.dw.utils.MyUtils;
 import com.xgx.dw.utils.SdCardUtil;
 
 import java.io.File;
@@ -37,13 +40,14 @@ public class TestGeneratectivity extends AppCompatActivity {
     private ImageView mEnglishIv;
     private ImageView mChineseLogoIv;
     private ImageView mEnglishLogoIv;
+    private int type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_generate);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
+        type = getIntent().getIntExtra("type", -1);
         initView();
         createQRCode();
     }
@@ -56,14 +60,25 @@ public class TestGeneratectivity extends AppCompatActivity {
     }
 
     private void createQRCode() {
-        createChineseQRCode();
+        //根据不同的业务需求创建二维码
+        UserBean bean = new UserBean();
+        switch (type) {
+            case 0:
+                bean.setIme(MyUtils.getuniqueId(this));
+                break;
+            case 1:
+                String id = getIntent().getStringExtra("id");
+                bean = UserBeanDaoHelper.getInstance().getDataById(id);
+                break;
+        }
+        bean.setEcodeType(type + "");
+        createChineseQRCode(new Gson().toJson(bean));
     }
 
-    private void createChineseQRCode() {
-        UserBean bean = UserBeanDaoHelper.getInstance().getDataById("admin");
+    private void createChineseQRCode(String s) {
         String encryptResultStr = null;
         try {
-            encryptResultStr = AES.encrypt("1396198677119910", bean.toString());
+            encryptResultStr = AES.encrypt(G.appsecret, s);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -112,7 +127,7 @@ public class TestGeneratectivity extends AppCompatActivity {
                 public void onAnalyzeSuccess(Bitmap mBitmap, String result) {
                     String decryptString = "";
                     try {
-                        decryptString = AES.decrypt("1396198677119910", result);
+                        decryptString = AES.decrypt(G.appsecret, result);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

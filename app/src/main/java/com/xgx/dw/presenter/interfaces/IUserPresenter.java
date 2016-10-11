@@ -8,8 +8,8 @@ import com.xgx.dw.ui.view.interfaces.ITransformerView;
 import com.xgx.dw.ui.view.interfaces.IUserListView;
 import com.xgx.dw.ui.view.interfaces.IUserView;
 
-public abstract interface IUserPresenter {
-    public abstract void saveUser(IUserView IBaseView, UserBean userBean, int type, boolean saveAndUpdate);
+public interface IUserPresenter {
+    void saveUser(IUserView IBaseView, UserBean userBean, int type, boolean saveAndUpdate);
 
     void searchUser(IUserListView IBaseView);
 }

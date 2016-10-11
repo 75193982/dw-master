@@ -40,6 +40,8 @@ public class UserBeanDao extends AbstractDao<UserBean, String> {
         public final static Property Phone = new Property(14, String.class, "phone", false, "PHONE");
         public final static Property CreateTime = new Property(15, String.class, "createTime", false, "CREATE_TIME");
         public final static Property Remark = new Property(16, String.class, "remark", false, "REMARK");
+        public final static Property Ime = new Property(17, String.class, "ime", false, "IME");
+        public final static Property EcodeType = new Property(18, String.class, "ecodeType", false, "ECODE_TYPE");
     };
 
 
@@ -71,7 +73,9 @@ public class UserBeanDao extends AbstractDao<UserBean, String> {
                 "'PRICE' TEXT," + // 13: price
                 "'PHONE' TEXT," + // 14: phone
                 "'CREATE_TIME' TEXT," + // 15: createTime
-                "'REMARK' TEXT);"); // 16: remark
+                "'REMARK' TEXT," + // 16: remark
+                "'IME' TEXT," + // 17: ime
+                "'ECODE_TYPE' TEXT);"); // 18: ecodeType
     }
 
     /** Drops the underlying database table. */
@@ -169,6 +173,16 @@ public class UserBeanDao extends AbstractDao<UserBean, String> {
         if (remark != null) {
             stmt.bindString(17, remark);
         }
+ 
+        String ime = entity.getIme();
+        if (ime != null) {
+            stmt.bindString(18, ime);
+        }
+ 
+        String ecodeType = entity.getEcodeType();
+        if (ecodeType != null) {
+            stmt.bindString(19, ecodeType);
+        }
     }
 
     /** @inheritdoc */
@@ -197,7 +211,9 @@ public class UserBeanDao extends AbstractDao<UserBean, String> {
             cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // price
             cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // phone
             cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // createTime
-            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16) // remark
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // remark
+            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // ime
+            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18) // ecodeType
         );
         return entity;
     }
@@ -222,6 +238,8 @@ public class UserBeanDao extends AbstractDao<UserBean, String> {
         entity.setPhone(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
         entity.setCreateTime(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
         entity.setRemark(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
+        entity.setIme(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
+        entity.setEcodeType(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
      }
     
     /** @inheritdoc */

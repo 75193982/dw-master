@@ -93,4 +93,15 @@ public class UserBeanDaoHelper implements THDaoHelperInterface {
         }
     }
 
+    public List<UserBean> queryByStoreId(String storeid) {
+        QueryBuilder localQueryBuilder = this.userBeanDao.queryBuilder();
+        localQueryBuilder.where(UserBeanDao.Properties.StoreId.eq(storeid));
+        return localQueryBuilder.list();
+    }
+
+    public List<UserBean> queryByTransFormId(String transFormId) {
+        QueryBuilder localQueryBuilder = this.userBeanDao.queryBuilder();
+        localQueryBuilder.where(UserBeanDao.Properties.TransformerId.eq(transFormId));
+        return localQueryBuilder.list();
+    }
 }

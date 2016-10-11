@@ -1,10 +1,17 @@
 package com.xgx.dw.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.andexert.library.RippleView;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -15,6 +22,7 @@ import com.xgx.dw.UserBean;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
+import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.dao.StoreBeanDaoHelper;
 import com.xgx.dw.dao.TransformerBeanDaoHelper;
 import com.xgx.dw.presenter.impl.UserPresenterImpl;
@@ -28,8 +36,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
-public class CreateUserTwoAcvitity extends BaseAppCompatActivity implements IUserView {
-
+public class CreateUserTwoAcvitity extends BaseAppCompatActivity implements IUserView, Toolbar.OnMenuItemClickListener {
+    @Bind(R.id.store_spinner)
+    MaterialSpinner storeSpinner;
     @Bind(R.id.transformer_spinner)
     MaterialSpinner transformerSpinner;
     @Bind(R.id.buy_switch)
@@ -46,14 +55,12 @@ public class CreateUserTwoAcvitity extends BaseAppCompatActivity implements IUse
     MaterialEditText userId;
     @Bind(R.id.user_name)
     MaterialEditText userName;
-    @Bind(R.id.store_et)
-    MaterialEditText storeEt;
+    @Bind(R.id.imeTv)
+    TextView imeTv;
     private IUserPresenter presenter;
     private List<StoreBean> storebeans;
     private UserBean bean;
     private List<TransformerBean> transformerBean;
-    private String currentStoreId;
-    private String currentStoreName;
 
 
     public void initContentView() {
@@ -65,9 +72,9 @@ public class CreateUserTwoAcvitity extends BaseAppCompatActivity implements IUse
     }
 
     public void initView() {
-        Setting setting = new Setting(this);
-        currentStoreId = setting.loadString(G.currentStoreId);
-        currentStoreName = setting.loadString(G.currentStoreName);
+        getToolbar().setOnMenuItemClickListener(this);
+        String ime = getIntent().getStringExtra("ime");
+        imeTv.setText(checkText(ime));
         initSpinnerData();
         initEditInfo();
     }
@@ -77,19 +84,13 @@ public class CreateUserTwoAcvitity extends BaseAppCompatActivity implements IUse
         if (bean != null && !TextUtils.isEmpty(this.bean.getUserId())) {
             getSupportActionBar().setTitle("编辑台区管理员");
             this.userId.setText(this.bean.getUserId());
+            imeTv.setText(checkText(bean.getIme()));
+
             this.userId.setEnabled(false);
             this.userName.setText(checkText(this.bean.getUserName()));
-            storeEt.setText(checkText(bean.getStoreName()));
-            try {
-                for (int i = 0; i < this.transformerBean.size(); i++) {
-                    if (this.bean.getTransformerId().equals(((TransformerBean) this.transformerBean.get(i)).getId())) {
-                        this.transformerSpinner.setSelection(i + 1);
-                        this.transformerSpinner.setEnabled(false);
-                    }
-                }
-            } catch (Exception e) {
-
-            }
+            setSpinner(bean.getStoreId(), bean.getTransformerId());
+            storeSpinner.setEnabled(false);
+            transformerSpinner.setEnabled(false);
             if (bean.getIsBuy().equals("0")) {
                 buySwitch.setChecked(false);
             } else if (bean.getIsBuy().equals("1")) {
@@ -101,25 +102,91 @@ public class CreateUserTwoAcvitity extends BaseAppCompatActivity implements IUse
                 testSwitch.setChecked(true);
             }
         } else {
+            if (LoginInformation.getInstance().getUser().getType().equals("11")) {//台区管理员
+                setSpinner(LoginInformation.getInstance().getUser().getStoreId(), LoginInformation.getInstance().getUser().getTransformerId());
+                storeSpinner.setEnabled(false);
+                transformerSpinner.setEnabled(false);
+            } else if (LoginInformation.getInstance().getUser().getType().equals("10")) {//营业厅管理员
+                setSpinner(LoginInformation.getInstance().getUser().getStoreId(), LoginInformation.getInstance().getUser().getTransformerId());
+                storeSpinner.setEnabled(false);
+                setOnItemSelected();
+            } else {
+                setOnItemSelected();
+            }
             getSupportActionBar().setTitle("创建台区管理员");
-            bean = new UserBean();
-            bean.setStoreId(currentStoreId);
-            bean.setStoreName(currentStoreName);
-            storeEt.setText(currentStoreName);
         }
     }
 
+    private void setOnItemSelected() {
+        storeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> paramAnonymousAdapterView, View paramAnonymousView, int position, long paramAnonymousLong) {
+                if (position != -1) {
+                    String id = storebeans.get(position).getId();
+                    transformerBean = TransformerBeanDaoHelper.getInstance().testQueryBy(id);
+                    if ((transformerBean != null) && (transformerBean.size() > 0)) {
+                        String[] arrayOfString = new String[transformerBean.size()];
+                        for (int j = 0; j < transformerBean.size(); j++) {
+                            arrayOfString[j] = ((TransformerBean) transformerBean.get(j)).getName();
+                        }
+                        ArrayAdapter localArrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, arrayOfString);
+                        localArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        transformerSpinner.setAdapter(localArrayAdapter);
+                    }
+                }
+
+            }
+
+            public void onNothingSelected(AdapterView<?> paramAnonymousAdapterView) {
+            }
+        });
+    }
+
+    private void setSpinner(String storeId, String transformerId) {
+        try {
+            for (int i = 0; i < storebeans.size(); i++) {
+                if (storeId.equals(((StoreBean) storebeans.get(i)).getId())) {
+                    storeSpinner.setSelection(i + 1);
+                }
+            }
+        } catch (Exception e) {
+
+        }
+        if (!TextUtils.isEmpty(transformerId)) {
+            try {
+                transformerBean = TransformerBeanDaoHelper.getInstance().testQueryBy(storeId);
+                if ((transformerBean != null) && (transformerBean.size() > 0)) {
+                    String[] arrayOfString = new String[transformerBean.size()];
+                    for (int j = 0; j < transformerBean.size(); j++) {
+                        arrayOfString[j] = ((TransformerBean) transformerBean.get(j)).getName();
+                    }
+                    ArrayAdapter localArrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, arrayOfString);
+                    localArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    transformerSpinner.setAdapter(localArrayAdapter);
+                }
+                for (int i = 0; i < transformerBean.size(); i++) {
+                    if (transformerId.equals(((TransformerBean) transformerBean.get(i)).getId())) {
+                        transformerSpinner.setSelection(i + 1);
+                    }
+                }
+            } catch (Exception e) {
+
+            }
+        }
+
+    }
+
     private void initSpinnerData() {
-        transformerBean = TransformerBeanDaoHelper.getInstance().testQueryBy(currentStoreId);
-        if ((this.transformerBean != null) && (this.transformerBean.size() > 0)) {
-            String[] arrayOfString = new String[this.transformerBean.size()];
-            for (int j = 0; j < this.transformerBean.size(); j++) {
-                arrayOfString[j] = ((TransformerBean) this.transformerBean.get(j)).getName();
+        storebeans = StoreBeanDaoHelper.getInstance().getAllData();
+        if ((this.storebeans != null) && (this.storebeans.size() > 0)) {
+            String[] arrayOfString = new String[this.storebeans.size()];
+            for (int j = 0; j < this.storebeans.size(); j++) {
+                arrayOfString[j] = ((StoreBean) this.storebeans.get(j)).getName();
             }
             ArrayAdapter localArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, arrayOfString);
             localArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            this.transformerSpinner.setAdapter(localArrayAdapter);
+            this.storeSpinner.setAdapter(localArrayAdapter);
         }
+
     }
 
     @OnClick({R.id.action_save})
@@ -130,6 +197,8 @@ public class CreateUserTwoAcvitity extends BaseAppCompatActivity implements IUse
         userBean.setUserName(userName.getText().toString());
         userBean.setStoreId(bean.getStoreId());
         userBean.setStoreName(bean.getStoreName());
+        userBean.setIme(imeTv.getText().toString());
+
         try {
             int y = this.transformerSpinner.getSelectedItemPosition();
             TransformerBean transFormerBean = (TransformerBean) this.transformerBean.get(y - 1);
@@ -157,6 +226,23 @@ public class CreateUserTwoAcvitity extends BaseAppCompatActivity implements IUse
             showToast("保存成功");
             finish();
         }
+    }
+
+    public boolean onCreateOptionsMenu(Menu paramMenu) {
+        if (bean != null && !TextUtils.isEmpty(bean.getUserId())) {
+            getMenuInflater().inflate(R.menu.menu_erweima, paramMenu);
+        }
+        return true;
+    }
+
+
+    public boolean onMenuItemClick(MenuItem paramMenuItem) {
+        switch (paramMenuItem.getItemId()) {
+            case R.id.action_showerweima:
+                startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 1).putExtra("id", bean.getUserId()));
+                break;
+        }
+        return true;
     }
 
 }

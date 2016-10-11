@@ -9,6 +9,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
+    <TextView
+        android:id="@+id/imeTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"></TextView>
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -78,22 +83,30 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16.0dip"
             android:layout_marginRight="16.0dip"
-            android:layout_weight="1.0"
+            android:layout_weight="2.0"
+            android:drawableLeft="@drawable/iconfont_must"
+            android:gravity="center_vertical"
+
             android:text="@string/transformer_cotainStore"
             android:textSize="@dimen/text_third" />
 
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/store_et"
+        <fr.ganfra.materialspinner.MaterialSpinner
+            android:id="@+id/store_spinner"
             android:layout_width="0.0dip"
             android:layout_height="wrap_content"
             android:layout_weight="3.0"
-            android:enabled="false"
-            android:hint="@string/transformer_cotainStore"
-            android:inputType="textNoSuggestions"
-            android:textSize="@dimen/text_third"
-            app:met_floatingLabel="highlight"
-            app:met_floatingLabelText="@string/transformer_cotainStore"
-            app:met_singleLineEllipsis="true" />
+            app:ms_alignLabels="false"
+            app:ms_arrowColor="@color/disabled_color"
+            app:ms_arrowSize="@dimen/text_third"
+            app:ms_baseColor="@color/disabled_color"
+            app:ms_enableErrorLabel="false"
+            app:ms_enableFloatingLabel="false"
+            app:ms_errorColor="@color/error_color"
+            app:ms_floatingLabelColor="@color/disabled_color"
+            app:ms_floatingLabelText="@string/selected_store"
+            app:ms_highlightColor="@color/Green"
+            app:ms_hint="@string/selected_store"
+            app:ms_multiline="false" />
     </LinearLayout>
 
     <LinearLayout

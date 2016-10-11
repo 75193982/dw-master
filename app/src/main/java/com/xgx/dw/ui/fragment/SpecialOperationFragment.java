@@ -1,7 +1,6 @@
 package com.xgx.dw.ui.fragment;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.GridLayoutManager.SpanSizeLookup;
@@ -20,15 +19,15 @@ import com.xgx.dw.adapter.DataSearchItemAdapter.MyOnItemClickListner;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseFragment;
+import com.xgx.dw.ble.ScanDeveiceList;
 import com.xgx.dw.ui.activity.DeviceListActivity;
 import com.xgx.dw.ui.activity.MainActivity;
+import com.xgx.dw.ui.activity.NewSpecialOperationDetailActivity;
 import com.xgx.dw.ui.activity.SpecialOperationDetailActivity;
-import com.xgx.dw.ui.activity.SpotPricingActivity;
 import com.xgx.dw.ui.custom.TitleBar;
 import com.xgx.dw.ui.fragment.dummy.DummyContent;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SpecialOperationFragment extends BaseFragment implements MyOnItemClickListner, MainActivity.OnFABClickListener {
     private int[] drawableInt = {R.drawable.home_paylists_big, R.drawable.home_useelesafe_unrule_big, R.drawable.home_set_serviceauthorize, R.drawable.home_elecri_big, R.drawable.home_paylists_big, R.drawable.home_elecri_big, R.drawable.home_analysis};

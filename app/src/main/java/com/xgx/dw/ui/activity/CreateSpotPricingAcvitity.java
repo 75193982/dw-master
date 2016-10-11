@@ -11,10 +11,12 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 import com.xgx.dw.R;
 import com.xgx.dw.SpotPricingBean;
 import com.xgx.dw.StoreBean;
+import com.xgx.dw.TransformerBean;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.dao.StoreBeanDaoHelper;
+import com.xgx.dw.dao.TransformerBeanDaoHelper;
 import com.xgx.dw.presenter.impl.SpotPricingPresenterImpl;
 import com.xgx.dw.ui.view.interfaces.ICreateSpotPricingView;
 
@@ -31,6 +33,8 @@ public class CreateSpotPricingAcvitity extends BaseAppCompatActivity implements 
     MaterialSpinner spinner;
     @Bind(R.id.spotPricing_name)
     MaterialEditText spotPricingName;
+    @Bind(R.id.spotPricing_id)
+    MaterialEditText spotPricing_id;
     @Bind(R.id.spotpricing_priceCount)
     MaterialEditText spotpricingPriceCount;
     @Bind(R.id.spinner_type)
@@ -108,7 +112,7 @@ public class CreateSpotPricingAcvitity extends BaseAppCompatActivity implements 
         if ((this.bean != null) && (!TextUtils.isEmpty(this.bean.getId()))) {
             getSupportActionBar().setTitle(R.string.create_spotpricing);
             this.spotPricingName.setText(checkText(this.bean.getName()));
-            this.spotPricingName.setTag(this.bean.getId());
+            spotPricing_id.setText(bean.getId());
             this.spotpricingPriceCount.setText(checkText(this.bean.getPrice_count()));
             for (int i = 0; i < this.storebeans.size(); i++) {
                 if (this.bean.getStore_id().equals(((StoreBean) this.storebeans.get(i)).getId())) {
@@ -135,25 +139,30 @@ public class CreateSpotPricingAcvitity extends BaseAppCompatActivity implements 
 
     @OnClick({R.id.action_save})
     public void onSaveClick() {
-        showProgress("保存台区中...");
-        SpotPricingBean localSpotPricingBean = new SpotPricingBean();
-        localSpotPricingBean.setName(this.spotPricingName.getText().toString());
-        localSpotPricingBean.setPeek_price(this.spotpricingPeakPrice.getText().toString());
-        localSpotPricingBean.setValley_price(this.spotpricingValleyPrice.getText().toString());
-        localSpotPricingBean.setPointed_price(this.spotpricingPointedPrice.getText().toString());
-        localSpotPricingBean.setFlat_price(this.spotpricingFlatPrice.getText().toString());
-        localSpotPricingBean.setPrice_count(this.spotpricingPriceCount.getText().toString());
+        SpotPricingBean bean = new SpotPricingBean();
+        bean.setName(this.spotPricingName.getText().toString());
+        bean.setPeek_price(this.spotpricingPeakPrice.getText().toString());
+        bean.setValley_price(this.spotpricingValleyPrice.getText().toString());
+        bean.setPointed_price(this.spotpricingPointedPrice.getText().toString());
+        bean.setFlat_price(this.spotpricingFlatPrice.getText().toString());
+        bean.setPrice_count(this.spotpricingPriceCount.getText().toString());
         int i = this.spinner.getSelectedItemPosition();
-        StoreBean localStoreBean = (StoreBean) this.storebeans.get(i - 1);
-        localSpotPricingBean.setStore_id(localStoreBean.getId());
-        localSpotPricingBean.setStorename(localStoreBean.getName());
-        localSpotPricingBean.setType(this.spinnerType.getSelectedItem().toString());
-        if ((this.bean == null) || (TextUtils.isEmpty(this.bean.getId()))) {
-            localSpotPricingBean.setId(this.spotPricingName.getTag().toString());
-            this.spotPricingPresenter.saveSpotPricing(this, localSpotPricingBean, true);
+        try {
+            StoreBean localStoreBean = (StoreBean) this.storebeans.get(i - 1);
+            bean.setStore_id(localStoreBean.getId());
+            bean.setStorename(localStoreBean.getName());
+        } catch (Exception e) {
+            bean.setStore_id("");
+            bean.setStorename("");
+        }
+
+        bean.setType(this.spinnerType.getSelectedItem().toString());
+        if (bean != null && !TextUtils.isEmpty(this.bean.getId())) {
+            bean.setId(spotPricing_id.getText().toString());
+            this.spotPricingPresenter.saveSpotPricing(this, bean, true);
             return;
         }
-        this.spotPricingPresenter.saveSpotPricing(this, localSpotPricingBean, false);
+        this.spotPricingPresenter.saveSpotPricing(this, bean, false);
     }
 
     public void saveSpotPricing(boolean paramBoolean) {

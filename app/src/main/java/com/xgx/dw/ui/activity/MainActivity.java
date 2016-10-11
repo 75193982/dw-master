@@ -1,13 +1,16 @@
 package com.xgx.dw.ui.activity;
 
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
@@ -17,17 +20,27 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.uuzuche.lib_zxing.activity.CaptureActivity;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.xgx.dw.R;
+import com.xgx.dw.UserBean;
 import com.xgx.dw.app.BaseApplication;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseActivity;
 import com.xgx.dw.base.FragmentAdapter;
 import com.xgx.dw.presenter.impl.MainPresenterImpl;
+import com.xgx.dw.presenter.impl.UserPresenterImpl;
 import com.xgx.dw.presenter.interfaces.IMainPresenter;
+import com.xgx.dw.presenter.interfaces.IUserPresenter;
 import com.xgx.dw.ui.view.interfaces.IMainView;
+import com.xgx.dw.ui.view.interfaces.IUserView;
+import com.xgx.dw.utils.AES;
 import com.xgx.dw.utils.ApiLevelHelper;
+import com.xgx.dw.utils.Logger;
 import com.xgx.dw.vo.request.UpdateVersionRequest;
 import com.xgx.dw.vo.response.UpdateVersionResult;
 
@@ -37,8 +50,9 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
 
-public class MainActivity extends BaseActivity implements IMainView {
+public class MainActivity extends BaseActivity implements IMainView, IUserView {
     private final String ACTION_FILTER = "com.xgx.dw.main";
     @Bind(R.id.wei_xin_s)
     ImageView weiXinS;
@@ -105,14 +119,15 @@ public class MainActivity extends BaseActivity implements IMainView {
     }
 
     public void initView() {
+
+        fab.setVisibility(View.VISIBLE);
+        fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_erweima_searching_black_24dp));
         fab.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View paramAnonymousView) {
-                if (MainActivity.this.mOnFABClickListener != null) {
-                    MainActivity.this.mOnFABClickListener.OnFABClickListener(paramAnonymousView);
-                }
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), CaptureActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
-        fab.setVisibility(View.GONE);
         Setting setting = new Setting(this);
         currentUserType = setting.loadString(G.currentUserType);
         FragmentAdapter localFragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), currentUserType);
@@ -193,6 +208,31 @@ public class MainActivity extends BaseActivity implements IMainView {
 
             public void onPageSelected(int paramAnonymousInt) {
                 if (MainActivity.this.mListText.get(paramAnonymousInt).getText().toString().equals("特殊操作")) {
+                    fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_bluetooth_searching_black_24dp));
+                    fab.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View view) {
+                            if (MainActivity.this.mOnFABClickListener != null) {
+                                MainActivity.this.mOnFABClickListener.OnFABClickListener(view);
+                            }
+                        }
+                    });
+                    ViewCompat.animate(fab).scaleX(1.0F).scaleY(1.0F).setInterpolator(new LinearOutSlowInInterpolator()).setListener(new ViewPropertyAnimatorListenerAdapter() {
+                        public void onAnimationEnd(View paramAnonymous2View) {
+                            if ((MainActivity.this.isFinishing()) || ((ApiLevelHelper.isAtLeast(17)) && (MainActivity.this.isDestroyed()))) {
+                                return;
+                            }
+                            fab.setVisibility(View.VISIBLE);
+                        }
+                    }).start();
+
+                } else if (MainActivity.this.mListText.get(paramAnonymousInt).getText().toString().equals("资料管理")) {
+                    fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_erweima_searching_black_24dp));
+                    fab.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getContext(), CaptureActivity.class);
+                            startActivityForResult(intent, REQUEST_CODE);
+                        }
+                    });
                     ViewCompat.animate(fab).scaleX(1.0F).scaleY(1.0F).setInterpolator(new LinearOutSlowInInterpolator()).setListener(new ViewPropertyAnimatorListenerAdapter() {
                         public void onAnimationEnd(View paramAnonymous2View) {
                             if ((MainActivity.this.isFinishing()) || ((ApiLevelHelper.isAtLeast(17)) && (MainActivity.this.isDestroyed()))) {
@@ -256,6 +296,11 @@ public class MainActivity extends BaseActivity implements IMainView {
         tabWeiXinS.setAlpha(1.0F);
     }
 
+    @Override
+    public void saveTransformer(boolean b) {
+
+    }
+
 
     public class MainBoradcastReceiver extends BroadcastReceiver {
         public MainBoradcastReceiver() {
@@ -267,5 +312,68 @@ public class MainActivity extends BaseActivity implements IMainView {
 
     public static abstract interface OnFABClickListener {
         public abstract void OnFABClickListener(View paramView);
+    }
+
+    private static final int REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY = 666;
+
+    int REQUEST_CODE = 1001;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE) {
+            //处理扫描结果（在界面上显示）
+            if (null != data) {
+                Bundle bundle = data.getExtras();
+                if (bundle == null) {
+                    return;
+                }
+                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+                    String result = bundle.getString(CodeUtils.RESULT_STRING);
+                    String decryptString = "";
+                    try {
+                        decryptString = AES.decrypt("1396198677119910", result);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    Logger.e(getContext(), "扫描结果：" + decryptString);
+                    UserBean bean = new Gson().fromJson(decryptString, UserBean.class);
+                    if (bean.getEcodeType().equals("0")) {
+                        startActivity(new Intent(getContext(), CreateUserThreeAcvitity.class).putExtra("ime", bean.getIme()));
+                    } else if (bean.getEcodeType().equals("1")) {
+                        //保存用户 方便登录
+                        IUserPresenter presenter = new UserPresenterImpl();
+                        presenter.saveUser(MainActivity.this, bean, Integer.valueOf(bean.getType()), false);
+                    }
+                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+                    Toast.makeText(this, "解析二维码失败", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY) {
+            final String picturePath = BGAPhotoPickerActivity.getSelectedImages(data).get(0);
+            try {
+                CodeUtils.analyzeBitmap(picturePath, new CodeUtils.AnalyzeCallback() {
+                    @Override
+                    public void onAnalyzeSuccess(Bitmap mBitmap, String result) {
+                        String decryptString = "";
+                        try {
+                            decryptString = AES.decrypt(G.appsecret, result);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(getContext(), decryptString, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onAnalyzeFailed() {
+                        Toast.makeText(getContext(), "解析二维码失败", Toast.LENGTH_LONG).show();
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), "解析二维码失败", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              style="@style/MatchMatch.Vertical"
-              android:gravity="center_horizontal">
+    style="@style/MatchMatch.Vertical"
+    android:gravity="center_horizontal">
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar" />
 
     <LinearLayout
         style="@style/MatchWrap.Horizontal"
@@ -11,10 +11,10 @@
 
         <ImageView
             android:id="@+id/iv_chinese"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
             android:layout_margin="10dp"
-            android:src="@mipmap/holder"/>
+            android:src="@mipmap/holder" />
 
         <ImageView
             android:id="@+id/iv_english"
@@ -22,7 +22,7 @@
             android:layout_height="150dp"
             android:layout_margin="10dp"
             android:src="@mipmap/holder"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout style="@style/MatchWrap.Horizontal">
@@ -30,13 +30,13 @@
         <TextView
             style="@style/AutoWrapTv"
             android:onClick="decodeChinese"
-            android:text="识别中文二维码"/>
+            android:text="识别中文二维码" />
 
         <TextView
             style="@style/AutoWrapTv"
             android:onClick="decodeEnglish"
             android:text="识别英文二维码"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout
@@ -49,7 +49,7 @@
             android:layout_height="150dp"
             android:layout_margin="10dp"
             android:src="@mipmap/holder"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/iv_english_logo"
@@ -57,7 +57,7 @@
             android:layout_height="150dp"
             android:layout_margin="10dp"
             android:src="@mipmap/holder"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout style="@style/MatchWrap.Horizontal">
@@ -66,13 +66,13 @@
             style="@style/AutoWrapTv"
             android:onClick="decodeChineseWithLogo"
             android:text="识别带logo的中文二维码"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <TextView
             style="@style/AutoWrapTv"
             android:onClick="decodeEnglishWithLogo"
             android:text="识别带logo的英文二维码"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </LinearLayout>
 
     <TextView
@@ -80,5 +80,5 @@
         style="@style/MatchWrapTv"
         android:onClick="decodeIsbn"
         android:text="识别ISBN"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 </LinearLayout>

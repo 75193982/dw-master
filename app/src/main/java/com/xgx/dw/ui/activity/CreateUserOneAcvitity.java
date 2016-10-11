@@ -1,11 +1,16 @@
 package com.xgx.dw.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.andexert.library.RippleView;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -30,8 +35,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
-public class CreateUserOneAcvitity extends BaseAppCompatActivity implements IUserView {
-
+public class CreateUserOneAcvitity extends BaseAppCompatActivity implements IUserView, Toolbar.OnMenuItemClickListener {
+    @Bind(R.id.imeTv)
+    TextView imeTv;
     @Bind(R.id.spinner)
     MaterialSpinner spinner;
     @Bind(R.id.buy_switch)
@@ -61,8 +67,9 @@ public class CreateUserOneAcvitity extends BaseAppCompatActivity implements IUse
     }
 
     public void initView() {
-
-
+        getToolbar().setOnMenuItemClickListener(this);
+        String ime = getIntent().getStringExtra("ime");
+        imeTv.setText(checkText(ime));
         initSpinnerData();
         initEditInfo();
     }
@@ -72,6 +79,7 @@ public class CreateUserOneAcvitity extends BaseAppCompatActivity implements IUse
         if ((this.bean != null) && (!TextUtils.isEmpty(this.bean.getUserId()))) {
             getSupportActionBar().setTitle("修改营业厅管理员");
             this.userId.setText(this.bean.getUserId());
+            imeTv.setText(checkText(bean.getIme()));
             this.userId.setEnabled(false);
             this.userName.setText(checkText(this.bean.getUserName()));
             try {
@@ -120,7 +128,7 @@ public class CreateUserOneAcvitity extends BaseAppCompatActivity implements IUse
         UserBean userBean = new UserBean();
         userBean.setUserId(userId.getText().toString());
         userBean.setUserName(userName.getText().toString());
-
+        userBean.setIme(imeTv.getText().toString());
         try {
             int i = this.spinner.getSelectedItemPosition();
             StoreBean localStoreBean = (StoreBean) this.storebeans.get(i - 1);
@@ -149,4 +157,20 @@ public class CreateUserOneAcvitity extends BaseAppCompatActivity implements IUse
         }
     }
 
+    public boolean onCreateOptionsMenu(Menu paramMenu) {
+        if (bean != null && !TextUtils.isEmpty(bean.getUserId())) {
+            getMenuInflater().inflate(R.menu.menu_erweima, paramMenu);
+        }
+        return true;
+    }
+
+
+    public boolean onMenuItemClick(MenuItem paramMenuItem) {
+        switch (paramMenuItem.getItemId()) {
+            case R.id.action_showerweima:
+                startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 1).putExtra("id", bean.getUserId()));
+                break;
+        }
+        return true;
+    }
 }

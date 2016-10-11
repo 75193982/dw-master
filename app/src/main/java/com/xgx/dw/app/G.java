@@ -88,6 +88,7 @@ public class G {
      * 购电单号
      */
     public static final String currentOrderId = "currentOrderId";
+    public static String appsecret = "1396198677119910";
 
     @SuppressLint("SimpleDateFormat")
     public static String getPhoneCurrentTime() {

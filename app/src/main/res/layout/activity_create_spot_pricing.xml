@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -12,6 +12,33 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0.0dip"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16.0dip"
+                android:layout_marginStart="16.0dip"
+                android:layout_weight="1.0"
+                android:text="电价编号"
+                android:textSize="@dimen/text_third" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/spotPricing_id"
+                android:layout_width="0.0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="3.0"
+                android:hint="电价编号"
+                android:inputType="textNoSuggestions"
+                android:textSize="@dimen/text_third"
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelText="电价编号"
+                app:met_singleLineEllipsis="true" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -26,7 +53,7 @@
                 android:layout_marginStart="16.0dip"
                 android:layout_weight="1.0"
                 android:text="@string/transformer_cotainStore"
-                android:textSize="@dimen/text_third"/>
+                android:textSize="@dimen/text_third" />
 
             <fr.ganfra.materialspinner.MaterialSpinner
                 android:id="@id/spinner"
@@ -44,7 +71,7 @@
                 app:ms_floatingLabelText="@string/transformer_cotainStore"
                 app:ms_highlightColor="@color/Green"
                 app:ms_hint="@string/selected_store"
-                app:ms_multiline="false"/>
+                app:ms_multiline="false" />
         </LinearLayout>
 
         <LinearLayout
@@ -59,7 +86,7 @@
                 android:layout_marginStart="16.0dip"
                 android:layout_weight="1.0"
                 android:text="@string/store_name"
-                android:textSize="@dimen/text_third"/>
+                android:textSize="@dimen/text_third" />
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@id/spotPricing_name"
@@ -71,7 +98,7 @@
                 android:textSize="@dimen/text_third"
                 app:met_floatingLabel="highlight"
                 app:met_floatingLabelText="@string/store_name"
-                app:met_singleLineEllipsis="true"/>
+                app:met_singleLineEllipsis="true" />
         </LinearLayout>
 
         <LinearLayout
@@ -86,7 +113,7 @@
                 android:layout_marginStart="16.0dip"
                 android:layout_weight="1.0"
                 android:text="@string/spotpricing_priceCount"
-                android:textSize="@dimen/text_third"/>
+                android:textSize="@dimen/text_third" />
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@id/spotpricing_priceCount"
@@ -98,7 +125,7 @@
                 android:textSize="@dimen/text_third"
                 app:met_floatingLabel="highlight"
                 app:met_floatingLabelText="@string/spotpricing_priceCount"
-                app:met_singleLineEllipsis="true"/>
+                app:met_singleLineEllipsis="true" />
         </LinearLayout>
 
         <LinearLayout
@@ -114,7 +141,7 @@
                 android:layout_marginStart="16.0dip"
                 android:layout_weight="1.0"
                 android:text="@string/spotpricing_type"
-                android:textSize="@dimen/text_third"/>
+                android:textSize="@dimen/text_third" />
 
             <fr.ganfra.materialspinner.MaterialSpinner
                 android:id="@id/spinner_type"
@@ -132,7 +159,7 @@
                 app:ms_floatingLabelText="@string/spotpricing_type"
                 app:ms_highlightColor="@color/Green"
                 app:ms_hint="@string/spotpricing_type"
-                app:ms_multiline="false"/>
+                app:ms_multiline="false" />
         </LinearLayout>
 
         <LinearLayout
@@ -147,7 +174,7 @@
                 android:layout_marginStart="16.0dip"
                 android:layout_weight="1.0"
                 android:text="@string/spotpricing_pointedPrice"
-                android:textSize="@dimen/text_third"/>
+                android:textSize="@dimen/text_third" />
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@id/spotpricing_pointedPrice"
@@ -159,7 +186,7 @@
                 android:textSize="@dimen/text_third"
                 app:met_floatingLabel="highlight"
                 app:met_floatingLabelText="@string/spotpricing_pointedPrice"
-                app:met_singleLineEllipsis="true"/>
+                app:met_singleLineEllipsis="true" />
         </LinearLayout>
 
         <LinearLayout
@@ -174,7 +201,7 @@
                 android:layout_marginStart="16.0dip"
                 android:layout_weight="1.0"
                 android:text="@string/spotpricing_peakPrice"
-                android:textSize="@dimen/text_third"/>
+                android:textSize="@dimen/text_third" />
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@id/spotpricing_peakPrice"
@@ -186,7 +213,7 @@
                 android:textSize="@dimen/text_third"
                 app:met_floatingLabel="highlight"
                 app:met_floatingLabelText="@string/spotpricing_peakPrice"
-                app:met_singleLineEllipsis="true"/>
+                app:met_singleLineEllipsis="true" />
         </LinearLayout>
 
         <LinearLayout
@@ -201,7 +228,7 @@
                 android:layout_marginStart="16.0dip"
                 android:layout_weight="1.0"
                 android:text="@string/spotpricing_flatPrice"
-                android:textSize="@dimen/text_third"/>
+                android:textSize="@dimen/text_third" />
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@id/spotpricing_flatPrice"
@@ -213,7 +240,7 @@
                 android:textSize="@dimen/text_third"
                 app:met_floatingLabel="highlight"
                 app:met_floatingLabelText="@string/spotpricing_flatPrice"
-                app:met_singleLineEllipsis="true"/>
+                app:met_singleLineEllipsis="true" />
         </LinearLayout>
 
         <LinearLayout
@@ -228,7 +255,7 @@
                 android:layout_marginStart="16.0dip"
                 android:layout_weight="1.0"
                 android:text="@string/spotpricing_valleyPrice"
-                android:textSize="@dimen/text_third"/>
+                android:textSize="@dimen/text_third" />
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@id/spotpricing_valleyPrice"
@@ -240,7 +267,7 @@
                 android:textSize="@dimen/text_third"
                 app:met_floatingLabel="highlight"
                 app:met_floatingLabelText="@string/spotpricing_valleyPrice"
-                app:met_singleLineEllipsis="true"/>
+                app:met_singleLineEllipsis="true" />
         </LinearLayout>
 
         <com.andexert.library.RippleView
@@ -258,7 +285,7 @@
                 android:gravity="center"
                 android:text="@string/save"
                 android:textColor="@color/White"
-                android:textSize="@dimen/text_second"/>
+                android:textSize="@dimen/text_second" />
         </com.andexert.library.RippleView>
     </LinearLayout>
 </ScrollView>

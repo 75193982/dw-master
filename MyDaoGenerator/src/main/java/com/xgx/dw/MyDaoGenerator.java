@@ -37,6 +37,8 @@ public class MyDaoGenerator {
         userBean.addStringProperty("phone");
         userBean.addStringProperty("createTime");
         userBean.addStringProperty("remark");
+        userBean.addStringProperty("ime");
+        userBean.addStringProperty("ecodeType");
     }
 
 

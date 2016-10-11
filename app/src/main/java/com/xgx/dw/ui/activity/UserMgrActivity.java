@@ -1,6 +1,8 @@
 package com.xgx.dw.ui.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar.OnMenuItemClickListener;
@@ -21,6 +23,7 @@ import com.xgx.dw.adapter.UserAdapter;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
+import com.xgx.dw.dao.UserBeanDaoHelper;
 import com.xgx.dw.presenter.impl.StorePresenterImpl;
 import com.xgx.dw.presenter.impl.UserPresenterImpl;
 import com.xgx.dw.presenter.interfaces.IStoresPresenter;
@@ -70,9 +73,50 @@ public class UserMgrActivity extends BaseAppCompatActivity implements IUserListV
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
                 UserBean userbean = (UserBean) baseQuickAdapter.getItem(i);
-                Intent localIntent = new Intent(getContext(), CreateUserOneAcvitity.class);
-                localIntent.putExtra("bean", userbean);
-                startActivityForResult(localIntent, REFRESH_RECYCLERVIEW);
+
+                if (userbean.getType().equals("10")) {
+                    Intent localIntent = new Intent();
+                    localIntent.putExtra("bean", userbean);
+                    localIntent.setClass(getContext(), CreateUserOneAcvitity.class);
+                    startActivityForResult(localIntent, REFRESH_RECYCLERVIEW);
+                } else if (userbean.getType().equals("11")) {
+                    Intent localIntent = new Intent();
+                    localIntent.putExtra("bean", userbean);
+                    localIntent.setClass(getContext(), CreateUserTwoAcvitity.class);
+                    startActivityForResult(localIntent, REFRESH_RECYCLERVIEW);
+                } else if (userbean.getType().equals("20")) {
+                    Intent localIntent = new Intent();
+                    localIntent.putExtra("bean", userbean);
+                    localIntent.setClass(getContext(), CreateUserThreeAcvitity.class);
+                    startActivityForResult(localIntent, REFRESH_RECYCLERVIEW);
+
+                }
+            }
+
+            @Override
+            public void onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+                super.onItemLongClick(adapter, view, position);
+                final UserBean userbean = (UserBean) baseQuickAdapter.getItem(position);
+
+                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+                alertDialog.setTitle("请注意");
+                alertDialog.setMessage("你是否要删除该用户");
+                alertDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        UserBeanDaoHelper.getInstance().deleteData(userbean.getUserId());
+                        presenter.searchUser(UserMgrActivity.this);
+
+                    }
+                });
+                alertDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alertDialog.show();
             }
         });
     }
@@ -123,7 +167,6 @@ public class UserMgrActivity extends BaseAppCompatActivity implements IUserListV
 
     @Override
     public void getUserList(List<UserBean> userList) {
-        beans = userList;
-        adapter.setNewData(this.beans);
+        adapter.setNewData(userList);
     }
 }

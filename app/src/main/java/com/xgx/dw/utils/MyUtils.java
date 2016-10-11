@@ -1,6 +1,9 @@
 package com.xgx.dw.utils;
 
 
+import android.content.Context;
+import android.telephony.TelephonyManager;
+
 import com.xgx.dw.app.BaseApplication;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
@@ -10,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Administrator on 2016/8/13.
@@ -115,7 +119,6 @@ public class MyUtils {
     }
 
     private static void getDj(StringBuilder resultString, List<String> mBuffer) {
-
         resultString.append(String.format("尖电价：<big><font color='blue'>%.3f</font></big>元<br/>", Float.valueOf(mBuffer.get(12) + mBuffer.get(13) + mBuffer.get(14) + mBuffer.get(15)) / 1000));
         resultString.append(String.format("峰电价：<big><font color='blue'>%.3f</font></big>元<br/>", Float.valueOf(mBuffer.get(8) + mBuffer.get(9) + mBuffer.get(10) + mBuffer.get(11)) / 1000));
         resultString.append(String.format("平电价：<big><font color='blue'>%.3f</font></big>元<br/>", Float.valueOf(mBuffer.get(4) + mBuffer.get(5) + mBuffer.get(6) + mBuffer.get(7)) / 1000));
@@ -124,24 +127,18 @@ public class MyUtils {
 
     private static void getBl(StringBuilder resultString, List<String> mBuffer) {
         try {
-
             resultString.append(String.format("电压倍率：<big><font color='blue'>%s</font></big><br/>", Integer.valueOf(mBuffer.get(8) + mBuffer.get(9), 16)));
         } catch (Exception e) {
             resultString.append(String.format("电压倍率：<big><font color='blue'>%s</font></big><br/>", "0"));
-
         }
-
         try {
             resultString.append(String.format("电流倍率：<big><font color='blue'>%s</font></big><br/>", Integer.valueOf(mBuffer.get(6) + mBuffer.get(7), 16)));
         } catch (Exception e) {
             resultString.append(String.format("电流倍率：<big><font color='blue'>%s</font></big><br/>", "0"));
-
         }
         resultString.append(String.format("额定负荷：%.4f<br/>", Float.valueOf(mBuffer.get(0) + mBuffer.get(1) + mBuffer.get(2)) / 10000));
         resultString.append(String.format("额定电流(A)：%.1f<br/>", Float.valueOf(mBuffer.get(3)) / 10));
         resultString.append(String.format("额定电压(V)：%.1f<br/>", Float.valueOf(mBuffer.get(4) + mBuffer.get(5)) / 10));
-
-
     }
 
 
@@ -357,4 +354,23 @@ public class MyUtils {
         }
         return dlbl;
     }
+
+    public static String getuniqueId(Context context) {
+
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+
+        String imei = tm.getDeviceId();
+
+//        String simSerialNumber = tm.getSimSerialNumber();
+//
+//        String androidId = android.provider.Settings.Secure.getString(
+//
+//                context.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+//
+//        UUID deviceUuid = new UUID(androidId.hashCode(), ((long) imei.hashCode() << 32) | simSerialNumber.hashCode());
+
+        //       String uniqueId = deviceUuid.toString();
+        return imei;
+    }
+
 }
