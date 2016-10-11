@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:orientation="vertical"
-              android:paddingBottom="@dimen/activity_vertical_margin"
-              android:paddingLeft="@dimen/activity_horizontal_margin"
-              android:paddingRight="@dimen/activity_horizontal_margin"
-              android:paddingTop="@dimen/activity_vertical_margin">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
 
+
+    <TextView
+        android:id="@+id/imeTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"></TextView>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_10"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="0.0dip"
@@ -24,7 +29,7 @@
             android:layout_marginRight="16.0dip"
             android:layout_weight="1.0"
             android:text="@string/store_id"
-            android:textSize="@dimen/text_third"/>
+            android:textSize="@dimen/text_third" />
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/user_id"
@@ -36,15 +41,14 @@
             android:textSize="@dimen/text_third"
             app:met_floatingLabel="highlight"
             app:met_floatingLabelText="@string/store_id"
-            app:met_singleLineEllipsis="true"/>
+            app:met_singleLineEllipsis="true" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_10"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="0.0dip"
@@ -53,7 +57,7 @@
             android:layout_marginRight="16.0dip"
             android:layout_weight="1.0"
             android:text="@string/store_name"
-            android:textSize="@dimen/text_third"/>
+            android:textSize="@dimen/text_third" />
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/user_name"
@@ -65,7 +69,7 @@
             android:textSize="@dimen/text_third"
             app:met_floatingLabel="highlight"
             app:met_floatingLabelText="@string/store_name"
-            app:met_singleLineEllipsis="true"/>
+            app:met_singleLineEllipsis="true" />
     </LinearLayout>
 
     <LinearLayout
@@ -82,7 +86,7 @@
             android:layout_marginRight="16.0dip"
             android:layout_weight="1.0"
             android:text="@string/transformer_cotainStore"
-            android:textSize="@dimen/text_third"/>
+            android:textSize="@dimen/text_third" />
 
         <fr.ganfra.materialspinner.MaterialSpinner
             android:id="@+id/spinner"
@@ -100,54 +104,48 @@
             app:ms_floatingLabelText="@string/transformer_cotainStore"
             app:ms_highlightColor="@color/Green"
             app:ms_hint="@string/selected_store"
-            app:ms_multiline="false"/>
+            app:ms_multiline="false" />
     </LinearLayout>
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_10"
-        >
+        android:layout_marginTop="@dimen/dp_10">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:text="购电权限设置"
-            android:textSize="@dimen/text_third">
-        </TextView>
+            android:textSize="@dimen/text_third"></TextView>
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/buy_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:checked="true">
-        </android.support.v7.widget.SwitchCompat>
+            android:checked="true"></android.support.v7.widget.SwitchCompat>
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_10"
-        >
+        android:layout_marginTop="@dimen/dp_10">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:text="调试权限设置"
-            android:textSize="@dimen/text_third">
-        </TextView>
+            android:textSize="@dimen/text_third"></TextView>
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/test_switch"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:checked="true">
-        </android.support.v7.widget.SwitchCompat>
+            android:checked="true"></android.support.v7.widget.SwitchCompat>
     </RelativeLayout>
 
     <com.andexert.library.RippleView
@@ -165,7 +163,7 @@
             android:gravity="center"
             android:text="@string/save"
             android:textColor="@color/White"
-            android:textSize="@dimen/text_second"/>
+            android:textSize="@dimen/text_second" />
     </com.andexert.library.RippleView>
 
 </LinearLayout>
