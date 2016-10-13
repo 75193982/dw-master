@@ -29,6 +29,7 @@ import com.xgx.dw.presenter.impl.UserPresenterImpl;
 import com.xgx.dw.presenter.interfaces.IUserPresenter;
 import com.xgx.dw.ui.view.interfaces.IUserView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;

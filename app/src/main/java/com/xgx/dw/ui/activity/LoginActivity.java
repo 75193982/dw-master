@@ -29,6 +29,9 @@ import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.bean.LoginInformation;
+import com.xgx.dw.bean.UserAllInfo;
+import com.xgx.dw.dao.StoreBeanDaoHelper;
+import com.xgx.dw.dao.TransformerBeanDaoHelper;
 import com.xgx.dw.dao.UserBeanDaoHelper;
 import com.xgx.dw.presenter.impl.LoginPresenterImpl;
 import com.xgx.dw.presenter.impl.UserPresenterImpl;
@@ -75,7 +78,8 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
     public void initPresenter() {
         setToolbarTitle("登录");
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        UserBean localUserBean = new UserBean("admin", "超级管理员", "888888", "admin", MyUtils.getuniqueId(getContext()));
+        UserBean localUserBean = new UserBean("admin", "超级管理员", "888888", "admin", "867628025884339");
+        UserBean localUserBean2 = new UserBean("666666", "超级管理员", "888888", "admin", "867567020720108");
 //        UserBean localUserBean10 = new UserBean("4101001", "一级营业厅管理员", "888888", "10");
 //        UserBean localUserBean11 = new UserBean("4101101", "一级台区管理员", "888888", "11");
 //        UserBean localUserBean2 = new UserBean("4102001", "二级账户", "888888", "20");
@@ -83,6 +87,7 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
 //        UserBean localUserBean31 = new UserBean("4103101", "供电局调试1", "888888", "31");
 //        UserBean localUserBean32 = new UserBean("4103201", "供电局调试2", "888888", "32");
         UserBeanDaoHelper.getInstance().addData(localUserBean);
+        UserBeanDaoHelper.getInstance().addData(localUserBean2);
         this.loginPresenter = new LoginPresenterImpl();
     }
 
@@ -90,7 +95,6 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
     }
 
     public void loginCallback(UserBean userBean) {
-        hideProgress();
         //登录成功后，将登录信息保存到偏好设置中
         Setting setting = new Setting(this);
         setting.saveString(G.currentUsername, userBean.getUserId());
@@ -187,14 +191,20 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                         e.printStackTrace();
                     }
                     Logger.e(getContext(), "扫描结果：" + decryptString);
-                    UserBean bean = new Gson().fromJson(decryptString, UserBean.class);
-                    if (bean.getEcodeType().equals("3")) {
+                    UserAllInfo userAllInfo = new Gson().fromJson(decryptString, UserAllInfo.class);
+                    if (userAllInfo.getUser().getEcodeType().equals("3")) {
                         //保存用户 方便登录
-                        UserBeanDaoHelper.getInstance().addData(bean);
+                        UserBeanDaoHelper.getInstance().addData(userAllInfo.getUser());
+                        if (userAllInfo.getStoreBean().getId() != null) {
+                            StoreBeanDaoHelper.getInstance().addData(userAllInfo.getStoreBean());
+                        }
+                        if (userAllInfo.getTransformerBean().getId() != null) {
+                            TransformerBeanDaoHelper.getInstance().addData(userAllInfo.getTransformerBean());
+                        }
                         //自动登录 比较 ime账号
-                        if (MyUtils.getuniqueId(getContext()).equals(bean.getIme())) {
+                        if (MyUtils.getuniqueId(getContext()).equals(userAllInfo.getUser().getIme())) {
                             //则登录成功 当前账号为 bean.getUserName
-                            loginCallback(bean);
+                            loginCallback(userAllInfo.getUser());
 
                         }
                     } else {

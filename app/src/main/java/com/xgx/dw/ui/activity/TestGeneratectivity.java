@@ -20,8 +20,14 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.xgx.dw.R;
+import com.xgx.dw.StoreBean;
+import com.xgx.dw.StoreBeanDao;
+import com.xgx.dw.TransformerBean;
 import com.xgx.dw.UserBean;
 import com.xgx.dw.app.G;
+import com.xgx.dw.bean.UserAllInfo;
+import com.xgx.dw.dao.StoreBeanDaoHelper;
+import com.xgx.dw.dao.TransformerBeanDaoHelper;
 import com.xgx.dw.dao.UserBeanDaoHelper;
 import com.xgx.dw.utils.AES;
 import com.xgx.dw.utils.BitmapUtil;
@@ -62,6 +68,8 @@ public class TestGeneratectivity extends AppCompatActivity {
     private void createQRCode() {
         //根据不同的业务需求创建二维码
         UserBean bean = new UserBean();
+        StoreBean storebean = new StoreBean();
+        TransformerBean transbean = new TransformerBean();
         switch (type) {
             case 0://1级账号
                 getSupportActionBar().setTitle(getResources().getString(R.string.create_userone));
@@ -81,10 +89,23 @@ public class TestGeneratectivity extends AppCompatActivity {
                 getSupportActionBar().setTitle("账号信息");
                 String id = getIntent().getStringExtra("id");
                 bean = UserBeanDaoHelper.getInstance().getDataById(id);
+                if (bean.getType().equals("10")) {
+                    storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
+                } else if (bean.getType().equals("11")) {
+                    storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
+                    transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
+                } else if (bean.getType().equals("20")) {
+                    storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
+                    transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
+                }
                 break;
         }
+        UserAllInfo userAllInfo = new UserAllInfo();
+        userAllInfo.setUser(bean);
+        userAllInfo.setStoreBean(storebean);
+        userAllInfo.setTransformerBean(transbean);
         bean.setEcodeType(type + "");
-        createChineseQRCode(new Gson().toJson(bean));
+        createChineseQRCode(new Gson().toJson(userAllInfo));
     }
 
     private void createChineseQRCode(String s) {

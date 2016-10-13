@@ -20,6 +20,7 @@ public class LoginPresenterImpl extends BasePresenter implements ILoginPresenter
             paramILoginView.hideProgress();
             return;
         }
+        paramILoginView.hideProgress();
         if (request.mima.equals(localUserBean.getPassword()) && localUserBean.getIme().equals(MyUtils.getuniqueId(paramILoginView.getContext()))) {
             paramILoginView.loginCallback(localUserBean);
             // return;
@@ -30,6 +31,7 @@ public class LoginPresenterImpl extends BasePresenter implements ILoginPresenter
         } else {
             paramILoginView.showToast("账号不能在该手机上使用");
         }
+
     }
 
 }

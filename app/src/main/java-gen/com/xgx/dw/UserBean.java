@@ -156,7 +156,7 @@ public class UserBean implements Serializable {
     }
 
     public String getTransformerId() {
-        return transformerId;
+        return transformerId == null ? "" : transformerId;
     }
 
     public void setTransformerId(String transformerId) {

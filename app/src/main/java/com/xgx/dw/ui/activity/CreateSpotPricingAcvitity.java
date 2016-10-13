@@ -15,11 +15,13 @@ import com.xgx.dw.TransformerBean;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
+import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.dao.StoreBeanDaoHelper;
 import com.xgx.dw.dao.TransformerBeanDaoHelper;
 import com.xgx.dw.presenter.impl.SpotPricingPresenterImpl;
 import com.xgx.dw.ui.view.interfaces.ICreateSpotPricingView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,13 +64,13 @@ public class CreateSpotPricingAcvitity extends BaseAppCompatActivity implements 
     }
 
     public void initView() {
+        storebeans = new ArrayList<>();
         Setting setting = new Setting(this);
-        String currentUserType = setting.loadString(G.currentUserType);
-        String currentStoreId = setting.loadString(G.currentStoreId);
-        String currentStoreName = setting.loadString(G.currentStoreName);
+        String currentUserType = LoginInformation.getInstance().getUser().getType();
+        String currentStoreId = LoginInformation.getInstance().getUser().getStoreId();
+        String currentStoreName = LoginInformation.getInstance().getUser().getStoreName();
         if (currentUserType.equals("10")) {
             storebeans.add(new StoreBean(currentStoreId, currentStoreName));
-            spinner.setEnabled(false);
         } else {
             storebeans = StoreBeanDaoHelper.getInstance().getAllData();
         }

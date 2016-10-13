@@ -32,6 +32,10 @@ import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseActivity;
 import com.xgx.dw.base.FragmentAdapter;
+import com.xgx.dw.bean.UserAllInfo;
+import com.xgx.dw.dao.StoreBeanDaoHelper;
+import com.xgx.dw.dao.TransformerBeanDaoHelper;
+import com.xgx.dw.dao.UserBeanDaoHelper;
 import com.xgx.dw.presenter.impl.MainPresenterImpl;
 import com.xgx.dw.presenter.impl.UserPresenterImpl;
 import com.xgx.dw.presenter.interfaces.IMainPresenter;
@@ -41,6 +45,7 @@ import com.xgx.dw.ui.view.interfaces.IUserView;
 import com.xgx.dw.utils.AES;
 import com.xgx.dw.utils.ApiLevelHelper;
 import com.xgx.dw.utils.Logger;
+import com.xgx.dw.utils.MyUtils;
 import com.xgx.dw.vo.request.UpdateVersionRequest;
 import com.xgx.dw.vo.response.UpdateVersionResult;
 
@@ -337,10 +342,13 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                         e.printStackTrace();
                     }
                     Logger.e(getContext(), "扫描结果：" + decryptString);
-                    UserBean bean = new Gson().fromJson(decryptString, UserBean.class);
-                    if (bean.getEcodeType().equals("0")) {
+                    UserAllInfo userAllInfo = new Gson().fromJson(decryptString, UserAllInfo.class);
+                    UserBean bean = userAllInfo.getUser();
+
+                    //自动登录 比较 ime账号
+                    if (bean.getEcodeType().equals("0") && bean.getType().equals("admin")) {
                         startActivity(new Intent(getContext(), CreateUserOneAcvitity.class).putExtra("ime", bean.getIme()));
-                    } else if (bean.getEcodeType().equals("1")) {
+                    } else if (bean.getEcodeType().equals("1") && "admin,31".contains(bean.getType())) {
                         startActivity(new Intent(getContext(), CreateUserTwoAcvitity.class).putExtra("ime", bean.getIme()));
                     } else if (bean.getEcodeType().equals("2")) {
                         startActivity(new Intent(getContext(), CreateUserThreeAcvitity.class).putExtra("ime", bean.getIme()));
@@ -348,9 +356,13 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                         //保存用户 方便登录
                         IUserPresenter presenter = new UserPresenterImpl();
                         presenter.saveUser(MainActivity.this, bean, Integer.valueOf(bean.getType()), false);
+                        if (userAllInfo.getStoreBean().getId() != null) {
+                            StoreBeanDaoHelper.getInstance().addData(userAllInfo.getStoreBean());
+                        }
+                        if (userAllInfo.getTransformerBean().getId() != null) {
+                            TransformerBeanDaoHelper.getInstance().addData(userAllInfo.getTransformerBean());
+                        }
                     }
-                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
-                    Toast.makeText(this, "解析二维码失败", Toast.LENGTH_LONG).show();
                 }
             }
         }
