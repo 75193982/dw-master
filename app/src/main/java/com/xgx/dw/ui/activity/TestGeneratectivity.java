@@ -63,10 +63,17 @@ public class TestGeneratectivity extends AppCompatActivity {
         //根据不同的业务需求创建二维码
         UserBean bean = new UserBean();
         switch (type) {
-            case 0:
+            case 0://1级账号
                 bean.setIme(MyUtils.getuniqueId(this));
                 break;
-            case 1:
+            case 1://台区管理员账号
+                bean.setIme(MyUtils.getuniqueId(this));
+
+                break;
+            case 2://二级账号
+                bean.setIme(MyUtils.getuniqueId(this));
+                break;
+            case 3:
                 String id = getIntent().getStringExtra("id");
                 bean = UserBeanDaoHelper.getInstance().getDataById(id);
                 break;

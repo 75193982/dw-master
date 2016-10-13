@@ -27,6 +27,7 @@
     <string name="create_transformer">创建台区</string>
     <string name="create_userone">创建营业厅管理员</string>
     <string name="create_usertwo">创建台区管理员</string>
+    <string name="create_userThree">创建二级用户</string>
     <string name="define_roundedimageview" />
     <string name="empty" />
     <string name="error_field_required">This field is required</string>

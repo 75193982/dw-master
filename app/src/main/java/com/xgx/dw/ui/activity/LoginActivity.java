@@ -17,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.u1aryz.android.lib.newpopupmenu.MenuItem;
+import com.u1aryz.android.lib.newpopupmenu.PopupMenu;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.xgx.dw.R;
@@ -45,7 +47,7 @@ import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class LoginActivity extends BaseAppCompatActivity implements ILoginView, EasyPermissions.PermissionCallbacks {
+public class LoginActivity extends BaseAppCompatActivity implements ILoginView, EasyPermissions.PermissionCallbacks, PopupMenu.OnItemSelectedListener {
     ILoginPresenter loginPresenter;
     @Bind(R.id.login_username)
     EditText loginUsername;
@@ -126,6 +128,9 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
         }
     }
 
+    private final static int ONE = 0;
+    private final static int TWO = 1;
+    private final static int THREE = 2;
 
     @OnClick({R.id.login_btn, R.id.login_register, R.id.login_forget, R.id.login_from})
     public void onClick(View view) {
@@ -138,7 +143,15 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                 this.loginPresenter.login(this, localLoginRequest);
                 break;
             case R.id.login_register:
-                startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 0));
+                PopupMenu menu = new PopupMenu(this);
+                menu.setHeaderTitle("请选择创建类型");
+                // Set Listener
+                menu.setOnItemSelectedListener(this);
+                // Add Menu (Android menu like style)
+                menu.add(ONE, R.string.create_userone);
+                menu.add(TWO, R.string.create_usertwo);
+                menu.add(THREE, R.string.create_userThree);
+                menu.show(view);
                 break;
             case R.id.login_forget:
                 Intent intent = new Intent(this, CaptureActivity.class);
@@ -170,7 +183,7 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                     }
                     Logger.e(getContext(), "扫描结果：" + decryptString);
                     UserBean bean = new Gson().fromJson(decryptString, UserBean.class);
-                    if (bean.getEcodeType().equals("1")) {
+                    if (bean.getEcodeType().equals("3")) {
                         //保存用户 方便登录
                         UserBeanDaoHelper.getInstance().addData(bean);
                         //自动登录 比较 ime账号
@@ -218,5 +231,25 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
     private static final int REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY = 666;
 
     int REQUEST_CODE = 1001;
+
+    @Override
+    public void onItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case ONE:
+                startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 0));
+
+                break;
+
+            case TWO:
+                startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 2));
+
+                break;
+
+            case THREE:
+                startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 3));
+                break;
+
+        }
+    }
 }
 

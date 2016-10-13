@@ -7,6 +7,7 @@ import android.telephony.TelephonyManager;
 import com.xgx.dw.app.BaseApplication;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
+import com.xgx.dw.bean.LoginInformation;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -224,7 +225,7 @@ public class MyUtils {
         // System.out.println(decodeHex367(41, "68 5A 00 5A 00 68 88 00 41 01 00 20 0C E6 01 01 40 02 40 90 70 08 09 29 19 11 04 05 cf 16"));
         // System.out.println(changeDjStr("21.2345"));
         "003C".replaceFirst("0", "");
-        System.out.println(Integer.valueOf("003C", 16));
+        System.out.println(Integer.valueOf("4", 16));
     }
 
 
@@ -302,7 +303,7 @@ public class MyUtils {
     }
 
     public static String getNewOrderId() {
-        String username = BaseApplication.getSetting().loadString(G.currentUsername);
+        String username = LoginInformation.getInstance().getUser().getUserName();
         int currentOrderId = BaseApplication.getSetting().loadInt(username + G.currentOrderId);
         //首先转换成16进制
         if (currentOrderId == -1) {

@@ -114,6 +114,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
 
     @Override
     public void initView() {
+        BlueOperationContact.reset();
         if (_bluetooth == null) {
             Toast.makeText(this, "无法打开手机蓝牙，请确认手机是否有蓝牙功能！", Toast.LENGTH_LONG).show();
             finish();
@@ -201,35 +202,41 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         //查询是否有配对成功的设备，如果配对成功则自动连接
 
         title = getIntent().getIntExtra("type", -1);
+        String currentTime = CommonUtils.formatDateTime1(new Date());
+        String temp = "";
         switch (title) {
             case 0:
                 setToolbarTitle("合闸");
-                OperationStr = BlueOperationContact.HeZaSend;
+
+                temp = String.format(BlueOperationContact.HeZaSendTemp, currentTime);
+                OperationStr = String.format(BlueOperationContact.HeZaSend, currentTime, MyUtils.getJyCode(temp));
 
                 break;
             case 1:
                 setToolbarTitle("分闸");
-                OperationStr = BlueOperationContact.TiaoZaSend;
+                temp = String.format(BlueOperationContact.TiaoZaSendTemp, currentTime);
+                OperationStr = String.format(BlueOperationContact.TiaoZaSend, currentTime, MyUtils.getJyCode(temp));
+
                 break;
             case 2:
                 setToolbarTitle("保电投入");
-                OperationStr = BlueOperationContact.BaoDianTrSend;
+                temp = String.format(BlueOperationContact.BaoDianTrSendTemp, currentTime);
+                OperationStr = String.format(BlueOperationContact.BaoDianTrSend, currentTime, MyUtils.getJyCode(temp));
 
                 break;
             case 3:
                 setToolbarTitle("保电解除");
-                OperationStr = BlueOperationContact.BaoDianJcSend;
+                temp = String.format(BlueOperationContact.BaoDianJcSendTemp, currentTime);
+                OperationStr = String.format(BlueOperationContact.BaoDianJcSend, currentTime, MyUtils.getJyCode(temp));
 
                 break;
             case 4:
                 setToolbarTitle("倍率录入");
-                OperationStr = BlueOperationContact.BeiLvLuruSend;
                 inputBeilvLayout.setVisibility(View.VISIBLE);
                 changStr();
                 break;
             case 5:
                 setToolbarTitle("电价录入");
-                OperationStr = BlueOperationContact.DianjiaLuruSend;
                 inputDianjiaLayout.setVisibility(View.VISIBLE);
                 changDjStr();
                 break;
@@ -241,23 +248,31 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                 break;
             case 41:
                 setToolbarTitle("电费查询");
-                OperationStr = BlueOperationContact.DianFeiCxSend;
+                temp = String.format(BlueOperationContact.DianFeiCxSendTemp, currentTime);
+                OperationStr = String.format(BlueOperationContact.DianFeiCxSend, currentTime, MyUtils.getJyCode(temp));
                 break;
             case 42:
                 setToolbarTitle("电量查询");
-                OperationStr = BlueOperationContact.DianLiangCxSend;
+                temp = String.format(BlueOperationContact.DianLiangCxSendTemp, currentTime);
+                OperationStr = String.format(BlueOperationContact.DianFeiCxSend, currentTime, MyUtils.getJyCode(temp));
+
                 break;
             case 43:
                 setToolbarTitle("功率查询");
-                OperationStr = BlueOperationContact.DianLvCxSend;
+                temp = String.format(BlueOperationContact.DianLvCxSendTemp, currentTime);
+                OperationStr = String.format(BlueOperationContact.DianLvCxSend, currentTime, MyUtils.getJyCode(temp));
+
                 break;
             case 47:
                 setToolbarTitle("倍率查询");
-                OperationStr = BlueOperationContact.beiLvCxSend;
+                temp = String.format(BlueOperationContact.beiLvCxSendTemp, currentTime);
+                OperationStr = String.format(BlueOperationContact.beiLvCxSend, currentTime, MyUtils.getJyCode(temp));
+
                 break;
             case 48:
                 setToolbarTitle("电价查询");
-                OperationStr = BlueOperationContact.DianjiaCxSend;
+                temp = String.format(BlueOperationContact.DianjiaCxSendTemp, currentTime);
+                OperationStr = String.format(BlueOperationContact.DianjiaCxSend, currentTime, MyUtils.getJyCode(temp));
                 break;
         }
         btnTv.setText(getToolbarTitle());

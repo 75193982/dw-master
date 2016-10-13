@@ -339,8 +339,12 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                     Logger.e(getContext(), "扫描结果：" + decryptString);
                     UserBean bean = new Gson().fromJson(decryptString, UserBean.class);
                     if (bean.getEcodeType().equals("0")) {
-                        startActivity(new Intent(getContext(), CreateUserThreeAcvitity.class).putExtra("ime", bean.getIme()));
+                        startActivity(new Intent(getContext(), CreateUserOneAcvitity.class).putExtra("ime", bean.getIme()));
                     } else if (bean.getEcodeType().equals("1")) {
+                        startActivity(new Intent(getContext(), CreateUserTwoAcvitity.class).putExtra("ime", bean.getIme()));
+                    } else if (bean.getEcodeType().equals("2")) {
+                        startActivity(new Intent(getContext(), CreateUserThreeAcvitity.class).putExtra("ime", bean.getIme()));
+                    } else if (bean.getEcodeType().equals("3")) {
                         //保存用户 方便登录
                         IUserPresenter presenter = new UserPresenterImpl();
                         presenter.saveUser(MainActivity.this, bean, Integer.valueOf(bean.getType()), false);
