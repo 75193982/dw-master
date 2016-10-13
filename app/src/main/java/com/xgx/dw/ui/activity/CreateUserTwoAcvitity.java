@@ -195,19 +195,22 @@ public class CreateUserTwoAcvitity extends BaseAppCompatActivity implements IUse
         UserBean userBean = new UserBean();
         userBean.setUserId(userId.getText().toString());
         userBean.setUserName(userName.getText().toString());
-        userBean.setStoreId(bean.getStoreId());
-        userBean.setStoreName(bean.getStoreName());
-        userBean.setIme(imeTv.getText().toString());
-
+        try {
+            StoreBean storeBean = (StoreBean) this.storebeans.get(storeSpinner.getSelectedItemPosition() - 1);
+            userBean.setStoreId(storeBean.getId());
+            userBean.setStoreName(storeBean.getName());
+        } catch (Exception e) {
+            userBean.setStoreId("");
+            userBean.setStoreName("");
+        }
         try {
             int y = this.transformerSpinner.getSelectedItemPosition();
             TransformerBean transFormerBean = (TransformerBean) this.transformerBean.get(y - 1);
             userBean.setTransformerId(transFormerBean.getId());
             userBean.setTransformerName(transFormerBean.getName());
         } catch (Exception e) {
-
         }
-
+        userBean.setIme(imeTv.getText().toString());
 
         if ((bean == null) || (TextUtils.isEmpty(bean.getUserId()))) {
             userBean.setPassword(userId.getText().toString());
@@ -239,7 +242,7 @@ public class CreateUserTwoAcvitity extends BaseAppCompatActivity implements IUse
     public boolean onMenuItemClick(MenuItem paramMenuItem) {
         switch (paramMenuItem.getItemId()) {
             case R.id.action_showerweima:
-                startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 1).putExtra("id", bean.getUserId()));
+                startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 3).putExtra("id", bean.getUserId()));
                 break;
         }
         return true;

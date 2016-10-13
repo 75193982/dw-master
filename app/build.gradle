@@ -53,7 +53,6 @@ dependencies {
     compile 'pub.devrel:easypermissions:0.1.7'
     compile 'cn.bingoogolapple:bga-photopicker:1.1.0@aar'
     compile 'cn.bingoogolapple:bga-adapter:1.1.0@aar'
-    compile 'com.u1aryz:android-newpopupmenu-lib:1.0.1'
     compile 'cn.yipianfengye.android:zxing-library:1.9'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta1'

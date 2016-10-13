@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/one"
+        android:title="注册营业厅管理员" />
+    <item
+        android:id="@+id/two"
+        android:title="注册台区管理员" />
+    <item
+        android:id="@+id/three"
+        android:title="注册设备用户" />
+</menu>

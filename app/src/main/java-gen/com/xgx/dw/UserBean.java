@@ -124,7 +124,7 @@ public class UserBean implements Serializable {
     }
 
     public String getStoreId() {
-        return storeId;
+        return storeId == null ? "" : storeId;
     }
 
     public void setStoreId(String storeId) {
@@ -132,7 +132,7 @@ public class UserBean implements Serializable {
     }
 
     public String getStoreName() {
-        return storeName;
+        return storeName == null ? "" : storeName;
     }
 
     public void setStoreName(String storeName) {

@@ -64,16 +64,21 @@ public class TestGeneratectivity extends AppCompatActivity {
         UserBean bean = new UserBean();
         switch (type) {
             case 0://1级账号
+                getSupportActionBar().setTitle(getResources().getString(R.string.create_userone));
                 bean.setIme(MyUtils.getuniqueId(this));
                 break;
             case 1://台区管理员账号
-                bean.setIme(MyUtils.getuniqueId(this));
+                getSupportActionBar().setTitle(getResources().getString(R.string.create_usertwo));
 
+                bean.setIme(MyUtils.getuniqueId(this));
                 break;
             case 2://二级账号
+                getSupportActionBar().setTitle(getResources().getString(R.string.create_userThree));
+
                 bean.setIme(MyUtils.getuniqueId(this));
                 break;
             case 3:
+                getSupportActionBar().setTitle("账号信息");
                 String id = getIntent().getStringExtra("id");
                 bean = UserBeanDaoHelper.getInstance().getDataById(id);
                 break;

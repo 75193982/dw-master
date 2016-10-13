@@ -8,8 +8,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
 import android.text.TextUtils;
 import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,8 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.u1aryz.android.lib.newpopupmenu.MenuItem;
-import com.u1aryz.android.lib.newpopupmenu.PopupMenu;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.xgx.dw.R;
@@ -47,7 +49,7 @@ import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class LoginActivity extends BaseAppCompatActivity implements ILoginView, EasyPermissions.PermissionCallbacks, PopupMenu.OnItemSelectedListener {
+public class LoginActivity extends BaseAppCompatActivity implements ILoginView, EasyPermissions.PermissionCallbacks, PopupMenu.OnMenuItemClickListener {
     ILoginPresenter loginPresenter;
     @Bind(R.id.login_username)
     EditText loginUsername;
@@ -62,6 +64,8 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
     TextView loginForget;
     @Bind(R.id.login_from)
     TextView loginFrom;
+
+    private PopupMenu popupMenu;
 
 
     public void initContentView() {
@@ -143,15 +147,16 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                 this.loginPresenter.login(this, localLoginRequest);
                 break;
             case R.id.login_register:
-                PopupMenu menu = new PopupMenu(this);
-                menu.setHeaderTitle("请选择创建类型");
-                // Set Listener
-                menu.setOnItemSelectedListener(this);
-                // Add Menu (Android menu like style)
-                menu.add(ONE, R.string.create_userone);
-                menu.add(TWO, R.string.create_usertwo);
-                menu.add(THREE, R.string.create_userThree);
-                menu.show(view);
+
+                popupMenu = new PopupMenu(this, view);
+                Menu menu = popupMenu.getMenu();
+
+
+                // 通过XML文件添加菜单项
+                MenuInflater menuInflater = getMenuInflater();
+                menuInflater.inflate(R.menu.popupmenu, menu);
+                popupMenu.setOnMenuItemClickListener(this);
+                popupMenu.show();
                 break;
             case R.id.login_forget:
                 Intent intent = new Intent(this, CaptureActivity.class);
@@ -232,24 +237,27 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
 
     int REQUEST_CODE = 1001;
 
+
     @Override
-    public void onItemSelected(MenuItem item) {
+    public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
-            case ONE:
+            case R.id.one:
                 startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 0));
-
+                popupMenu.dismiss();
                 break;
 
-            case TWO:
+            case R.id.two:
+                startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 1));
+                popupMenu.dismiss();
+                break;
+
+            case R.id.three:
                 startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 2));
-
-                break;
-
-            case THREE:
-                startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 3));
+                popupMenu.dismiss();
                 break;
 
         }
+        return false;
     }
 }
 

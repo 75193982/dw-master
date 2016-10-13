@@ -277,7 +277,7 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
     public boolean onMenuItemClick(MenuItem paramMenuItem) {
         switch (paramMenuItem.getItemId()) {
             case R.id.action_showerweima:
-                startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 1).putExtra("id", bean.getUserId()));
+                startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 3).putExtra("id", bean.getUserId()));
                 break;
         }
         return true;
