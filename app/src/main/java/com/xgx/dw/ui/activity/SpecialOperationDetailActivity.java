@@ -403,6 +403,10 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                 //发送显示消息，进行显示刷新
                 handler.sendMessage(handler.obtainMessage());
             } catch (IOException e) {
+                Message msg = mHandler.obtainMessage();
+                msg.obj = e.getMessage();
+                mHandler.sendMessage(msg);
+
             }
 //            byte[] buffer = new byte[1024];
 //            int bytes;
@@ -431,6 +435,14 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
 //                } catch (IOException e) {
 //                }
 //            }
+        }
+    };
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            String s = (String) msg.obj;
+            showToast("出现错误：" + s);
         }
     };
     List<Integer> mBuffer;

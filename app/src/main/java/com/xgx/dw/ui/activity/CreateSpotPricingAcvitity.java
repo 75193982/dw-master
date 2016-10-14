@@ -159,8 +159,9 @@ public class CreateSpotPricingAcvitity extends BaseAppCompatActivity implements 
         }
 
         bean.setType(this.spinnerType.getSelectedItem().toString());
-        if (bean != null && !TextUtils.isEmpty(this.bean.getId())) {
-            bean.setId(spotPricing_id.getText().toString());
+        bean.setId(spotPricing_id.getText().toString());
+
+        if (this.bean != null && !TextUtils.isEmpty(this.bean.getId())) {
             this.spotPricingPresenter.saveSpotPricing(this, bean, true);
             return;
         }

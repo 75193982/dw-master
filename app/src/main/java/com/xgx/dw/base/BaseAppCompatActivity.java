@@ -204,6 +204,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
     @Override
     public void showToast(String msg) {
         if (!isFinishing()) {
+
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         }
     }

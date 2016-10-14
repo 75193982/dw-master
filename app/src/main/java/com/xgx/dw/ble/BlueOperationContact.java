@@ -83,24 +83,39 @@ public class BlueOperationContact {
             }
         }
         //合闸 发送
-        HeZaSend = "68 8A 00 8A 00 68 6A " + deviceId + " 05 E0 01 01 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 23 12 17 04 05 C8 16";
+        HeZaSend = "68 8A 00 8A 00 68 6A " + deviceId + " 05 E0 01 01 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s %s 16";
+        HeZaSendTemp = "6A " + deviceId + " 05 E0 01 01 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s";
         //分闸发送
-        TiaoZaSend = "68 8E 00 8E 00 68 4A " + deviceId + " 05 E1 01 01 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 02 56 13 17 04 05 DD 16";
+        TiaoZaSend = "68 8E 00 8E 00 68 4A " + deviceId + " 05 E1 01 01 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s %s 16";
+        TiaoZaSendTemp = "4A " + deviceId + " 05 E1 01 01 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s";
+
         //保电投入 发送
-        BaoDianTrSend = "68 8E 00 8E 00 68 4A " + deviceId + " 05 EB 00 00 01 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 0C 25 36 17 04 05 E4 16";
+        BaoDianTrSend = "68 8E 00 8E 00 68 4A " + deviceId + " 05 EB 00 00 01 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s %s 16";
+        BaoDianTrSendTemp = "4A " + deviceId + " 05 EB 00 00 01 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s";
 
         //保电解除 发送
-        BaoDianJcSend = "68 8A 00 8A 00 68 6A " + deviceId + " 05 EC 00 00 01 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 0D 40 37 17 04 05 23 16";
+        BaoDianJcSend = "68 8A 00 8A 00 68 6A " + deviceId + " 05 EC 00 00 01 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 %s %s 16";
+        BaoDianJcSendTemp = "6A " + deviceId + " 05 EC 00 00 01 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 %s";
         //报警解除发送
-        BaoJingJcSend = "68 8A 00 8A 00 68 6A " + deviceId + " 05 E2 00 00 02 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 37 40 17 11 05 1D 16";
+        BaoJingJcSend = "68 8A 00 8A 00 68 6A " + deviceId + " 05 E2 00 00 02 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s %s 16";
+        BaoJingJcSendTemp = "6A " + deviceId + " 05 E2 00 00 02 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s";
         //电量查询 发送
-        DianLiangCxSend = "68 4A 00 4A 00 68 4B " + deviceId + " 0C E1 01 01 01 04 02 16 59 14 22 05 0A 16";
+        DianLiangCxSend = "68 4A 00 4A 00 68 4B " + deviceId + " 0C E1 01 01 01 04 02 %s %s 16";
+        DianLiangCxSendTemp = "4B " + deviceId + " 0C E1 01 01 01 04 02 %s";
         //电压电流功率因数读取数据格式 发送
-        DianLvCxSend = "68 4A 00 4A 00 68 4B " + deviceId + " 0C E3 01 01 01 03 04 26 21 15 22 05 E6 16";
+        DianLvCxSend = "68 4A 00 4A 00 68 4B " + deviceId + " 0C E3 01 01 01 03 04 %s %s 16";
+        DianLvCxSendTemp = "4B " + deviceId + " 0C E3 01 01 01 03 04 %s";
         //电费查询发送
-        DianFeiCxSend = "68 4A 00 4A 00 68 4B " + deviceId + " 0C E3 01 01 40 02 04 35 30 17 04 05 26 16";
+        DianFeiCxSend = "68 4A 00 4A 00 68 4B " + deviceId + " 0C E3 01 01 40 02 04 %s %s 16";
+        DianFeiCxSendTemp = "68 4A 00 4A 00 68 4B " + deviceId + " 0C E3 01 01 40 02 04 %s";
         //读取倍率
-        BeiLvDuquSend = "68 4A 00 4A 00 68 6B " + deviceId + " 0A E0 01 01 01 03 01 24 58 15 22 05 33 16";
+        BeiLvDuquSend = "68 4A 00 4A 00 68 6B " + deviceId + " 0A E0 01 01 01 03 01 %s %s 16";
+        BeiLvDuquSendTemp = "6B " + deviceId + " 0A E0 01 01 01 03 01 %s";
+        //读取倍率
+        BeiLvLuruSend = "68 B6 00 B6 00 68 6A " + deviceId + " 04 E0 01 01 01 03 %s %s %s 50 00 00 30 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s %s 16";
+        BeiLvLuruSendTemp = "6A " + deviceId + " 04 E0 01 01 01 03 %s %s %s 50 00 00 30 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s";
+
+        //电价录入
         //读取倍率
         BeiLvLuruSend = "68 B6 00 B6 00 68 6A " + deviceId + " 04 E0 01 01 01 03 %s %s %s 50 00 00 30 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s %s 16";
         BeiLvLuruSendTemp = "6A " + deviceId + " 04 E0 01 01 01 03 %s %s %s 50 00 00 30 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s";
