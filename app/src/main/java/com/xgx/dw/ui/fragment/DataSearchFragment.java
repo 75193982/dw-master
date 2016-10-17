@@ -19,6 +19,7 @@ import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseFragment;
 import com.xgx.dw.ui.activity.SpecialOperationDetailActivity;
+import com.xgx.dw.ui.activity.SpotListActivity;
 import com.xgx.dw.ui.custom.TitleBar;
 import com.xgx.dw.ui.fragment.dummy.DummyContent;
 
@@ -86,6 +87,9 @@ public class DataSearchFragment extends BaseFragment implements MyOnItemClickLis
 
     public void onrRecyclerViewItemClick(int paramInt) {
         switch (paramInt) {
+            case 0:
+                startActivity(new Intent(getActivity(), SpotListActivity.class));
+                break;
             case 1:
                 startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", 41));
                 break;

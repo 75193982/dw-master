@@ -107,14 +107,12 @@
             android:layout_height="10.0dip"
             android:layout_marginLeft="10.0dip"
             android:layout_marginRight="10.0dip"
-            android:background="@color/Gray"
-            android:visibility="gone" />
+            android:background="@color/Gray" />
 
         <TextView
             android:id="@+id/login_from"
             style="@style/TextStyle_login1"
-            android:text="从相册选择"
-            android:visibility="gone" />
+            android:text="从相册选择" />
     </LinearLayout>
 
     <RelativeLayout

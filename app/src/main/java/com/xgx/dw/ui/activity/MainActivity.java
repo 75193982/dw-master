@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
+import com.xgx.dw.PricingBean;
 import com.xgx.dw.R;
 import com.xgx.dw.UserBean;
 import com.xgx.dw.app.BaseApplication;
@@ -32,7 +33,9 @@ import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseActivity;
 import com.xgx.dw.base.FragmentAdapter;
+import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.bean.UserAllInfo;
+import com.xgx.dw.dao.PricingDaoHelper;
 import com.xgx.dw.dao.StoreBeanDaoHelper;
 import com.xgx.dw.dao.TransformerBeanDaoHelper;
 import com.xgx.dw.dao.UserBeanDaoHelper;
@@ -246,6 +249,22 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                             fab.setVisibility(View.VISIBLE);
                         }
                     }).start();
+                } else if (MainActivity.this.mListText.get(paramAnonymousInt).getText().toString().equals("用户购电")) {
+                    fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_erweima_searching_black_24dp));
+                    fab.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getContext(), CaptureActivity.class);
+                            startActivityForResult(intent, REQUEST_CODE);
+                        }
+                    });
+                    ViewCompat.animate(fab).scaleX(1.0F).scaleY(1.0F).setInterpolator(new LinearOutSlowInInterpolator()).setListener(new ViewPropertyAnimatorListenerAdapter() {
+                        public void onAnimationEnd(View paramAnonymous2View) {
+                            if ((MainActivity.this.isFinishing()) || ((ApiLevelHelper.isAtLeast(17)) && (MainActivity.this.isDestroyed()))) {
+                                return;
+                            }
+                            fab.setVisibility(View.VISIBLE);
+                        }
+                    }).start();
                 } else {
                     ViewCompat.animate(fab).scaleX(0.0F).scaleY(0.0F).setInterpolator(new FastOutSlowInInterpolator()).setStartDelay(100L).setListener(new ViewPropertyAnimatorListenerAdapter() {
                         public void onAnimationEnd(View paramAnonymous2View) {
@@ -344,12 +363,21 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                     Logger.e(getContext(), "扫描结果：" + decryptString);
                     UserAllInfo userAllInfo = new Gson().fromJson(decryptString, UserAllInfo.class);
                     UserBean bean = userAllInfo.getUser();
-
+                    String type = LoginInformation.getInstance().getUser().getType();
                     //自动登录 比较 ime账号
-                    if (bean.getEcodeType().equals("0") && bean.getType().equals("admin")) {
+                    if (bean.getEcodeType().equals("0") && type.equals("admin")) {
+                        if ("admin".contains(type)) {
+                            startActivity(new Intent(getContext(), CreateUserOneAcvitity.class).putExtra("ime", bean.getIme()));
+                        } else {
+                            showToast("当前账号没有权限创建营业厅管理员");
+                        }
                         startActivity(new Intent(getContext(), CreateUserOneAcvitity.class).putExtra("ime", bean.getIme()));
-                    } else if (bean.getEcodeType().equals("1") && "admin,31".contains(bean.getType())) {
-                        startActivity(new Intent(getContext(), CreateUserTwoAcvitity.class).putExtra("ime", bean.getIme()));
+                    } else if (bean.getEcodeType().equals("1")) {
+                        if ("admin,31".contains(type)) {
+                            startActivity(new Intent(getContext(), CreateUserTwoAcvitity.class).putExtra("ime", bean.getIme()));
+                        } else {
+                            showToast("当前账号没有权限创建台区管理员");
+                        }
                     } else if (bean.getEcodeType().equals("2")) {
                         startActivity(new Intent(getContext(), CreateUserThreeAcvitity.class).putExtra("ime", bean.getIme()));
                     } else if (bean.getEcodeType().equals("3")) {
@@ -361,6 +389,24 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                         }
                         if (userAllInfo.getTransformerBean().getId() != null) {
                             TransformerBeanDaoHelper.getInstance().addData(userAllInfo.getTransformerBean());
+                        }
+                    } else if (bean.getEcodeType().equals("4")) {
+                        //保存用户 方便登录
+                        startActivity(new Intent(getContext(), BuySpotActivity.class).putExtra("userAllInfo", userAllInfo));
+                    } else if (bean.getEcodeType().equals("5")) {
+                        //保存用户 方便登录
+                        IUserPresenter presenter = new UserPresenterImpl();
+                        presenter.saveUser(MainActivity.this, bean, Integer.valueOf(bean.getType()), false);
+                        if (userAllInfo.getStoreBean().getId() != null) {
+                            StoreBeanDaoHelper.getInstance().addData(userAllInfo.getStoreBean());
+                        }
+                        if (userAllInfo.getTransformerBean().getId() != null) {
+                            TransformerBeanDaoHelper.getInstance().addData(userAllInfo.getTransformerBean());
+                        }
+                        if (userAllInfo.getPricings() != null && userAllInfo.getPricings().size() > 0) {
+                            for (int i = 0; i < userAllInfo.getPricings().size(); i++) {
+                                PricingDaoHelper.getInstance().addData(userAllInfo.getPricings().get(i));
+                            }
                         }
                     }
                 }

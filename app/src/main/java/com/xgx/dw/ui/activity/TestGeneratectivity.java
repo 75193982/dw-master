@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
+import com.xgx.dw.PricingBean;
+import com.xgx.dw.PricingBeanDao;
 import com.xgx.dw.R;
 import com.xgx.dw.StoreBean;
 import com.xgx.dw.StoreBeanDao;
@@ -26,6 +28,7 @@ import com.xgx.dw.TransformerBean;
 import com.xgx.dw.UserBean;
 import com.xgx.dw.app.G;
 import com.xgx.dw.bean.UserAllInfo;
+import com.xgx.dw.dao.PricingDaoHelper;
 import com.xgx.dw.dao.StoreBeanDaoHelper;
 import com.xgx.dw.dao.TransformerBeanDaoHelper;
 import com.xgx.dw.dao.UserBeanDaoHelper;
@@ -38,7 +41,9 @@ import com.xgx.dw.utils.SdCardUtil;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class TestGeneratectivity extends AppCompatActivity {
@@ -67,9 +72,13 @@ public class TestGeneratectivity extends AppCompatActivity {
 
     private void createQRCode() {
         //根据不同的业务需求创建二维码
+        UserAllInfo userAllInfo = new UserAllInfo();
+        String id = getIntent().getStringExtra("id");
+
         UserBean bean = new UserBean();
         StoreBean storebean = new StoreBean();
         TransformerBean transbean = new TransformerBean();
+        List<PricingBean> pricings = new ArrayList<>();
         switch (type) {
             case 0://1级账号
                 getSupportActionBar().setTitle(getResources().getString(R.string.create_userone));
@@ -87,7 +96,6 @@ public class TestGeneratectivity extends AppCompatActivity {
                 break;
             case 3:
                 getSupportActionBar().setTitle("账号信息");
-                String id = getIntent().getStringExtra("id");
                 bean = UserBeanDaoHelper.getInstance().getDataById(id);
                 if (bean.getType().equals("10")) {
                     storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
@@ -97,14 +105,42 @@ public class TestGeneratectivity extends AppCompatActivity {
                 } else if (bean.getType().equals("20")) {
                     storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
                     transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
+                    pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getUserId());
+                }
+                break;
+            case 4:
+                getSupportActionBar().setTitle("购电用户信息");
+                bean = UserBeanDaoHelper.getInstance().getDataById(id);
+                if (bean.getType().equals("10")) {
+                    storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
+                } else if (bean.getType().equals("11")) {
+                    storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
+                    transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
+                } else if (bean.getType().equals("20")) {
+                    storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
+                    transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
+                    pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getUserId());
+                }
+            case 5:
+                getSupportActionBar().setTitle("购电用户信息");
+                bean = UserBeanDaoHelper.getInstance().getDataById(id);
+                if (bean.getType().equals("10")) {
+                    storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
+                } else if (bean.getType().equals("11")) {
+                    storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
+                    transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
+                } else if (bean.getType().equals("20")) {
+                    storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
+                    transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
+                    pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getUserId());
                 }
                 break;
         }
-        UserAllInfo userAllInfo = new UserAllInfo();
+        bean.setEcodeType(type + "");
         userAllInfo.setUser(bean);
         userAllInfo.setStoreBean(storebean);
         userAllInfo.setTransformerBean(transbean);
-        bean.setEcodeType(type + "");
+        userAllInfo.setPricings(pricings);
         createChineseQRCode(new Gson().toJson(userAllInfo));
     }
 

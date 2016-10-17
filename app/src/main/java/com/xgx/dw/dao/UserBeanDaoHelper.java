@@ -2,11 +2,9 @@ package com.xgx.dw.dao;
 
 import android.text.TextUtils;
 
-import com.xgx.dw.StoreBeanDao;
+import com.xgx.dw.StoreBean;
 import com.xgx.dw.THDaoHelperInterface;
 import com.xgx.dw.THDatabaseLoader;
-import com.xgx.dw.TransformerBean;
-import com.xgx.dw.TransformerBeanDao;
 import com.xgx.dw.UserBean;
 import com.xgx.dw.UserBeanDao;
 

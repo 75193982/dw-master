@@ -13,6 +13,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,9 +22,12 @@ import android.widget.Toast;
 import com.andexert.library.RippleView;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.xgx.dw.R;
+import com.xgx.dw.UserBean;
 import com.xgx.dw.app.BaseApplication;
 import com.xgx.dw.app.G;
+import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
+import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.ble.BlueOperationContact;
 import com.xgx.dw.utils.CommonUtils;
 import com.xgx.dw.utils.MyUtils;
@@ -80,6 +84,8 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
     RippleView actionSave;
     @Bind(R.id.btnTv)
     TextView btnTv;
+    @Bind(R.id.deviceTv)
+    TextView deviceTv;
     @Bind(R.id.dyblEt)
     MaterialEditText dyblEt;
     @Bind(R.id.dlblEt)
@@ -106,6 +112,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
     private BluetoothAdapter _bluetooth = BluetoothAdapter.getDefaultAdapter();    //获取本地蓝牙适配器，即蓝牙设备
     private int title;
     private String OperationStr = "";
+    private int setp = 0;
 
     @Override
     public void initContentView() {
@@ -210,6 +217,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
 
                 temp = String.format(BlueOperationContact.HeZaSendTemp, currentTime);
                 OperationStr = String.format(BlueOperationContact.HeZaSend, currentTime, MyUtils.getJyCode(temp));
+                // OperationStr = "68 8A 00 8A 00 68 6A 00 00 FF FF 21 05 E0 01 01 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 23 12 17 04 05 C8 16";
 
                 break;
             case 1:
@@ -242,7 +250,6 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                 break;
             case 6:
                 setToolbarTitle("电费录入");
-                OperationStr = BlueOperationContact.DianfeiLuruSend;
                 inputDianfeiLayout.setVisibility(View.VISIBLE);
                 changDlStr();
                 break;
@@ -254,7 +261,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             case 42:
                 setToolbarTitle("电量查询");
                 temp = String.format(BlueOperationContact.DianLiangCxSendTemp, currentTime);
-                OperationStr = String.format(BlueOperationContact.DianFeiCxSend, currentTime, MyUtils.getJyCode(temp));
+                OperationStr = String.format(BlueOperationContact.DianLiangCxSend, currentTime, MyUtils.getJyCode(temp));
 
                 break;
             case 43:
@@ -291,9 +298,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         String pdj = "";
         String gdj = "";
         String jdj = "";
-
         jdj = MyUtils.changeDjStr(jdjEt.getText().toString());
-
         pdj = MyUtils.changeDjStr(pdjEt.getText().toString());
         fdj = MyUtils.changeDjStr(fdjEt.getText().toString());
         gdj = MyUtils.changeDjStr(gdjEt.getText().toString());
@@ -353,6 +358,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             }
 
             BaseApplication.getSetting().saveString(BaseApplication.getSetting().loadString(G.currentUsername) + "_bleAddress", address);
+            deviceTv.setText("当前连接设备：\n" + _device.getName() + "\n" + _device.getAddress());
             Toast.makeText(this, "连接" + _device.getName() + "成功！", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             try {
@@ -381,60 +387,30 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         }
     }
 
+    private String fmsg;
+    private String smsg;
     //接收数据线程
     Thread ReadThread = new Thread() {
 
         public void run() {
-            try {
-                int count = 0;
-                while (count == 0) {
-                    count = is.available();
-                }
-                byte[] bytes = new byte[count];
-                int readCount = 0; // 已经成功读取的字节的个数
-                while (readCount < count) {
-                    readCount += is.read(bytes, readCount, count - readCount);
+            byte[] buffer = new byte[256];
+            int bytes;
+
+            // Keep listening to the InputStream while connected
+            while (true) {
+                try {
+                    // Read from the InputStream
+                    bytes = is.read(buffer);
                     synchronized (mBuffer) {
-                        for (int i = 0; i < readCount; i++) {
-                            mBuffer.add(bytes[i] & 0xFF);
+                        for (int i = 0; i < bytes; i++) {
+                            mBuffer.add(buffer[i] & 0xFF);
                         }
                     }
+                    handler.sendEmptyMessage(MSG_NEW_DATA);
+                } catch (IOException e) {
+                    break;
                 }
-                //发送显示消息，进行显示刷新
-                handler.sendMessage(handler.obtainMessage());
-            } catch (IOException e) {
-                Message msg = mHandler.obtainMessage();
-                msg.obj = e.getMessage();
-                mHandler.sendMessage(msg);
-
             }
-//            byte[] buffer = new byte[1024];
-//            int bytes;
-//            bRun = true;
-//            //接收线程
-//            while (true) {
-//                try {
-//                    while (is.available() == 0) {
-//                        while (bRun == false) {
-//                        }
-//                    }
-//                    while (true) {
-//
-//                        bytes = is.read(buffer);
-//                        synchronized (mBuffer) {
-//                            for (int i = 0; i < bytes; i++) {
-//                                mBuffer.add(buffer[i] & 0xFF);
-//                            }
-//                        }
-//
-//                        if (is.available() == 0) break;  //短时间没有数据才跳出进行显示
-//                    }
-//
-//                    //发送显示消息，进行显示刷新
-//                    handler.sendMessage(handler.obtainMessage());
-//                } catch (IOException e) {
-//                }
-//            }
         }
     };
     Handler mHandler = new Handler() {
@@ -447,26 +423,74 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
     };
     List<Integer> mBuffer;
     //消息处理队列
+//    Handler handler = new Handler() {
+//        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+//            StringBuffer buf = new StringBuffer();
+//            synchronized (mBuffer) {
+//                for (int i : mBuffer) {
+//                    String hexStr = Integer.toHexString(i);
+//                    if (hexStr.length() == 1) {
+//                        hexStr = "0" + hexStr;
+//                    }
+//                    buf.append(hexStr);
+//                    buf.append(' ');
+//                }
+//            }
+//            //这里对接受到的数据进行解析
+//            //首先解析
+//            resultTv.setText(Html.fromHtml("报文返回数据为：" + buf.toString() + "<br/>" + MyUtils.decodeHex367(title, buf.toString())));   //显示数据
+//            mBuffer.clear();
+//        }
+//    };
+    private boolean isPause = false;
+
     Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            StringBuffer buf = new StringBuffer();
-            synchronized (mBuffer) {
-                for (int i : mBuffer) {
-                    String hexStr = Integer.toHexString(i);
-                    if (hexStr.length() == 1) {
-                        hexStr = "0" + hexStr;
+            switch (msg.what) {
+                case MSG_NEW_DATA:
+                    if (isPause) {
+                        break;
+                    } else {
+                        StringBuffer buf = new StringBuffer();
+                        synchronized (mBuffer) {
+                            for (int i : mBuffer) {
+                                String hexStr = Integer.toHexString(i);
+                                if (hexStr.length() == 1) {
+                                    hexStr = "0" + hexStr;
+                                }
+                                buf.append(hexStr);
+                                buf.append(' ');
+                            }
+                            resultTv.setText(Html.fromHtml("报文返回数据为：" + buf.toString() + "<br/>" + MyUtils.decodeHex367(title, buf.toString())));   //显示数据
+                            if (title == 4) {//表示倍率录入成功
+                                UserBean bean = LoginInformation.getInstance().getUser();
+                                String dj = bean.getPrice();
+                                title = 5;
+                                changDjStr(dj);
+                                sendData();
+                            } else if (title == 5) {
+                                title = 6;
+                                changDlStr();
+                                sendData();
+                                Setting setting = new Setting(getContext());
+                                String userId = LoginInformation.getInstance().getUser().getUserId();
+                                setting.saveBoolean(userId + "_isFirstBuy", true);
+                            }
+                        }
+
                     }
-                    buf.append(hexStr);
-                    buf.append(' ');
-                }
+
+                    break;
+
+                default:
+                    break;
             }
-            //这里对接受到的数据进行解析
-            //首先解析
-            resultTv.setText(Html.fromHtml("报文返回数据为：" + buf.toString() + "<br/>" + MyUtils.decodeHex367(title, buf.toString())));   //显示数据
-            mBuffer.clear();
         }
+
     };
+    private static final int MSG_NEW_DATA = 3;
 
     //关闭程序掉用处理部分
     public void onDestroy() {
@@ -507,6 +531,70 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.action_save)
     public void onClick() {
+        if (title == 6) {
+
+            Setting setting = new Setting(getContext());
+            UserBean bean = LoginInformation.getInstance().getUser();
+            if (bean.getType().equals("20")) {
+                String userId = LoginInformation.getInstance().getUser().getUserId();
+                boolean isFirstBuy = setting.loadBoolean(userId + "_isFirstBuy");
+                if (!isFirstBuy) {
+                    //先录入倍率，在录入电价，最后再录入电费
+                    //1检查倍率和电价是否为空
+                    String dy = bean.getVoltageRatio();
+                    String dl = bean.getCurrentRatio();
+                    String dj = bean.getPrice();
+                    if (TextUtils.isEmpty(bean.getVoltageRatio()) || TextUtils.isEmpty(bean.getCurrentRatio()) || TextUtils.isEmpty(bean.getPrice())) {
+                        showToast("电压倍率/电流倍率/电价信息不完整");
+                        return;
+                    }
+                    title = 4;
+                    changStr(dy, dl);
+                } else {
+                    changDlStr();
+                }
+            }
+        }
+        sendData();
+
+
+    }
+
+    private void changStr(String dy, String dl) {
+        String eddy = "";
+        if (TextUtils.isEmpty(dl)) {
+            dl = "00 00";
+        } else {
+            //先转换成int型 再转成16进制
+            dl = toHexString(dl).toUpperCase();
+        }
+        if (TextUtils.isEmpty(dy)) {
+            dy = "00 00";
+        } else {
+            dy = toHexString(dy).toUpperCase();
+        }
+        eddy = "00 10";
+        eddyEt.setText("100");
+        String currentTime = CommonUtils.formatDateTime1(new Date());
+        String temp = String.format(BlueOperationContact.BeiLvLuruSendTemp, dy, dl, eddy, currentTime);
+        OperationStr = String.format(BlueOperationContact.BeiLvLuruSend, dy, dl, eddy, currentTime, MyUtils.getJyCode(temp));
+    }
+
+    private void changDjStr(String dj) {
+        String fdj = "";
+        String pdj = "";
+        String gdj = "";
+        String jdj = "";
+        jdj = MyUtils.changeDjStr(dj);
+        pdj = MyUtils.changeDjStr(dj);
+        fdj = MyUtils.changeDjStr(dj);
+        gdj = MyUtils.changeDjStr(dj);
+        String currentTime = CommonUtils.formatDateTime1(new Date());
+        String temp = String.format(BlueOperationContact.DianjiaLuruSendTemp, jdj, fdj, pdj, gdj, currentTime);
+        OperationStr = String.format(BlueOperationContact.DianjiaLuruSend, jdj, fdj, pdj, gdj, currentTime, MyUtils.getJyCode(temp));
+    }
+
+    private void sendData() {
         try {
             if (_socket == null) {
                 onConnectButtonClicked(null);
@@ -514,9 +602,6 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             }
             OutputStream os = _socket.getOutputStream();   //蓝牙连接输出流
             String input = OperationStr;
-            if (title == 5) {
-
-            }
             String[] data = input.split(" ");
             byte[] tmp = new byte[data.length];
             for (int i = 0; i < data.length; i++) {

@@ -2,31 +2,31 @@ package com.xgx.dw.dao;
 
 import android.text.TextUtils;
 
+import com.xgx.dw.PricingBean;
+import com.xgx.dw.PricingBeanDao;
 import com.xgx.dw.StoreBean;
 import com.xgx.dw.THDaoHelperInterface;
 import com.xgx.dw.THDatabaseLoader;
-import com.xgx.dw.TransformerBean;
-import com.xgx.dw.TransformerBeanDao;
 
 import java.util.List;
 
 import de.greenrobot.dao.query.QueryBuilder;
 
-public class TransformerBeanDaoHelper implements THDaoHelperInterface {
-    private static TransformerBeanDaoHelper instance;
-    private TransformerBeanDao userBeanDao;
+public class PricingDaoHelper implements THDaoHelperInterface {
+    private static PricingDaoHelper instance;
+    private PricingBeanDao userBeanDao;
 
-    private TransformerBeanDaoHelper() {
+    private PricingDaoHelper() {
         try {
-            userBeanDao = THDatabaseLoader.getDaoSession().getTransformerBeanDao();
+            userBeanDao = THDatabaseLoader.getDaoSession().getPricingBeanDao();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static TransformerBeanDaoHelper getInstance() {
+    public static PricingDaoHelper getInstance() {
         if (instance == null) {
-            instance = new TransformerBeanDaoHelper();
+            instance = new PricingDaoHelper();
         }
 
         return instance;
@@ -35,7 +35,7 @@ public class TransformerBeanDaoHelper implements THDaoHelperInterface {
     @Override
     public <T> void addData(T bean) {
         if (userBeanDao != null && bean != null) {
-            userBeanDao.insertOrReplace((TransformerBean) bean);
+            userBeanDao.insertOrReplace((PricingBean) bean);
         }
     }
 
@@ -47,7 +47,7 @@ public class TransformerBeanDaoHelper implements THDaoHelperInterface {
     }
 
     @Override
-    public TransformerBean getDataById(String id) {
+    public PricingBean getDataById(String id) {
         if (userBeanDao != null && !TextUtils.isEmpty(id)) {
             return userBeanDao.load(id);
         }
@@ -68,8 +68,8 @@ public class TransformerBeanDaoHelper implements THDaoHelperInterface {
             return false;
         }
 
-        QueryBuilder<TransformerBean> qb = userBeanDao.queryBuilder();
-        qb.where(TransformerBeanDao.Properties.Id.eq(id));
+        QueryBuilder<PricingBean> qb = userBeanDao.queryBuilder();
+        qb.where(PricingBeanDao.Properties.Id.eq(id));
         long count = qb.buildCount().count();
         return count > 0 ? true : false;
     }
@@ -80,7 +80,7 @@ public class TransformerBeanDaoHelper implements THDaoHelperInterface {
             return 0;
         }
 
-        QueryBuilder<TransformerBean> qb = userBeanDao.queryBuilder();
+        QueryBuilder<PricingBean> qb = userBeanDao.queryBuilder();
         return qb.buildCount().count();
     }
 
@@ -91,9 +91,10 @@ public class TransformerBeanDaoHelper implements THDaoHelperInterface {
         }
     }
 
-    public List<TransformerBean> testQueryBy(String storeid) {
+    public List<PricingBean> queryByUserId(String userId) {
         QueryBuilder localQueryBuilder = this.userBeanDao.queryBuilder();
-        localQueryBuilder.where(TransformerBeanDao.Properties.Store_id.eq(storeid));
+        localQueryBuilder.where(PricingBeanDao.Properties.UserId.eq(userId));
         return localQueryBuilder.list();
     }
+
 }

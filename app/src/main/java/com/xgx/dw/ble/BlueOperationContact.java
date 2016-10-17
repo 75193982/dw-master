@@ -28,14 +28,14 @@ public class BlueOperationContact {
     public static String BaoJingJcSend = "68 8A 00 8A 00 68 6A " + deviceId + " 05 E2 00 00 02 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s %s 16";
     public static String BaoJingJcSendTemp = "6A " + deviceId + " 05 E2 00 00 02 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s";
     //电量查询 发送
-    public static String DianLiangCxSend = "68 4A 00 4A 00 68 4B " + deviceId + " 0C E1 01 01 01 04 02 %s %s 16";
-    public static String DianLiangCxSendTemp = "4B " + deviceId + " 0C E1 01 01 01 04 02 %s";
+    public static String DianLiangCxSend = "68 4A 00 4A 00 68 4B " + deviceId + " 0C E1 01 01 01 04 01 %s %s 16";
+    public static String DianLiangCxSendTemp = "4B " + deviceId + " 0C E1 01 01 01 04 01 %s";
     //电压电流功率因数读取数据格式 发送
-    public static String DianLvCxSend = "68 4A 00 4A 00 68 4B " + deviceId + " 0C E3 01 01 01 03 04 %s %s 16";
-    public static String DianLvCxSendTemp = "4B " + deviceId + " 0C E3 01 01 01 03 04 %s";
+    public static String DianLvCxSend = "68 4A 00 4A 00 68 4B " + deviceId + " 0C E3 01 01 01 03 01 %s %s 16";
+    public static String DianLvCxSendTemp = "4B " + deviceId + " 0C E3 01 01 01 03 01 %s";
     //电费查询发送
-    public static String DianFeiCxSend = "68 4A 00 4A 00 68 4B " + deviceId + " 0C E3 01 01 40 02 04 %s %s 16";
-    public static String DianFeiCxSendTemp = "68 4A 00 4A 00 68 4B " + deviceId + " 0C E3 01 01 40 02 04 %s";
+    public static String DianFeiCxSend = "68 4A 00 4A 00 68 4B " + deviceId + " 0C E3 01 01 40 02 01 %s %s 16";
+    public static String DianFeiCxSendTemp = "4B " + deviceId + " 0C E3 01 01 40 02 01 %s";
     //读取倍率
     public static String BeiLvDuquSend = "68 4A 00 4A 00 68 6B " + deviceId + " 0A E0 01 01 01 03 01 %s %s 16";
     public static String BeiLvDuquSendTemp = "6B " + deviceId + " 0A E0 01 01 01 03 01 %s";
@@ -76,8 +76,6 @@ public class BlueOperationContact {
                     sb.append(changeDlStr(Integer.toHexString(device)) + " 20");
                     deviceId = sb.toString();
                 }
-
-
             } catch (Exception e) {
 
             }
@@ -94,20 +92,20 @@ public class BlueOperationContact {
         BaoDianTrSendTemp = "4A " + deviceId + " 05 EB 00 00 01 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s";
 
         //保电解除 发送
-        BaoDianJcSend = "68 8A 00 8A 00 68 6A " + deviceId + " 05 EC 00 00 01 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 %s %s 16";
-        BaoDianJcSendTemp = "6A " + deviceId + " 05 EC 00 00 01 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 %s";
+        BaoDianJcSend = "68 8A 00 8A 00 68 6A " + deviceId + " 05 EC 00 00 01 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s %s 16";
+        BaoDianJcSendTemp = "6A " + deviceId + " 05 EC 00 00 01 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s";
         //报警解除发送
         BaoJingJcSend = "68 8A 00 8A 00 68 6A " + deviceId + " 05 E2 00 00 02 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s %s 16";
         BaoJingJcSendTemp = "6A " + deviceId + " 05 E2 00 00 02 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s";
         //电量查询 发送
-        DianLiangCxSend = "68 4A 00 4A 00 68 4B " + deviceId + " 0C E1 01 01 01 04 02 %s %s 16";
-        DianLiangCxSendTemp = "4B " + deviceId + " 0C E1 01 01 01 04 02 %s";
+        DianLiangCxSend = "68 4A 00 4A 00 68 4B " + deviceId + " 0C E1 01 01 01 04 01 %s %s 16";
+        DianLiangCxSendTemp = "4B " + deviceId + " 0C E1 01 01 01 04 01 %s";
         //电压电流功率因数读取数据格式 发送
-        DianLvCxSend = "68 4A 00 4A 00 68 4B " + deviceId + " 0C E3 01 01 01 03 04 %s %s 16";
-        DianLvCxSendTemp = "4B " + deviceId + " 0C E3 01 01 01 03 04 %s";
+        DianLvCxSend = "68 4A 00 4A 00 68 4B " + deviceId + " 0C E3 01 01 01 03 01 %s %s 16";
+        DianLvCxSendTemp = "4B " + deviceId + " 0C E3 01 01 01 03 01 %s";
         //电费查询发送
-        DianFeiCxSend = "68 4A 00 4A 00 68 4B " + deviceId + " 0C E3 01 01 40 02 04 %s %s 16";
-        DianFeiCxSendTemp = "68 4A 00 4A 00 68 4B " + deviceId + " 0C E3 01 01 40 02 04 %s";
+        DianFeiCxSend = "68 4A 00 4A 00 68 4B " + deviceId + " 0C E3 01 01 40 02 01 %s %s 16";
+        DianFeiCxSendTemp = "4B " + deviceId + " 0C E3 01 01 40 02 01 %s";
         //读取倍率
         BeiLvDuquSend = "68 4A 00 4A 00 68 6B " + deviceId + " 0A E0 01 01 01 03 01 %s %s 16";
         BeiLvDuquSendTemp = "6B " + deviceId + " 0A E0 01 01 01 03 01 %s";
@@ -116,17 +114,16 @@ public class BlueOperationContact {
         BeiLvLuruSendTemp = "6A " + deviceId + " 04 E0 01 01 01 03 %s %s %s 50 00 00 30 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s";
 
         //电价录入
-        //读取倍率
-        BeiLvLuruSend = "68 B6 00 B6 00 68 6A " + deviceId + " 04 E0 01 01 01 03 %s %s %s 50 00 00 30 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s %s 16";
-        BeiLvLuruSendTemp = "6A " + deviceId + " 04 E0 01 01 01 03 %s %s %s 50 00 00 30 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s";
-        //电价录入
         DianjiaLuruSend = "68 CE 00 CE 00 68 6A " + deviceId + " 04 E0 00 00 20 02 04 %s %s %s %s 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s %s 16";
         DianjiaLuruSendTemp = "6A " + deviceId + " 04 E0 00 00 20 02 04 %s %s %s %s 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s";
         //电价录入 第一个s 是 单号 第二个s是 55 是追加 AA 是刷新 第三个s 是购电量 以40 结尾是元  第四个s 是报警电量 以40 结尾是元  第五个s 是跳闸电量 以40 结尾是元 第6个 是 时间 第7个是验证码
         DianfeiLuruSend = "68 CE 00 CE 00 68 6A " + deviceId + " 04 E0 01 01 40 05 %s %s %s %s %s 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s %s 16";
         DianfeiLuruSendTemp = "6A " + deviceId + " 04 E0 01 01 40 05 %s %s %s %s %s 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s";
-        beiLvCxSend = "68 4A 00 4A 00 68 6B " + deviceId + " 0A E0 01 01 01 03 01 24 58 15 22 05 33 16";
-        DianjiaCxSend = "68 4A 00 4A 00 68 6B " + deviceId + " 0A E0 00 00 20 02 01 03 57 17 22 05 2F 16";
+
+        beiLvCxSend = "68 4A 00 4A 00 68 6B " + deviceId + " 0A E0 01 01 01 03 01 %s %s 16";
+        beiLvCxSendTemp = "6B " + deviceId + " 0A E0 01 01 01 03 01 %s";
+        DianjiaCxSend = "68 4A 00 4A 00 68 6B " + deviceId + " 0A E0 00 00 20 02 01 %s %s 16";
+        DianjiaCxSendTemp = "6B " + deviceId + " 0A E0 00 00 20 02 01 %s";
 
     }
 
@@ -146,7 +143,6 @@ public class BlueOperationContact {
             } else if (str.length() == 4) {
                 str = str.substring(2, 4) + " " + str.substring(0, 2);
             }
-            str = str + " 00";
         } catch (Exception e) {
             str = "00 00";
         }

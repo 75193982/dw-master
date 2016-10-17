@@ -2,15 +2,13 @@ package com.xgx.dw.dao;
 
 import android.text.TextUtils;
 
-import com.xgx.dw.DaoSession;
 import com.xgx.dw.SpotPricingBean;
 import com.xgx.dw.SpotPricingBeanDao;
 import com.xgx.dw.SpotPricingBeanDao.Properties;
+import com.xgx.dw.StoreBean;
 import com.xgx.dw.THDaoHelperInterface;
 import com.xgx.dw.THDatabaseLoader;
 
-import de.greenrobot.dao.Property;
-import de.greenrobot.dao.query.CountQuery;
 import de.greenrobot.dao.query.QueryBuilder;
 import de.greenrobot.dao.query.WhereCondition;
 

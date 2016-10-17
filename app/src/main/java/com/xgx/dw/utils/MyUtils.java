@@ -56,6 +56,7 @@ public class MyUtils {
                 break;
             case 4://倍率录入
                 resultString.append("倍率录入成功");
+
                 break;
             case 5://电价录入
                 resultString.append("电价录入成功");

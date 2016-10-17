@@ -13,6 +13,7 @@ public class MyDaoGenerator {
         initTransformerBean(schema);
         initSpotPricingBean(schema);
         initStoreBean(schema);
+        initPricingBean(schema);
         new DaoGenerator().generateAll(schema, args[0]);
     }
 
@@ -76,5 +77,17 @@ public class MyDaoGenerator {
         userBean.addStringProperty("peek_price");
         userBean.addStringProperty("flat_price");
         userBean.addStringProperty("valley_price");
+    }
+
+
+    private static void initPricingBean(Schema schema) {
+        Entity userBean = schema.addEntity("PricingBean");
+        userBean.setTableName("Pricing");
+        userBean.addStringProperty("id").primaryKey();
+        userBean.addStringProperty("price");
+        userBean.addStringProperty("userId");
+        userBean.addStringProperty("userName");
+        userBean.addStringProperty("createTime");
+        userBean.addStringProperty("type");
     }
 }

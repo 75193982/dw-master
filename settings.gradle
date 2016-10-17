@@ -1,1 +1,1 @@
-include ':app', ':MyDaoGenerator', ':FastBleLib'
+include ':app', ':MyDaoGenerator'

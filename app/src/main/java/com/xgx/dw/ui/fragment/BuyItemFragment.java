@@ -17,7 +17,9 @@ import butterknife.Bind;
 import com.xgx.dw.R;
 import com.xgx.dw.adapter.DataSearchItemAdapter;
 import com.xgx.dw.base.BaseFragment;
+import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.ui.activity.SpecialOperationDetailActivity;
+import com.xgx.dw.ui.activity.TestGeneratectivity;
 import com.xgx.dw.ui.custom.TitleBar;
 import com.xgx.dw.ui.fragment.dummy.DummyContent;
 
@@ -49,9 +51,8 @@ public class BuyItemFragment extends BaseFragment implements DataSearchItemAdapt
             }
         });
         ArrayList localArrayList = new ArrayList();
-        localArrayList.add(new DummyContent(0, "用户购电", "用户购电", this.drawableInt[0]));
-        localArrayList.add(new DummyContent(1, "自助购电", "自助购电", this.drawableInt[1]));
-        localArrayList.add(new DummyContent(2, "购电录入", "购电录入", this.drawableInt[2]));
+        localArrayList.add(new DummyContent(0, "自助购电", "自助购电", this.drawableInt[1]));
+        localArrayList.add(new DummyContent(1, "购电录入", "购电录入", this.drawableInt[2]));
         final DataSearchItemAdapter localDataSearchItemAdapter = new DataSearchItemAdapter(localView, localArrayList);
         this.recyclerView.setAdapter(localDataSearchItemAdapter);
         localDataSearchItemAdapter.setOnItemClickListner(this);
@@ -68,7 +69,11 @@ public class BuyItemFragment extends BaseFragment implements DataSearchItemAdapt
     @Override
     public void onrRecyclerViewItemClick(int paramInt) {
         switch (paramInt) {
-            case 2:
+            case 0:
+                String userid = LoginInformation.getInstance().getUser().getUserId();
+                startActivity(new Intent(getActivity(), TestGeneratectivity.class).putExtra("type", 4).putExtra("id", userid));
+                break;
+            case 1:
                 startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", 6));
                 break;
         }

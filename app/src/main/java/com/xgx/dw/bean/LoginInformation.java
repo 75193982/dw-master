@@ -35,7 +35,7 @@ public class LoginInformation {
         if (user == null) {
             // 进入主页面
             String userString = new Setting(BaseApplication.getInstance()).loadString("user");
-            UserBean user = new UserBean();
+            user = new UserBean();
             try {
                 user = new Gson().fromJson(userString, UserBean.class);
             } catch (Exception e) {

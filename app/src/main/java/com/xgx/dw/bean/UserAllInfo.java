@@ -1,10 +1,12 @@
 package com.xgx.dw.bean;
 
+import com.xgx.dw.PricingBean;
 import com.xgx.dw.StoreBean;
 import com.xgx.dw.TransformerBean;
 import com.xgx.dw.UserBean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/10/13 0013.
@@ -13,6 +15,7 @@ public class UserAllInfo implements Serializable {
     private UserBean user;
     private StoreBean storeBean;
     private TransformerBean transformerBean;
+    private List<PricingBean> pricings;
 
     public UserBean getUser() {
         return user;
@@ -36,5 +39,13 @@ public class UserAllInfo implements Serializable {
 
     public void setTransformerBean(TransformerBean transformerBean) {
         this.transformerBean = transformerBean;
+    }
+
+    public List<PricingBean> getPricings() {
+        return pricings;
+    }
+
+    public void setPricings(List<PricingBean> pricings) {
+        this.pricings = pricings;
     }
 }

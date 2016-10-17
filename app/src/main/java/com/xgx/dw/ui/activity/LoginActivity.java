@@ -184,32 +184,8 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                 }
                 if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
                     String result = bundle.getString(CodeUtils.RESULT_STRING);
-                    String decryptString = "";
-                    try {
-                        decryptString = AES.decrypt(G.appsecret, result);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    Logger.e(getContext(), "扫描结果：" + decryptString);
-                    UserAllInfo userAllInfo = new Gson().fromJson(decryptString, UserAllInfo.class);
-                    if (userAllInfo.getUser().getEcodeType().equals("3")) {
-                        //保存用户 方便登录
-                        UserBeanDaoHelper.getInstance().addData(userAllInfo.getUser());
-                        if (userAllInfo.getStoreBean().getId() != null) {
-                            StoreBeanDaoHelper.getInstance().addData(userAllInfo.getStoreBean());
-                        }
-                        if (userAllInfo.getTransformerBean().getId() != null) {
-                            TransformerBeanDaoHelper.getInstance().addData(userAllInfo.getTransformerBean());
-                        }
-                        //自动登录 比较 ime账号
-                        if (MyUtils.getuniqueId(getContext()).equals(userAllInfo.getUser().getIme())) {
-                            //则登录成功 当前账号为 bean.getUserName
-                            loginCallback(userAllInfo.getUser());
+                    getResult(result);
 
-                        }
-                    } else {
-                        showToast("二维码信息错误，请选择正确二维码");
-                    }
                 } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
                     Toast.makeText(this, "解析二维码失败", Toast.LENGTH_LONG).show();
                 }
@@ -221,13 +197,7 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                 CodeUtils.analyzeBitmap(picturePath, new CodeUtils.AnalyzeCallback() {
                     @Override
                     public void onAnalyzeSuccess(Bitmap mBitmap, String result) {
-                        String decryptString = "";
-                        try {
-                            decryptString = AES.decrypt("1396198677119910", result);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        Toast.makeText(LoginActivity.this, decryptString, Toast.LENGTH_SHORT).show();
+                        getResult(result);
                     }
 
                     @Override
@@ -239,6 +209,39 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                 e.printStackTrace();
                 Toast.makeText(LoginActivity.this, "解析二维码失败", Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    private void getResult(String result) {
+        String decryptString = "";
+        try {
+            decryptString = AES.decrypt(G.appsecret, result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Logger.e(getContext(), "扫描结果：" + decryptString);
+        UserAllInfo userAllInfo = new Gson().fromJson(decryptString, UserAllInfo.class);
+        if (userAllInfo != null) {
+            if (userAllInfo.getUser().getEcodeType().equals("3")) {
+                //保存用户 方便登录
+                UserBeanDaoHelper.getInstance().addData(userAllInfo.getUser());
+                if (userAllInfo.getStoreBean().getId() != null) {
+                    StoreBeanDaoHelper.getInstance().addData(userAllInfo.getStoreBean());
+                }
+                if (userAllInfo.getTransformerBean().getId() != null) {
+                    TransformerBeanDaoHelper.getInstance().addData(userAllInfo.getTransformerBean());
+                }
+                //自动登录 比较 ime账号
+                if (MyUtils.getuniqueId(getContext()).equals(userAllInfo.getUser().getIme())) {
+                    //则登录成功 当前账号为 bean.getUserName
+                    loginCallback(userAllInfo.getUser());
+
+                }
+            } else {
+                showToast("二维码信息错误，请选择正确二维码");
+            }
+        } else {
+            showToast("二维码信息错误，请选择正确二维码");
         }
     }
 

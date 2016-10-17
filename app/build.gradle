@@ -15,7 +15,7 @@ android {
         applicationId "com.xgx.dw"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 4
+        versionCode 5
         versionName "1.0"
     }
     buildTypes {
@@ -58,5 +58,4 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta1'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta1'
-    compile project(path: ':FastBleLib')
 }
