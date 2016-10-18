@@ -9,12 +9,16 @@ import java.io.Serializable;
  */
 public class StoreBean implements Serializable {
 
-
     private String id;
     private String name;
     private String address;
     private String linkman;
     private String contact_way;
+
+    public StoreBean(String storeId, String storeName) {
+        this.id = storeId;
+        this.name = storeName;
+    }
 
     public StoreBean() {
     }
@@ -29,11 +33,6 @@ public class StoreBean implements Serializable {
         this.address = address;
         this.linkman = linkman;
         this.contact_way = contact_way;
-    }
-
-    public StoreBean(String id, String name) {
-        this.id = id;
-        this.name = name;
     }
 
     public String getId() {

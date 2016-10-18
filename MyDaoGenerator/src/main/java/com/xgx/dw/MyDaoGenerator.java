@@ -14,6 +14,7 @@ public class MyDaoGenerator {
         initSpotPricingBean(schema);
         initStoreBean(schema);
         initPricingBean(schema);
+        initSearchLogBean(schema);
         new DaoGenerator().generateAll(schema, args[0]);
     }
 
@@ -89,5 +90,14 @@ public class MyDaoGenerator {
         userBean.addStringProperty("userName");
         userBean.addStringProperty("createTime");
         userBean.addStringProperty("type");
+    }
+
+    private static void initSearchLogBean(Schema schema) {
+        Entity userBean = schema.addEntity("SearchDlLog");
+        userBean.setTableName("SearchDlLog");
+        userBean.addStringProperty("id").primaryKey();
+        userBean.addStringProperty("content");
+        userBean.addStringProperty("type");
+        userBean.addStringProperty("userId");
     }
 }

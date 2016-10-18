@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.andexert.library.RippleView;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.xgx.dw.PricingBean;
 import com.xgx.dw.R;
 import com.xgx.dw.UserBean;
 import com.xgx.dw.app.BaseApplication;
@@ -29,6 +31,7 @@ import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.ble.BlueOperationContact;
+import com.xgx.dw.dao.PricingDaoHelper;
 import com.xgx.dw.utils.CommonUtils;
 import com.xgx.dw.utils.MyUtils;
 
@@ -113,6 +116,8 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
     private int title;
     private String OperationStr = "";
     private int setp = 0;
+    private PricingBean dlbean;
+
 
     @Override
     public void initContentView() {
@@ -251,7 +256,12 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             case 6:
                 setToolbarTitle("电费录入");
                 inputDianfeiLayout.setVisibility(View.VISIBLE);
-                changDlStr();
+                changDlStr(gdlEt.getText().toString(), bjEt.getText().toString(), tzEt.getText().toString());
+                break;
+            case 66:
+                setToolbarTitle("电费录入");
+                dlbean = (PricingBean) getIntent().getSerializableExtra("dlbean");
+                changDlStr(dlbean.getPrice(), "0", "0");
                 break;
             case 41:
                 setToolbarTitle("电费查询");
@@ -308,21 +318,24 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         sendTv.setText(OperationStr);
     }
 
-    private void changDlStr() {
-        String gdl = "";
-        String bjdl = "";
-        String tzdl = "";
-
-        gdl = MyUtils.changeDlStr(gdlEt.getText().toString());
-
-        bjdl = MyUtils.changeDlStr(bjEt.getText().toString());
-        tzdl = MyUtils.changeDlStr(tzEt.getText().toString());
+    private void changDlStr(String gdl, String bjdl, String tzdl) {
+        gdl = MyUtils.changeDlStr(gdl);
+        bjdl = MyUtils.changeDlStr(bjdl);
+        tzdl = MyUtils.changeDlStr(tzdl);
         String currentTime = CommonUtils.formatDateTime1(new Date());
         //获取当前单号+1
         String newId = MyUtils.getNewOrderId();
         String temp = String.format(BlueOperationContact.DianfeiLuruSendTemp, newId, "55", gdl, bjdl, tzdl, currentTime);
         OperationStr = String.format(BlueOperationContact.DianfeiLuruSend, newId, "55", gdl, bjdl, tzdl, currentTime, MyUtils.getJyCode(temp));
-        sendTv.setText(OperationStr);
+        if (title == 66) {
+            String voltageRatio = LoginInformation.getInstance().getUser().getVoltageRatio();
+            String currentRatio = LoginInformation.getInstance().getUser().getCurrentRatio();
+            String price = LoginInformation.getInstance().getUser().getPrice();
+            sendTv.setText("购电量：" + dlbean.getPrice() + "\n" + "电压倍率：" + voltageRatio +
+                    "\n" + "电量倍率：" + currentRatio + "\n" + "电价：" + price);
+        } else {
+            sendTv.setText(OperationStr);
+        }
     }
 
     //接收活动结果，响应startActivityForResult()
@@ -464,6 +477,10 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                                 buf.append(' ');
                             }
                             resultTv.setText(Html.fromHtml("报文返回数据为：" + buf.toString() + "<br/>" + MyUtils.decodeHex367(title, buf.toString())));   //显示数据
+                            actionSave.setEnabled(false);
+                            btnTv.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.White));
+                            btnTv.setText("操作成功");
+                            btnTv.setTextColor(ContextCompat.getColor(getContext(), R.color.Gray100));
                             if (title == 4) {//表示倍率录入成功
                                 UserBean bean = LoginInformation.getInstance().getUser();
                                 String dj = bean.getPrice();
@@ -471,12 +488,22 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                                 changDjStr(dj);
                                 sendData();
                             } else if (title == 5) {
-                                title = 6;
-                                changDlStr();
+                                if (getIntent().getIntExtra("type", -1) == 66) {
+                                    title = 66;
+                                    changDlStr(dlbean.getPrice(), "0", "0");
+                                } else {
+                                    title = 6;
+                                    changDlStr(gdlEt.getText().toString(), bjEt.getText().toString(), tzEt.getText().toString());
+                                }
                                 sendData();
                                 Setting setting = new Setting(getContext());
                                 String userId = LoginInformation.getInstance().getUser().getUserId();
                                 setting.saveBoolean(userId + "_isFirstBuy", true);
+                                btnTv.setText("购电成功");
+                            } else if (title == 66 || title == 6) {
+                                dlbean.setType("2");
+                                PricingDaoHelper.getInstance().addData(dlbean);
+                                btnTv.setText("购电成功");
                             }
                         }
 
@@ -532,7 +559,6 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
     @OnClick(R.id.action_save)
     public void onClick() {
         if (title == 6) {
-
             Setting setting = new Setting(getContext());
             UserBean bean = LoginInformation.getInstance().getUser();
             if (bean.getType().equals("20")) {
@@ -551,7 +577,29 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                     title = 4;
                     changStr(dy, dl);
                 } else {
-                    changDlStr();
+                    changDlStr(gdlEt.getText().toString(), bjEt.getText().toString(), tzEt.getText().toString());
+                }
+            }
+        } else if (title == 66) {
+            Setting setting = new Setting(getContext());
+            UserBean bean = LoginInformation.getInstance().getUser();
+            if (bean.getType().equals("20")) {
+                String userId = LoginInformation.getInstance().getUser().getUserId();
+                boolean isFirstBuy = setting.loadBoolean(userId + "_isFirstBuy");
+                if (!isFirstBuy) {
+                    //先录入倍率，在录入电价，最后再录入电费
+                    //1检查倍率和电价是否为空
+                    String dy = bean.getVoltageRatio();
+                    String dl = bean.getCurrentRatio();
+                    String dj = bean.getPrice();
+                    if (TextUtils.isEmpty(bean.getVoltageRatio()) || TextUtils.isEmpty(bean.getCurrentRatio()) || TextUtils.isEmpty(bean.getPrice())) {
+                        showToast("电压倍率/电流倍率/电价信息不完整");
+                        return;
+                    }
+                    title = 4;
+                    changStr(dy, dl);
+                } else {
+                    changDlStr(dlbean.getPrice(), "0", "0");
                 }
             }
         }
@@ -669,7 +717,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
-            changDlStr();
+            changDlStr(gdlEt.getText().toString(), bjEt.getText().toString(), tzEt.getText().toString());
         }
 
     }

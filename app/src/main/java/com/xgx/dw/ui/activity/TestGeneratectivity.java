@@ -4,12 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -20,10 +17,8 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.xgx.dw.PricingBean;
-import com.xgx.dw.PricingBeanDao;
 import com.xgx.dw.R;
 import com.xgx.dw.StoreBean;
-import com.xgx.dw.StoreBeanDao;
 import com.xgx.dw.TransformerBean;
 import com.xgx.dw.UserBean;
 import com.xgx.dw.app.G;
@@ -34,9 +29,7 @@ import com.xgx.dw.dao.TransformerBeanDaoHelper;
 import com.xgx.dw.dao.UserBeanDaoHelper;
 import com.xgx.dw.utils.AES;
 import com.xgx.dw.utils.BitmapUtil;
-import com.xgx.dw.utils.FileInfoUtils;
 import com.xgx.dw.utils.MyUtils;
-import com.xgx.dw.utils.SdCardUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -121,6 +114,7 @@ public class TestGeneratectivity extends AppCompatActivity {
                     transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
                     pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getUserId());
                 }
+                break;
             case 5:
                 getSupportActionBar().setTitle("购电用户信息");
                 bean = UserBeanDaoHelper.getInstance().getDataById(id);

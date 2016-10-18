@@ -18,6 +18,7 @@ import com.xgx.dw.adapter.DataSearchItemAdapter.MyOnItemClickListner;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseFragment;
+import com.xgx.dw.ui.activity.SearchLogListActivity;
 import com.xgx.dw.ui.activity.SpecialOperationDetailActivity;
 import com.xgx.dw.ui.activity.SpotListActivity;
 import com.xgx.dw.ui.custom.TitleBar;
@@ -98,6 +99,12 @@ public class DataSearchFragment extends BaseFragment implements MyOnItemClickLis
                 break;
             case 3:
                 startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", 43));
+                break;
+            case 4:
+                startActivity(new Intent(getActivity(), SearchLogListActivity.class).putExtra("type", "1"));
+                break;
+            case 5:
+                startActivity(new Intent(getActivity(), SearchLogListActivity.class).putExtra("type", "2"));
                 break;
             case 6:
                 startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", 47));

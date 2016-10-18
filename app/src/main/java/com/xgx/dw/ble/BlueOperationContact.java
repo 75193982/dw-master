@@ -1,9 +1,7 @@
 package com.xgx.dw.ble;
 
-import com.squareup.haha.perflib.Main;
 import com.xgx.dw.UserBean;
 import com.xgx.dw.bean.LoginInformation;
-import com.xgx.dw.utils.MyUtils;
 
 /**
  * Created by Administrator on 2016/8/20.

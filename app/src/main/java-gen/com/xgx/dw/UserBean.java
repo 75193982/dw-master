@@ -29,6 +29,14 @@ public class UserBean implements Serializable {
     private String ime;
     private String ecodeType;
 
+    public UserBean(String userId, String username, String mima, String type, String ime) {
+        this.userId = userId;
+        this.userName = username;
+        this.password = mima;
+        this.type = type;
+        this.ime = ime;
+    }
+
     public UserBean() {
     }
 
@@ -58,39 +66,6 @@ public class UserBean implements Serializable {
         this.ecodeType = ecodeType;
     }
 
-    @Override
-    public String toString() {
-        return "UserBean{" +
-                "userId='" + userId + '\'' +
-                ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", type='" + type + '\'' +
-                ", storeId='" + storeId + '\'' +
-                ", storeName='" + storeName + '\'' +
-                ", isBuy='" + isBuy + '\'' +
-                ", isTest='" + isTest + '\'' +
-                ", transformerId='" + transformerId + '\'' +
-                ", transformerName='" + transformerName + '\'' +
-                ", voltageRatio='" + voltageRatio + '\'' +
-                ", currentRatio='" + currentRatio + '\'' +
-                ", meterNum='" + meterNum + '\'' +
-                ", price='" + price + '\'' +
-                ", phone='" + phone + '\'' +
-                ", createTime='" + createTime + '\'' +
-                ", remark='" + remark + '\'' +
-                ", ime='" + ime + '\'' +
-                ", ecodeType='" + ecodeType + '\'' +
-                '}';
-    }
-
-    public UserBean(String id, String name, String pwd, String type, String ime) {
-        this.userId = id;
-        this.userName = name;
-        this.password = pwd;
-        this.type = type;
-        this.ime = ime;
-    }
-
     public String getUserId() {
         return userId;
     }
@@ -116,7 +91,7 @@ public class UserBean implements Serializable {
     }
 
     public String getType() {
-        return type == null ? "0" : type;
+        return type;
     }
 
     public void setType(String type) {
@@ -124,7 +99,7 @@ public class UserBean implements Serializable {
     }
 
     public String getStoreId() {
-        return storeId == null ? "" : storeId;
+        return storeId;
     }
 
     public void setStoreId(String storeId) {
@@ -132,7 +107,7 @@ public class UserBean implements Serializable {
     }
 
     public String getStoreName() {
-        return storeName == null ? "" : storeName;
+        return storeName;
     }
 
     public void setStoreName(String storeName) {
@@ -140,7 +115,7 @@ public class UserBean implements Serializable {
     }
 
     public String getIsBuy() {
-        return isBuy == null ? "" : isBuy;
+        return isBuy;
     }
 
     public void setIsBuy(String isBuy) {
@@ -148,7 +123,7 @@ public class UserBean implements Serializable {
     }
 
     public String getIsTest() {
-        return isTest == null ? "" : isTest;
+        return isTest;
     }
 
     public void setIsTest(String isTest) {
@@ -156,7 +131,7 @@ public class UserBean implements Serializable {
     }
 
     public String getTransformerId() {
-        return transformerId == null ? "" : transformerId;
+        return transformerId;
     }
 
     public void setTransformerId(String transformerId) {
@@ -236,7 +211,7 @@ public class UserBean implements Serializable {
     }
 
     public String getEcodeType() {
-        return ecodeType == null ? "" : ecodeType;
+        return ecodeType;
     }
 
     public void setEcodeType(String ecodeType) {

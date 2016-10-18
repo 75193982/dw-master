@@ -1,7 +1,6 @@
 package com.xgx.dw.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -19,8 +18,6 @@ import com.xgx.dw.R;
 import com.xgx.dw.StoreBean;
 import com.xgx.dw.TransformerBean;
 import com.xgx.dw.UserBean;
-import com.xgx.dw.app.G;
-import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.dao.StoreBeanDaoHelper;
@@ -29,11 +26,9 @@ import com.xgx.dw.presenter.impl.UserPresenterImpl;
 import com.xgx.dw.presenter.interfaces.IUserPresenter;
 import com.xgx.dw.ui.view.interfaces.IUserView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import fr.ganfra.materialspinner.MaterialSpinner;
 

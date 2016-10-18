@@ -4,10 +4,12 @@ package com.xgx.dw.utils;
 import android.content.Context;
 import android.telephony.TelephonyManager;
 
+import com.xgx.dw.SearchDlLog;
 import com.xgx.dw.app.BaseApplication;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.bean.LoginInformation;
+import com.xgx.dw.dao.SearchDlDaoHelper;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -38,6 +40,11 @@ public class MyUtils {
     }
 
     public static String decodeHex367(int type, String s) {
+//        if (type == 42) {
+//            s = "68 B6 01 B6 01 68 88 00 41 01 00 20 0C E1 01 01 01 04 56 14 22 08 16 04 00 28 46 37 00 00 09 26 06 00 00 75 23 07 00 00 51 67 13 00 00 92 28 10 00 95 88 04 00 82 86 00 00 68 81 00 00 22 69 01 00 21 51 01 00 EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE 02 16 59 14 22 05 87 16";
+//        } else if (type == 43) {
+//            s = "68 56 01 56 01 68 88 00 41 01 00 20 0C E3 01 01 01 03 18 15 22 08 16 42 03 00 33 00 00 26 00 00 81 02 00 00 60 03 00 34 00 00 24 00 00 01 03 88 06 96 06 64 07 83 06 70 23 70 23 70 23 20 00 00 10 00 00 00 02 00 EE EE EE EE EE EE EE EE EE EE EE EE EE EE EE 04 26 21 15 22 05 AE 16";
+//        }
         StringBuilder resultString = new StringBuilder();
         List<String> mBuffer = Arrays.asList(s.split(" "));
         Collections.reverse(mBuffer);
@@ -79,8 +86,14 @@ public class MyUtils {
             case 42://电量查询
                 //获取时间格式
                 try {
-                    mBuffer = mBuffer.subList(31, 99);
+                    mBuffer = mBuffer.subList(48, 116);
                     getHexDlTime(resultString, mBuffer);
+                    SearchDlLog bean = new SearchDlLog();
+                    bean.setId(UUID.randomUUID().toString());
+                    bean.setType("1");
+                    bean.setUserId(LoginInformation.getInstance().getUser().getUserId());
+                    bean.setContent(resultString.toString());
+                    SearchDlDaoHelper.getInstance().addData(bean);
                 } catch (Exception e) {
                     resultString = new StringBuilder();
                     resultString.append("当前没有电量信息");
@@ -91,6 +104,12 @@ public class MyUtils {
                 try {
                     mBuffer = mBuffer.subList(23, 75);
                     getHexDyTime(resultString, mBuffer);
+                    SearchDlLog bean = new SearchDlLog();
+                    bean.setId(UUID.randomUUID().toString());
+                    bean.setType("2");
+                    bean.setUserId(LoginInformation.getInstance().getUser().getUserId());
+                    bean.setContent(resultString.toString());
+                    SearchDlDaoHelper.getInstance().addData(bean);
                 } catch (Exception e) {
                     resultString = new StringBuilder();
                     resultString.append("当前没有功率信息");
@@ -152,12 +171,12 @@ public class MyUtils {
         String zStr = mBuffer.get(42).startsWith("0") ? "0" : "";
         resultString.append(String.format("抄表时间为：%s年%s月%s日 %s时%s分<br/>", mBuffer.get(46), mBuffer.get(47), mBuffer.get(48), mBuffer.get(49), mBuffer.get(50)));
         resultString.append(String.format("费率数M（1≤M≤12）：%s<br/>", Integer.valueOf(mBuffer.get(45)) + ""));
-        resultString.append(String.format("当前正向有功总电能(kwh)：<big><font color='blue'>%s%.4f</font></big><br/><br/>", Integer.valueOf(mBuffer.get(40) + mBuffer.get(41)) + zStr, Float.valueOf(Integer.valueOf(mBuffer.get(42) + mBuffer.get(43) + mBuffer.get(44))) / 10000));
+        resultString.append(String.format("当前正向有功总电能(kwh)：<big><font color='blue'>%s%.4f</font></big><br/>", Integer.valueOf(mBuffer.get(40) + mBuffer.get(41)) + zStr, Float.valueOf(Integer.valueOf(mBuffer.get(42) + mBuffer.get(43) + mBuffer.get(44))) / 10000));
         resultString.append(String.format("当前尖有功电能(kwh)：<big><font color='blue'>%s%.4f</font></big><br/>", Integer.valueOf(mBuffer.get(35) + mBuffer.get(36)) + jStr, Float.valueOf(Integer.valueOf(mBuffer.get(37) + mBuffer.get(38) + mBuffer.get(39))) / 10000));
         resultString.append(String.format("当前峰有功电能(kwh)：<big><font color='blue'>%s%.4f</font></big><br/>", Integer.valueOf(mBuffer.get(30) + mBuffer.get(31)) + fStr, Float.valueOf(Integer.valueOf(mBuffer.get(32) + mBuffer.get(33) + mBuffer.get(34))) / 10000));
         resultString.append(String.format("当前平有功电能(kwh)：<big><font color='blue'>%s%.4f</font></big><br/>", Integer.valueOf(mBuffer.get(25) + mBuffer.get(26)) + pStr, Float.valueOf(Integer.valueOf(mBuffer.get(27) + mBuffer.get(28) + mBuffer.get(29))) / 10000));
         resultString.append(String.format("当前谷有功电能(kwh)：<big><font color='blue'>%s%.4f</font></big><br/><br/>", Integer.valueOf(mBuffer.get(20) + mBuffer.get(21)) + gStr, Float.valueOf(Integer.valueOf(mBuffer.get(22) + mBuffer.get(23) + mBuffer.get(24))) / 10000));
-        resultString.append(String.format("当前无功总电能(kvarh)：<big><font color='blue'>%.2f</font></big><br/><br/>", Float.valueOf(mBuffer.get(16) + mBuffer.get(17) + mBuffer.get(18) + mBuffer.get(19)) / 100));
+        resultString.append(String.format("当前无功总电能(kvarh)：<big><font color='blue'>%.2f</font></big><br/>", Float.valueOf(mBuffer.get(16) + mBuffer.get(17) + mBuffer.get(18) + mBuffer.get(19)) / 100));
         resultString.append(String.format("当前尖无功电能(kvarh)：<big><font color='blue'>%.2f</font></big><br/>", Float.valueOf(mBuffer.get(12) + mBuffer.get(13) + mBuffer.get(14) + mBuffer.get(15)) / 100));
         resultString.append(String.format("当前峰无功电能(kvarh)：<big><font color='blue'>%.2f</font></big><br/>", Float.valueOf(mBuffer.get(8) + mBuffer.get(9) + mBuffer.get(10) + mBuffer.get(11)) / 100));
         resultString.append(String.format("当前平无功电能(kvarh)：<big><font color='blue'>%.2f</font></big><br/>", Float.valueOf(mBuffer.get(4) + mBuffer.get(5) + mBuffer.get(6) + mBuffer.get(7)) / 100));

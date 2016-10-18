@@ -92,6 +92,11 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
     }
 
     public void initView() {
+        Setting setting = new Setting(this);
+        String username = setting.loadString(G.currentUsername);
+        String password = setting.loadString(G.currentPassword);
+        loginUsername.setText(checkText(username));
+        loginPassword.setText(checkText(password));
     }
 
     public void loginCallback(UserBean userBean) {
@@ -103,6 +108,7 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
         setting.saveString(G.currentStoreName, userBean.getStoreName());
         setting.saveString(G.currentTransformId, userBean.getTransformerId());
         setting.saveString(G.currentTransformName, userBean.getTransformerName());
+        setting.saveString(G.currentPassword, userBean.getPassword());
         setting.saveString("user", new Gson().toJson(userBean));
         LoginInformation.getInstance().setUser(userBean);
         startActivity(new Intent(this, MainActivity.class));

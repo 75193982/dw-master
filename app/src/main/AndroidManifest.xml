@@ -67,6 +67,9 @@
         <activity
             android:name=".ui.activity.BuySpotActivity"
             android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.activity.SearchLogListActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".ui.activity.DeviceListActivity"></activity>
         <activity android:name=".ui.activity.UserMgrActivity"></activity>
         <activity android:name=".ui.activity.CreateUserOneAcvitity"></activity>

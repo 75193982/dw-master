@@ -19,7 +19,7 @@ public class FragmentAdapter extends FragmentStatePagerAdapter {
         super(paramFragmentManager);
         this.type = type;
         if (("20,30,32").contains(type)) {
-            mFragmentFactory = new FragmentFactory(2);
+            mFragmentFactory = new FragmentFactory(3);
         } else if ("31".contains(type)) {
             mFragmentFactory = new FragmentFactory(1);
         }

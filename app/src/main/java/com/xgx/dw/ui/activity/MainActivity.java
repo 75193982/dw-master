@@ -140,15 +140,16 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
         currentUserType = setting.loadString(G.currentUserType);
         FragmentAdapter localFragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), currentUserType);
         if ("20,30,32".contains(currentUserType)) {//普通用户 不显示资源管理按钮
-            viewId = new int[]{R.id.ll_find, R.id.ll_me};
+            viewId = new int[]{R.id.ll_address, R.id.ll_find, R.id.ll_me};
             llWx.setVisibility(View.GONE);
-            llAddress.setVisibility(View.GONE);
+            mListImage.add(addressBookS);
             mListImage.add(findS);
             mListImage.add(meS);
+            mListText.add(tabAddressS);
             mListText.add(tabFindS);
             mListText.add(tabMeS);
-            findS.setAlpha(1.0F);
-            tabFindS.setAlpha(1.0F);
+            addressBookS.setAlpha(1.0F);
+            tabAddressS.setAlpha(1.0F);
         } else if (currentUserType.equals("31")) {//供电局调试账户 不显示资源管理按钮
             viewId = new int[]{R.id.ll_find};
             llWx.setVisibility(View.GONE);
@@ -280,7 +281,11 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
     }
 
     public void switchAddressBook() {
-        viewPage.setCurrentItem(1, false);
+        if ("20,30,32".contains(currentUserType)) {
+            viewPage.setCurrentItem(0, false);
+        } else {
+            viewPage.setCurrentItem(1, false);
+        }
         addressBookS.setAlpha(1.0F);
         tabAddressS.setAlpha(1.0F);
     }
@@ -295,18 +300,21 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
     }
 
     public void switchFind() {
-        if ("20,30,31,32".contains(currentUserType)) {
+        if ("31".contains(currentUserType)) {
             viewPage.setCurrentItem(0, false);
+        } else if ("20,30,32".contains(currentUserType)) {
+            viewPage.setCurrentItem(1, false);
         } else {
             viewPage.setCurrentItem(2, false);
         }
+
         findS.setAlpha(1.0F);
         tabFindS.setAlpha(1.0F);
     }
 
     public void switchMe() {
         if ("20,30,32".contains(currentUserType)) {
-            viewPage.setCurrentItem(1, false);
+            viewPage.setCurrentItem(2, false);
         } else {
             viewPage.setCurrentItem(3, false);
         }
@@ -336,6 +344,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
 
     public static abstract interface OnFABClickListener {
         public abstract void OnFABClickListener(View paramView);
+
     }
 
     private static final int REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY = 666;
@@ -405,9 +414,12 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                         }
                         if (userAllInfo.getPricings() != null && userAllInfo.getPricings().size() > 0) {
                             for (int i = 0; i < userAllInfo.getPricings().size(); i++) {
-                                PricingDaoHelper.getInstance().addData(userAllInfo.getPricings().get(i));
+                                if (!PricingDaoHelper.getInstance().hasKey(userAllInfo.getPricings().get(i).getId())) {
+                                    PricingDaoHelper.getInstance().addData(userAllInfo.getPricings().get(i));
+                                }
                             }
                         }
+                        showToast("扫描购电信息成功，请查看购电记录完成购电");
                     }
                 }
             }

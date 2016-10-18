@@ -14,9 +14,12 @@ public class FragmentFactory {
         if (type.equals("20") || type.equals("30") || type.equals("32")) {
             switch (paramInt) {
                 case 0:
-                    this.mFragment = new SpecialOperationFragment();
+                    this.mFragment = new BuyItemFragment();
                     break;
                 case 1:
+                    this.mFragment = new SpecialOperationFragment();
+                    break;
+                case 2:
                     this.mFragment = new DataSearchFragment();
                     break;
             }

@@ -16,6 +16,6 @@ public class THDevOpenHelper
 
     public void onUpgrade(SQLiteDatabase paramSQLiteDatabase, int paramInt1, int paramInt2) {
         //Log.i("greenDAO", "Upgrading schema from version " + paramInt1 + " to " + paramInt2 + " by dropping all tables");
-        MigrationHelper.getInstance().migrate(paramSQLiteDatabase, new Class[]{UserBeanDao.class, TransformerBeanDao.class, StoreBeanDao.class, SpotPricingBeanDao.class, PricingBeanDao.class});
+        MigrationHelper.getInstance().migrate(paramSQLiteDatabase, new Class[]{UserBeanDao.class, TransformerBeanDao.class, StoreBeanDao.class, SpotPricingBeanDao.class, PricingBeanDao.class, SearchDlLogDao.class});
     }
 }

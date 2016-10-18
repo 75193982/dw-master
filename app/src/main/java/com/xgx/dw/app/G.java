@@ -65,6 +65,10 @@ public class G {
      */
     public static final String currentUsername = "currentUsername";
     /**
+     * 当前姓名偏好设置
+     */
+    public static final String currentPassword = "currentPassword";
+    /**
      * 当前用户类型
      */
     public static final String currentUserType = "currentUserType";
