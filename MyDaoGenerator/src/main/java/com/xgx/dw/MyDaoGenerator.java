@@ -9,12 +9,12 @@ public class MyDaoGenerator {
 
     public static void main(String args[]) throws Exception {
         Schema schema = new Schema(1, "com.xgx.dw");
-        initUserBean(schema);
-        initTransformerBean(schema);
-        initSpotPricingBean(schema);
-        initStoreBean(schema);
+        //initUserBean(schema);
+        //initTransformerBean(schema);
+        //initSpotPricingBean(schema);
+        //initStoreBean(schema);
         initPricingBean(schema);
-        initSearchLogBean(schema);
+        //initSearchLogBean(schema);
         new DaoGenerator().generateAll(schema, args[0]);
     }
 
@@ -85,9 +85,15 @@ public class MyDaoGenerator {
         Entity userBean = schema.addEntity("PricingBean");
         userBean.setTableName("Pricing");
         userBean.addStringProperty("id").primaryKey();
+        userBean.addStringProperty("pid");
         userBean.addStringProperty("price");
         userBean.addStringProperty("userId");
         userBean.addStringProperty("userName");
+        userBean.addStringProperty("adminName");
+        userBean.addStringProperty("storeId");
+        userBean.addStringProperty("storeName");
+        userBean.addStringProperty("transformerId");
+        userBean.addStringProperty("transformerName");
         userBean.addStringProperty("createTime");
         userBean.addStringProperty("type");
     }

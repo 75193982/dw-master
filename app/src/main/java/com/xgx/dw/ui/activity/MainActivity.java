@@ -370,83 +370,91 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                         e.printStackTrace();
                     }
                     Logger.e(getContext(), "扫描结果：" + decryptString);
-                    UserAllInfo userAllInfo = new Gson().fromJson(decryptString, UserAllInfo.class);
-                    UserBean bean = userAllInfo.getUser();
-                    String type = LoginInformation.getInstance().getUser().getType();
-                    //自动登录 比较 ime账号
-                    if (bean.getEcodeType().equals("0") && type.equals("admin")) {
-                        if ("admin".contains(type)) {
+                    try {
+                        UserAllInfo userAllInfo = new Gson().fromJson(decryptString, UserAllInfo.class);
+                        UserBean bean = userAllInfo.getUser();
+                        String type = LoginInformation.getInstance().getUser().getType();
+                        //自动登录 比较 ime账号
+                        if (bean.getEcodeType().equals("0") && type.equals("admin")) {
+                            if ("admin".contains(type)) {
+                                startActivity(new Intent(getContext(), CreateUserOneAcvitity.class).putExtra("ime", bean.getIme()));
+                            } else {
+                                showToast("当前账号没有权限创建营业厅管理员");
+                            }
                             startActivity(new Intent(getContext(), CreateUserOneAcvitity.class).putExtra("ime", bean.getIme()));
-                        } else {
-                            showToast("当前账号没有权限创建营业厅管理员");
-                        }
-                        startActivity(new Intent(getContext(), CreateUserOneAcvitity.class).putExtra("ime", bean.getIme()));
-                    } else if (bean.getEcodeType().equals("1")) {
-                        if ("admin,31".contains(type)) {
-                            startActivity(new Intent(getContext(), CreateUserTwoAcvitity.class).putExtra("ime", bean.getIme()));
-                        } else {
-                            showToast("当前账号没有权限创建台区管理员");
-                        }
-                    } else if (bean.getEcodeType().equals("2")) {
-                        startActivity(new Intent(getContext(), CreateUserThreeAcvitity.class).putExtra("ime", bean.getIme()));
-                    } else if (bean.getEcodeType().equals("3")) {
-                        //保存用户 方便登录
-                        IUserPresenter presenter = new UserPresenterImpl();
-                        presenter.saveUser(MainActivity.this, bean, Integer.valueOf(bean.getType()), false);
-                        if (userAllInfo.getStoreBean().getId() != null) {
-                            StoreBeanDaoHelper.getInstance().addData(userAllInfo.getStoreBean());
-                        }
-                        if (userAllInfo.getTransformerBean().getId() != null) {
-                            TransformerBeanDaoHelper.getInstance().addData(userAllInfo.getTransformerBean());
-                        }
-                    } else if (bean.getEcodeType().equals("4")) {
-                        //保存用户 方便登录
-                        startActivity(new Intent(getContext(), BuySpotActivity.class).putExtra("userAllInfo", userAllInfo));
-                    } else if (bean.getEcodeType().equals("5")) {
-                        //保存用户 方便登录
-                        IUserPresenter presenter = new UserPresenterImpl();
-                        presenter.saveUser(MainActivity.this, bean, Integer.valueOf(bean.getType()), false);
-                        if (userAllInfo.getStoreBean().getId() != null) {
-                            StoreBeanDaoHelper.getInstance().addData(userAllInfo.getStoreBean());
-                        }
-                        if (userAllInfo.getTransformerBean().getId() != null) {
-                            TransformerBeanDaoHelper.getInstance().addData(userAllInfo.getTransformerBean());
-                        }
-                        if (userAllInfo.getPricings() != null && userAllInfo.getPricings().size() > 0) {
-                            for (int i = 0; i < userAllInfo.getPricings().size(); i++) {
-                                if (!PricingDaoHelper.getInstance().hasKey(userAllInfo.getPricings().get(i).getId())) {
-                                    PricingDaoHelper.getInstance().addData(userAllInfo.getPricings().get(i));
+                        } else if (bean.getEcodeType().equals("1")) {
+                            if ("admin,31".contains(type)) {
+                                startActivity(new Intent(getContext(), CreateUserTwoAcvitity.class).putExtra("ime", bean.getIme()));
+                            } else {
+                                showToast("当前账号没有权限创建台区管理员");
+                            }
+                        } else if (bean.getEcodeType().equals("2")) {
+                            startActivity(new Intent(getContext(), CreateUserThreeAcvitity.class).putExtra("ime", bean.getIme()));
+                        } else if (bean.getEcodeType().equals("3")) {
+                            //保存用户 方便登录
+                            IUserPresenter presenter = new UserPresenterImpl();
+                            presenter.saveUser(MainActivity.this, bean, Integer.valueOf(bean.getType()), false);
+                            if (userAllInfo.getStoreBean().getId() != null) {
+                                StoreBeanDaoHelper.getInstance().addData(userAllInfo.getStoreBean());
+                            }
+                            if (userAllInfo.getTransformerBean().getId() != null) {
+                                TransformerBeanDaoHelper.getInstance().addData(userAllInfo.getTransformerBean());
+                            }
+                        } else if (bean.getEcodeType().equals("4") && ("admin,30,31").contains(type)) {
+                            //保存用户 方便登录
+                            startActivity(new Intent(getContext(), BuySpotActivity.class).putExtra("userAllInfo", userAllInfo));
+                        } else if (bean.getEcodeType().equals("5")) {
+                            //保存用户 方便登录
+                            IUserPresenter presenter = new UserPresenterImpl();
+                            presenter.saveUser(MainActivity.this, bean, Integer.valueOf(bean.getType()), false);
+                            if (userAllInfo.getStoreBean().getId() != null) {
+                                StoreBeanDaoHelper.getInstance().addData(userAllInfo.getStoreBean());
+                            }
+                            if (userAllInfo.getTransformerBean().getId() != null) {
+                                TransformerBeanDaoHelper.getInstance().addData(userAllInfo.getTransformerBean());
+                            }
+                            if (userAllInfo.getPricings() != null && userAllInfo.getPricings().size() > 0) {
+                                for (int i = 0; i < userAllInfo.getPricings().size(); i++) {
+                                    if (!PricingDaoHelper.getInstance().hasKey(userAllInfo.getPricings().get(i).getId())) {
+                                        PricingDaoHelper.getInstance().addData(userAllInfo.getPricings().get(i));
+                                    }
                                 }
                             }
+                            showToast("扫描购电信息成功，请查看购电记录完成购电");
+                        } else {
+                            showToast("不是有效的二维码");
                         }
-                        showToast("扫描购电信息成功，请查看购电记录完成购电");
-                    }
-                }
-            }
-        }
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY) {
-            final String picturePath = BGAPhotoPickerActivity.getSelectedImages(data).get(0);
-            try {
-                CodeUtils.analyzeBitmap(picturePath, new CodeUtils.AnalyzeCallback() {
-                    @Override
-                    public void onAnalyzeSuccess(Bitmap mBitmap, String result) {
-                        String decryptString = "";
-                        try {
-                            decryptString = AES.decrypt(G.appsecret, result);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        Toast.makeText(getContext(), decryptString, Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        showToast("二维码扫描错误，请对准二维码重新扫描");
                     }
 
-                    @Override
-                    public void onAnalyzeFailed() {
+
+                }
+                if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY) {
+                    final String picturePath = BGAPhotoPickerActivity.getSelectedImages(data).get(0);
+                    try {
+                        CodeUtils.analyzeBitmap(picturePath, new CodeUtils.AnalyzeCallback() {
+                            @Override
+                            public void onAnalyzeSuccess(Bitmap mBitmap, String result) {
+                                String decryptString = "";
+                                try {
+                                    decryptString = AES.decrypt(G.appsecret, result);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                Toast.makeText(getContext(), decryptString, Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onAnalyzeFailed() {
+                                Toast.makeText(getContext(), "解析二维码失败", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
                         Toast.makeText(getContext(), "解析二维码失败", Toast.LENGTH_LONG).show();
                     }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(getContext(), "解析二维码失败", Toast.LENGTH_LONG).show();
+                }
             }
         }
     }
