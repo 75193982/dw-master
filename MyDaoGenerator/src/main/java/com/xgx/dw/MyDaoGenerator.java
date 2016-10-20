@@ -9,12 +9,12 @@ public class MyDaoGenerator {
 
     public static void main(String args[]) throws Exception {
         Schema schema = new Schema(1, "com.xgx.dw");
-        //initUserBean(schema);
-        //initTransformerBean(schema);
-        //initSpotPricingBean(schema);
-        //initStoreBean(schema);
+        initUserBean(schema);
+        initTransformerBean(schema);
+        initSpotPricingBean(schema);
+        initStoreBean(schema);
         initPricingBean(schema);
-        //initSearchLogBean(schema);
+        initSearchLogBean(schema);
         new DaoGenerator().generateAll(schema, args[0]);
     }
 

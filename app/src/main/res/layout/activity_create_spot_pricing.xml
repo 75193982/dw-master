@@ -101,32 +101,6 @@
                 app:met_singleLineEllipsis="true" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0.0dip"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16.0dip"
-                android:layout_marginStart="16.0dip"
-                android:layout_weight="1.0"
-                android:text="@string/spotpricing_priceCount"
-                android:textSize="@dimen/text_third" />
-
-            <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@id/spotpricing_priceCount"
-                android:layout_width="0.0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="3.0"
-                android:hint="@string/spotpricing_priceCount"
-                android:inputType="numberDecimal"
-                android:textSize="@dimen/text_third"
-                app:met_floatingLabel="highlight"
-                app:met_floatingLabelText="@string/spotpricing_priceCount"
-                app:met_singleLineEllipsis="true" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -160,6 +134,33 @@
                 app:ms_highlightColor="@color/Green"
                 app:ms_hint="@string/spotpricing_type"
                 app:ms_multiline="false" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0.0dip"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16.0dip"
+                android:layout_marginStart="16.0dip"
+                android:layout_weight="1.0"
+                android:text="@string/spotpricing_priceCount"
+                android:textSize="@dimen/text_third" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@id/spotpricing_priceCount"
+                android:layout_width="0.0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="3.0"
+                android:hint="@string/spotpricing_priceCount"
+                android:inputType="numberDecimal"
+                android:textSize="@dimen/text_third"
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelText="@string/spotpricing_priceCount"
+                app:met_singleLineEllipsis="true" />
         </LinearLayout>
 
         <LinearLayout

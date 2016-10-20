@@ -29,14 +29,6 @@ public class UserBean implements Serializable {
     private String ime;
     private String ecodeType;
 
-    public UserBean(String userId, String username, String mima, String type, String ime) {
-        this.userId = userId;
-        this.userName = username;
-        this.password = mima;
-        this.type = type;
-        this.ime = ime;
-    }
-
     public UserBean() {
     }
 

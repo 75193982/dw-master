@@ -93,6 +93,8 @@ public class CreateSpotPricingAcvitity extends BaseAppCompatActivity implements 
                     CreateSpotPricingAcvitity.this.spotpricingPeakPrice.setEnabled(true);
                     CreateSpotPricingAcvitity.this.spotpricingFlatPrice.setEnabled(true);
                     CreateSpotPricingAcvitity.this.spotpricingValleyPrice.setEnabled(true);
+                    spotpricingPriceCount.setEnabled(false);
+                    spotpricingPriceCount.setText("0");
                 }
                 while (paramAnonymousInt != 0) {
                     return;
@@ -101,6 +103,7 @@ public class CreateSpotPricingAcvitity extends BaseAppCompatActivity implements 
                 CreateSpotPricingAcvitity.this.spotpricingPeakPrice.setEnabled(false);
                 CreateSpotPricingAcvitity.this.spotpricingFlatPrice.setEnabled(false);
                 CreateSpotPricingAcvitity.this.spotpricingValleyPrice.setEnabled(false);
+                spotpricingPriceCount.setEnabled(true);
                 CreateSpotPricingAcvitity.this.spotpricingPointedPrice.setText("0.00");
                 CreateSpotPricingAcvitity.this.spotpricingPeakPrice.setText("0.00");
                 CreateSpotPricingAcvitity.this.spotpricingFlatPrice.setText("0.00");

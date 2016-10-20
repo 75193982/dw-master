@@ -239,9 +239,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                 break;
             case 3:
                 setToolbarTitle("保电解除");
-                temp = String.format(BlueOperationContact.BaoDianJcSendTemp, currentTime);
-                OperationStr = String.format(BlueOperationContact.BaoDianJcSend, currentTime, MyUtils.getJyCode(temp));
-
+                OperationStr = BlueOperationContact.BaoDianJcSend;
                 break;
             case 4:
                 setToolbarTitle("倍率录入");
