@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -227,8 +228,10 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                     });
                     ViewCompat.animate(fab).scaleX(1.0F).scaleY(1.0F).setInterpolator(new LinearOutSlowInInterpolator()).setListener(new ViewPropertyAnimatorListenerAdapter() {
                         public void onAnimationEnd(View paramAnonymous2View) {
-                            if ((MainActivity.this.isFinishing()) || ((ApiLevelHelper.isAtLeast(17)) && (MainActivity.this.isDestroyed()))) {
-                                return;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                                if ((MainActivity.this.isFinishing()) || ((ApiLevelHelper.isAtLeast(17)) && (MainActivity.this.isDestroyed()))) {
+                                    return;
+                                }
                             }
                             fab.setVisibility(View.VISIBLE);
                         }
@@ -244,8 +247,10 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                     });
                     ViewCompat.animate(fab).scaleX(1.0F).scaleY(1.0F).setInterpolator(new LinearOutSlowInInterpolator()).setListener(new ViewPropertyAnimatorListenerAdapter() {
                         public void onAnimationEnd(View paramAnonymous2View) {
-                            if ((MainActivity.this.isFinishing()) || ((ApiLevelHelper.isAtLeast(17)) && (MainActivity.this.isDestroyed()))) {
-                                return;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                                if ((MainActivity.this.isFinishing()) || ((ApiLevelHelper.isAtLeast(17)) && (MainActivity.this.isDestroyed()))) {
+                                    return;
+                                }
                             }
                             fab.setVisibility(View.VISIBLE);
                         }
@@ -260,8 +265,10 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                     });
                     ViewCompat.animate(fab).scaleX(1.0F).scaleY(1.0F).setInterpolator(new LinearOutSlowInInterpolator()).setListener(new ViewPropertyAnimatorListenerAdapter() {
                         public void onAnimationEnd(View paramAnonymous2View) {
-                            if ((MainActivity.this.isFinishing()) || ((ApiLevelHelper.isAtLeast(17)) && (MainActivity.this.isDestroyed()))) {
-                                return;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                                if ((MainActivity.this.isFinishing()) || ((ApiLevelHelper.isAtLeast(17)) && (MainActivity.this.isDestroyed()))) {
+                                    return;
+                                }
                             }
                             fab.setVisibility(View.VISIBLE);
                         }
@@ -269,8 +276,10 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                 } else {
                     ViewCompat.animate(fab).scaleX(0.0F).scaleY(0.0F).setInterpolator(new FastOutSlowInInterpolator()).setStartDelay(100L).setListener(new ViewPropertyAnimatorListenerAdapter() {
                         public void onAnimationEnd(View paramAnonymous2View) {
-                            if ((MainActivity.this.isFinishing()) || ((ApiLevelHelper.isAtLeast(17)) && (MainActivity.this.isDestroyed()))) {
-                                return;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                                if ((MainActivity.this.isFinishing()) || ((ApiLevelHelper.isAtLeast(17)) && (MainActivity.this.isDestroyed()))) {
+                                    return;
+                                }
                             }
                             fab.setVisibility(View.GONE);
                         }

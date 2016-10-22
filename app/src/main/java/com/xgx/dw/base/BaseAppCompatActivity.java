@@ -1,15 +1,19 @@
 package com.xgx.dw.base;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -35,6 +39,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
     TextView toolbarTitle;
     @Bind(R.id.fab)
     FloatingActionButton fab;
+    public static int REQUSET_CODE_WRITE_EXTERNAL_STORAGE = 1001;
 
     public FloatingActionButton getFab() {
         return fab;
@@ -71,6 +76,27 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initView();
         initPresenter();
+        //检查SD卡写权限授予情况
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUSET_CODE_WRITE_EXTERNAL_STORAGE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1001:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //授权成功，直接操作
+                } else {
+                    //禁止授权
+                }
+                break;
+        }
     }
 
 

@@ -58,6 +58,14 @@ public class UserBean implements Serializable {
         this.ecodeType = ecodeType;
     }
 
+    public UserBean(String id, String name, String pwd, String type, String ime) {
+        this.userId = id;
+        this.userName = name;
+        this.password = pwd;
+        this.type = type;
+        this.ime = ime;
+    }
+
     public String getUserId() {
         return userId;
     }
