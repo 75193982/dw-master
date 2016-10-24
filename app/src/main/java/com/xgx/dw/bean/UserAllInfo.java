@@ -1,6 +1,7 @@
 package com.xgx.dw.bean;
 
 import com.xgx.dw.PricingBean;
+import com.xgx.dw.SpotPricingBean;
 import com.xgx.dw.StoreBean;
 import com.xgx.dw.TransformerBean;
 import com.xgx.dw.UserBean;
@@ -16,6 +17,7 @@ public class UserAllInfo implements Serializable {
     private StoreBean storeBean;
     private TransformerBean transformerBean;
     private List<PricingBean> pricings;
+    private List<SpotPricingBean> spotBeans;
 
     public UserBean getUser() {
         return user;
@@ -47,5 +49,13 @@ public class UserAllInfo implements Serializable {
 
     public void setPricings(List<PricingBean> pricings) {
         this.pricings = pricings;
+    }
+
+    public List<SpotPricingBean> getSpotBeans() {
+        return spotBeans;
+    }
+
+    public void setSpotBeans(List<SpotPricingBean> spotBeans) {
+        this.spotBeans = spotBeans;
     }
 }

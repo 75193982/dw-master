@@ -3,7 +3,6 @@
     style="@style/MatchMatch.Vertical"
     android:gravity="center_horizontal">
 
-    <include layout="@layout/toolbar" />
 
     <LinearLayout
         style="@style/MatchWrap.Horizontal"

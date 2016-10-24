@@ -77,17 +77,24 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
 
     public void initPresenter() {
         setToolbarTitle("登录");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        UserBean localUserBean = new UserBean("admin", "超级管理员", "888888", "admin", "867628025884339");
-        UserBean localUserBean2 = new UserBean("666666", "超级管理员", "888888", "admin", "867567020720108");
+        Thread t = new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                UserBean localUserBean = new UserBean("admin", "超级管理员", "888888", "admin", "867628025884339");
+                UserBean localUserBean2 = new UserBean("666666", "超级管理员", "888888", "admin", "867567020720108");
 //        UserBean localUserBean10 = new UserBean("4101001", "一级营业厅管理员", "888888", "10");
 //        UserBean localUserBean11 = new UserBean("4101101", "一级台区管理员", "888888", "11");
 //        UserBean localUserBean2 = new UserBean("4102001", "二级账户", "888888", "20");
 //        UserBean localUserBean30 = new UserBean("4103001", "公司调试账户", "888888", "30");
 //        UserBean localUserBean31 = new UserBean("4103101", "供电局调试1", "888888", "31");
 //        UserBean localUserBean32 = new UserBean("4103201", "供电局调试2", "888888", "32");
-        UserBeanDaoHelper.getInstance().addData(localUserBean);
-        UserBeanDaoHelper.getInstance().addData(localUserBean2);
+                UserBeanDaoHelper.getInstance().addData(localUserBean);
+                UserBeanDaoHelper.getInstance().addData(localUserBean2);
+            }
+        };
+        t.start();
         this.loginPresenter = new LoginPresenterImpl();
     }
 
@@ -150,7 +157,6 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_btn:
-                showProgress(getString(R.string.login_progress));
                 LoginRequest localLoginRequest = new LoginRequest();
                 localLoginRequest.bianhao = loginUsername.getText().toString();
                 localLoginRequest.mima = loginPassword.getText().toString();

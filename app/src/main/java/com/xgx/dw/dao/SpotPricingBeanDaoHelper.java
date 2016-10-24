@@ -98,4 +98,10 @@ public class SpotPricingBeanDaoHelper implements THDaoHelperInterface {
         localQueryBuilder.and(SpotPricingBeanDao.Properties.Name.eq(paramString1), Properties.Store_id.eq(paramString2), new WhereCondition[0]);
         return localQueryBuilder.list();
     }
+
+    public List<SpotPricingBean> testQueryBy(String paramString2) {
+        QueryBuilder localQueryBuilder = this.userBeanDao.queryBuilder();
+        localQueryBuilder.where(Properties.Store_id.eq(paramString2));
+        return localQueryBuilder.list();
+    }
 }

@@ -38,7 +38,7 @@ public class UserPresenterImpl extends BasePresenter implements IUserPresenter {
 
     @Override
     public void saveUser(IUserView IBaseView, UserBean userBean, int type, boolean isSave) {
-        IBaseView.showProgress("保存用户中...");
+
 
         if (isEmpty(userBean.getUserId(), IBaseView, "用户编号不能为空")) return;
         if (isEmpty(userBean.getUserName(), IBaseView, "用户名称不能为空")) return;
@@ -46,6 +46,7 @@ public class UserPresenterImpl extends BasePresenter implements IUserPresenter {
         if (type == 11) {
             if (isEmpty(userBean.getTransformerId(), IBaseView, "台区名称不能为空")) return;
         }
+        if (isEmpty(userBean.getPrice(), IBaseView, "请选择电价")) return;
 
         if (UserBeanDaoHelper.getInstance().hasKey(userBean.getUserId()) && isSave == true) {
             IBaseView.showToast("已有相同编号的用户");
@@ -53,6 +54,7 @@ public class UserPresenterImpl extends BasePresenter implements IUserPresenter {
             IBaseView.hideProgress();
             return;
         }
+        IBaseView.showProgress("保存用户中...");
         userBean.setType(type + "");
         UserBeanDaoHelper.getInstance().addData(userBean);
         IBaseView.saveTransformer(true);

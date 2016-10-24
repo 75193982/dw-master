@@ -21,7 +21,6 @@ public class UserBean implements Serializable {
     private String transformerName;
     private String voltageRatio;
     private String currentRatio;
-    private String meterNum;
     private String price;
     private String phone;
     private String createTime;
@@ -32,11 +31,19 @@ public class UserBean implements Serializable {
     public UserBean() {
     }
 
+    public UserBean(String id, String name, String pwd, String type, String ime) {
+        this.userId = id;
+        this.userName = name;
+        this.password = pwd;
+        this.type = type;
+        this.ime = ime;
+    }
+
     public UserBean(String userId) {
         this.userId = userId;
     }
 
-    public UserBean(String userId, String userName, String password, String type, String storeId, String storeName, String isBuy, String isTest, String transformerId, String transformerName, String voltageRatio, String currentRatio, String meterNum, String price, String phone, String createTime, String remark, String ime, String ecodeType) {
+    public UserBean(String userId, String userName, String password, String type, String storeId, String storeName, String isBuy, String isTest, String transformerId, String transformerName, String voltageRatio, String currentRatio, String price, String phone, String createTime, String remark, String ime, String ecodeType) {
         this.userId = userId;
         this.userName = userName;
         this.password = password;
@@ -49,21 +56,12 @@ public class UserBean implements Serializable {
         this.transformerName = transformerName;
         this.voltageRatio = voltageRatio;
         this.currentRatio = currentRatio;
-        this.meterNum = meterNum;
         this.price = price;
         this.phone = phone;
         this.createTime = createTime;
         this.remark = remark;
         this.ime = ime;
         this.ecodeType = ecodeType;
-    }
-
-    public UserBean(String id, String name, String pwd, String type, String ime) {
-        this.userId = id;
-        this.userName = name;
-        this.password = pwd;
-        this.type = type;
-        this.ime = ime;
     }
 
     public String getUserId() {
@@ -160,14 +158,6 @@ public class UserBean implements Serializable {
 
     public void setCurrentRatio(String currentRatio) {
         this.currentRatio = currentRatio;
-    }
-
-    public String getMeterNum() {
-        return meterNum;
-    }
-
-    public void setMeterNum(String meterNum) {
-        this.meterNum = meterNum;
     }
 
     public String getPrice() {

@@ -31,7 +31,7 @@ public class UserAdapter extends BaseQuickAdapter<UserBean> {
                     "\n" + "电压倍率：" + userBean.getVoltageRatio() + "电流倍率：" + userBean.getCurrentRatio() +
                     "\n" + "电价：" + userBean.getPrice() +
                     "\n" + "用户号码：" + userBean.getPhone() +
-                    "\n" + "用户表号：" + userBean.getMeterNum());
+                    "\n" + "用户表号：" + userBean.getUserId());
         }
 
     }

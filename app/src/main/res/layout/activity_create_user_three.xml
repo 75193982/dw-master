@@ -146,28 +146,18 @@
             app:met_singleLineEllipsis="true" />
 
 
-        <com.rengwuxian.materialedittext.MaterialEditText
+        <TextView
             android:id="@+id/price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/iconfont_must"
+            android:drawableRight="@drawable/common_arrows_right"
+            android:gravity="center_vertical"
             android:hint="@string/input_price"
-            android:inputType="numberDecimal"
-            android:textSize="@dimen/text_third"
-            app:met_floatingLabel="highlight"
-            app:met_floatingLabelText="@string/price"
-            app:met_singleLineEllipsis="true" />
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textSize="@dimen/text_third" />
 
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/meterNum"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/input_meterNum"
-            android:inputType="numberDecimal"
-            android:textSize="@dimen/text_third"
-            app:met_floatingLabel="highlight"
-            app:met_floatingLabelText="@string/meterNum"
-            app:met_singleLineEllipsis="true" />
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/phone"

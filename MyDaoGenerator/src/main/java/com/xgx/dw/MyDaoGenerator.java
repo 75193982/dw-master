@@ -34,7 +34,6 @@ public class MyDaoGenerator {
         userBean.addStringProperty("transformerName");
         userBean.addStringProperty("voltageRatio");
         userBean.addStringProperty("currentRatio");
-        userBean.addStringProperty("meterNum");
         userBean.addStringProperty("price");
         userBean.addStringProperty("phone");
         userBean.addStringProperty("createTime");

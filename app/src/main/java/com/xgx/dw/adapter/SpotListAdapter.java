@@ -17,7 +17,7 @@ public class SpotListAdapter extends BaseQuickAdapter<PricingBean> {
     }
 
     protected void convert(BaseViewHolder baseViewHolder, PricingBean bean) {
-        baseViewHolder.setText(R.id.title, "购电金额：" + bean.getPrice());
+        baseViewHolder.setText(R.id.title, "购电单号：" + bean.getId() + "购电金额：" + bean.getPrice());
         String type = bean.getType().equals("2") ? "已完成" : "未上传设备";
         baseViewHolder.setText(R.id.subtitle, type);
         baseViewHolder.setTextColor(R.id.subtitle, ContextCompat.getColor(mContext, bean.getType().equals("2") ? android.R.color.holo_blue_light : android.R.color.holo_red_light));

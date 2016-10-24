@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Entity mapped to table Store.
  */
-public class StoreBean implements Serializable   {
+public class StoreBean implements Serializable {
 
     private String id;
     private String name;

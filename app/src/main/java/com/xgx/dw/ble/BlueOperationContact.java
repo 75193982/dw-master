@@ -65,7 +65,7 @@ public class BlueOperationContact {
 
             try {
                 StringBuilder sb = new StringBuilder();
-                String meterNum = LoginInformation.getInstance().getUser().getMeterNum();
+                String meterNum = LoginInformation.getInstance().getUser().getUserId();
                 if (meterNum.length() == 9) {
                     sb.append(meterNum.substring(2, 4) + " " + meterNum.substring(0, 2) + " ");
                     //先获取前两位
@@ -147,7 +147,7 @@ public class BlueOperationContact {
     public static void main(String args[]) throws Exception {
         UserBean user = new UserBean();
         user.setType("20");
-        user.setMeterNum("037600496");
+        user.setUserName("037600496");
         LoginInformation.getInstance().setUser(user);
         reset();
         System.out.println(HeZaSend);

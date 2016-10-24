@@ -7,23 +7,27 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.xgx.dw.PricingBean;
 import com.xgx.dw.R;
+import com.xgx.dw.SpotPricingBean;
 import com.xgx.dw.StoreBean;
 import com.xgx.dw.TransformerBean;
 import com.xgx.dw.UserBean;
 import com.xgx.dw.app.G;
+import com.xgx.dw.base.BaseAppCompatActivity;
+import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.bean.UserAllInfo;
 import com.xgx.dw.dao.PricingDaoHelper;
+import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
 import com.xgx.dw.dao.StoreBeanDaoHelper;
 import com.xgx.dw.dao.TransformerBeanDaoHelper;
 import com.xgx.dw.dao.UserBeanDaoHelper;
@@ -38,29 +42,39 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
-public class TestGeneratectivity extends AppCompatActivity {
-    private ImageView mChineseIv;
-    private ImageView mEnglishIv;
-    private ImageView mChineseLogoIv;
-    private ImageView mEnglishLogoIv;
+
+public class TestGeneratectivity extends BaseAppCompatActivity {
+    @Bind(R.id.iv_chinese)
+    ImageView mChineseIv;
+    @Bind(R.id.iv_english)
+    ImageView mEnglishIv;
+    @Bind(R.id.iv_chinese_logo)
+    ImageView mChineseLogoIv;
+    @Bind(R.id.iv_english_logo)
+    ImageView mEnglishLogoIv;
+    @Bind(R.id.decode_isbn)
+    TextView decodeIsbn;
     private int type;
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test_generate);
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        type = getIntent().getIntExtra("type", -1);
-        initView();
-        createQRCode();
+    public void initContentView() {
+        baseSetContentView(R.layout.activity_test_generate);
     }
 
-    private void initView() {
-        mChineseIv = (ImageView) findViewById(R.id.iv_chinese);
-        mChineseLogoIv = (ImageView) findViewById(R.id.iv_chinese_logo);
-        mEnglishIv = (ImageView) findViewById(R.id.iv_english);
-        mEnglishLogoIv = (ImageView) findViewById(R.id.iv_english_logo);
+    @Override
+    public void initView() {
+
+    }
+
+
+    @Override
+    public void initPresenter() {
+        type = getIntent().getIntExtra("type", -1);
+        createQRCode();
     }
 
     private void createQRCode() {
@@ -72,23 +86,22 @@ public class TestGeneratectivity extends AppCompatActivity {
         StoreBean storebean = new StoreBean();
         TransformerBean transbean = new TransformerBean();
         List<PricingBean> pricings = new ArrayList<>();
+        List<SpotPricingBean> spotPricingBeans = new ArrayList<>();
         switch (type) {
             case 0://1级账号
-                getSupportActionBar().setTitle(getResources().getString(R.string.create_userone));
+                setToolbarTitle(getResources().getString(R.string.create_userone));
                 bean.setIme(MyUtils.getuniqueId(this));
                 break;
             case 1://台区管理员账号
-                getSupportActionBar().setTitle(getResources().getString(R.string.create_usertwo));
-
+                setToolbarTitle(getResources().getString(R.string.create_usertwo));
                 bean.setIme(MyUtils.getuniqueId(this));
                 break;
             case 2://二级账号
-                getSupportActionBar().setTitle(getResources().getString(R.string.create_userThree));
-
+                setToolbarTitle(getResources().getString(R.string.create_userThree));
                 bean.setIme(MyUtils.getuniqueId(this));
                 break;
             case 3:
-                getSupportActionBar().setTitle("账号信息");
+                setToolbarTitle("账号信息");
                 bean = UserBeanDaoHelper.getInstance().getDataById(id);
                 if (bean.getType().equals("10")) {
                     storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
@@ -99,10 +112,11 @@ public class TestGeneratectivity extends AppCompatActivity {
                     storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
                     transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
                     pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getUserId());
+                    spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().testQueryBy(LoginInformation.getInstance().getUser().getStoreId());
                 }
                 break;
             case 4:
-                getSupportActionBar().setTitle("购电用户信息");
+                setToolbarTitle("购电用户信息");
                 bean = UserBeanDaoHelper.getInstance().getDataById(id);
                 if (bean.getType().equals("10")) {
                     storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
@@ -113,10 +127,11 @@ public class TestGeneratectivity extends AppCompatActivity {
                     storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
                     transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
                     pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getUserId());
+                    spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().testQueryBy(LoginInformation.getInstance().getUser().getStoreId());
                 }
                 break;
             case 5:
-                getSupportActionBar().setTitle("购电用户信息");
+                setToolbarTitle("购电用户信息");
                 bean = UserBeanDaoHelper.getInstance().getDataById(id);
                 if (bean.getType().equals("10")) {
                     storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
@@ -127,6 +142,7 @@ public class TestGeneratectivity extends AppCompatActivity {
                     storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
                     transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
                     pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getUserId());
+                    spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().testQueryBy(LoginInformation.getInstance().getUser().getStoreId());
                 }
                 break;
         }
@@ -135,6 +151,7 @@ public class TestGeneratectivity extends AppCompatActivity {
         userAllInfo.setStoreBean(storebean);
         userAllInfo.setTransformerBean(transbean);
         userAllInfo.setPricings(pricings);
+        userAllInfo.setSpotBeans(spotPricingBeans);
         createChineseQRCode(new Gson().toJson(userAllInfo));
     }
 

@@ -1,6 +1,7 @@
 package com.xgx.dw.ui.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.andexert.library.RippleView;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.xgx.dw.R;
+import com.xgx.dw.SpotPricingBean;
 import com.xgx.dw.StoreBean;
 import com.xgx.dw.TransformerBean;
 import com.xgx.dw.UserBean;
@@ -30,6 +32,7 @@ import com.xgx.dw.ui.view.interfaces.IUserView;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
@@ -53,9 +56,7 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
     @Bind(R.id.currentRatio)
     MaterialEditText currentRatio;
     @Bind(R.id.price)
-    MaterialEditText price;
-    @Bind(R.id.meterNum)
-    MaterialEditText meterNum;
+    TextView price;
     @Bind(R.id.phone)
     MaterialEditText phone;
     @Bind(R.id.action_save)
@@ -98,7 +99,6 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
             userName.setText(checkText(this.bean.getUserName()));
             price.setText(checkText(bean.getPrice()));
             phone.setText(checkText(bean.getPhone()));
-            meterNum.setText(checkText(bean.getMeterNum()));
             currentRatio.setText(checkText(bean.getCurrentRatio()));
             voltageRatio.setText(checkText(bean.getVoltageRatio()));
             imeTv.setText(checkText(bean.getIme()));
@@ -245,9 +245,8 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
         userBean.setIme(imeTv.getText().toString());
         userBean.setVoltageRatio(voltageRatio.getText().toString());
         userBean.setCurrentRatio(currentRatio.getText().toString());
-        userBean.setMeterNum(meterNum.getText().toString());
         userBean.setPhone(phone.getText().toString());
-        userBean.setPrice(price.getText().toString());
+        userBean.setPrice(price.getTag() == null ? "" : price.getTag().toString());
         if ((bean == null) || (TextUtils.isEmpty(bean.getUserId()))) {
             userBean.setPassword(userId.getText().toString());
             this.presenter.saveUser(this, userBean, 20, true);
@@ -283,4 +282,20 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
         return true;
     }
 
+
+    @OnClick(R.id.price)
+    public void onClickToPrice() {
+        Intent intent = new Intent(getContext(), SearchSpotPricingListActivity.class);
+        startActivityForResult(intent, 1001);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1001 && resultCode == 1001) {
+            SpotPricingBean bean = (SpotPricingBean) data.getSerializableExtra("entity");
+            price.setText(bean.getName());
+            price.setTag(bean.getId());
+        }
+    }
 }

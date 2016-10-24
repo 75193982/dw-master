@@ -62,6 +62,9 @@
             android:name=".ui.activity.SpotPricingActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
+            android:name=".ui.activity.SearchSpotPricingListActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
             android:name=".ui.activity.CreateSpotPricingAcvitity"
             android:windowSoftInputMode="stateHidden" />
         <activity

@@ -35,13 +35,12 @@ public class UserBeanDao extends AbstractDao<UserBean, String> {
         public final static Property TransformerName = new Property(9, String.class, "transformerName", false, "TRANSFORMER_NAME");
         public final static Property VoltageRatio = new Property(10, String.class, "voltageRatio", false, "VOLTAGE_RATIO");
         public final static Property CurrentRatio = new Property(11, String.class, "currentRatio", false, "CURRENT_RATIO");
-        public final static Property MeterNum = new Property(12, String.class, "meterNum", false, "METER_NUM");
-        public final static Property Price = new Property(13, String.class, "price", false, "PRICE");
-        public final static Property Phone = new Property(14, String.class, "phone", false, "PHONE");
-        public final static Property CreateTime = new Property(15, String.class, "createTime", false, "CREATE_TIME");
-        public final static Property Remark = new Property(16, String.class, "remark", false, "REMARK");
-        public final static Property Ime = new Property(17, String.class, "ime", false, "IME");
-        public final static Property EcodeType = new Property(18, String.class, "ecodeType", false, "ECODE_TYPE");
+        public final static Property Price = new Property(12, String.class, "price", false, "PRICE");
+        public final static Property Phone = new Property(13, String.class, "phone", false, "PHONE");
+        public final static Property CreateTime = new Property(14, String.class, "createTime", false, "CREATE_TIME");
+        public final static Property Remark = new Property(15, String.class, "remark", false, "REMARK");
+        public final static Property Ime = new Property(16, String.class, "ime", false, "IME");
+        public final static Property EcodeType = new Property(17, String.class, "ecodeType", false, "ECODE_TYPE");
     };
 
 
@@ -69,13 +68,12 @@ public class UserBeanDao extends AbstractDao<UserBean, String> {
                 "'TRANSFORMER_NAME' TEXT," + // 9: transformerName
                 "'VOLTAGE_RATIO' TEXT," + // 10: voltageRatio
                 "'CURRENT_RATIO' TEXT," + // 11: currentRatio
-                "'METER_NUM' TEXT," + // 12: meterNum
-                "'PRICE' TEXT," + // 13: price
-                "'PHONE' TEXT," + // 14: phone
-                "'CREATE_TIME' TEXT," + // 15: createTime
-                "'REMARK' TEXT," + // 16: remark
-                "'IME' TEXT," + // 17: ime
-                "'ECODE_TYPE' TEXT);"); // 18: ecodeType
+                "'PRICE' TEXT," + // 12: price
+                "'PHONE' TEXT," + // 13: phone
+                "'CREATE_TIME' TEXT," + // 14: createTime
+                "'REMARK' TEXT," + // 15: remark
+                "'IME' TEXT," + // 16: ime
+                "'ECODE_TYPE' TEXT);"); // 17: ecodeType
     }
 
     /** Drops the underlying database table. */
@@ -149,39 +147,34 @@ public class UserBeanDao extends AbstractDao<UserBean, String> {
             stmt.bindString(12, currentRatio);
         }
  
-        String meterNum = entity.getMeterNum();
-        if (meterNum != null) {
-            stmt.bindString(13, meterNum);
-        }
- 
         String price = entity.getPrice();
         if (price != null) {
-            stmt.bindString(14, price);
+            stmt.bindString(13, price);
         }
  
         String phone = entity.getPhone();
         if (phone != null) {
-            stmt.bindString(15, phone);
+            stmt.bindString(14, phone);
         }
  
         String createTime = entity.getCreateTime();
         if (createTime != null) {
-            stmt.bindString(16, createTime);
+            stmt.bindString(15, createTime);
         }
  
         String remark = entity.getRemark();
         if (remark != null) {
-            stmt.bindString(17, remark);
+            stmt.bindString(16, remark);
         }
  
         String ime = entity.getIme();
         if (ime != null) {
-            stmt.bindString(18, ime);
+            stmt.bindString(17, ime);
         }
  
         String ecodeType = entity.getEcodeType();
         if (ecodeType != null) {
-            stmt.bindString(19, ecodeType);
+            stmt.bindString(18, ecodeType);
         }
     }
 
@@ -207,13 +200,12 @@ public class UserBeanDao extends AbstractDao<UserBean, String> {
             cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // transformerName
             cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // voltageRatio
             cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // currentRatio
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // meterNum
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // price
-            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // phone
-            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // createTime
-            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // remark
-            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // ime
-            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18) // ecodeType
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // price
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // phone
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // createTime
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // remark
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // ime
+            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17) // ecodeType
         );
         return entity;
     }
@@ -233,13 +225,12 @@ public class UserBeanDao extends AbstractDao<UserBean, String> {
         entity.setTransformerName(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
         entity.setVoltageRatio(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
         entity.setCurrentRatio(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setMeterNum(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
-        entity.setPrice(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
-        entity.setPhone(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
-        entity.setCreateTime(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
-        entity.setRemark(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
-        entity.setIme(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
-        entity.setEcodeType(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
+        entity.setPrice(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setPhone(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setCreateTime(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setRemark(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setIme(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
+        entity.setEcodeType(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
      }
     
     /** @inheritdoc */
