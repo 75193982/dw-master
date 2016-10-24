@@ -4,10 +4,12 @@ import android.text.TextUtils;
 
 import com.xgx.dw.PricingBean;
 import com.xgx.dw.PricingBeanDao;
+import com.xgx.dw.SpotPricingBeanDao;
 import com.xgx.dw.StoreBean;
 import com.xgx.dw.THDaoHelperInterface;
 import com.xgx.dw.THDatabaseLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.dao.query.QueryBuilder;
@@ -92,9 +94,15 @@ public class PricingDaoHelper implements THDaoHelperInterface {
     }
 
     public List<PricingBean> queryByUserId(String userId) {
-        QueryBuilder localQueryBuilder = this.userBeanDao.queryBuilder();
-        localQueryBuilder.where(PricingBeanDao.Properties.UserId.eq(userId));
-        return localQueryBuilder.list();
+        try {
+            QueryBuilder localQueryBuilder = this.userBeanDao.queryBuilder();
+            localQueryBuilder.where(PricingBeanDao.Properties.UserId.eq(userId));
+            localQueryBuilder.orderDesc(PricingBeanDao.Properties.CreateTime);
+            return localQueryBuilder.list();
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+
     }
 
 }

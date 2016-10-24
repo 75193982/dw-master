@@ -7,6 +7,7 @@ import com.xgx.dw.TransformerBean;
 import com.xgx.dw.UserBean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +17,8 @@ public class UserAllInfo implements Serializable {
     private UserBean user;
     private StoreBean storeBean;
     private TransformerBean transformerBean;
-    private List<PricingBean> pricings;
+    private int pricingSize;
+    private PricingBean pricings;
     private List<SpotPricingBean> spotBeans;
 
     public UserBean getUser() {
@@ -43,11 +45,20 @@ public class UserAllInfo implements Serializable {
         this.transformerBean = transformerBean;
     }
 
-    public List<PricingBean> getPricings() {
+    public int getPricingSize() {
+        return pricingSize;
+    }
+
+    public void setPricingSize(int pricingSize) {
+        this.pricingSize = pricingSize;
+    }
+
+
+    public PricingBean getPricings() {
         return pricings;
     }
 
-    public void setPricings(List<PricingBean> pricings) {
+    public void setPricings(PricingBean pricings) {
         this.pricings = pricings;
     }
 

@@ -8,10 +8,13 @@ import com.xgx.dw.SpotPricingBeanDao.Properties;
 import com.xgx.dw.StoreBean;
 import com.xgx.dw.THDaoHelperInterface;
 import com.xgx.dw.THDatabaseLoader;
+import com.xgx.dw.bean.LoginInformation;
+import com.xgx.dw.utils.Logger;
 
 import de.greenrobot.dao.query.QueryBuilder;
 import de.greenrobot.dao.query.WhereCondition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SpotPricingBeanDaoHelper implements THDaoHelperInterface {
@@ -94,14 +97,24 @@ public class SpotPricingBeanDaoHelper implements THDaoHelperInterface {
     }
 
     public List<SpotPricingBean> testQueryBy(String paramString1, String paramString2) {
-        QueryBuilder localQueryBuilder = this.userBeanDao.queryBuilder();
-        localQueryBuilder.and(SpotPricingBeanDao.Properties.Name.eq(paramString1), Properties.Store_id.eq(paramString2), new WhereCondition[0]);
-        return localQueryBuilder.list();
+        try {
+            QueryBuilder localQueryBuilder = this.userBeanDao.queryBuilder();
+            localQueryBuilder.and(SpotPricingBeanDao.Properties.Name.eq(paramString1), Properties.Store_id.eq(paramString2), new WhereCondition[0]);
+            return localQueryBuilder.list();
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+
     }
 
     public List<SpotPricingBean> testQueryBy(String paramString2) {
-        QueryBuilder localQueryBuilder = this.userBeanDao.queryBuilder();
-        localQueryBuilder.where(Properties.Store_id.eq(paramString2));
-        return localQueryBuilder.list();
+        try {
+            QueryBuilder localQueryBuilder = this.userBeanDao.queryBuilder();
+            localQueryBuilder.where(Properties.Store_id.eq(paramString2));
+            return localQueryBuilder.list();
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+
     }
 }

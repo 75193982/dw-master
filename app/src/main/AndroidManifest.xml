@@ -68,22 +68,38 @@
             android:name=".ui.activity.CreateSpotPricingAcvitity"
             android:windowSoftInputMode="stateHidden" />
         <activity
+            android:name=".ui.activity.SpotListActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
             android:name=".ui.activity.BuySpotActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.activity.SearchLogListActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".ui.activity.DeviceListActivity"></activity>
-        <activity android:name=".ui.activity.UserMgrActivity"></activity>
-        <activity android:name=".ui.activity.CreateUserOneAcvitity"></activity>
-        <activity android:name=".ui.activity.CreateUserTwoAcvitity"></activity>
-        <activity android:name=".ui.activity.CreateUserThreeAcvitity"></activity>
+        <activity
+            android:name=".ui.activity.DeviceListActivity"
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity
+            android:name=".ui.activity.UserMgrActivity"
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity
+            android:name=".ui.activity.CreateUserOneAcvitity"
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity
+            android:name=".ui.activity.CreateUserTwoAcvitity"
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity
+            android:name=".ui.activity.CreateUserThreeAcvitity"
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity android:name=".ui.activity.TestGeneratectivity"></activity>
         <activity
             android:name=".ui.activity.SpecialOperationDetailActivity"
             android:windowSoftInputMode="stateHidden"></activity>
         <activity
-            android:name=".ui.activity.SpotListActivity"
+            android:name=".ui.activity.AdminSpotListActivity"
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity
+            android:name=".ui.activity.UserInfoAcvitity"
             android:windowSoftInputMode="stateHidden"></activity>
     </application>
 

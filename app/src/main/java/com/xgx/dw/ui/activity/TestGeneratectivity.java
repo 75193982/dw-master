@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ import com.xgx.dw.dao.TransformerBeanDaoHelper;
 import com.xgx.dw.dao.UserBeanDaoHelper;
 import com.xgx.dw.utils.AES;
 import com.xgx.dw.utils.BitmapUtil;
+import com.xgx.dw.utils.Logger;
 import com.xgx.dw.utils.MyUtils;
 
 import java.io.File;
@@ -111,8 +113,16 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
                 } else if (bean.getType().equals("20")) {
                     storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
                     transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
-                    pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getUserId());
-                    spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().testQueryBy(LoginInformation.getInstance().getUser().getStoreId());
+                    try {
+                        pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getUserId());
+                    } catch (Exception e) {
+                        Logger.e(e.getMessage());
+                    }
+                    try {
+                        spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().testQueryBy(LoginInformation.getInstance().getUser().getStoreId());
+                    } catch (Exception e) {
+                        Logger.e(e.getMessage());
+                    }
                 }
                 break;
             case 4:
@@ -134,15 +144,16 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
                 setToolbarTitle("购电用户信息");
                 bean = UserBeanDaoHelper.getInstance().getDataById(id);
                 if (bean.getType().equals("10")) {
-                    storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
+                    // storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
                 } else if (bean.getType().equals("11")) {
-                    storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
-                    transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
+                    //  storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
+                    //  transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
                 } else if (bean.getType().equals("20")) {
-                    storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
-                    transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
+                    //  storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
+                    // transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
                     pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getUserId());
-                    spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().testQueryBy(LoginInformation.getInstance().getUser().getStoreId());
+                    //  spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().testQueryBy(LoginInformation.getInstance().getUser().getStoreId());
+
                 }
                 break;
         }
@@ -150,7 +161,11 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
         userAllInfo.setUser(bean);
         userAllInfo.setStoreBean(storebean);
         userAllInfo.setTransformerBean(transbean);
-        userAllInfo.setPricings(pricings);
+        userAllInfo.setPricingSize(pricings.size());
+        userAllInfo.setPricings(pricings.get(0));
+        if (pricings.size() > 0) {
+            userAllInfo.setPricings(pricings.get(0));
+        }
         userAllInfo.setSpotBeans(spotPricingBeans);
         createChineseQRCode(new Gson().toJson(userAllInfo));
     }

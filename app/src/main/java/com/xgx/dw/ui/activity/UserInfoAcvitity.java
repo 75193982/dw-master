@@ -1,7 +1,6 @@
 package com.xgx.dw.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -32,11 +31,10 @@ import com.xgx.dw.ui.view.interfaces.IUserView;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
-public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IUserView, Toolbar.OnMenuItemClickListener {
+public class UserInfoAcvitity extends BaseAppCompatActivity implements IUserView, Toolbar.OnMenuItemClickListener {
     @Bind(R.id.imeTv)
     TextView imeTv;
     @Bind(R.id.store_spinner)
@@ -93,11 +91,11 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
         isFirst = true;
         bean = ((UserBean) getIntent().getSerializableExtra("bean"));
         if (bean != null && !TextUtils.isEmpty(this.bean.getUserId())) {
-            getSupportActionBar().setTitle("编辑二级用户");
+            getSupportActionBar().setTitle("个人资料");
             this.userId.setText(this.bean.getUserId());
+            this.userId.setEnabled(false);
             userName.setText(checkText(this.bean.getUserName()));
             price.setText(checkText(bean.getPrice()));
-            price.setTag(checkText(bean.getPrice()));
             phone.setText(checkText(bean.getPhone()));
             currentRatio.setText(checkText(bean.getCurrentRatio()));
             voltageRatio.setText(checkText(bean.getVoltageRatio()));
@@ -132,80 +130,18 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
             } catch (Exception e) {
 
             }
-        } else {
-            if (LoginInformation.getInstance().getUser().getType().equals("11")) {//台区管理员
-                setSpinner(LoginInformation.getInstance().getUser().getStoreId(), LoginInformation.getInstance().getUser().getTransformerId());
-                storeSpinner.setEnabled(false);
-                transformerSpinner.setEnabled(false);
-            } else if (LoginInformation.getInstance().getUser().getType().equals("10")) {//营业厅管理员
-                setSpinner(LoginInformation.getInstance().getUser().getStoreId(), LoginInformation.getInstance().getUser().getTransformerId());
-                storeSpinner.setEnabled(false);
-                setOnItemSelected();
-            } else {
-                setOnItemSelected();
-            }
-            getSupportActionBar().setTitle("创建二级用户");
         }
-
+        storeSpinner.setEnabled(false);
+        transformerSpinner.setEnabled(false);
+        userId.setEnabled(false);
+        userName.setEnabled(false);
+        voltageRatio.setEnabled(false);
+        currentRatio.setEnabled(false);
+        price.setEnabled(false);
+        phone.setEnabled(false);
+        actionSave.setVisibility(View.GONE);
     }
 
-    private void setOnItemSelected() {
-        storeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> paramAnonymousAdapterView, View paramAnonymousView, int position, long paramAnonymousLong) {
-                if (position != -1) {
-                    String id = storebeans.get(position).getId();
-                    transformerBean = TransformerBeanDaoHelper.getInstance().testQueryBy(id);
-                    if ((transformerBean != null) && (transformerBean.size() > 0)) {
-                        String[] arrayOfString = new String[transformerBean.size()];
-                        for (int j = 0; j < transformerBean.size(); j++) {
-                            arrayOfString[j] = ((TransformerBean) transformerBean.get(j)).getName();
-                        }
-                        ArrayAdapter localArrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, arrayOfString);
-                        localArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        transformerSpinner.setAdapter(localArrayAdapter);
-                    }
-                }
-
-            }
-
-            public void onNothingSelected(AdapterView<?> paramAnonymousAdapterView) {
-            }
-        });
-    }
-
-    private void setSpinner(String storeId, String transformerId) {
-        try {
-            for (int i = 0; i < storebeans.size(); i++) {
-                if (storeId.equals(((StoreBean) storebeans.get(i)).getId())) {
-                    storeSpinner.setSelection(i + 1);
-                }
-            }
-        } catch (Exception e) {
-
-        }
-        if (!TextUtils.isEmpty(transformerId)) {
-            try {
-                transformerBean = TransformerBeanDaoHelper.getInstance().testQueryBy(storeId);
-                if ((transformerBean != null) && (transformerBean.size() > 0)) {
-                    String[] arrayOfString = new String[transformerBean.size()];
-                    for (int j = 0; j < transformerBean.size(); j++) {
-                        arrayOfString[j] = ((TransformerBean) transformerBean.get(j)).getName();
-                    }
-                    ArrayAdapter localArrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, arrayOfString);
-                    localArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    transformerSpinner.setAdapter(localArrayAdapter);
-                }
-                for (int i = 0; i < transformerBean.size(); i++) {
-                    if (transformerId.equals(((TransformerBean) transformerBean.get(i)).getId())) {
-                        transformerSpinner.setSelection(i + 1);
-                    }
-                }
-            } catch (Exception e) {
-
-            }
-        }
-
-    }
 
     private void initSpinnerData() {
         //如果是10级用户 则直接拉去当前用户的营业厅，如果是11用户 则直接显示当前用户的营业厅和台区
@@ -222,39 +158,6 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
 
     }
 
-    @OnClick({R.id.action_save})
-    public void onSaveClick() {
-        UserBean userBean = new UserBean();
-        userBean.setUserId(userId.getText().toString());
-        userBean.setUserName(userName.getText().toString());
-        try {
-            StoreBean storeBean = (StoreBean) this.storebeans.get(storeSpinner.getSelectedItemPosition() - 1);
-            userBean.setStoreId(storeBean.getId());
-            userBean.setStoreName(storeBean.getName());
-        } catch (Exception e) {
-            userBean.setStoreId("");
-            userBean.setStoreName("");
-        }
-        try {
-            int y = this.transformerSpinner.getSelectedItemPosition();
-            TransformerBean transFormerBean = (TransformerBean) this.transformerBean.get(y - 1);
-            userBean.setTransformerId(transFormerBean.getId());
-            userBean.setTransformerName(transFormerBean.getName());
-        } catch (Exception e) {
-        }
-        userBean.setIme(imeTv.getText().toString());
-        userBean.setVoltageRatio(voltageRatio.getText().toString());
-        userBean.setCurrentRatio(currentRatio.getText().toString());
-        userBean.setPhone(phone.getText().toString());
-        userBean.setPrice(price.getTag() == null ? "" : price.getTag().toString());
-        if ((bean == null) || (TextUtils.isEmpty(bean.getUserId()))) {
-            userBean.setPassword(userId.getText().toString());
-            this.presenter.saveUser(this, userBean, 20, true);
-            return;
-        }
-        userBean.setPassword(userId.getText().toString());
-        this.presenter.saveUser(this, userBean, 20, false);
-    }
 
     public void saveTransformer(boolean paramBoolean) {
         hideProgress();
@@ -288,19 +191,4 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
     }
 
 
-    @OnClick(R.id.price)
-    public void onClickToPrice() {
-        Intent intent = new Intent(getContext(), SearchSpotPricingListActivity.class);
-        startActivityForResult(intent, 1001);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1001 && resultCode == 1001) {
-            SpotPricingBean bean = (SpotPricingBean) data.getSerializableExtra("entity");
-            price.setText(bean.getId());
-            price.setTag(bean.getId());
-        }
-    }
 }

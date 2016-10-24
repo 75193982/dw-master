@@ -17,7 +17,7 @@ public class UserAdapter extends BaseQuickAdapter<UserBean> {
         paramBaseViewHolder.setText(R.id.title, "用户编号：" + userBean.getUserId() + "   名称：" + userBean.getUserName());
         if (userBean.getType().equals("0")) {
             paramBaseViewHolder.setText(R.id.subtitle, "用户类型：超级管理员");
-            paramBaseViewHolder.setText(R.id.content, "");
+            paramBaseViewHolder.setText(R.id.content, " ");
         } else if (userBean.getType().equals("10")) {
             paramBaseViewHolder.setText(R.id.subtitle, "用户类型：营业厅管理员");
             paramBaseViewHolder.setText(R.id.content, "所属营业厅：" + userBean.getStoreName());
@@ -32,6 +32,8 @@ public class UserAdapter extends BaseQuickAdapter<UserBean> {
                     "\n" + "电价：" + userBean.getPrice() +
                     "\n" + "用户号码：" + userBean.getPhone() +
                     "\n" + "用户表号：" + userBean.getUserId());
+        } else {
+
         }
 
     }

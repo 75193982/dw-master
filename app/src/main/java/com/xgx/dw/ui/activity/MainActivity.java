@@ -422,14 +422,14 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                             if (userAllInfo.getTransformerBean().getId() != null) {
                                 TransformerBeanDaoHelper.getInstance().addData(userAllInfo.getTransformerBean());
                             }
-                            if (userAllInfo.getPricings() != null && userAllInfo.getPricings().size() > 0) {
-                                for (int i = 0; i < userAllInfo.getPricings().size(); i++) {
-                                    if (!PricingDaoHelper.getInstance().hasKey(userAllInfo.getPricings().get(i).getId())) {
-                                        PricingDaoHelper.getInstance().addData(userAllInfo.getPricings().get(i));
-                                    }
-                                }
+
+                            if (!PricingDaoHelper.getInstance().hasKey(userAllInfo.getPricings().getId())) {
+                                PricingDaoHelper.getInstance().addData(userAllInfo.getPricings());
+                                showToast("扫描购电信息成功，请查看购电记录完成购电");
+                            } else {
+                                showToast("已经扫描过该条购电记录");
+
                             }
-                            showToast("扫描购电信息成功，请查看购电记录完成购电");
                         } else {
                             showToast("不是有效的二维码");
                         }

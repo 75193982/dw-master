@@ -2,6 +2,7 @@ package com.xgx.dw.ble;
 
 import com.xgx.dw.UserBean;
 import com.xgx.dw.bean.LoginInformation;
+import com.xgx.dw.utils.Logger;
 
 /**
  * Created by Administrator on 2016/8/20.
@@ -74,6 +75,7 @@ public class BlueOperationContact {
                     deviceId = sb.toString();
                 }
             } catch (Exception e) {
+                Logger.e(e.getMessage());
 
             }
         }

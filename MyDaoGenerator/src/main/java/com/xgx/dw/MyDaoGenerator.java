@@ -86,6 +86,7 @@ public class MyDaoGenerator {
         userBean.addStringProperty("id").primaryKey();
         userBean.addStringProperty("pid");
         userBean.addStringProperty("price");
+        userBean.addStringProperty("spotpriceId");
         userBean.addStringProperty("userId");
         userBean.addStringProperty("userName");
         userBean.addStringProperty("adminName");

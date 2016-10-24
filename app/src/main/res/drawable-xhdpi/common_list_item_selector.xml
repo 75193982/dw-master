@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/skin_list_item_pressed_theme_version2_9_png" android:state_focused="true" />
+    <item android:drawable="@drawable/skin_list_item_pressed_theme_version2_9_png" android:state_selected="true" />
+    <item android:drawable="@drawable/skin_list_item_pressed_theme_version2_9_png" android:state_pressed="true" />
+    <item android:drawable="@drawable/skin_list_item_normal_theme_version2_9_png" android:state_pressed="false" />
+    <item android:drawable="@drawable/skin_list_item_normal_theme_version2_9_png" android:state_focused="false" />
+    <item android:drawable="@drawable/skin_list_item_normal_theme_version2_9_png" android:state_selected="false" />
+
+</selector>

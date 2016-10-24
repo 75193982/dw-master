@@ -19,6 +19,7 @@ import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.bean.UserAllInfo;
 import com.xgx.dw.dao.PricingDaoHelper;
 import com.xgx.dw.utils.CommonUtils;
+import com.xgx.dw.utils.Logger;
 
 import java.util.UUID;
 
@@ -61,7 +62,7 @@ public class BuySpotActivity extends BaseAppCompatActivity {
             userInfoTv.setText(user.getUserName());
             userInfoBeilvTv.setText("设备编号：" + user.getUserId() + "\n" + "电压倍率：" + user.getVoltageRatio() +
                     "\n" + "电流倍率：" + user.getCurrentRatio() +
-                    "\n" + "电价：" + user.getPrice());
+                    "\n" + "电价id：" + user.getPrice());
         }
 
         String[] arrayOfString = new String[]{"追加", "刷新"};
@@ -84,7 +85,7 @@ public class BuySpotActivity extends BaseAppCompatActivity {
         }
         //正在保存电价生成 二维码，并保存到表里
         PricingBean bean = new PricingBean();
-        bean.setId(UUID.randomUUID().toString());
+
         bean.setPrice(spotTv.getText().toString());
         bean.setUserId(userAllInfo.getUser().getUserId());
         bean.setUserName(userAllInfo.getUser().getUserName());
@@ -96,12 +97,15 @@ public class BuySpotActivity extends BaseAppCompatActivity {
         bean.setTransformerName(LoginInformation.getInstance().getUser().getTransformerName());
         bean.setPid(userAllInfo.getUser().getPrice());
         bean.setCreateTime(CommonUtils.parseDateTime(System.currentTimeMillis()));
-        if (PricingDaoHelper.getInstance().getAllData().size() == 0) {
-            bean.setType("0");
-        } else {
-            bean.setType("1");
+        bean.setId(userAllInfo.getPricingSize() + "");
+        bean.setSpotpriceId(userAllInfo.getPricingSize() + "");
+        try {
+            PricingDaoHelper.getInstance().addData(bean);
+        } catch (Exception e) {
+            Logger.e(e.getMessage());
         }
-        PricingDaoHelper.getInstance().addData(bean);
+
+        //获得spotpriceId
         //跳转到二维码界面
         startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 5).putExtra("id", bean.getUserId()));
 

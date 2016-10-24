@@ -26,15 +26,16 @@ public class PricingBeanDao extends AbstractDao<PricingBean, String> {
         public final static Property Id = new Property(0, String.class, "id", true, "ID");
         public final static Property Pid = new Property(1, String.class, "pid", false, "PID");
         public final static Property Price = new Property(2, String.class, "price", false, "PRICE");
-        public final static Property UserId = new Property(3, String.class, "userId", false, "USER_ID");
-        public final static Property UserName = new Property(4, String.class, "userName", false, "USER_NAME");
-        public final static Property AdminName = new Property(5, String.class, "adminName", false, "ADMIN_NAME");
-        public final static Property StoreId = new Property(6, String.class, "storeId", false, "STORE_ID");
-        public final static Property StoreName = new Property(7, String.class, "storeName", false, "STORE_NAME");
-        public final static Property TransformerId = new Property(8, String.class, "transformerId", false, "TRANSFORMER_ID");
-        public final static Property TransformerName = new Property(9, String.class, "transformerName", false, "TRANSFORMER_NAME");
-        public final static Property CreateTime = new Property(10, String.class, "createTime", false, "CREATE_TIME");
-        public final static Property Type = new Property(11, String.class, "type", false, "TYPE");
+        public final static Property SpotpriceId = new Property(3, String.class, "spotpriceId", false, "SPOTPRICE_ID");
+        public final static Property UserId = new Property(4, String.class, "userId", false, "USER_ID");
+        public final static Property UserName = new Property(5, String.class, "userName", false, "USER_NAME");
+        public final static Property AdminName = new Property(6, String.class, "adminName", false, "ADMIN_NAME");
+        public final static Property StoreId = new Property(7, String.class, "storeId", false, "STORE_ID");
+        public final static Property StoreName = new Property(8, String.class, "storeName", false, "STORE_NAME");
+        public final static Property TransformerId = new Property(9, String.class, "transformerId", false, "TRANSFORMER_ID");
+        public final static Property TransformerName = new Property(10, String.class, "transformerName", false, "TRANSFORMER_NAME");
+        public final static Property CreateTime = new Property(11, String.class, "createTime", false, "CREATE_TIME");
+        public final static Property Type = new Property(12, String.class, "type", false, "TYPE");
     };
 
 
@@ -53,15 +54,16 @@ public class PricingBeanDao extends AbstractDao<PricingBean, String> {
                 "'ID' TEXT PRIMARY KEY NOT NULL ," + // 0: id
                 "'PID' TEXT," + // 1: pid
                 "'PRICE' TEXT," + // 2: price
-                "'USER_ID' TEXT," + // 3: userId
-                "'USER_NAME' TEXT," + // 4: userName
-                "'ADMIN_NAME' TEXT," + // 5: adminName
-                "'STORE_ID' TEXT," + // 6: storeId
-                "'STORE_NAME' TEXT," + // 7: storeName
-                "'TRANSFORMER_ID' TEXT," + // 8: transformerId
-                "'TRANSFORMER_NAME' TEXT," + // 9: transformerName
-                "'CREATE_TIME' TEXT," + // 10: createTime
-                "'TYPE' TEXT);"); // 11: type
+                "'SPOTPRICE_ID' TEXT," + // 3: spotpriceId
+                "'USER_ID' TEXT," + // 4: userId
+                "'USER_NAME' TEXT," + // 5: userName
+                "'ADMIN_NAME' TEXT," + // 6: adminName
+                "'STORE_ID' TEXT," + // 7: storeId
+                "'STORE_NAME' TEXT," + // 8: storeName
+                "'TRANSFORMER_ID' TEXT," + // 9: transformerId
+                "'TRANSFORMER_NAME' TEXT," + // 10: transformerName
+                "'CREATE_TIME' TEXT," + // 11: createTime
+                "'TYPE' TEXT);"); // 12: type
     }
 
     /** Drops the underlying database table. */
@@ -90,49 +92,54 @@ public class PricingBeanDao extends AbstractDao<PricingBean, String> {
             stmt.bindString(3, price);
         }
  
+        String spotpriceId = entity.getSpotpriceId();
+        if (spotpriceId != null) {
+            stmt.bindString(4, spotpriceId);
+        }
+ 
         String userId = entity.getUserId();
         if (userId != null) {
-            stmt.bindString(4, userId);
+            stmt.bindString(5, userId);
         }
  
         String userName = entity.getUserName();
         if (userName != null) {
-            stmt.bindString(5, userName);
+            stmt.bindString(6, userName);
         }
  
         String adminName = entity.getAdminName();
         if (adminName != null) {
-            stmt.bindString(6, adminName);
+            stmt.bindString(7, adminName);
         }
  
         String storeId = entity.getStoreId();
         if (storeId != null) {
-            stmt.bindString(7, storeId);
+            stmt.bindString(8, storeId);
         }
  
         String storeName = entity.getStoreName();
         if (storeName != null) {
-            stmt.bindString(8, storeName);
+            stmt.bindString(9, storeName);
         }
  
         String transformerId = entity.getTransformerId();
         if (transformerId != null) {
-            stmt.bindString(9, transformerId);
+            stmt.bindString(10, transformerId);
         }
  
         String transformerName = entity.getTransformerName();
         if (transformerName != null) {
-            stmt.bindString(10, transformerName);
+            stmt.bindString(11, transformerName);
         }
  
         String createTime = entity.getCreateTime();
         if (createTime != null) {
-            stmt.bindString(11, createTime);
+            stmt.bindString(12, createTime);
         }
  
         String type = entity.getType();
         if (type != null) {
-            stmt.bindString(12, type);
+            stmt.bindString(13, type);
         }
     }
 
@@ -149,15 +156,16 @@ public class PricingBeanDao extends AbstractDao<PricingBean, String> {
             cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // pid
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // price
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // userId
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // userName
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // adminName
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // storeId
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // storeName
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // transformerId
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // transformerName
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // createTime
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11) // type
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // spotpriceId
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // userId
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // userName
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // adminName
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // storeId
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // storeName
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // transformerId
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // transformerName
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // createTime
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12) // type
         );
         return entity;
     }
@@ -168,15 +176,16 @@ public class PricingBeanDao extends AbstractDao<PricingBean, String> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
         entity.setPid(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setPrice(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setUserId(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setUserName(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setAdminName(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setStoreId(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setStoreName(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setTransformerId(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setTransformerName(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setCreateTime(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setType(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setSpotpriceId(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setUserId(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setUserName(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setAdminName(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setStoreId(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setStoreName(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setTransformerId(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setTransformerName(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setCreateTime(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setType(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
      }
     
     /** @inheritdoc */

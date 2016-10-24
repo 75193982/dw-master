@@ -12,6 +12,7 @@ public class PricingBean implements Serializable {
     private String id;
     private String pid;
     private String price;
+    private String spotpriceId;
     private String userId;
     private String userName;
     private String adminName;
@@ -29,10 +30,11 @@ public class PricingBean implements Serializable {
         this.id = id;
     }
 
-    public PricingBean(String id, String pid, String price, String userId, String userName, String adminName, String storeId, String storeName, String transformerId, String transformerName, String createTime, String type) {
+    public PricingBean(String id, String pid, String price, String spotpriceId, String userId, String userName, String adminName, String storeId, String storeName, String transformerId, String transformerName, String createTime, String type) {
         this.id = id;
         this.pid = pid;
         this.price = price;
+        this.spotpriceId = spotpriceId;
         this.userId = userId;
         this.userName = userName;
         this.adminName = adminName;
@@ -66,6 +68,14 @@ public class PricingBean implements Serializable {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getSpotpriceId() {
+        return spotpriceId;
+    }
+
+    public void setSpotpriceId(String spotpriceId) {
+        this.spotpriceId = spotpriceId;
     }
 
     public String getUserId() {

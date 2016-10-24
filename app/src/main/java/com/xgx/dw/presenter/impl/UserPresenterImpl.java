@@ -15,6 +15,7 @@ import com.xgx.dw.ui.view.interfaces.ICreateTransformerView;
 import com.xgx.dw.ui.view.interfaces.ITransformerView;
 import com.xgx.dw.ui.view.interfaces.IUserListView;
 import com.xgx.dw.ui.view.interfaces.IUserView;
+import com.xgx.dw.utils.Logger;
 
 public class UserPresenterImpl extends BasePresenter implements IUserPresenter {
     public void saveTransformer(ICreateTransformerView paramICreateTransformerView, TransformerBean paramTransformerBean, boolean paramBoolean) {
@@ -38,27 +39,31 @@ public class UserPresenterImpl extends BasePresenter implements IUserPresenter {
 
     @Override
     public void saveUser(IUserView IBaseView, UserBean userBean, int type, boolean isSave) {
+        try {
+            if (isEmpty(userBean.getUserId(), IBaseView, "用户编号不能为空")) return;
+            if (isEmpty(userBean.getUserName(), IBaseView, "用户名称不能为空")) return;
+            if (isEmpty(userBean.getStoreName(), IBaseView, "请选择营业厅")) return;
+            if (type == 11) {
+                if (isEmpty(userBean.getTransformerId(), IBaseView, "台区名称不能为空")) return;
+            }
+            if (isEmpty(userBean.getPrice(), IBaseView, "请选择电价")) return;
 
-
-        if (isEmpty(userBean.getUserId(), IBaseView, "用户编号不能为空")) return;
-        if (isEmpty(userBean.getUserName(), IBaseView, "用户名称不能为空")) return;
-        if (isEmpty(userBean.getStoreName(), IBaseView, "请选择营业厅")) return;
-        if (type == 11) {
-            if (isEmpty(userBean.getTransformerId(), IBaseView, "台区名称不能为空")) return;
-        }
-        if (isEmpty(userBean.getPrice(), IBaseView, "请选择电价")) return;
-
-        if (UserBeanDaoHelper.getInstance().hasKey(userBean.getUserId()) && isSave == true) {
-            IBaseView.showToast("已有相同编号的用户");
-            IBaseView.saveTransformer(false);
+            if (UserBeanDaoHelper.getInstance().hasKey(userBean.getUserId()) && isSave == true) {
+                IBaseView.showToast("已有相同编号的用户");
+                IBaseView.saveTransformer(false);
+                IBaseView.hideProgress();
+                return;
+            }
+            IBaseView.showProgress("保存用户中...");
+            userBean.setType(type + "");
+            UserBeanDaoHelper.getInstance().addData(userBean);
+            IBaseView.saveTransformer(true);
             IBaseView.hideProgress();
-            return;
+        } catch (Exception e) {
+            Logger.e(e.getMessage());
         }
-        IBaseView.showProgress("保存用户中...");
-        userBean.setType(type + "");
-        UserBeanDaoHelper.getInstance().addData(userBean);
-        IBaseView.saveTransformer(true);
-        IBaseView.hideProgress();
+
+
     }
 
     @Override

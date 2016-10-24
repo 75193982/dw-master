@@ -70,7 +70,6 @@ public class MyUtils {
                 break;
             case 6://电价录入
                 resultString.append("电费录入成功");
-                setCurrentOrderId();
                 break;
 
             case 41://剩余电费
@@ -322,28 +321,17 @@ public class MyUtils {
         return Integer.toHexString(sum);
     }
 
-    public static String getNewOrderId() {
-        String username = LoginInformation.getInstance().getUser().getUserName();
-        int currentOrderId = BaseApplication.getSetting().loadInt(username + G.currentOrderId);
-        //首先转换成16进制
-        if (currentOrderId == -1) {
-            setCurrentOrderId();
-            currentOrderId = 0;
-        }
-        return toHexString(currentOrderId + 1);
-
-    }
-
-    public static void setCurrentOrderId() {
-        String username = BaseApplication.getSetting().loadString(G.currentUsername);
-        int newId = BaseApplication.getSetting().loadInt(username + G.currentOrderId);
+    public static String getNewOrderId(String orderId) {
         try {
-            newId = newId + 1;
+            return toHexString(Integer.valueOf(orderId));
         } catch (Exception e) {
-            newId = 1;
+            return toHexString(1);
         }
-        BaseApplication.getSetting().saveInt(username + G.currentOrderId, newId);
+        //首先转换成16进制
+
+
     }
+
 
     private static String toHexString(int temp) {
         String dlbl = "";
