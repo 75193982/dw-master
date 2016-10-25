@@ -16,8 +16,10 @@ public class PricingBean implements Serializable {
     private String userId;
     private String userName;
     private String adminName;
+    private String adminPhone;
     private String storeId;
     private String storeName;
+    private String storeAddress;
     private String transformerId;
     private String transformerName;
     private String createTime;
@@ -30,7 +32,7 @@ public class PricingBean implements Serializable {
         this.id = id;
     }
 
-    public PricingBean(String id, String pid, String price, String spotpriceId, String userId, String userName, String adminName, String storeId, String storeName, String transformerId, String transformerName, String createTime, String type) {
+    public PricingBean(String id, String pid, String price, String spotpriceId, String userId, String userName, String adminName, String adminPhone, String storeId, String storeName, String storeAddress, String transformerId, String transformerName, String createTime, String type) {
         this.id = id;
         this.pid = pid;
         this.price = price;
@@ -38,8 +40,10 @@ public class PricingBean implements Serializable {
         this.userId = userId;
         this.userName = userName;
         this.adminName = adminName;
+        this.adminPhone = adminPhone;
         this.storeId = storeId;
         this.storeName = storeName;
+        this.storeAddress = storeAddress;
         this.transformerId = transformerId;
         this.transformerName = transformerName;
         this.createTime = createTime;
@@ -102,6 +106,14 @@ public class PricingBean implements Serializable {
         this.adminName = adminName;
     }
 
+    public String getAdminPhone() {
+        return adminPhone;
+    }
+
+    public void setAdminPhone(String adminPhone) {
+        this.adminPhone = adminPhone;
+    }
+
     public String getStoreId() {
         return storeId;
     }
@@ -116,6 +128,14 @@ public class PricingBean implements Serializable {
 
     public void setStoreName(String storeName) {
         this.storeName = storeName;
+    }
+
+    public String getStoreAddress() {
+        return storeAddress;
+    }
+
+    public void setStoreAddress(String storeAddress) {
+        this.storeAddress = storeAddress;
     }
 
     public String getTransformerId() {

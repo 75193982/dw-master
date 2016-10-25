@@ -63,6 +63,14 @@
         app:met_floatingLabelText="购电金额"
         app:met_singleLineEllipsis="true" />
 
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/isChangeSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:text="是否同步倍率电价"
+        android:textColor="@color/Gray600"></android.support.v7.widget.SwitchCompat>
+
     <LinearLayout
         android:id="@id/action_save"
         android:layout_width="fill_parent"

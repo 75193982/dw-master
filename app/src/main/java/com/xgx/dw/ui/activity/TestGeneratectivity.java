@@ -88,7 +88,7 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
         StoreBean storebean = new StoreBean();
         TransformerBean transbean = new TransformerBean();
         List<PricingBean> pricings = new ArrayList<>();
-        List<SpotPricingBean> spotPricingBeans = new ArrayList<>();
+        SpotPricingBean spotPricingBeans = new SpotPricingBean();
         switch (type) {
             case 0://1级账号
                 setToolbarTitle(getResources().getString(R.string.create_userone));
@@ -112,14 +112,14 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
                     transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
                 } else if (bean.getType().equals("20")) {
                     storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
-                    transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
+                    //  transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
                     try {
                         pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getUserId());
                     } catch (Exception e) {
                         Logger.e(e.getMessage());
                     }
                     try {
-                        spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().testQueryBy(LoginInformation.getInstance().getUser().getStoreId());
+                        spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
                     } catch (Exception e) {
                         Logger.e(e.getMessage());
                     }
@@ -135,26 +135,16 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
                     transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
                 } else if (bean.getType().equals("20")) {
                     storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
-                    transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
+                    //transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
                     pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getUserId());
-                    spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().testQueryBy(LoginInformation.getInstance().getUser().getStoreId());
+                    spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
                 }
                 break;
             case 5:
                 setToolbarTitle("购电用户信息");
                 bean = UserBeanDaoHelper.getInstance().getDataById(id);
-                if (bean.getType().equals("10")) {
-                    // storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
-                } else if (bean.getType().equals("11")) {
-                    //  storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
-                    //  transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
-                } else if (bean.getType().equals("20")) {
-                    //  storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
-                    // transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
-                    pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getUserId());
-                    //  spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().testQueryBy(LoginInformation.getInstance().getUser().getStoreId());
-
-                }
+                pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getUserId());
+                spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
                 break;
         }
         bean.setEcodeType(type + "");
@@ -162,7 +152,7 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
         userAllInfo.setStoreBean(storebean);
         userAllInfo.setTransformerBean(transbean);
         userAllInfo.setPricingSize(pricings.size());
-        userAllInfo.setPricings(pricings.get(0));
+        userAllInfo.setChange(getIntent().getBooleanExtra("isChange", false));
         if (pricings.size() > 0) {
             userAllInfo.setPricings(pricings.get(0));
         }
@@ -181,7 +171,7 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
             Toast.makeText(this, "当前没有用户", Toast.LENGTH_SHORT).show();
             return;
         }
-        Bitmap mBitmap = CodeUtils.createImage(encryptResultStr, 400, 400, BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
+        Bitmap mBitmap = CodeUtils.createImage(encryptResultStr, 600, 600, BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
         mChineseIv.setImageBitmap(mBitmap);
     }
 

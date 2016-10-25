@@ -19,7 +19,8 @@ public class UserAllInfo implements Serializable {
     private TransformerBean transformerBean;
     private int pricingSize;
     private PricingBean pricings;
-    private List<SpotPricingBean> spotBeans;
+    private SpotPricingBean spotBeans;
+    private boolean isChange;
 
     public UserBean getUser() {
         return user;
@@ -62,11 +63,19 @@ public class UserAllInfo implements Serializable {
         this.pricings = pricings;
     }
 
-    public List<SpotPricingBean> getSpotBeans() {
+    public SpotPricingBean getSpotBeans() {
         return spotBeans;
     }
 
-    public void setSpotBeans(List<SpotPricingBean> spotBeans) {
+    public void setSpotBeans(SpotPricingBean spotBeans) {
         this.spotBeans = spotBeans;
+    }
+
+    public boolean isChange() {
+        return isChange;
+    }
+
+    public void setChange(boolean change) {
+        isChange = change;
     }
 }

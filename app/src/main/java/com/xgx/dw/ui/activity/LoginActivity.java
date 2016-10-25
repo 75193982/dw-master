@@ -5,9 +5,12 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
 import android.text.TextUtils;
 import android.view.ContextMenu;
@@ -24,12 +27,14 @@ import com.google.gson.Gson;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.xgx.dw.R;
+import com.xgx.dw.SpotPricingBean;
 import com.xgx.dw.UserBean;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.bean.UserAllInfo;
+import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
 import com.xgx.dw.dao.StoreBeanDaoHelper;
 import com.xgx.dw.dao.TransformerBeanDaoHelper;
 import com.xgx.dw.dao.UserBeanDaoHelper;
@@ -104,6 +109,7 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
         String password = setting.loadString(G.currentPassword);
         loginUsername.setText(checkText(username));
         loginPassword.setText(checkText(password));
+
     }
 
     public void loginCallback(UserBean userBean) {
@@ -126,6 +132,7 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
     protected void onStart() {
         super.onStart();
         requestCodeQrcodePermissions();
+        //检查SD卡写权限授予情况
     }
 
     @Override
@@ -242,6 +249,9 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                 }
                 if (userAllInfo.getTransformerBean().getId() != null) {
                     TransformerBeanDaoHelper.getInstance().addData(userAllInfo.getTransformerBean());
+                }
+                if (userAllInfo.getSpotBeans().getId() != null) {
+                    SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());
                 }
                 //自动登录 比较 ime账号
                 if (MyUtils.getuniqueId(getContext()).equals(userAllInfo.getUser().getIme())) {

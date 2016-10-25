@@ -24,6 +24,7 @@ import com.andexert.library.RippleView;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.xgx.dw.PricingBean;
 import com.xgx.dw.R;
+import com.xgx.dw.SpotPricingBean;
 import com.xgx.dw.UserBean;
 import com.xgx.dw.app.BaseApplication;
 import com.xgx.dw.app.G;
@@ -32,6 +33,7 @@ import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.ble.BlueOperationContact;
 import com.xgx.dw.dao.PricingDaoHelper;
+import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
 import com.xgx.dw.utils.CommonUtils;
 import com.xgx.dw.utils.Logger;
 import com.xgx.dw.utils.MyUtils;
@@ -638,14 +640,29 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
     }
 
     private void changDjStr(String dj) {
+        //根据ID获取电价
+        SpotPricingBean pricingbean = SpotPricingBeanDaoHelper.getInstance().getDataById(dj);
+        String jdj = "";
+
         String fdj = "";
         String pdj = "";
         String gdj = "";
-        String jdj = "";
-        jdj = MyUtils.changeDjStr(dj);
-        pdj = MyUtils.changeDjStr(dj);
-        fdj = MyUtils.changeDjStr(dj);
-        gdj = MyUtils.changeDjStr(dj);
+        if (pricingbean.getType().equals("普通")) {
+            jdj = pricingbean.getPrice_count();
+            fdj = pricingbean.getPrice_count();
+            pdj = pricingbean.getPrice_count();
+            gdj = pricingbean.getPrice_count();
+        } else if (pricingbean.getType().equals("分时")) {
+            jdj = pricingbean.getPointed_price();
+            fdj = pricingbean.getPeek_price();
+            pdj = pricingbean.getFlat_price();
+            gdj = pricingbean.getValley_price();
+        }
+
+        fdj = MyUtils.changeDjStr(fdj);
+        pdj = MyUtils.changeDjStr(pdj);
+        gdj = MyUtils.changeDjStr(gdj);
+        jdj = MyUtils.changeDjStr(jdj);
         String currentTime = CommonUtils.formatDateTime1(new Date());
         String temp = String.format(BlueOperationContact.DianjiaLuruSendTemp, jdj, fdj, pdj, gdj, currentTime);
         OperationStr = String.format(BlueOperationContact.DianjiaLuruSend, jdj, fdj, pdj, gdj, currentTime, MyUtils.getJyCode(temp));

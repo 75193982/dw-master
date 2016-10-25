@@ -37,6 +37,7 @@ import com.xgx.dw.base.FragmentAdapter;
 import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.bean.UserAllInfo;
 import com.xgx.dw.dao.PricingDaoHelper;
+import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
 import com.xgx.dw.dao.StoreBeanDaoHelper;
 import com.xgx.dw.dao.TransformerBeanDaoHelper;
 import com.xgx.dw.dao.UserBeanDaoHelper;
@@ -409,6 +410,9 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                             if (userAllInfo.getTransformerBean().getId() != null) {
                                 TransformerBeanDaoHelper.getInstance().addData(userAllInfo.getTransformerBean());
                             }
+                            if (userAllInfo.getSpotBeans().getId() != null) {
+                                SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());
+                            }
                         } else if (bean.getEcodeType().equals("4") && ("admin,30,31").contains(type)) {
                             //保存用户 方便登录
                             startActivity(new Intent(getContext(), BuySpotActivity.class).putExtra("userAllInfo", userAllInfo));
@@ -422,9 +426,14 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                             if (userAllInfo.getTransformerBean().getId() != null) {
                                 TransformerBeanDaoHelper.getInstance().addData(userAllInfo.getTransformerBean());
                             }
-
+                            if (userAllInfo.getSpotBeans().getId() != null) {
+                                SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());
+                            }
                             if (!PricingDaoHelper.getInstance().hasKey(userAllInfo.getPricings().getId())) {
                                 PricingDaoHelper.getInstance().addData(userAllInfo.getPricings());
+                                String userId = LoginInformation.getInstance().getUser().getUserId();
+                                Setting setting = new Setting(getContext());
+                                setting.saveBoolean(userId + "_isFirstBuy", !userAllInfo.isChange());
                                 showToast("扫描购电信息成功，请查看购电记录完成购电");
                             } else {
                                 showToast("已经扫描过该条购电记录");

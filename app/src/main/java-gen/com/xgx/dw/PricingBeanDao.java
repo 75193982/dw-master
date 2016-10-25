@@ -30,12 +30,14 @@ public class PricingBeanDao extends AbstractDao<PricingBean, String> {
         public final static Property UserId = new Property(4, String.class, "userId", false, "USER_ID");
         public final static Property UserName = new Property(5, String.class, "userName", false, "USER_NAME");
         public final static Property AdminName = new Property(6, String.class, "adminName", false, "ADMIN_NAME");
-        public final static Property StoreId = new Property(7, String.class, "storeId", false, "STORE_ID");
-        public final static Property StoreName = new Property(8, String.class, "storeName", false, "STORE_NAME");
-        public final static Property TransformerId = new Property(9, String.class, "transformerId", false, "TRANSFORMER_ID");
-        public final static Property TransformerName = new Property(10, String.class, "transformerName", false, "TRANSFORMER_NAME");
-        public final static Property CreateTime = new Property(11, String.class, "createTime", false, "CREATE_TIME");
-        public final static Property Type = new Property(12, String.class, "type", false, "TYPE");
+        public final static Property AdminPhone = new Property(7, String.class, "adminPhone", false, "ADMIN_PHONE");
+        public final static Property StoreId = new Property(8, String.class, "storeId", false, "STORE_ID");
+        public final static Property StoreName = new Property(9, String.class, "storeName", false, "STORE_NAME");
+        public final static Property StoreAddress = new Property(10, String.class, "storeAddress", false, "STORE_ADDRESS");
+        public final static Property TransformerId = new Property(11, String.class, "transformerId", false, "TRANSFORMER_ID");
+        public final static Property TransformerName = new Property(12, String.class, "transformerName", false, "TRANSFORMER_NAME");
+        public final static Property CreateTime = new Property(13, String.class, "createTime", false, "CREATE_TIME");
+        public final static Property Type = new Property(14, String.class, "type", false, "TYPE");
     };
 
 
@@ -58,12 +60,14 @@ public class PricingBeanDao extends AbstractDao<PricingBean, String> {
                 "'USER_ID' TEXT," + // 4: userId
                 "'USER_NAME' TEXT," + // 5: userName
                 "'ADMIN_NAME' TEXT," + // 6: adminName
-                "'STORE_ID' TEXT," + // 7: storeId
-                "'STORE_NAME' TEXT," + // 8: storeName
-                "'TRANSFORMER_ID' TEXT," + // 9: transformerId
-                "'TRANSFORMER_NAME' TEXT," + // 10: transformerName
-                "'CREATE_TIME' TEXT," + // 11: createTime
-                "'TYPE' TEXT);"); // 12: type
+                "'ADMIN_PHONE' TEXT," + // 7: adminPhone
+                "'STORE_ID' TEXT," + // 8: storeId
+                "'STORE_NAME' TEXT," + // 9: storeName
+                "'STORE_ADDRESS' TEXT," + // 10: storeAddress
+                "'TRANSFORMER_ID' TEXT," + // 11: transformerId
+                "'TRANSFORMER_NAME' TEXT," + // 12: transformerName
+                "'CREATE_TIME' TEXT," + // 13: createTime
+                "'TYPE' TEXT);"); // 14: type
     }
 
     /** Drops the underlying database table. */
@@ -112,34 +116,44 @@ public class PricingBeanDao extends AbstractDao<PricingBean, String> {
             stmt.bindString(7, adminName);
         }
  
+        String adminPhone = entity.getAdminPhone();
+        if (adminPhone != null) {
+            stmt.bindString(8, adminPhone);
+        }
+ 
         String storeId = entity.getStoreId();
         if (storeId != null) {
-            stmt.bindString(8, storeId);
+            stmt.bindString(9, storeId);
         }
  
         String storeName = entity.getStoreName();
         if (storeName != null) {
-            stmt.bindString(9, storeName);
+            stmt.bindString(10, storeName);
+        }
+ 
+        String storeAddress = entity.getStoreAddress();
+        if (storeAddress != null) {
+            stmt.bindString(11, storeAddress);
         }
  
         String transformerId = entity.getTransformerId();
         if (transformerId != null) {
-            stmt.bindString(10, transformerId);
+            stmt.bindString(12, transformerId);
         }
  
         String transformerName = entity.getTransformerName();
         if (transformerName != null) {
-            stmt.bindString(11, transformerName);
+            stmt.bindString(13, transformerName);
         }
  
         String createTime = entity.getCreateTime();
         if (createTime != null) {
-            stmt.bindString(12, createTime);
+            stmt.bindString(14, createTime);
         }
  
         String type = entity.getType();
         if (type != null) {
-            stmt.bindString(13, type);
+            stmt.bindString(15, type);
         }
     }
 
@@ -160,12 +174,14 @@ public class PricingBeanDao extends AbstractDao<PricingBean, String> {
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // userId
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // userName
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // adminName
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // storeId
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // storeName
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // transformerId
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // transformerName
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // createTime
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12) // type
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // adminPhone
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // storeId
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // storeName
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // storeAddress
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // transformerId
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // transformerName
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // createTime
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14) // type
         );
         return entity;
     }
@@ -180,12 +196,14 @@ public class PricingBeanDao extends AbstractDao<PricingBean, String> {
         entity.setUserId(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setUserName(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setAdminName(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setStoreId(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setStoreName(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setTransformerId(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setTransformerName(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setCreateTime(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setType(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setAdminPhone(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setStoreId(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setStoreName(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setStoreAddress(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setTransformerId(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setTransformerName(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setCreateTime(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setType(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
      }
     
     /** @inheritdoc */

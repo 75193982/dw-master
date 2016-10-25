@@ -90,8 +90,10 @@ public class MyDaoGenerator {
         userBean.addStringProperty("userId");
         userBean.addStringProperty("userName");
         userBean.addStringProperty("adminName");
+        userBean.addStringProperty("adminPhone");
         userBean.addStringProperty("storeId");
         userBean.addStringProperty("storeName");
+        userBean.addStringProperty("storeAddress");
         userBean.addStringProperty("transformerId");
         userBean.addStringProperty("transformerName");
         userBean.addStringProperty("createTime");
