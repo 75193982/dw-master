@@ -112,12 +112,7 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
                     transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
                 } else if (bean.getType().equals("20")) {
                     storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
-                    //  transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
-                    try {
-                        pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getUserId());
-                    } catch (Exception e) {
-                        Logger.e(e.getMessage());
-                    }
+                    transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
                     try {
                         spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
                     } catch (Exception e) {
@@ -126,25 +121,18 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
                 }
                 break;
             case 4:
-                setToolbarTitle("购电用户信息");
+                setToolbarTitle("申请购电者信息");
                 bean = UserBeanDaoHelper.getInstance().getDataById(id);
-                if (bean.getType().equals("10")) {
-                    storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
-                } else if (bean.getType().equals("11")) {
-                    storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
-                    transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
-                } else if (bean.getType().equals("20")) {
-                    storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
-                    //transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
-                    pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getUserId());
-                    spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
-                }
+                pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getUserId());
                 break;
             case 5:
-                setToolbarTitle("购电用户信息");
+                setToolbarTitle("返回购电用户信息");
                 bean = UserBeanDaoHelper.getInstance().getDataById(id);
                 pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getUserId());
                 spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
+                if (pricings.size() > 0) {
+                    userAllInfo.setPricings(pricings.get(0));
+                }
                 break;
         }
         bean.setEcodeType(type + "");
@@ -152,10 +140,6 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
         userAllInfo.setStoreBean(storebean);
         userAllInfo.setTransformerBean(transbean);
         userAllInfo.setPricingSize(pricings.size());
-        userAllInfo.setChange(getIntent().getBooleanExtra("isChange", false));
-        if (pricings.size() > 0) {
-            userAllInfo.setPricings(pricings.get(0));
-        }
         userAllInfo.setSpotBeans(spotPricingBeans);
         createChineseQRCode(new Gson().toJson(userAllInfo));
     }

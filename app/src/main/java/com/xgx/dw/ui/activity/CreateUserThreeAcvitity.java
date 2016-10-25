@@ -23,6 +23,7 @@ import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.bean.LoginInformation;
+import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
 import com.xgx.dw.dao.StoreBeanDaoHelper;
 import com.xgx.dw.dao.TransformerBeanDaoHelper;
 import com.xgx.dw.presenter.impl.UserPresenterImpl;
@@ -96,8 +97,9 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
             getSupportActionBar().setTitle("编辑二级用户");
             this.userId.setText(this.bean.getUserId());
             userName.setText(checkText(this.bean.getUserName()));
-            price.setText(checkText(bean.getPrice()));
-            price.setTag(checkText(bean.getPrice()));
+            SpotPricingBean spotPricingBean = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
+            price.setText(checkText(spotPricingBean.getName()));
+            price.setTag(checkText(spotPricingBean.getId()));
             phone.setText(checkText(bean.getPhone()));
             currentRatio.setText(checkText(bean.getCurrentRatio()));
             voltageRatio.setText(checkText(bean.getVoltageRatio()));
@@ -299,7 +301,7 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1001 && resultCode == 1001) {
             SpotPricingBean bean = (SpotPricingBean) data.getSerializableExtra("entity");
-            price.setText(bean.getId());
+            price.setText(bean.getName());
             price.setTag(bean.getId());
         }
     }

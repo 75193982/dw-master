@@ -20,7 +20,6 @@ public class UserAllInfo implements Serializable {
     private int pricingSize;
     private PricingBean pricings;
     private SpotPricingBean spotBeans;
-    private boolean isChange;
 
     public UserBean getUser() {
         return user;
@@ -71,11 +70,4 @@ public class UserAllInfo implements Serializable {
         this.spotBeans = spotBeans;
     }
 
-    public boolean isChange() {
-        return isChange;
-    }
-
-    public void setChange(boolean change) {
-        isChange = change;
-    }
 }

@@ -55,7 +55,7 @@ public class SpotListActivity extends BaseAppCompatActivity {
         recyclerView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                if (!adapter.getItem(i).getType().equals("2")) {
+                if (!adapter.getItem(i).getFinishtype().equals("2")) {
                     Intent intent = new Intent(SpotListActivity.this, SpecialOperationDetailActivity.class);
                     intent.putExtra("type", 66);
                     intent.putExtra("dlbean", adapter.getItem(i));

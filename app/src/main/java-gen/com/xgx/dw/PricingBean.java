@@ -24,6 +24,7 @@ public class PricingBean implements Serializable {
     private String transformerName;
     private String createTime;
     private String type;
+    private String finishtype;
 
     public PricingBean() {
     }
@@ -32,7 +33,7 @@ public class PricingBean implements Serializable {
         this.id = id;
     }
 
-    public PricingBean(String id, String pid, String price, String spotpriceId, String userId, String userName, String adminName, String adminPhone, String storeId, String storeName, String storeAddress, String transformerId, String transformerName, String createTime, String type) {
+    public PricingBean(String id, String pid, String price, String spotpriceId, String userId, String userName, String adminName, String adminPhone, String storeId, String storeName, String storeAddress, String transformerId, String transformerName, String createTime, String type, String finishtype) {
         this.id = id;
         this.pid = pid;
         this.price = price;
@@ -48,6 +49,7 @@ public class PricingBean implements Serializable {
         this.transformerName = transformerName;
         this.createTime = createTime;
         this.type = type;
+        this.finishtype = finishtype;
     }
 
     public String getId() {
@@ -107,7 +109,7 @@ public class PricingBean implements Serializable {
     }
 
     public String getAdminPhone() {
-        return adminPhone;
+        return adminPhone == null ? "" : adminPhone;
     }
 
     public void setAdminPhone(String adminPhone) {
@@ -131,7 +133,7 @@ public class PricingBean implements Serializable {
     }
 
     public String getStoreAddress() {
-        return storeAddress;
+        return storeAddress == null ? "" : storeAddress;
     }
 
     public void setStoreAddress(String storeAddress) {
@@ -168,6 +170,14 @@ public class PricingBean implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getFinishtype() {
+        return finishtype == null ? "" : finishtype;
+    }
+
+    public void setFinishtype(String finishtype) {
+        this.finishtype = finishtype;
     }
 
 }

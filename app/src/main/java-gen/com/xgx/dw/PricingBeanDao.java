@@ -38,6 +38,7 @@ public class PricingBeanDao extends AbstractDao<PricingBean, String> {
         public final static Property TransformerName = new Property(12, String.class, "transformerName", false, "TRANSFORMER_NAME");
         public final static Property CreateTime = new Property(13, String.class, "createTime", false, "CREATE_TIME");
         public final static Property Type = new Property(14, String.class, "type", false, "TYPE");
+        public final static Property Finishtype = new Property(15, String.class, "finishtype", false, "FINISHTYPE");
     };
 
 
@@ -67,7 +68,8 @@ public class PricingBeanDao extends AbstractDao<PricingBean, String> {
                 "'TRANSFORMER_ID' TEXT," + // 11: transformerId
                 "'TRANSFORMER_NAME' TEXT," + // 12: transformerName
                 "'CREATE_TIME' TEXT," + // 13: createTime
-                "'TYPE' TEXT);"); // 14: type
+                "'TYPE' TEXT," + // 14: type
+                "'FINISHTYPE' TEXT);"); // 15: finishtype
     }
 
     /** Drops the underlying database table. */
@@ -155,6 +157,11 @@ public class PricingBeanDao extends AbstractDao<PricingBean, String> {
         if (type != null) {
             stmt.bindString(15, type);
         }
+ 
+        String finishtype = entity.getFinishtype();
+        if (finishtype != null) {
+            stmt.bindString(16, finishtype);
+        }
     }
 
     /** @inheritdoc */
@@ -181,7 +188,8 @@ public class PricingBeanDao extends AbstractDao<PricingBean, String> {
             cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // transformerId
             cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // transformerName
             cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // createTime
-            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14) // type
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // type
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15) // finishtype
         );
         return entity;
     }
@@ -204,6 +212,7 @@ public class PricingBeanDao extends AbstractDao<PricingBean, String> {
         entity.setTransformerName(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
         entity.setCreateTime(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
         entity.setType(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setFinishtype(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
      }
     
     /** @inheritdoc */

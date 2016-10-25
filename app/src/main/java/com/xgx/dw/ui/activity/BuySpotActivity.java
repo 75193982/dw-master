@@ -17,6 +17,7 @@ import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.bean.UserAllInfo;
 import com.xgx.dw.dao.PricingDaoHelper;
 import com.xgx.dw.dao.StoreBeanDaoHelper;
+import com.xgx.dw.dao.UserBeanDaoHelper;
 import com.xgx.dw.utils.CommonUtils;
 import com.xgx.dw.utils.Logger;
 
@@ -85,35 +86,41 @@ public class BuySpotActivity extends BaseAppCompatActivity {
         //正在保存电价生成 二维码，并保存到表里
         try {
             PricingBean bean = new PricingBean();
+            UserBean user = UserBeanDaoHelper.getInstance().getDataById(userAllInfo.getUser().getUserId());
+            if (user == null) {
+                UserBeanDaoHelper.getInstance().addData(userAllInfo.getUser());
+                user = userAllInfo.getUser();
+            }
 
             bean.setPrice(spotTv.getText().toString());
-            bean.setUserId(userAllInfo.getUser().getUserId());
-            bean.setUserName(userAllInfo.getUser().getUserName());
+            bean.setUserId(user.getUserId());
+            bean.setUserName(user.getUserName());
             bean.setAdminPhone(LoginInformation.getInstance().getUser().getPhone());
             bean.setAdminName(LoginInformation.getInstance().getUser().getUserId());
-
             bean.setType((String) spinner.getSelectedItem());
-            bean.setStoreId(LoginInformation.getInstance().getUser().getStoreId());
-            bean.setStoreName(LoginInformation.getInstance().getUser().getStoreName());
-
+            bean.setStoreId(user.getStoreId());
+            bean.setStoreName(user.getStoreName());
             //根据storeid 获取store详情
-            StoreBean storeBean = StoreBeanDaoHelper.getInstance().getDataById(LoginInformation.getInstance().getUser().getStoreId());
+            StoreBean storeBean = StoreBeanDaoHelper.getInstance().getDataById(user.getStoreId());
             if (storeBean != null) {
                 bean.setStoreAddress(storeBean.getAddress());
             }
-            bean.setTransformerId(LoginInformation.getInstance().getUser().getTransformerId());
-            bean.setTransformerName(LoginInformation.getInstance().getUser().getTransformerName());
-            bean.setPid(userAllInfo.getUser().getPrice());
+            bean.setTransformerId(user.getTransformerId());
+            bean.setTransformerName(user.getTransformerName());
+            bean.setPid(user.getPrice());
             bean.setCreateTime(CommonUtils.parseDateTime(System.currentTimeMillis()));
             bean.setId(userAllInfo.getPricingSize() + "");
             bean.setSpotpriceId(userAllInfo.getPricingSize() + "");
-
+            if (isChangeSwitch.isChecked()) {
+                bean.setFinishtype("1");
+            } else {
+                bean.setFinishtype("0");
+            }
             PricingDaoHelper.getInstance().addData(bean);
-
 
             //比对 电压 电价，电流  是否一致
             //查询本地的userbean
-            startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 5).putExtra("id", bean.getUserId()).putExtra("isChange", isChangeSwitch.isChecked()));
+            startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 5).putExtra("id", bean.getUserId()));
 
         } catch (Exception e) {
             Logger.e(e.getMessage());

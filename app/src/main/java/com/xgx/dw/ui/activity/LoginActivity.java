@@ -114,6 +114,11 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
 
     public void loginCallback(UserBean userBean) {
         //登录成功后，将登录信息保存到偏好设置中
+        setLoginInfomation(userBean);
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
+    private void setLoginInfomation(UserBean userBean) {
         Setting setting = new Setting(this);
         setting.saveString(G.currentUsername, userBean.getUserId());
         setting.saveString(G.currentUserType, userBean.getType());
@@ -124,7 +129,6 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
         setting.saveString(G.currentPassword, userBean.getPassword());
         setting.saveString("user", new Gson().toJson(userBean));
         LoginInformation.getInstance().setUser(userBean);
-        startActivity(new Intent(this, MainActivity.class));
     }
 
 

@@ -34,6 +34,7 @@ import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.ble.BlueOperationContact;
 import com.xgx.dw.dao.PricingDaoHelper;
 import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
+import com.xgx.dw.dao.UserBeanDaoHelper;
 import com.xgx.dw.utils.CommonUtils;
 import com.xgx.dw.utils.Logger;
 import com.xgx.dw.utils.MyUtils;
@@ -302,6 +303,10 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             connect(BaseApplication.getSetting().loadString(BaseApplication.getSetting().loadString(G.currentUsername) + "_bleAddress"));
             hideProgress();
         }
+        UserBean bean = LoginInformation.getInstance().getUser();
+        if (bean.getType().equals("admin")) {
+            sendTv.setVisibility(View.VISIBLE);
+        }
     }
 
     private void changDjStr() {
@@ -334,11 +339,14 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         String temp = String.format(BlueOperationContact.DianfeiLuruSendTemp, newId, type, gdl, bjdl, tzdl, currentTime);
         OperationStr = String.format(BlueOperationContact.DianfeiLuruSend, newId, type, gdl, bjdl, tzdl, currentTime, MyUtils.getJyCode(temp));
         if (title == 66) {
-            String voltageRatio = LoginInformation.getInstance().getUser().getVoltageRatio();
-            String currentRatio = LoginInformation.getInstance().getUser().getCurrentRatio();
-            String price = LoginInformation.getInstance().getUser().getPrice();
+            SpotPricingBean spotPricingBean = SpotPricingBeanDaoHelper.getInstance().getDataById(dlbean.getPid());
+            UserBean userBean = UserBeanDaoHelper.getInstance().getDataById(dlbean.getUserId());
+            String voltageRatio = userBean.getVoltageRatio();
+            String currentRatio = userBean.getCurrentRatio();
+            String price = spotPricingBean.getName();
             sendTv.setText("购电量：" + dlbean.getPrice() + "\n" + "电压倍率：" + voltageRatio +
                     "\n" + "电量倍率：" + currentRatio + "\n" + "电价：" + price);
+            sendTv.setVisibility(View.VISIBLE);
         } else {
             sendTv.setText(OperationStr);
         }
@@ -487,7 +495,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                                 actionSave.setEnabled(false);
                                 btnTv.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.White));
                                 btnTv.setText("操作成功");
-                                btnTv.setTextColor(ContextCompat.getColor(getContext(), R.color.Gray100));
+                                btnTv.setTextColor(ContextCompat.getColor(getContext(), R.color.Orange));
                                 if (title == 4) {//表示倍率录入成功
                                     UserBean bean = LoginInformation.getInstance().getUser();
                                     String dj = bean.getPrice();
@@ -505,12 +513,14 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                                     sendData();
                                     Setting setting = new Setting(getContext());
                                     String userId = LoginInformation.getInstance().getUser().getUserId();
-                                    setting.saveBoolean(userId + "_isFirstBuy", true);
+                                    setting.saveBoolean(userId + "_isFirstBuy", false);
                                     btnTv.setText("购电成功");
+                                    btnTv.setTextColor(ContextCompat.getColor(getContext(), R.color.Orange));
                                 } else if (title == 66 || title == 6) {
-                                    dlbean.setType("2");
+                                    dlbean.setFinishtype("2");
                                     PricingDaoHelper.getInstance().addData(dlbean);
                                     btnTv.setText("购电成功");
+                                    btnTv.setTextColor(ContextCompat.getColor(getContext(), R.color.Orange));
                                 }
                             }
                         } catch (Exception e) {
@@ -575,7 +585,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             if (bean.getType().equals("20")) {
                 String userId = LoginInformation.getInstance().getUser().getUserId();
                 boolean isFirstBuy = setting.loadBoolean(userId + "_isFirstBuy");
-                if (!isFirstBuy) {
+                if (isFirstBuy) {
                     //先录入倍率，在录入电价，最后再录入电费
                     //1检查倍率和电价是否为空
                     String dy = bean.getVoltageRatio();
@@ -593,9 +603,9 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             }
         } else if (title == 66) {
             Setting setting = new Setting(getContext());
-            UserBean bean = LoginInformation.getInstance().getUser();
+            UserBean bean = UserBeanDaoHelper.getInstance().getDataById(dlbean.getUserId());
             if (bean.getType().equals("20")) {
-                String userId = LoginInformation.getInstance().getUser().getUserId();
+                String userId = bean.getUserId();
                 boolean isFirstBuy = setting.loadBoolean(userId + "_isFirstBuy");
                 if (!isFirstBuy) {
                     //先录入倍率，在录入电价，最后再录入电费
@@ -610,7 +620,18 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                     title = 4;
                     changStr(dy, dl);
                 } else {
-                    changDlStr(dlbean.getPrice(), "0", "0", dlbean.getSpotpriceId(), dlbean.getType());
+                    if (dlbean.getFinishtype().equals("1")) {//表示需要重新上传电压倍率
+                        String dy = bean.getVoltageRatio();
+                        String dl = bean.getCurrentRatio();
+                        if (TextUtils.isEmpty(bean.getVoltageRatio()) || TextUtils.isEmpty(bean.getCurrentRatio()) || TextUtils.isEmpty(bean.getPrice())) {
+                            showToast("电压倍率/电流倍率/电价信息不完整");
+                            return;
+                        }
+                        title = 4;
+                        changStr(dy, dl);
+                    } else {
+                        changDlStr(dlbean.getPrice(), "0", "0", dlbean.getSpotpriceId(), dlbean.getType());
+                    }
                 }
             }
         }

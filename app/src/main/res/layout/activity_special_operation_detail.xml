@@ -35,7 +35,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_10"
-            android:textIsSelectable="true"></TextView>
+            android:textIsSelectable="true"
+            android:visibility="gone"></TextView>
 
         <LinearLayout
             android:id="@+id/inputBeilvLayout"

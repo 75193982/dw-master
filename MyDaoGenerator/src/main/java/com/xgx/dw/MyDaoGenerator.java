@@ -98,6 +98,7 @@ public class MyDaoGenerator {
         userBean.addStringProperty("transformerName");
         userBean.addStringProperty("createTime");
         userBean.addStringProperty("type");
+        userBean.addStringProperty("finishtype");
     }
 
     private static void initSearchLogBean(Schema schema) {

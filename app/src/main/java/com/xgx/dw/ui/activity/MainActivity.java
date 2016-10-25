@@ -402,8 +402,8 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                             startActivity(new Intent(getContext(), CreateUserThreeAcvitity.class).putExtra("ime", bean.getIme()));
                         } else if (bean.getEcodeType().equals("3")) {
                             //保存用户 方便登录
-                            IUserPresenter presenter = new UserPresenterImpl();
-                            presenter.saveUser(MainActivity.this, bean, Integer.valueOf(bean.getType()), false);
+                            UserBeanDaoHelper.getInstance().addData(bean);
+                            setLoginInfomation(bean);
                             if (userAllInfo.getStoreBean().getId() != null) {
                                 StoreBeanDaoHelper.getInstance().addData(userAllInfo.getStoreBean());
                             }
@@ -418,8 +418,10 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                             startActivity(new Intent(getContext(), BuySpotActivity.class).putExtra("userAllInfo", userAllInfo));
                         } else if (bean.getEcodeType().equals("5")) {
                             //保存用户 方便登录
-                            IUserPresenter presenter = new UserPresenterImpl();
-                            presenter.saveUser(MainActivity.this, bean, Integer.valueOf(bean.getType()), false);
+                            UserBeanDaoHelper.getInstance().addData(bean);
+                            setLoginInfomation(bean);
+
+
                             if (userAllInfo.getStoreBean().getId() != null) {
                                 StoreBeanDaoHelper.getInstance().addData(userAllInfo.getStoreBean());
                             }
@@ -431,13 +433,9 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                             }
                             if (!PricingDaoHelper.getInstance().hasKey(userAllInfo.getPricings().getId())) {
                                 PricingDaoHelper.getInstance().addData(userAllInfo.getPricings());
-                                String userId = LoginInformation.getInstance().getUser().getUserId();
-                                Setting setting = new Setting(getContext());
-                                setting.saveBoolean(userId + "_isFirstBuy", !userAllInfo.isChange());
                                 showToast("扫描购电信息成功，请查看购电记录完成购电");
                             } else {
                                 showToast("已经扫描过该条购电记录");
-
                             }
                         } else {
                             showToast("不是有效的二维码");
@@ -475,5 +473,18 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                 }
             }
         }
+    }
+
+    private void setLoginInfomation(UserBean userBean) {
+        Setting setting = new Setting(this);
+        setting.saveString(G.currentUsername, userBean.getUserId());
+        setting.saveString(G.currentUserType, userBean.getType());
+        setting.saveString(G.currentStoreId, userBean.getStoreId());
+        setting.saveString(G.currentStoreName, userBean.getStoreName());
+        setting.saveString(G.currentTransformId, userBean.getTransformerId());
+        setting.saveString(G.currentTransformName, userBean.getTransformerName());
+        setting.saveString(G.currentPassword, userBean.getPassword());
+        setting.saveString("user", new Gson().toJson(userBean));
+        LoginInformation.getInstance().setUser(userBean);
     }
 }
