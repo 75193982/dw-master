@@ -45,10 +45,12 @@ public class UserPresenterImpl extends BasePresenter implements IUserPresenter {
             if (isEmpty(userBean.getStoreName(), IBaseView, "请选择营业厅")) return;
             if (type == 11) {
                 if (isEmpty(userBean.getTransformerId(), IBaseView, "台区名称不能为空")) return;
+            } else if (type == 20) {
+                if (isEmpty(userBean.getPrice(), IBaseView, "请选择电价")) return;
             }
-            if (isEmpty(userBean.getPrice(), IBaseView, "请选择电价")) return;
 
-            if (UserBeanDaoHelper.getInstance().hasKey(userBean.getUserId()) && isSave == true) {
+
+            if (UserBeanDaoHelper.getInstance().queryByTransFormUserId(userBean.getUserId(), userBean.getIme()) && isSave == true) {
                 IBaseView.showToast("已有相同编号的用户");
                 IBaseView.saveTransformer(false);
                 IBaseView.hideProgress();

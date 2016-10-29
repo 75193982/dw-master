@@ -1,10 +1,8 @@
 package com.xgx.dw.ui.activity;
 
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.LinearLayout;
 
-import com.andexert.library.RippleView;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.xgx.dw.R;
 import com.xgx.dw.StoreBean;
@@ -14,7 +12,6 @@ import com.xgx.dw.ui.view.interfaces.ICreateStoresView;
 import com.xgx.dw.vo.request.StoresRequest;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class CreateStoreActivity extends BaseAppCompatActivity implements ICreateStoresView {
@@ -32,7 +29,7 @@ public class CreateStoreActivity extends BaseAppCompatActivity implements ICreat
     @Bind(R.id.store_ContactWay)
     MaterialEditText storeContactWay;
     @Bind(R.id.action_save)
-    RippleView actionSave;
+    LinearLayout actionSave;
     private StorePresenterImpl presenter;
     private StoreBean bean;
 

@@ -9,6 +9,7 @@ import java.io.Serializable;
  */
 public class UserBean implements Serializable {
 
+    private String id;
     private String userId;
     private String userName;
     private String password;
@@ -31,19 +32,21 @@ public class UserBean implements Serializable {
     public UserBean() {
     }
 
-    public UserBean(String id, String name, String pwd, String type, String ime) {
-        this.userId = id;
+    public UserBean(String id, String userId, String name, String pwd, String type, String ime) {
+        this.userId = userId;
+        this.id = id;
         this.userName = name;
         this.password = pwd;
         this.type = type;
         this.ime = ime;
     }
 
-    public UserBean(String userId) {
-        this.userId = userId;
+    public UserBean(String id) {
+        this.id = id;
     }
 
-    public UserBean(String userId, String userName, String password, String type, String storeId, String storeName, String isBuy, String isTest, String transformerId, String transformerName, String voltageRatio, String currentRatio, String price, String phone, String createTime, String remark, String ime, String ecodeType) {
+    public UserBean(String id, String userId, String userName, String password, String type, String storeId, String storeName, String isBuy, String isTest, String transformerId, String transformerName, String voltageRatio, String currentRatio, String price, String phone, String createTime, String remark, String ime, String ecodeType) {
+        this.id = id;
         this.userId = userId;
         this.userName = userName;
         this.password = password;
@@ -62,6 +65,14 @@ public class UserBean implements Serializable {
         this.remark = remark;
         this.ime = ime;
         this.ecodeType = ecodeType;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUserId() {
@@ -113,7 +124,7 @@ public class UserBean implements Serializable {
     }
 
     public String getIsBuy() {
-        return isBuy;
+        return isBuy == null ? "" : isBuy;
     }
 
     public void setIsBuy(String isBuy) {
@@ -121,7 +132,7 @@ public class UserBean implements Serializable {
     }
 
     public String getIsTest() {
-        return isTest;
+        return isTest == null ? "" : isTest;
     }
 
     public void setIsTest(String isTest) {

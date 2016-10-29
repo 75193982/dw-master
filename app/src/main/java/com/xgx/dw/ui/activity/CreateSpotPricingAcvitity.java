@@ -5,8 +5,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 
-import com.andexert.library.RippleView;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.xgx.dw.R;
 import com.xgx.dw.SpotPricingBean;
@@ -50,7 +50,7 @@ public class CreateSpotPricingAcvitity extends BaseAppCompatActivity implements 
     @Bind(R.id.spotpricing_valleyPrice)
     MaterialEditText spotpricingValleyPrice;
     @Bind(R.id.action_save)
-    RippleView actionSave;
+    LinearLayout actionSave;
     private List<StoreBean> storebeans;
     private SpotPricingPresenterImpl spotPricingPresenter;
     private SpotPricingBean bean;

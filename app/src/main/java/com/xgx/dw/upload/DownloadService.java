@@ -35,7 +35,7 @@ public class DownloadService extends Service {
      *
      * @param response
      **/
-    private void initDownManager(QueryResult.UploadResponse response) {
+    private void initDownManager(UploadResponse response) {
         manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         receiver = new DownloadCompleteReceiver();
         // 设置下载地址
@@ -70,7 +70,7 @@ public class DownloadService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         try {
-            QueryResult.UploadResponse response = (QueryResult.UploadResponse) intent.getSerializableExtra("response");
+            UploadResponse response = (UploadResponse) intent.getSerializableExtra("response");
             // 调用下载
             initDownManager(response);
         } catch (Exception e) {

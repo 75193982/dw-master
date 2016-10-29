@@ -105,7 +105,7 @@ public class UserMgrActivity extends BaseAppCompatActivity implements IUserListV
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        UserBeanDaoHelper.getInstance().deleteData(userbean.getUserId());
+                        UserBeanDaoHelper.getInstance().deleteData(userbean.getId());
                         presenter.searchUser(UserMgrActivity.this);
 
                     }

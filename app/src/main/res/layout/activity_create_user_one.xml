@@ -10,11 +10,17 @@
     android:paddingTop="@dimen/activity_vertical_margin">
 
 
-    <TextView
+    <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/imeTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"></TextView>
+        android:drawableLeft="@drawable/iconfont_must"
+        android:hint="手机ime码"
+        android:inputType="number"
+        android:textSize="@dimen/text_third"
+        app:met_floatingLabel="highlight"
+        app:met_floatingLabelText="手机ime码"
+        app:met_singleLineEllipsis="true" />
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -148,9 +154,8 @@
             android:checked="true"></android.support.v7.widget.SwitchCompat>
     </RelativeLayout>
 
-    <com.andexert.library.RippleView
+    <LinearLayout
         android:id="@id/action_save"
-        rv_centered="true"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20.0dip">
@@ -164,6 +169,6 @@
             android:text="@string/save"
             android:textColor="@color/White"
             android:textSize="@dimen/text_second" />
-    </com.andexert.library.RippleView>
+    </LinearLayout>
 
 </LinearLayout>

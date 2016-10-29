@@ -289,7 +289,6 @@ public class MyStringUtils {
 				dest = str;
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
 
 		return dest;

@@ -13,6 +13,13 @@
         android:padding="@dimen/dp_10">
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_10"
+            android:text="温馨提示：尊敬的用户，您的蓝牙设备配对密码是您登陆用户名的后四位数字"
+            android:textColor="@android:color/holo_red_light"></TextView>
+
+        <TextView
             android:id="@+id/deviceTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

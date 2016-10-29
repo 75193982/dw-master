@@ -47,6 +47,7 @@ import com.xgx.dw.presenter.interfaces.IMainPresenter;
 import com.xgx.dw.presenter.interfaces.IUserPresenter;
 import com.xgx.dw.ui.view.interfaces.IMainView;
 import com.xgx.dw.ui.view.interfaces.IUserView;
+import com.xgx.dw.upload.UploadResponse;
 import com.xgx.dw.utils.AES;
 import com.xgx.dw.utils.ApiLevelHelper;
 import com.xgx.dw.utils.Logger;
@@ -113,10 +114,15 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
     private int[] viewId;
     private String currentUserType;
 
-    public void checkVersionCallBack(UpdateVersionResult paramUpdateVersionResult) {
-        Intent localIntent = new Intent(this, UploadDialogActivity.class);
-        localIntent.putExtra("response", paramUpdateVersionResult);
-        startActivity(localIntent);
+    public void checkVersionCallBack(UploadResponse paramUpdateVersionResult) {
+        try {
+            Intent localIntent = new Intent(this, UploadDialogActivity.class);
+            localIntent.putExtra("response", paramUpdateVersionResult);
+            startActivity(localIntent);
+        } catch (Exception e) {
+            Logger.i(e.getMessage());
+        }
+
     }
 
 
@@ -181,8 +187,6 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
         IntentFilter localIntentFilter = new IntentFilter();
         localIntentFilter.addAction("com.xgx.dw.main");
         registerReceiver(localMainBoradcastReceiver, localIntentFilter);
-
-
         UpdateVersionRequest localUpdateVersionRequest = new UpdateVersionRequest();
         localUpdateVersionRequest.versionCode = BaseApplication.getVersionCode();
         mMainPresenter.checkVersion(localUpdateVersionRequest, 1);
@@ -375,7 +379,8 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                     String result = bundle.getString(CodeUtils.RESULT_STRING);
                     String decryptString = "";
                     try {
-                        decryptString = AES.decrypt("1396198677119910", result);
+                        // decryptString = AES.decrypt("1396198677119910", result);
+                        decryptString = result;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -403,7 +408,6 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                         } else if (bean.getEcodeType().equals("3")) {
                             //保存用户 方便登录
                             UserBeanDaoHelper.getInstance().addData(bean);
-                            setLoginInfomation(bean);
                             if (userAllInfo.getStoreBean().getId() != null) {
                                 StoreBeanDaoHelper.getInstance().addData(userAllInfo.getStoreBean());
                             }
@@ -417,25 +421,23 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                             //保存用户 方便登录
                             startActivity(new Intent(getContext(), BuySpotActivity.class).putExtra("userAllInfo", userAllInfo));
                         } else if (bean.getEcodeType().equals("5")) {
-                            //保存用户 方便登录
-                            UserBeanDaoHelper.getInstance().addData(bean);
-                            setLoginInfomation(bean);
-
-
-                            if (userAllInfo.getStoreBean().getId() != null) {
-                                StoreBeanDaoHelper.getInstance().addData(userAllInfo.getStoreBean());
-                            }
-                            if (userAllInfo.getTransformerBean().getId() != null) {
-                                TransformerBeanDaoHelper.getInstance().addData(userAllInfo.getTransformerBean());
-                            }
-                            if (userAllInfo.getSpotBeans().getId() != null) {
-                                SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());
-                            }
-                            if (!PricingDaoHelper.getInstance().hasKey(userAllInfo.getPricings().getId())) {
-                                PricingDaoHelper.getInstance().addData(userAllInfo.getPricings());
-                                showToast("扫描购电信息成功，请查看购电记录完成购电");
+                            //用户购电
+                            List<PricingBean> pricingBeen = PricingDaoHelper.getInstance().queryByUserId(LoginInformation.getInstance().getUser().getUserId(), userAllInfo.getPricings().getIme(), userAllInfo.getPricings().getId());
+                            if (pricingBeen.size() > 0) {
+                                showToast("不能扫描该二维码,已经扫过一次了");
                             } else {
-                                showToast("已经扫描过该条购电记录");
+                                if (LoginInformation.getInstance().getUser().getId().equals(bean.getId())) {
+                                    UserBeanDaoHelper.getInstance().addData(bean);
+                                    setLoginInfomation(bean);
+                                    if (userAllInfo.getSpotBeans().getId() != null) {
+                                        SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());
+                                    }
+                                    PricingDaoHelper.getInstance().addData(userAllInfo.getPricings());
+                                    showToast("扫描购电信息成功，请查看购电记录完成购电");
+                                } else {
+                                    showToast("该购电二维码不属于你");
+                                }
+
                             }
                         } else {
                             showToast("不是有效的二维码");
@@ -454,7 +456,8 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                             public void onAnalyzeSuccess(Bitmap mBitmap, String result) {
                                 String decryptString = "";
                                 try {
-                                    decryptString = AES.decrypt(G.appsecret, result);
+                                    // decryptString = AES.decrypt(G.appsecret, result);
+                                    decryptString = result;
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }

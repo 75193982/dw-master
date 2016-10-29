@@ -1,16 +1,15 @@
 package com.xgx.dw.ui.fragment;
 
 import android.content.Intent;
-import android.content.res.Resources;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.GridLayoutManager.SpanSizeLookup;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import butterknife.Bind;
 
 import com.xgx.dw.R;
 import com.xgx.dw.adapter.DataSearchItemAdapter;
@@ -19,6 +18,7 @@ import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseFragment;
 import com.xgx.dw.bean.LoginInformation;
+import com.xgx.dw.ui.activity.AboutActivity;
 import com.xgx.dw.ui.activity.SearchLogListActivity;
 import com.xgx.dw.ui.activity.SpecialOperationDetailActivity;
 import com.xgx.dw.ui.activity.SpotListActivity;
@@ -27,7 +27,10 @@ import com.xgx.dw.ui.custom.TitleBar;
 import com.xgx.dw.ui.fragment.dummy.DummyContent;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class DataSearchFragment extends BaseFragment implements MyOnItemClickListner {
     private DataSearchItemAdapter adapter;
@@ -118,5 +121,11 @@ public class DataSearchFragment extends BaseFragment implements MyOnItemClickLis
                 startActivity(new Intent(getActivity(), UserInfoAcvitity.class).putExtra("bean", LoginInformation.getInstance().getUser()));
                 break;
         }
+    }
+
+
+    @OnClick(R.id.title_bar)
+    public void onClick() {
+        startActivity(new Intent(getContext(), AboutActivity.class));
     }
 }

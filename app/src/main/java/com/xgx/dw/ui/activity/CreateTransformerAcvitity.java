@@ -3,8 +3,8 @@ package com.xgx.dw.ui.activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 
-import com.andexert.library.RippleView;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.xgx.dw.R;
 import com.xgx.dw.StoreBean;
@@ -33,7 +33,7 @@ public class CreateTransformerAcvitity extends BaseAppCompatActivity implements 
     @Bind(R.id.transformer_name)
     MaterialEditText transformerName;
     @Bind(R.id.action_save)
-    RippleView actionSave;
+    LinearLayout actionSave;
     private TransformerPresenterImpl presenter;
     private List<StoreBean> storebeans;
     private TransformerBean bean;

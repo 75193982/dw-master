@@ -12,14 +12,19 @@ import com.xgx.dw.PricingBean;
 import com.xgx.dw.R;
 import com.xgx.dw.StoreBean;
 import com.xgx.dw.UserBean;
+import com.xgx.dw.app.G;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.bean.UserAllInfo;
 import com.xgx.dw.dao.PricingDaoHelper;
 import com.xgx.dw.dao.StoreBeanDaoHelper;
 import com.xgx.dw.dao.UserBeanDaoHelper;
+import com.xgx.dw.utils.AES;
 import com.xgx.dw.utils.CommonUtils;
 import com.xgx.dw.utils.Logger;
+
+import java.util.List;
+import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -40,6 +45,8 @@ public class BuySpotActivity extends BaseAppCompatActivity {
     MaterialSpinner spinner;
     @Bind(R.id.isChangeSwitch)
     SwitchCompat isChangeSwitch;
+    @Bind(R.id.isTrSwitch)
+    SwitchCompat isTrSwitch;
     private UserAllInfo userAllInfo;
 
     @Override
@@ -86,14 +93,20 @@ public class BuySpotActivity extends BaseAppCompatActivity {
         //正在保存电价生成 二维码，并保存到表里
         try {
             PricingBean bean = new PricingBean();
-            UserBean user = UserBeanDaoHelper.getInstance().getDataById(userAllInfo.getUser().getUserId());
+            UserBean user = UserBeanDaoHelper.getInstance().getDataById(userAllInfo.getUser().getId());
             if (user == null) {
                 UserBeanDaoHelper.getInstance().addData(userAllInfo.getUser());
                 user = userAllInfo.getUser();
             }
-
-            bean.setPrice(spotTv.getText().toString());
+            String price = "";
+            try {
+                price = AES.encrypt(G.appsecret, spotTv.getText().toString());
+            } catch (Exception e) {
+                price = "";
+            }
+            bean.setPrice(price);
             bean.setUserId(user.getUserId());
+            bean.setUserPrimaryid(user.getId());
             bean.setUserName(user.getUserName());
             bean.setAdminPhone(LoginInformation.getInstance().getUser().getPhone());
             bean.setAdminName(LoginInformation.getInstance().getUser().getUserId());
@@ -109,18 +122,35 @@ public class BuySpotActivity extends BaseAppCompatActivity {
             bean.setTransformerName(user.getTransformerName());
             bean.setPid(user.getPrice());
             bean.setCreateTime(CommonUtils.parseDateTime(System.currentTimeMillis()));
-            bean.setId(userAllInfo.getPricingSize() + "");
-            bean.setSpotpriceId(userAllInfo.getPricingSize() + "");
-            if (isChangeSwitch.isChecked()) {
-                bean.setFinishtype("1");
+            //获取本地的电价列表
+            bean.setId(UUID.randomUUID().toString());
+            List<PricingBean> pricingBeanList = PricingDaoHelper.getInstance().queryByUserDeviceId(user.getUserId());
+            if (pricingBeanList != null && pricingBeanList.size() > 0) {
+                bean.setSpotpriceId((pricingBeanList.size() + 1) + "");
             } else {
-                bean.setFinishtype("0");
+                bean.setSpotpriceId("1");
             }
-            PricingDaoHelper.getInstance().addData(bean);
+            if (isChangeSwitch.isChecked()) {
 
+                if (isChangeSwitch.isChecked()) {
+                    bean.setFinishtype("1,3");
+                } else {
+                    bean.setFinishtype("1");
+                }
+            } else {
+
+                if (isChangeSwitch.isChecked()) {
+                    bean.setFinishtype("0,3");
+                } else {
+                    bean.setFinishtype("0");
+                }
+            }
+            bean.setIme(user.getIme());
+            PricingDaoHelper.getInstance().addData(bean);
+            finish();
             //比对 电压 电价，电流  是否一致
             //查询本地的userbean
-            startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 5).putExtra("id", bean.getUserId()));
+            startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 5).putExtra("id", bean.getUserPrimaryid()));
 
         } catch (Exception e) {
             Logger.e(e.getMessage());

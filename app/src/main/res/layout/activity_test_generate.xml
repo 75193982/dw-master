@@ -29,7 +29,8 @@
         <TextView
             style="@style/AutoWrapTv"
             android:onClick="decodeChinese"
-            android:text="识别中文二维码" />
+            android:text="识别中文二维码"
+            android:visibility="gone" />
 
         <TextView
             style="@style/AutoWrapTv"

@@ -119,35 +119,39 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
                         Logger.e(e.getMessage());
                     }
                 }
+                userAllInfo.setSpotBeans(spotPricingBeans);
+                userAllInfo.setStoreBean(storebean);
+                userAllInfo.setTransformerBean(transbean);
                 break;
             case 4:
                 setToolbarTitle("申请购电者信息");
                 bean = UserBeanDaoHelper.getInstance().getDataById(id);
-                pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getUserId());
+                pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getId());
+                userAllInfo.setPricingSize(pricings.size());
+
                 break;
             case 5:
                 setToolbarTitle("返回购电用户信息");
                 bean = UserBeanDaoHelper.getInstance().getDataById(id);
-                pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getUserId());
+                pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getId());
                 spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
                 if (pricings.size() > 0) {
                     userAllInfo.setPricings(pricings.get(0));
                 }
+                userAllInfo.setSpotBeans(spotPricingBeans);
+                userAllInfo.setPricingSize(pricings.size());
                 break;
         }
         bean.setEcodeType(type + "");
         userAllInfo.setUser(bean);
-        userAllInfo.setStoreBean(storebean);
-        userAllInfo.setTransformerBean(transbean);
-        userAllInfo.setPricingSize(pricings.size());
-        userAllInfo.setSpotBeans(spotPricingBeans);
         createChineseQRCode(new Gson().toJson(userAllInfo));
     }
 
     private void createChineseQRCode(String s) {
-        String encryptResultStr = null;
+        String encryptResultStr = s;
         try {
-            encryptResultStr = AES.encrypt(G.appsecret, s);
+            // encryptResultStr = AES.encrypt(G.appsecret, s);
+            //encryptResultStr = AES.toHex(s);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -155,7 +159,7 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
             Toast.makeText(this, "当前没有用户", Toast.LENGTH_SHORT).show();
             return;
         }
-        Bitmap mBitmap = CodeUtils.createImage(encryptResultStr, 600, 600, BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
+        Bitmap mBitmap = CodeUtils.createImage(encryptResultStr, 800, 800, BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
         mChineseIv.setImageBitmap(mBitmap);
     }
 

@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.andexert.library.RippleView;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.xgx.dw.R;
 import com.xgx.dw.SpotPricingBean;
@@ -31,6 +30,7 @@ import com.xgx.dw.presenter.interfaces.IUserPresenter;
 import com.xgx.dw.ui.view.interfaces.IUserView;
 
 import java.util.List;
+import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,7 +39,7 @@ import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IUserView, Toolbar.OnMenuItemClickListener {
     @Bind(R.id.imeTv)
-    TextView imeTv;
+    MaterialEditText imeTv;
     @Bind(R.id.store_spinner)
     MaterialSpinner storeSpinner;
     @Bind(R.id.store_layout)
@@ -61,7 +61,7 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
     @Bind(R.id.phone)
     MaterialEditText phone;
     @Bind(R.id.action_save)
-    RippleView actionSave;
+    LinearLayout actionSave;
     private IUserPresenter presenter;
     private List<StoreBean> storebeans;
     private UserBean bean;
@@ -249,10 +249,13 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
         userBean.setCurrentRatio(currentRatio.getText().toString());
         userBean.setPhone(phone.getText().toString());
         userBean.setPrice(price.getTag() == null ? "" : price.getTag().toString());
-        if ((bean == null) || (TextUtils.isEmpty(bean.getUserId()))) {
+        if ((bean == null) || (TextUtils.isEmpty(bean.getId()))) {
             userBean.setPassword(userId.getText().toString());
+            userBean.setId(UUID.randomUUID().toString());
             this.presenter.saveUser(this, userBean, 20, true);
             return;
+        } else {
+            userBean.setId(bean.getId());
         }
         userBean.setPassword(userId.getText().toString());
         this.presenter.saveUser(this, userBean, 20, false);
@@ -278,11 +281,11 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
     public boolean onMenuItemClick(MenuItem paramMenuItem) {
         switch (paramMenuItem.getItemId()) {
             case R.id.action_showerweima:
-                startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 3).putExtra("id", bean.getUserId()));
+                startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 3).putExtra("id", bean.getId()));
                 break;
             case R.id.action_spotInfo:
                 Intent intent = new Intent(getContext(), AdminSpotListActivity.class);
-                intent.putExtra("id", bean.getUserId());
+                intent.putExtra("id", bean.getId());
                 startActivity(intent);
                 break;
         }

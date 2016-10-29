@@ -8,9 +8,11 @@ import com.xgx.dw.PricingBean;
 import com.xgx.dw.R;
 import com.xgx.dw.SpotPricingBean;
 import com.xgx.dw.UserBean;
+import com.xgx.dw.app.G;
 import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
 import com.xgx.dw.dao.UserBeanDaoHelper;
+import com.xgx.dw.utils.AES;
 import com.xgx.dw.utils.MyUtils;
 
 import java.util.List;
@@ -22,7 +24,7 @@ public class SpotListAdapter extends BaseQuickAdapter<PricingBean> {
 
     protected void convert(BaseViewHolder baseViewHolder, PricingBean bean) {
         SpotPricingBean spotPricingBean = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPid());
-        UserBean userBean = UserBeanDaoHelper.getInstance().getDataById(bean.getUserId());
+        UserBean userBean = UserBeanDaoHelper.getInstance().getDataById(bean.getUserPrimaryid());
         String spotName = "";
         String jdj = "";
         String fdj = "";
@@ -39,6 +41,12 @@ public class SpotListAdapter extends BaseQuickAdapter<PricingBean> {
         if (userBean == null) {
             userBean = new UserBean();
         }
+        String priceNum = "";
+        try {
+            priceNum = AES.decrypt(G.appsecret, bean.getPrice());
+        } catch (Exception e) {
+            priceNum = "";
+        }
         baseViewHolder.setText(R.id.title, "购电单号：" + bean.getSpotpriceId() +
                 "\n营业厅名称：" + bean.getStoreName() +
                 "\n营业厅地址：" + bean.getStoreAddress() +
@@ -48,18 +56,23 @@ public class SpotListAdapter extends BaseQuickAdapter<PricingBean> {
                 "\n峰：" + fdj +
                 "\n平：" + pdj +
                 "\n谷：" + gdj +
-                "\n购电金额(元)：" + bean.getPrice() +
+                "\n购电金额(元)：" + priceNum +
                 "\n购电类型：" + bean.getType() +
                 "\n操作员名称：" + bean.getAdminName() +
                 "\n联系人名称：" + bean.getAdminName() +
                 "\n联系人电话：" + bean.getAdminPhone());
         String type = "";
-        if (bean.getFinishtype().equals("0")) {
+        if (bean.getFinishtype().contains("0")) {
             type = "未上传至设备";
-        } else if (bean.getFinishtype().equals("1")) {
+
+
+        } else if (bean.getFinishtype().contains("1")) {
             type = "未上传至设备--需要更新倍率和电价";
         } else {
             type = "已完成";
+        }
+        if (bean.getFinishtype().contains("3")) {
+            type = type + "（保电投入）";
         }
         baseViewHolder.setText(R.id.subtitle, type);
         baseViewHolder.setTextColor(R.id.subtitle, ContextCompat.getColor(mContext, bean.getFinishtype().equals("2") ? android.R.color.holo_blue_light : android.R.color.holo_red_light));

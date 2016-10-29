@@ -22,7 +22,8 @@ public class MyDaoGenerator {
     private static void initUserBean(Schema schema) {
         Entity userBean = schema.addEntity("UserBean");
         userBean.setTableName("user");
-        userBean.addStringProperty("userId").primaryKey();
+        userBean.addStringProperty("id").primaryKey();
+        userBean.addStringProperty("userId");
         userBean.addStringProperty("userName");
         userBean.addStringProperty("password");
         userBean.addStringProperty("type");
@@ -84,6 +85,7 @@ public class MyDaoGenerator {
         Entity userBean = schema.addEntity("PricingBean");
         userBean.setTableName("Pricing");
         userBean.addStringProperty("id").primaryKey();
+        userBean.addStringProperty("userPrimaryid");
         userBean.addStringProperty("pid");
         userBean.addStringProperty("price");
         userBean.addStringProperty("spotpriceId");
@@ -99,6 +101,7 @@ public class MyDaoGenerator {
         userBean.addStringProperty("createTime");
         userBean.addStringProperty("type");
         userBean.addStringProperty("finishtype");
+        userBean.addStringProperty("ime");
     }
 
     private static void initSearchLogBean(Schema schema) {

@@ -100,7 +100,7 @@
             android:name=".ui.activity.AdminSpotListActivity"
             android:windowSoftInputMode="stateHidden"></activity>
         <activity
-            android:name=".ui.activity.UserInfoAcvitity"
+            android:name=".ui.activity.AboutActivity"
             android:windowSoftInputMode="stateHidden"></activity>
     </application>
 

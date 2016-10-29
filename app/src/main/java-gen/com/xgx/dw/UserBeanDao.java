@@ -23,24 +23,25 @@ public class UserBeanDao extends AbstractDao<UserBean, String> {
      * Can be used for QueryBuilder and for referencing column names.
     */
     public static class Properties {
-        public final static Property UserId = new Property(0, String.class, "userId", true, "USER_ID");
-        public final static Property UserName = new Property(1, String.class, "userName", false, "USER_NAME");
-        public final static Property Password = new Property(2, String.class, "password", false, "PASSWORD");
-        public final static Property Type = new Property(3, String.class, "type", false, "TYPE");
-        public final static Property StoreId = new Property(4, String.class, "storeId", false, "STORE_ID");
-        public final static Property StoreName = new Property(5, String.class, "storeName", false, "STORE_NAME");
-        public final static Property IsBuy = new Property(6, String.class, "isBuy", false, "IS_BUY");
-        public final static Property IsTest = new Property(7, String.class, "isTest", false, "IS_TEST");
-        public final static Property TransformerId = new Property(8, String.class, "transformerId", false, "TRANSFORMER_ID");
-        public final static Property TransformerName = new Property(9, String.class, "transformerName", false, "TRANSFORMER_NAME");
-        public final static Property VoltageRatio = new Property(10, String.class, "voltageRatio", false, "VOLTAGE_RATIO");
-        public final static Property CurrentRatio = new Property(11, String.class, "currentRatio", false, "CURRENT_RATIO");
-        public final static Property Price = new Property(12, String.class, "price", false, "PRICE");
-        public final static Property Phone = new Property(13, String.class, "phone", false, "PHONE");
-        public final static Property CreateTime = new Property(14, String.class, "createTime", false, "CREATE_TIME");
-        public final static Property Remark = new Property(15, String.class, "remark", false, "REMARK");
-        public final static Property Ime = new Property(16, String.class, "ime", false, "IME");
-        public final static Property EcodeType = new Property(17, String.class, "ecodeType", false, "ECODE_TYPE");
+        public final static Property Id = new Property(0, String.class, "id", true, "ID");
+        public final static Property UserId = new Property(1, String.class, "userId", false, "USER_ID");
+        public final static Property UserName = new Property(2, String.class, "userName", false, "USER_NAME");
+        public final static Property Password = new Property(3, String.class, "password", false, "PASSWORD");
+        public final static Property Type = new Property(4, String.class, "type", false, "TYPE");
+        public final static Property StoreId = new Property(5, String.class, "storeId", false, "STORE_ID");
+        public final static Property StoreName = new Property(6, String.class, "storeName", false, "STORE_NAME");
+        public final static Property IsBuy = new Property(7, String.class, "isBuy", false, "IS_BUY");
+        public final static Property IsTest = new Property(8, String.class, "isTest", false, "IS_TEST");
+        public final static Property TransformerId = new Property(9, String.class, "transformerId", false, "TRANSFORMER_ID");
+        public final static Property TransformerName = new Property(10, String.class, "transformerName", false, "TRANSFORMER_NAME");
+        public final static Property VoltageRatio = new Property(11, String.class, "voltageRatio", false, "VOLTAGE_RATIO");
+        public final static Property CurrentRatio = new Property(12, String.class, "currentRatio", false, "CURRENT_RATIO");
+        public final static Property Price = new Property(13, String.class, "price", false, "PRICE");
+        public final static Property Phone = new Property(14, String.class, "phone", false, "PHONE");
+        public final static Property CreateTime = new Property(15, String.class, "createTime", false, "CREATE_TIME");
+        public final static Property Remark = new Property(16, String.class, "remark", false, "REMARK");
+        public final static Property Ime = new Property(17, String.class, "ime", false, "IME");
+        public final static Property EcodeType = new Property(18, String.class, "ecodeType", false, "ECODE_TYPE");
     };
 
 
@@ -56,24 +57,25 @@ public class UserBeanDao extends AbstractDao<UserBean, String> {
     public static void createTable(SQLiteDatabase db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'user' (" + //
-                "'USER_ID' TEXT PRIMARY KEY NOT NULL ," + // 0: userId
-                "'USER_NAME' TEXT," + // 1: userName
-                "'PASSWORD' TEXT," + // 2: password
-                "'TYPE' TEXT," + // 3: type
-                "'STORE_ID' TEXT," + // 4: storeId
-                "'STORE_NAME' TEXT," + // 5: storeName
-                "'IS_BUY' TEXT," + // 6: isBuy
-                "'IS_TEST' TEXT," + // 7: isTest
-                "'TRANSFORMER_ID' TEXT," + // 8: transformerId
-                "'TRANSFORMER_NAME' TEXT," + // 9: transformerName
-                "'VOLTAGE_RATIO' TEXT," + // 10: voltageRatio
-                "'CURRENT_RATIO' TEXT," + // 11: currentRatio
-                "'PRICE' TEXT," + // 12: price
-                "'PHONE' TEXT," + // 13: phone
-                "'CREATE_TIME' TEXT," + // 14: createTime
-                "'REMARK' TEXT," + // 15: remark
-                "'IME' TEXT," + // 16: ime
-                "'ECODE_TYPE' TEXT);"); // 17: ecodeType
+                "'ID' TEXT PRIMARY KEY NOT NULL ," + // 0: id
+                "'USER_ID' TEXT," + // 1: userId
+                "'USER_NAME' TEXT," + // 2: userName
+                "'PASSWORD' TEXT," + // 3: password
+                "'TYPE' TEXT," + // 4: type
+                "'STORE_ID' TEXT," + // 5: storeId
+                "'STORE_NAME' TEXT," + // 6: storeName
+                "'IS_BUY' TEXT," + // 7: isBuy
+                "'IS_TEST' TEXT," + // 8: isTest
+                "'TRANSFORMER_ID' TEXT," + // 9: transformerId
+                "'TRANSFORMER_NAME' TEXT," + // 10: transformerName
+                "'VOLTAGE_RATIO' TEXT," + // 11: voltageRatio
+                "'CURRENT_RATIO' TEXT," + // 12: currentRatio
+                "'PRICE' TEXT," + // 13: price
+                "'PHONE' TEXT," + // 14: phone
+                "'CREATE_TIME' TEXT," + // 15: createTime
+                "'REMARK' TEXT," + // 16: remark
+                "'IME' TEXT," + // 17: ime
+                "'ECODE_TYPE' TEXT);"); // 18: ecodeType
     }
 
     /** Drops the underlying database table. */
@@ -87,94 +89,99 @@ public class UserBeanDao extends AbstractDao<UserBean, String> {
     protected void bindValues(SQLiteStatement stmt, UserBean entity) {
         stmt.clearBindings();
  
+        String id = entity.getId();
+        if (id != null) {
+            stmt.bindString(1, id);
+        }
+ 
         String userId = entity.getUserId();
         if (userId != null) {
-            stmt.bindString(1, userId);
+            stmt.bindString(2, userId);
         }
  
         String userName = entity.getUserName();
         if (userName != null) {
-            stmt.bindString(2, userName);
+            stmt.bindString(3, userName);
         }
  
         String password = entity.getPassword();
         if (password != null) {
-            stmt.bindString(3, password);
+            stmt.bindString(4, password);
         }
  
         String type = entity.getType();
         if (type != null) {
-            stmt.bindString(4, type);
+            stmt.bindString(5, type);
         }
  
         String storeId = entity.getStoreId();
         if (storeId != null) {
-            stmt.bindString(5, storeId);
+            stmt.bindString(6, storeId);
         }
  
         String storeName = entity.getStoreName();
         if (storeName != null) {
-            stmt.bindString(6, storeName);
+            stmt.bindString(7, storeName);
         }
  
         String isBuy = entity.getIsBuy();
         if (isBuy != null) {
-            stmt.bindString(7, isBuy);
+            stmt.bindString(8, isBuy);
         }
  
         String isTest = entity.getIsTest();
         if (isTest != null) {
-            stmt.bindString(8, isTest);
+            stmt.bindString(9, isTest);
         }
  
         String transformerId = entity.getTransformerId();
         if (transformerId != null) {
-            stmt.bindString(9, transformerId);
+            stmt.bindString(10, transformerId);
         }
  
         String transformerName = entity.getTransformerName();
         if (transformerName != null) {
-            stmt.bindString(10, transformerName);
+            stmt.bindString(11, transformerName);
         }
  
         String voltageRatio = entity.getVoltageRatio();
         if (voltageRatio != null) {
-            stmt.bindString(11, voltageRatio);
+            stmt.bindString(12, voltageRatio);
         }
  
         String currentRatio = entity.getCurrentRatio();
         if (currentRatio != null) {
-            stmt.bindString(12, currentRatio);
+            stmt.bindString(13, currentRatio);
         }
  
         String price = entity.getPrice();
         if (price != null) {
-            stmt.bindString(13, price);
+            stmt.bindString(14, price);
         }
  
         String phone = entity.getPhone();
         if (phone != null) {
-            stmt.bindString(14, phone);
+            stmt.bindString(15, phone);
         }
  
         String createTime = entity.getCreateTime();
         if (createTime != null) {
-            stmt.bindString(15, createTime);
+            stmt.bindString(16, createTime);
         }
  
         String remark = entity.getRemark();
         if (remark != null) {
-            stmt.bindString(16, remark);
+            stmt.bindString(17, remark);
         }
  
         String ime = entity.getIme();
         if (ime != null) {
-            stmt.bindString(17, ime);
+            stmt.bindString(18, ime);
         }
  
         String ecodeType = entity.getEcodeType();
         if (ecodeType != null) {
-            stmt.bindString(18, ecodeType);
+            stmt.bindString(19, ecodeType);
         }
     }
 
@@ -188,24 +195,25 @@ public class UserBeanDao extends AbstractDao<UserBean, String> {
     @Override
     public UserBean readEntity(Cursor cursor, int offset) {
         UserBean entity = new UserBean( //
-            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // userId
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // userName
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // password
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // type
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // storeId
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // storeName
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // isBuy
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // isTest
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // transformerId
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // transformerName
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // voltageRatio
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // currentRatio
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // price
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // phone
-            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // createTime
-            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // remark
-            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // ime
-            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17) // ecodeType
+            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // id
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // userId
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // userName
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // password
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // type
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // storeId
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // storeName
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // isBuy
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // isTest
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // transformerId
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // transformerName
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // voltageRatio
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // currentRatio
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // price
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // phone
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // createTime
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // remark
+            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // ime
+            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18) // ecodeType
         );
         return entity;
     }
@@ -213,37 +221,38 @@ public class UserBeanDao extends AbstractDao<UserBean, String> {
     /** @inheritdoc */
     @Override
     public void readEntity(Cursor cursor, UserBean entity, int offset) {
-        entity.setUserId(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
-        entity.setUserName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setPassword(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setType(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setStoreId(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setStoreName(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setIsBuy(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setIsTest(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setTransformerId(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setTransformerName(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setVoltageRatio(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setCurrentRatio(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setPrice(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
-        entity.setPhone(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
-        entity.setCreateTime(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
-        entity.setRemark(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
-        entity.setIme(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
-        entity.setEcodeType(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
+        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
+        entity.setUserId(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setUserName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setPassword(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setType(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setStoreId(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setStoreName(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setIsBuy(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setIsTest(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setTransformerId(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setTransformerName(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setVoltageRatio(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setCurrentRatio(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setPrice(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setPhone(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setCreateTime(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setRemark(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
+        entity.setIme(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
+        entity.setEcodeType(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
      }
     
     /** @inheritdoc */
     @Override
     protected String updateKeyAfterInsert(UserBean entity, long rowId) {
-        return entity.getUserId();
+        return entity.getId();
     }
     
     /** @inheritdoc */
     @Override
     public String getKey(UserBean entity) {
         if(entity != null) {
-            return entity.getUserId();
+            return entity.getId();
         } else {
             return null;
         }

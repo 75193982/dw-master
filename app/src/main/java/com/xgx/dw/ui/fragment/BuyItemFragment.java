@@ -70,7 +70,7 @@ public class BuyItemFragment extends BaseFragment implements DataSearchItemAdapt
     public void onrRecyclerViewItemClick(int paramInt) {
         switch (paramInt) {
             case 0:
-                String userid = LoginInformation.getInstance().getUser().getUserId();
+                String userid = LoginInformation.getInstance().getUser().getId();
                 startActivity(new Intent(getActivity(), TestGeneratectivity.class).putExtra("type", 4).putExtra("id", userid));
                 break;
             case 1:

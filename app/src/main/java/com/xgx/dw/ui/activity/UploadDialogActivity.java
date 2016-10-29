@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.xgx.dw.R;
 import com.xgx.dw.upload.DownloadService;
+import com.xgx.dw.upload.UploadResponse;
 import com.xgx.dw.utils.MyUtils;
 import com.xgx.dw.vo.response.QueryResult;
 
@@ -21,13 +22,20 @@ public class UploadDialogActivity extends Activity {
     private TextView umeng_update_content;
     private Button umeng_update_id_ok;
     private Button umeng_update_id_cancel;
+    UploadResponse response;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(1);
         setContentView(R.layout.umeng_update_dialog);
-        final QueryResult.UploadResponse response = (QueryResult.UploadResponse) getIntent().getSerializableExtra("response");
+        response = new UploadResponse();
+        try {
+            response = (UploadResponse) getIntent().getSerializableExtra("response");
+
+        } catch (Exception e) {
+
+        }
         umeng_update_content = (TextView) findViewById(R.id.umeng_update_content);
         umeng_update_id_ok = (Button) findViewById(R.id.umeng_update_id_ok);
         umeng_update_id_cancel = (Button) findViewById(R.id.umeng_update_id_cancel);

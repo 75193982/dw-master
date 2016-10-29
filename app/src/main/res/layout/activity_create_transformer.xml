@@ -97,9 +97,8 @@
             app:met_singleLineEllipsis="true" />
     </LinearLayout>
 
-    <com.andexert.library.RippleView
+    <LinearLayout
         android:id="@id/action_save"
-        rv_centered="true"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10.0dip">
@@ -113,5 +112,5 @@
             android:text="@string/save"
             android:textColor="@color/White"
             android:textSize="@dimen/text_second" />
-    </com.andexert.library.RippleView>
+    </LinearLayout>
 </LinearLayout>

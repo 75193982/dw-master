@@ -8,6 +8,7 @@ import com.xgx.dw.SpotPricingBeanDao;
 import com.xgx.dw.StoreBean;
 import com.xgx.dw.THDaoHelperInterface;
 import com.xgx.dw.THDatabaseLoader;
+import com.xgx.dw.utils.MyStringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,16 +94,39 @@ public class PricingDaoHelper implements THDaoHelperInterface {
         }
     }
 
-    public List<PricingBean> queryByUserId(String userId) {
+    public List<PricingBean> queryByUserId(String id) {
         try {
             QueryBuilder localQueryBuilder = this.userBeanDao.queryBuilder();
-            localQueryBuilder.where(PricingBeanDao.Properties.UserId.eq(userId));
+            localQueryBuilder.where(PricingBeanDao.Properties.UserPrimaryid.eq(id));
             localQueryBuilder.orderDesc(PricingBeanDao.Properties.CreateTime);
             return localQueryBuilder.list();
         } catch (Exception e) {
             return new ArrayList<>();
         }
 
+    }
+
+    public List<PricingBean> queryByUserDeviceId(String id) {
+        try {
+            QueryBuilder localQueryBuilder = this.userBeanDao.queryBuilder();
+            localQueryBuilder.where(PricingBeanDao.Properties.UserId.eq(id));
+            localQueryBuilder.orderDesc(PricingBeanDao.Properties.CreateTime);
+            return localQueryBuilder.list();
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+
+    }
+
+    public List<PricingBean> queryByUserId(String userId, String ime, String id) {
+        try {
+            QueryBuilder localQueryBuilder = this.userBeanDao.queryBuilder();
+            localQueryBuilder.where(PricingBeanDao.Properties.UserId.eq(userId), PricingBeanDao.Properties.Ime.eq(ime), PricingBeanDao.Properties.Id.eq(id));
+            localQueryBuilder.orderDesc(PricingBeanDao.Properties.CreateTime);
+            return localQueryBuilder.list();
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
     }
 
 }

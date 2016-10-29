@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.andexert.library.RippleView;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.xgx.dw.R;
 import com.xgx.dw.StoreBean;
@@ -23,6 +22,7 @@ import com.xgx.dw.presenter.interfaces.IUserPresenter;
 import com.xgx.dw.ui.view.interfaces.IUserView;
 
 import java.util.List;
+import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -30,7 +30,7 @@ import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class CreateUserOneAcvitity extends BaseAppCompatActivity implements IUserView, Toolbar.OnMenuItemClickListener {
     @Bind(R.id.imeTv)
-    TextView imeTv;
+    MaterialEditText imeTv;
     @Bind(R.id.spinner)
     MaterialSpinner spinner;
     @Bind(R.id.buy_switch)
@@ -38,7 +38,7 @@ public class CreateUserOneAcvitity extends BaseAppCompatActivity implements IUse
     @Bind(R.id.test_switch)
     SwitchCompat testSwitch;
     @Bind(R.id.action_save)
-    RippleView actionSave;
+    LinearLayout actionSave;
     @Bind(R.id.store_layout)
     LinearLayout storeLayout;
     @Bind(R.id.user_id)
@@ -117,7 +117,6 @@ public class CreateUserOneAcvitity extends BaseAppCompatActivity implements IUse
 
     @OnClick({R.id.action_save})
     public void onSaveClick() {
-        showProgress("保存用户中...");
         UserBean userBean = new UserBean();
         userBean.setUserId(userId.getText().toString());
         userBean.setUserName(userName.getText().toString());
@@ -130,15 +129,18 @@ public class CreateUserOneAcvitity extends BaseAppCompatActivity implements IUse
         } catch (Exception e) {
 
         }
-
-        if ((bean == null) || (TextUtils.isEmpty(bean.getUserId()))) {
-            userBean.setPassword(userId.getText().toString());
-            this.presenter.saveUser(this, userBean, 10, true);
-            return;
-        }
-        userBean.setPassword(userId.getText().toString());
         userBean.setIsBuy(buySwitch.isChecked() ? "1" : "0");
         userBean.setIsTest(testSwitch.isChecked() ? "1" : "0");
+        userBean.setPassword(userId.getText().toString());
+
+        if ((bean == null) || (TextUtils.isEmpty(bean.getUserId()))) {
+            userBean.setId(UUID.randomUUID().toString());
+            this.presenter.saveUser(this, userBean, 10, true);
+
+            return;
+        } else {
+            userBean.setId(bean.getId());
+        }
         this.presenter.saveUser(this, userBean, 10, false);
     }
 
@@ -161,7 +163,7 @@ public class CreateUserOneAcvitity extends BaseAppCompatActivity implements IUse
     public boolean onMenuItemClick(MenuItem paramMenuItem) {
         switch (paramMenuItem.getItemId()) {
             case R.id.action_showerweima:
-                startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 3).putExtra("id", bean.getUserId()));
+                startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 3).putExtra("id", bean.getId()));
                 break;
         }
         return true;

@@ -11,6 +11,7 @@ import com.xgx.dw.model.interfaces.IMainModel;
 import com.xgx.dw.net.JsonTransactionListener;
 import com.xgx.dw.presenter.interfaces.IMainPresenter;
 import com.xgx.dw.ui.view.interfaces.IMainView;
+import com.xgx.dw.upload.UploadResponse;
 import com.xgx.dw.utils.CommonUtils;
 import com.xgx.dw.vo.request.UpdateVersionRequest;
 import com.xgx.dw.vo.response.UpdateVersionResult;
@@ -33,7 +34,7 @@ public class MainPresenterImpl extends BasePresenter implements IMainPresenter {
 
             public void onSuccess(BaseResponse respones) {
                 if (respones.isSuccess()) {
-                    UpdateVersionResult localUpdateVersionResult = (UpdateVersionResult) CommonUtils.getGson().fromJson(respones.getData(), UpdateVersionResult.class);
+                    UploadResponse localUpdateVersionResult = (UploadResponse) CommonUtils.getGson().fromJson(respones.getData(), UploadResponse.class);
                     MainPresenterImpl.this.mainView.checkVersionCallBack(localUpdateVersionResult);
                 }
             }

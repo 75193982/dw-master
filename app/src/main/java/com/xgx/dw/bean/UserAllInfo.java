@@ -55,7 +55,7 @@ public class UserAllInfo implements Serializable {
 
 
     public PricingBean getPricings() {
-        return pricings;
+        return pricings == null ? new PricingBean() : pricings;
     }
 
     public void setPricings(PricingBean pricings) {
@@ -63,7 +63,7 @@ public class UserAllInfo implements Serializable {
     }
 
     public SpotPricingBean getSpotBeans() {
-        return spotBeans;
+        return spotBeans == null ? new SpotPricingBean() : spotBeans;
     }
 
     public void setSpotBeans(SpotPricingBean spotBeans) {

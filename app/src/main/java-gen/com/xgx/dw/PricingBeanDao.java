@@ -24,21 +24,23 @@ public class PricingBeanDao extends AbstractDao<PricingBean, String> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, String.class, "id", true, "ID");
-        public final static Property Pid = new Property(1, String.class, "pid", false, "PID");
-        public final static Property Price = new Property(2, String.class, "price", false, "PRICE");
-        public final static Property SpotpriceId = new Property(3, String.class, "spotpriceId", false, "SPOTPRICE_ID");
-        public final static Property UserId = new Property(4, String.class, "userId", false, "USER_ID");
-        public final static Property UserName = new Property(5, String.class, "userName", false, "USER_NAME");
-        public final static Property AdminName = new Property(6, String.class, "adminName", false, "ADMIN_NAME");
-        public final static Property AdminPhone = new Property(7, String.class, "adminPhone", false, "ADMIN_PHONE");
-        public final static Property StoreId = new Property(8, String.class, "storeId", false, "STORE_ID");
-        public final static Property StoreName = new Property(9, String.class, "storeName", false, "STORE_NAME");
-        public final static Property StoreAddress = new Property(10, String.class, "storeAddress", false, "STORE_ADDRESS");
-        public final static Property TransformerId = new Property(11, String.class, "transformerId", false, "TRANSFORMER_ID");
-        public final static Property TransformerName = new Property(12, String.class, "transformerName", false, "TRANSFORMER_NAME");
-        public final static Property CreateTime = new Property(13, String.class, "createTime", false, "CREATE_TIME");
-        public final static Property Type = new Property(14, String.class, "type", false, "TYPE");
-        public final static Property Finishtype = new Property(15, String.class, "finishtype", false, "FINISHTYPE");
+        public final static Property UserPrimaryid = new Property(1, String.class, "userPrimaryid", false, "USER_PRIMARYID");
+        public final static Property Pid = new Property(2, String.class, "pid", false, "PID");
+        public final static Property Price = new Property(3, String.class, "price", false, "PRICE");
+        public final static Property SpotpriceId = new Property(4, String.class, "spotpriceId", false, "SPOTPRICE_ID");
+        public final static Property UserId = new Property(5, String.class, "userId", false, "USER_ID");
+        public final static Property UserName = new Property(6, String.class, "userName", false, "USER_NAME");
+        public final static Property AdminName = new Property(7, String.class, "adminName", false, "ADMIN_NAME");
+        public final static Property AdminPhone = new Property(8, String.class, "adminPhone", false, "ADMIN_PHONE");
+        public final static Property StoreId = new Property(9, String.class, "storeId", false, "STORE_ID");
+        public final static Property StoreName = new Property(10, String.class, "storeName", false, "STORE_NAME");
+        public final static Property StoreAddress = new Property(11, String.class, "storeAddress", false, "STORE_ADDRESS");
+        public final static Property TransformerId = new Property(12, String.class, "transformerId", false, "TRANSFORMER_ID");
+        public final static Property TransformerName = new Property(13, String.class, "transformerName", false, "TRANSFORMER_NAME");
+        public final static Property CreateTime = new Property(14, String.class, "createTime", false, "CREATE_TIME");
+        public final static Property Type = new Property(15, String.class, "type", false, "TYPE");
+        public final static Property Finishtype = new Property(16, String.class, "finishtype", false, "FINISHTYPE");
+        public final static Property Ime = new Property(17, String.class, "ime", false, "IME");
     };
 
 
@@ -55,21 +57,23 @@ public class PricingBeanDao extends AbstractDao<PricingBean, String> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'Pricing' (" + //
                 "'ID' TEXT PRIMARY KEY NOT NULL ," + // 0: id
-                "'PID' TEXT," + // 1: pid
-                "'PRICE' TEXT," + // 2: price
-                "'SPOTPRICE_ID' TEXT," + // 3: spotpriceId
-                "'USER_ID' TEXT," + // 4: userId
-                "'USER_NAME' TEXT," + // 5: userName
-                "'ADMIN_NAME' TEXT," + // 6: adminName
-                "'ADMIN_PHONE' TEXT," + // 7: adminPhone
-                "'STORE_ID' TEXT," + // 8: storeId
-                "'STORE_NAME' TEXT," + // 9: storeName
-                "'STORE_ADDRESS' TEXT," + // 10: storeAddress
-                "'TRANSFORMER_ID' TEXT," + // 11: transformerId
-                "'TRANSFORMER_NAME' TEXT," + // 12: transformerName
-                "'CREATE_TIME' TEXT," + // 13: createTime
-                "'TYPE' TEXT," + // 14: type
-                "'FINISHTYPE' TEXT);"); // 15: finishtype
+                "'USER_PRIMARYID' TEXT," + // 1: userPrimaryid
+                "'PID' TEXT," + // 2: pid
+                "'PRICE' TEXT," + // 3: price
+                "'SPOTPRICE_ID' TEXT," + // 4: spotpriceId
+                "'USER_ID' TEXT," + // 5: userId
+                "'USER_NAME' TEXT," + // 6: userName
+                "'ADMIN_NAME' TEXT," + // 7: adminName
+                "'ADMIN_PHONE' TEXT," + // 8: adminPhone
+                "'STORE_ID' TEXT," + // 9: storeId
+                "'STORE_NAME' TEXT," + // 10: storeName
+                "'STORE_ADDRESS' TEXT," + // 11: storeAddress
+                "'TRANSFORMER_ID' TEXT," + // 12: transformerId
+                "'TRANSFORMER_NAME' TEXT," + // 13: transformerName
+                "'CREATE_TIME' TEXT," + // 14: createTime
+                "'TYPE' TEXT," + // 15: type
+                "'FINISHTYPE' TEXT," + // 16: finishtype
+                "'IME' TEXT);"); // 17: ime
     }
 
     /** Drops the underlying database table. */
@@ -88,79 +92,89 @@ public class PricingBeanDao extends AbstractDao<PricingBean, String> {
             stmt.bindString(1, id);
         }
  
+        String userPrimaryid = entity.getUserPrimaryid();
+        if (userPrimaryid != null) {
+            stmt.bindString(2, userPrimaryid);
+        }
+ 
         String pid = entity.getPid();
         if (pid != null) {
-            stmt.bindString(2, pid);
+            stmt.bindString(3, pid);
         }
  
         String price = entity.getPrice();
         if (price != null) {
-            stmt.bindString(3, price);
+            stmt.bindString(4, price);
         }
  
         String spotpriceId = entity.getSpotpriceId();
         if (spotpriceId != null) {
-            stmt.bindString(4, spotpriceId);
+            stmt.bindString(5, spotpriceId);
         }
  
         String userId = entity.getUserId();
         if (userId != null) {
-            stmt.bindString(5, userId);
+            stmt.bindString(6, userId);
         }
  
         String userName = entity.getUserName();
         if (userName != null) {
-            stmt.bindString(6, userName);
+            stmt.bindString(7, userName);
         }
  
         String adminName = entity.getAdminName();
         if (adminName != null) {
-            stmt.bindString(7, adminName);
+            stmt.bindString(8, adminName);
         }
  
         String adminPhone = entity.getAdminPhone();
         if (adminPhone != null) {
-            stmt.bindString(8, adminPhone);
+            stmt.bindString(9, adminPhone);
         }
  
         String storeId = entity.getStoreId();
         if (storeId != null) {
-            stmt.bindString(9, storeId);
+            stmt.bindString(10, storeId);
         }
  
         String storeName = entity.getStoreName();
         if (storeName != null) {
-            stmt.bindString(10, storeName);
+            stmt.bindString(11, storeName);
         }
  
         String storeAddress = entity.getStoreAddress();
         if (storeAddress != null) {
-            stmt.bindString(11, storeAddress);
+            stmt.bindString(12, storeAddress);
         }
  
         String transformerId = entity.getTransformerId();
         if (transformerId != null) {
-            stmt.bindString(12, transformerId);
+            stmt.bindString(13, transformerId);
         }
  
         String transformerName = entity.getTransformerName();
         if (transformerName != null) {
-            stmt.bindString(13, transformerName);
+            stmt.bindString(14, transformerName);
         }
  
         String createTime = entity.getCreateTime();
         if (createTime != null) {
-            stmt.bindString(14, createTime);
+            stmt.bindString(15, createTime);
         }
  
         String type = entity.getType();
         if (type != null) {
-            stmt.bindString(15, type);
+            stmt.bindString(16, type);
         }
  
         String finishtype = entity.getFinishtype();
         if (finishtype != null) {
-            stmt.bindString(16, finishtype);
+            stmt.bindString(17, finishtype);
+        }
+ 
+        String ime = entity.getIme();
+        if (ime != null) {
+            stmt.bindString(18, ime);
         }
     }
 
@@ -175,21 +189,23 @@ public class PricingBeanDao extends AbstractDao<PricingBean, String> {
     public PricingBean readEntity(Cursor cursor, int offset) {
         PricingBean entity = new PricingBean( //
             cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // pid
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // price
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // spotpriceId
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // userId
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // userName
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // adminName
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // adminPhone
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // storeId
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // storeName
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // storeAddress
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // transformerId
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // transformerName
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // createTime
-            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // type
-            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15) // finishtype
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // userPrimaryid
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // pid
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // price
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // spotpriceId
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // userId
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // userName
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // adminName
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // adminPhone
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // storeId
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // storeName
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // storeAddress
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // transformerId
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // transformerName
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // createTime
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // type
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // finishtype
+            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17) // ime
         );
         return entity;
     }
@@ -198,21 +214,23 @@ public class PricingBeanDao extends AbstractDao<PricingBean, String> {
     @Override
     public void readEntity(Cursor cursor, PricingBean entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
-        entity.setPid(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setPrice(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setSpotpriceId(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setUserId(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setUserName(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setAdminName(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setAdminPhone(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setStoreId(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setStoreName(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setStoreAddress(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setTransformerId(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setTransformerName(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
-        entity.setCreateTime(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
-        entity.setType(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
-        entity.setFinishtype(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setUserPrimaryid(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setPid(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setPrice(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setSpotpriceId(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setUserId(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setUserName(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setAdminName(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setAdminPhone(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setStoreId(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setStoreName(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setStoreAddress(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setTransformerId(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setTransformerName(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setCreateTime(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setType(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setFinishtype(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
+        entity.setIme(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
      }
     
     /** @inheritdoc */
