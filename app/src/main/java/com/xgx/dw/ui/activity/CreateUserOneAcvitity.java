@@ -71,6 +71,7 @@ public class CreateUserOneAcvitity extends BaseAppCompatActivity implements IUse
         bean = (UserBean) getIntent().getSerializableExtra("bean");
         if ((this.bean != null) && (!TextUtils.isEmpty(this.bean.getUserId()))) {
             getSupportActionBar().setTitle("修改营业厅管理员");
+            imeTv.setEnabled(false);
             this.userId.setText(this.bean.getUserId());
             imeTv.setText(checkText(bean.getIme()));
             this.userId.setEnabled(false);

@@ -407,7 +407,8 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                             startActivity(new Intent(getContext(), CreateUserThreeAcvitity.class).putExtra("ime", bean.getIme()));
                         } else if (bean.getEcodeType().equals("3")) {
                             //保存用户 方便登录
-                            UserBeanDaoHelper.getInstance().addData(bean);
+                            IUserPresenter presenter = new UserPresenterImpl();
+                            presenter.saveOrUpdateUser(bean);
                             if (userAllInfo.getStoreBean().getId() != null) {
                                 StoreBeanDaoHelper.getInstance().addData(userAllInfo.getStoreBean());
                             }
@@ -419,6 +420,23 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                             }
                         } else if (bean.getEcodeType().equals("4") && ("admin,30,31").contains(type)) {
                             //保存用户 方便登录
+                            try {
+                                IUserPresenter presenter = new UserPresenterImpl();
+                                presenter.saveOrUpdateUser(bean);
+                                if (userAllInfo.getStoreBean().getId() != null) {
+                                    StoreBeanDaoHelper.getInstance().addData(userAllInfo.getStoreBean());
+                                }
+                                if (userAllInfo.getTransformerBean().getId() != null) {
+                                    TransformerBeanDaoHelper.getInstance().addData(userAllInfo.getTransformerBean());
+                                }
+                                if (userAllInfo.getSpotBeans().getId() != null) {
+                                    SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());
+                                }
+                            } catch (Exception e) {
+
+                            }
+
+
                             startActivity(new Intent(getContext(), BuySpotActivity.class).putExtra("userAllInfo", userAllInfo));
                         } else if (bean.getEcodeType().equals("5")) {
                             //用户购电
@@ -427,7 +445,8 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                                 showToast("不能扫描该二维码,已经扫过一次了");
                             } else {
                                 if (LoginInformation.getInstance().getUser().getId().equals(bean.getId())) {
-                                    UserBeanDaoHelper.getInstance().addData(bean);
+                                    IUserPresenter presenter = new UserPresenterImpl();
+                                    presenter.saveOrUpdateUser(userAllInfo.getUser());
                                     setLoginInfomation(bean);
                                     if (userAllInfo.getSpotBeans().getId() != null) {
                                         SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());

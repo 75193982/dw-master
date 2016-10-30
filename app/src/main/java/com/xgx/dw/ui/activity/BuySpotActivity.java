@@ -59,7 +59,7 @@ public class BuySpotActivity extends BaseAppCompatActivity {
         setToolbarTitle("用户购电");
         userAllInfo = (UserAllInfo) getIntent().getSerializableExtra("userAllInfo");
         if (userAllInfo != null) {
-            UserBean user = userAllInfo.getUser();
+            UserBean user = UserBeanDaoHelper.getInstance().getDataById(userAllInfo.getUser().getId());
             if (TextUtils.isEmpty(user.getVoltageRatio()) && TextUtils.isEmpty(user.getCurrentRatio())
                     && TextUtils.isEmpty(user.getPrice())) {
                 showToast("该用户的电压倍率/电流倍率/电价信息不完整，请联系管理员");
@@ -145,7 +145,8 @@ public class BuySpotActivity extends BaseAppCompatActivity {
                     bean.setFinishtype("0");
                 }
             }
-            bean.setIme(user.getIme());
+            //这里要注意的是 需要带入 二维码传过来的ime
+            bean.setIme(userAllInfo.getUser().getIme());
             PricingDaoHelper.getInstance().addData(bean);
             finish();
             //比对 电压 电价，电流  是否一致
@@ -161,4 +162,33 @@ public class BuySpotActivity extends BaseAppCompatActivity {
 
     }
 
+
+    @OnClick(R.id.userInfoTv)
+    public void onEditClick() {
+        UserBean user = UserBeanDaoHelper.getInstance().getDataById(userAllInfo.getUser().getId());
+        Intent localIntent = new Intent();
+        localIntent.putExtra("bean", user);
+        localIntent.setClass(getContext(), CreateUserThreeAcvitity.class);
+        startActivityForResult(localIntent, 1001);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1001) {
+            UserBean user = UserBeanDaoHelper.getInstance().getDataById(userAllInfo.getUser().getId());
+            if (TextUtils.isEmpty(user.getVoltageRatio()) && TextUtils.isEmpty(user.getCurrentRatio())
+                    && TextUtils.isEmpty(user.getPrice())) {
+                showToast("该用户的电压倍率/电流倍率/电价信息不完整，请联系管理员");
+                finish();
+                return;
+            }
+            userInfoTv.setText(user.getUserName());
+            userInfoBeilvTv.setText("设备编号：" + user.getUserId() + "\n" + "电压倍率：" + user.getVoltageRatio() +
+                    "\n" + "电流倍率：" + user.getCurrentRatio() +
+                    "\n" + "电价id：" + user.getPrice());
+
+        }
+    }
 }

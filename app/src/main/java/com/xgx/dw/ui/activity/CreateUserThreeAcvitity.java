@@ -3,7 +3,9 @@ package com.xgx.dw.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,9 +27,13 @@ import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
 import com.xgx.dw.dao.StoreBeanDaoHelper;
 import com.xgx.dw.dao.TransformerBeanDaoHelper;
+import com.xgx.dw.dao.UserBeanDaoHelper;
 import com.xgx.dw.presenter.impl.UserPresenterImpl;
 import com.xgx.dw.presenter.interfaces.IUserPresenter;
 import com.xgx.dw.ui.view.interfaces.IUserView;
+import com.xgx.dw.utils.Logger;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.UUID;
@@ -69,7 +75,7 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
     private String currentStoreId;
     private String currentStoreName;
     private boolean isFirst;
-
+    private boolean isSave;
 
     public void initContentView() {
         baseSetContentView(R.layout.activity_create_user_three);
@@ -87,68 +93,104 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
         currentStoreId = setting.loadString(G.currentStoreId);
         currentStoreName = setting.loadString(G.currentStoreName);
         initSpinnerData();
-        initEditInfo();
+        bean = ((UserBean) getIntent().getSerializableExtra("bean"));
+        isFirst = true;
+        initEditInfo(bean);
+        userId.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                UserBean tempUser = UserBeanDaoHelper.getInstance().queryByTransFormUserId(s.toString());
+                isSave = true;
+                if (tempUser != null && tempUser.getType().equals("20")) {
+                    initUserInfo(tempUser);
+                    userId.setTag(tempUser.getId());
+                } else {
+                    userId.setTag("");
+                }
+            }
+        });
     }
 
-    private void initEditInfo() {
-        isFirst = true;
-        bean = ((UserBean) getIntent().getSerializableExtra("bean"));
-        if (bean != null && !TextUtils.isEmpty(this.bean.getUserId())) {
-            getSupportActionBar().setTitle("编辑二级用户");
-            this.userId.setText(this.bean.getUserId());
-            userName.setText(checkText(this.bean.getUserName()));
-            SpotPricingBean spotPricingBean = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
-            price.setText(checkText(spotPricingBean.getName()));
-            price.setTag(checkText(spotPricingBean.getId()));
-            phone.setText(checkText(bean.getPhone()));
-            currentRatio.setText(checkText(bean.getCurrentRatio()));
-            voltageRatio.setText(checkText(bean.getVoltageRatio()));
-            imeTv.setText(checkText(bean.getIme()));
-            try {
-                for (int i = 0; i < storebeans.size(); i++) {
-                    if (bean.getStoreId().equals(((StoreBean) storebeans.get(i)).getId())) {
-                        storeSpinner.setSelection(i + 1);
-                        storeSpinner.setEnabled(false);
-                    }
-                }
-            } catch (Exception e) {
-
-            }
-            try {
-                transformerBean = TransformerBeanDaoHelper.getInstance().testQueryBy(bean.getStoreId());
-                if ((transformerBean != null) && (transformerBean.size() > 0)) {
-                    String[] arrayOfString = new String[transformerBean.size()];
-                    for (int j = 0; j < transformerBean.size(); j++) {
-                        arrayOfString[j] = ((TransformerBean) transformerBean.get(j)).getName();
-                    }
-                    ArrayAdapter localArrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, arrayOfString);
-                    localArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    transformerSpinner.setAdapter(localArrayAdapter);
-                }
-                for (int i = 0; i < transformerBean.size(); i++) {
-                    if (bean.getTransformerId().equals(((TransformerBean) transformerBean.get(i)).getId())) {
-                        transformerSpinner.setSelection(i + 1);
-                        transformerSpinner.setEnabled(false);
-                    }
-                }
-            } catch (Exception e) {
-
-            }
-        } else {
-            if (LoginInformation.getInstance().getUser().getType().equals("11")) {//台区管理员
-                setSpinner(LoginInformation.getInstance().getUser().getStoreId(), LoginInformation.getInstance().getUser().getTransformerId());
-                storeSpinner.setEnabled(false);
-                transformerSpinner.setEnabled(false);
-            } else if (LoginInformation.getInstance().getUser().getType().equals("10")) {//营业厅管理员
-                setSpinner(LoginInformation.getInstance().getUser().getStoreId(), LoginInformation.getInstance().getUser().getTransformerId());
-                storeSpinner.setEnabled(false);
-                setOnItemSelected();
+    private void initEditInfo(UserBean bean) {
+        try {
+            if (bean != null && !TextUtils.isEmpty(bean.getUserId())) {
+                imeTv.setText(checkText(bean.getIme()));
+                userId.setTag(bean.getId());
+                userId.setText(bean.getUserId());
+                initUserInfo(bean);
+                isSave = false;
             } else {
-                setOnItemSelected();
+                isSave = true;
+                if (LoginInformation.getInstance().getUser().getType().equals("11")) {//台区管理员
+                    setSpinner(LoginInformation.getInstance().getUser().getStoreId(), LoginInformation.getInstance().getUser().getTransformerId());
+                    storeSpinner.setEnabled(false);
+                    transformerSpinner.setEnabled(false);
+                } else if (LoginInformation.getInstance().getUser().getType().equals("10")) {//营业厅管理员
+                    setSpinner(LoginInformation.getInstance().getUser().getStoreId(), LoginInformation.getInstance().getUser().getTransformerId());
+                    storeSpinner.setEnabled(false);
+                    setOnItemSelected();
+                } else {
+                    setOnItemSelected();
+                }
+                getSupportActionBar().setTitle("创建二级用户");
             }
-            getSupportActionBar().setTitle("创建二级用户");
+        } catch (Exception e) {
+            Logger.e(e.getMessage());
         }
 
+
+    }
+
+    private void initUserInfo(UserBean bean) {
+        imeTv.setEnabled(false);
+        getSupportActionBar().setTitle("编辑二级用户");
+        userName.setText(checkText(bean.getUserName()));
+        SpotPricingBean spotPricingBean = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
+        price.setText(checkText(spotPricingBean.getName()));
+        price.setTag(checkText(spotPricingBean.getId()));
+        phone.setText(checkText(bean.getPhone()));
+        currentRatio.setText(checkText(bean.getCurrentRatio()));
+        voltageRatio.setText(checkText(bean.getVoltageRatio()));
+        try {
+            for (int i = 0; i < storebeans.size(); i++) {
+                if (bean.getStoreId().equals(((StoreBean) storebeans.get(i)).getId())) {
+                    storeSpinner.setSelection(i + 1);
+                    storeSpinner.setEnabled(false);
+                }
+            }
+        } catch (Exception e) {
+
+        }
+        try {
+            transformerBean = TransformerBeanDaoHelper.getInstance().testQueryBy(bean.getStoreId());
+            if ((transformerBean != null) && (transformerBean.size() > 0)) {
+                String[] arrayOfString = new String[transformerBean.size()];
+                for (int j = 0; j < transformerBean.size(); j++) {
+                    arrayOfString[j] = ((TransformerBean) transformerBean.get(j)).getName();
+                }
+                ArrayAdapter localArrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, arrayOfString);
+                localArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                transformerSpinner.setAdapter(localArrayAdapter);
+            }
+            for (int i = 0; i < transformerBean.size(); i++) {
+                if (bean.getTransformerId().equals(((TransformerBean) transformerBean.get(i)).getId())) {
+                    transformerSpinner.setSelection(i + 1);
+                    transformerSpinner.setEnabled(false);
+                }
+            }
+        } catch (Exception e) {
+
+        }
     }
 
     private void setOnItemSelected() {
@@ -249,16 +291,13 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
         userBean.setCurrentRatio(currentRatio.getText().toString());
         userBean.setPhone(phone.getText().toString());
         userBean.setPrice(price.getTag() == null ? "" : price.getTag().toString());
-        if ((bean == null) || (TextUtils.isEmpty(bean.getId()))) {
-            userBean.setPassword(userId.getText().toString());
+        if (userId.getTag() == null || TextUtils.isEmpty(userId.getTag().toString())) {
             userBean.setId(UUID.randomUUID().toString());
-            this.presenter.saveUser(this, userBean, 20, true);
-            return;
         } else {
-            userBean.setId(bean.getId());
+            userBean.setId(userId.getTag().toString());
         }
         userBean.setPassword(userId.getText().toString());
-        this.presenter.saveUser(this, userBean, 20, false);
+        this.presenter.saveUser(this, userBean, 20, isSave);
     }
 
     public void saveTransformer(boolean paramBoolean) {

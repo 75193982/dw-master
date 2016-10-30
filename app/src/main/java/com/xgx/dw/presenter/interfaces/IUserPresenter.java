@@ -12,6 +12,8 @@ public interface IUserPresenter {
     void saveUser(IUserView IBaseView, UserBean userBean, int type, boolean saveAndUpdate);
 
     void searchUser(IUserListView IBaseView);
+
+    void saveOrUpdateUser(UserBean bean);
 }
 
 

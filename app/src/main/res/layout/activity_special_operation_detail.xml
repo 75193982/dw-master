@@ -20,6 +20,13 @@
             android:textColor="@android:color/holo_red_light"></TextView>
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_10"
+            android:text="咨询电话：13569957291"
+            android:textColor="@android:color/holo_red_light"></TextView>
+
+        <TextView
             android:id="@+id/deviceTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,7 +50,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_10"
             android:textIsSelectable="true"
-            android:visibility="gone"></TextView>
+            android:visibility="invisible"></TextView>
 
         <LinearLayout
             android:id="@+id/inputBeilvLayout"

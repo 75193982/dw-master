@@ -1,5 +1,6 @@
 package com.xgx.dw.presenter.impl;
 
+import android.text.TextUtils;
 import android.view.View;
 
 import com.xgx.dw.TransformerBean;
@@ -16,6 +17,7 @@ import com.xgx.dw.ui.view.interfaces.ITransformerView;
 import com.xgx.dw.ui.view.interfaces.IUserListView;
 import com.xgx.dw.ui.view.interfaces.IUserView;
 import com.xgx.dw.utils.Logger;
+import com.xgx.dw.utils.MyUtils;
 
 public class UserPresenterImpl extends BasePresenter implements IUserPresenter {
     public void saveTransformer(ICreateTransformerView paramICreateTransformerView, TransformerBean paramTransformerBean, boolean paramBoolean) {
@@ -48,18 +50,34 @@ public class UserPresenterImpl extends BasePresenter implements IUserPresenter {
             } else if (type == 20) {
                 if (isEmpty(userBean.getPrice(), IBaseView, "请选择电价")) return;
             }
-
-
-            if (UserBeanDaoHelper.getInstance().queryByTransFormUserId(userBean.getUserId(), userBean.getIme()) && isSave == true) {
-                IBaseView.showToast("已有相同编号的用户");
-                IBaseView.saveTransformer(false);
-                IBaseView.hideProgress();
-                return;
-            }
-            IBaseView.showProgress("保存用户中...");
             userBean.setType(type + "");
-            UserBeanDaoHelper.getInstance().addData(userBean);
-            IBaseView.saveTransformer(true);
+            //查询有没有这个设备编号的
+            IBaseView.showProgress("保存用户中...");
+            UserBean tempUser = UserBeanDaoHelper.getInstance().queryByTransFormUserId(userBean.getUserId());
+            if (isSave == true) {//表示保存
+                if (tempUser == null) {//新建用户
+                    UserBeanDaoHelper.getInstance().addData(userBean);
+                    IBaseView.saveTransformer(true);
+                } else {
+                    if (tempUser.getIme().contains(userBean.getIme())) {//说明已经存在
+                        IBaseView.showToast("已经存在该用户");
+                        IBaseView.saveTransformer(false);
+                    } else {
+                        userBean.setId(tempUser.getId());
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(tempUser.getIme());
+                        if (!TextUtils.isEmpty(userBean.getIme())) {
+                            sb.append("," + userBean.getIme());
+                        }
+                        userBean.setIme(sb.toString());
+                        UserBeanDaoHelper.getInstance().addData(userBean);
+                        IBaseView.saveTransformer(true);
+                    }
+                }
+            } else {//编辑状态 直接保存即可
+                UserBeanDaoHelper.getInstance().addData(userBean);
+                IBaseView.saveTransformer(true);
+            }
             IBaseView.hideProgress();
         } catch (Exception e) {
             Logger.e(e.getMessage());
@@ -77,5 +95,29 @@ public class UserPresenterImpl extends BasePresenter implements IUserPresenter {
         } else {
             IBaseView.getUserList(UserBeanDaoHelper.getInstance().getAllData());
         }
+    }
+
+    @Override
+    public void saveOrUpdateUser(UserBean bean) {
+        try {
+            UserBean tempUser = UserBeanDaoHelper.getInstance().queryByTransFormUserId(bean.getUserId());
+            if (tempUser == null) {//新建用户
+                UserBeanDaoHelper.getInstance().addData(bean);
+            } else {
+                if (!tempUser.getIme().contains(bean.getIme())) {//说明已经存在
+                    bean.setId(tempUser.getId());
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(tempUser.getIme());
+                    if (!TextUtils.isEmpty(bean.getIme())) {
+                        sb.append("," + bean.getIme());
+                    }
+                    bean.setIme(sb.toString());
+                    UserBeanDaoHelper.getInstance().addData(bean);
+                }
+            }
+        } catch (Exception e) {
+            Logger.e(e.getMessage());
+        }
+
     }
 }

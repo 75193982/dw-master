@@ -126,9 +126,19 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
             case 4:
                 setToolbarTitle("申请购电者信息");
                 bean = UserBeanDaoHelper.getInstance().getDataById(id);
+                bean.setIme(MyUtils.getuniqueId(this));
+                storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
+                transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
+                try {
+                    spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
+                } catch (Exception e) {
+                    Logger.e(e.getMessage());
+                }
+                userAllInfo.setSpotBeans(spotPricingBeans);
+                userAllInfo.setStoreBean(storebean);
+                userAllInfo.setTransformerBean(transbean);
                 pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getId());
                 userAllInfo.setPricingSize(pricings.size());
-
                 break;
             case 5:
                 setToolbarTitle("返回购电用户信息");

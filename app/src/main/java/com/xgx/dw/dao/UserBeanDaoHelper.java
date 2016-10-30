@@ -103,24 +103,16 @@ public class UserBeanDaoHelper implements THDaoHelperInterface {
         return localQueryBuilder.list();
     }
 
-    public UserBean queryByUser(String userId, String ime) {
+
+    public UserBean queryByTransFormUserId(String userId) {
         QueryBuilder localQueryBuilder = this.userBeanDao.queryBuilder();
-        localQueryBuilder.where(UserBeanDao.Properties.UserId.eq(userId), UserBeanDao.Properties.Ime.eq(ime));
-        if (localQueryBuilder.list() != null && localQueryBuilder.list().size() > 0) {
-            return (UserBean) localQueryBuilder.list().get(0);
+        localQueryBuilder.where(UserBeanDao.Properties.UserId.eq(userId));
+        List<UserBean> list = localQueryBuilder.list();
+        //如果有这个设备编号 就 返回第一个 没有这返回null
+        if (list != null && list.size() > 0) {
+            return list.get(0);
         } else {
             return null;
-        }
-    }
-
-    public boolean queryByTransFormUserId(String userId, String ime) {
-        QueryBuilder localQueryBuilder = this.userBeanDao.queryBuilder();
-        localQueryBuilder.where(UserBeanDao.Properties.UserId.eq(userId), UserBeanDao.Properties.Ime.eq(ime));
-        List<UserBean> list = localQueryBuilder.list();
-        if (list != null && list.size() > 0) {
-            return true;
-        } else {
-            return false;
         }
     }
 }

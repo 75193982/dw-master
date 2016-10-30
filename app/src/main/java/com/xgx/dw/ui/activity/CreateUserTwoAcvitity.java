@@ -81,7 +81,7 @@ public class CreateUserTwoAcvitity extends BaseAppCompatActivity implements IUse
             getSupportActionBar().setTitle("编辑台区管理员");
             this.userId.setText(this.bean.getUserId());
             imeTv.setText(checkText(bean.getIme()));
-
+            imeTv.setEnabled(false);
             this.userId.setEnabled(false);
             this.userName.setText(checkText(this.bean.getUserName()));
             setSpinner(bean.getStoreId(), bean.getTransformerId());

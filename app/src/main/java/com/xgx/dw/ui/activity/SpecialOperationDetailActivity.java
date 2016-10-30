@@ -309,8 +309,10 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             hideProgress();
         }
         UserBean bean = LoginInformation.getInstance().getUser();
-        if (!bean.getType().equals("20")) {
+        if (title != 66) {
             sendTv.setText(OperationStr);
+        }
+        if (!bean.getType().equals("20")) {
             sendTv.setVisibility(View.VISIBLE);
         }
     }
@@ -346,7 +348,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         OperationStr = String.format(BlueOperationContact.DianfeiLuruSend, newId, type, gdl, bjdl, tzdl, currentTime, MyUtils.getJyCode(temp));
         if (title == 66) {
             SpotPricingBean spotPricingBean = SpotPricingBeanDaoHelper.getInstance().getDataById(dlbean.getPid());
-            UserBean userBean = UserBeanDaoHelper.getInstance().queryByUser(dlbean.getUserId(), dlbean.getIme());
+            UserBean userBean = LoginInformation.getInstance().getUser();
             String voltageRatio = userBean.getVoltageRatio();
             String currentRatio = userBean.getCurrentRatio();
             String price = spotPricingBean.getName();
@@ -508,7 +510,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                                 if (!bean.getType().equals("20")) {
                                     resultTv.setText(Html.fromHtml("报文返回数据为：" + buf.toString() + "<br/>" + MyUtils.decodeHex367(title, buf.toString())));   //显示数据
                                 } else {
-                                    resultTv.setText("操作成功");   //显示数据
+                                    resultTv.setText(Html.fromHtml(MyUtils.decodeHex367(title, buf.toString())));   //显示数据
                                 }
                                 actionSave.setEnabled(false);
                                 btnTv.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.White));
@@ -553,7 +555,6 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                                             String temp = String.format(BlueOperationContact.BaoDianTrSendTemp, currentTime);
                                             OperationStr = String.format(BlueOperationContact.BaoDianTrSend, currentTime, MyUtils.getJyCode(temp));
                                             sendData();
-
                                         }
                                     }
                                     btnTv.setText("购电成功");

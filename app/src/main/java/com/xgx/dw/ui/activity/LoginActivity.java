@@ -254,7 +254,8 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
         if (userAllInfo != null) {
             if (userAllInfo.getUser().getEcodeType().equals("3")) {
                 //保存用户 方便登录
-                UserBeanDaoHelper.getInstance().addData(userAllInfo.getUser());
+                IUserPresenter presenter = new UserPresenterImpl();
+                presenter.saveOrUpdateUser(userAllInfo.getUser());
                 if (userAllInfo.getStoreBean().getId() != null) {
                     StoreBeanDaoHelper.getInstance().addData(userAllInfo.getStoreBean());
                 }
@@ -264,11 +265,13 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                 if (userAllInfo.getSpotBeans().getId() != null) {
                     SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());
                 }
+                UserBean temp = UserBeanDaoHelper.getInstance().queryByTransFormUserId(userAllInfo.getUser().getUserId());
                 //自动登录 比较 ime账号
-                if (MyUtils.getuniqueId(getContext()).equals(userAllInfo.getUser().getIme())) {
+                if (temp.getIme().contains(MyUtils.getuniqueId(getContext()))) {
                     //则登录成功 当前账号为 bean.getUserName
-                    loginCallback(userAllInfo.getUser());
-
+                    loginCallback(temp);
+                } else {
+                    showToast("该账户无法在您手机登录，请联系管理员");
                 }
             } else {
                 showToast("二维码信息错误，请选择正确二维码");

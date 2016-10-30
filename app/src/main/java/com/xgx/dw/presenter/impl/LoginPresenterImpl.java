@@ -16,13 +16,13 @@ public class LoginPresenterImpl extends BasePresenter implements ILoginPresenter
         if (isEmpty(request.bianhao, paramILoginView, "用户名不能为空")) return;
         if (isEmpty(request.mima, paramILoginView, "密码不能为空")) return;
 
-        UserBean localUserBean = UserBeanDaoHelper.getInstance().queryByUser(request.bianhao, MyUtils.getuniqueId(paramILoginView.getContext()));
+        UserBean localUserBean = UserBeanDaoHelper.getInstance().queryByTransFormUserId(request.bianhao);
         if (localUserBean == null) {
             paramILoginView.showToast("当前用户不存在");
             paramILoginView.hideProgress();
             return;
         }
-        if (request.mima.equals(localUserBean.getPassword()) && localUserBean.getIme().equals(MyUtils.getuniqueId(paramILoginView.getContext()))) {
+        if (request.mima.equals(localUserBean.getPassword()) && localUserBean.getIme().contains(MyUtils.getuniqueId(paramILoginView.getContext()))) {
             paramILoginView.loginCallback(localUserBean);
             // return;
             // } else {

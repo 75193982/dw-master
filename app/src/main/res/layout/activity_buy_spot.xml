@@ -1,100 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="用户信息"></TextView>
-
-    <TextView
-        android:id="@+id/userInfoTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="用户信息"
-        android:textColor="@color/Black"></TextView>
-
-    <TextView
-        android:id="@+id/userInfoBeilvTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textColor="@color/Black"></TextView>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/line_color"></View>
-
-
-    <fr.ganfra.materialspinner.MaterialSpinner
-        android:id="@id/spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp_10"
-        app:ms_alignLabels="false"
-        app:ms_arrowColor="@color/disabled_color"
-        app:ms_arrowSize="@dimen/text_third"
-        app:ms_baseColor="@color/disabled_color"
-        app:ms_enableErrorLabel="false"
-        app:ms_enableFloatingLabel="false"
-        app:ms_errorColor="@color/error_color"
-        app:ms_floatingLabelColor="@color/disabled_color"
-        app:ms_floatingLabelText="购电类型"
-        app:ms_highlightColor="@color/Green"
-        app:ms_hint="请选择购电类型"
-        app:ms_multiline="false" />
-
-    <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/spotTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp_10"
-        android:drawableLeft="@drawable/iconfont_must"
-        android:hint="请输入购电金额"
-        android:inputType="textNoSuggestions"
-        android:textSize="@dimen/text_third"
-        app:met_floatingLabel="highlight"
-        app:met_floatingLabelText="购电金额"
-        app:met_singleLineEllipsis="true" />
-
-    <android.support.v7.widget.SwitchCompat
-        android:id="@+id/isChangeSwitch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:text="是否同步倍率电价"
-        android:textColor="@color/Gray600"></android.support.v7.widget.SwitchCompat>
-
-    <android.support.v7.widget.SwitchCompat
-        android:id="@+id/isTrSwitch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:text="是否保电投入"
-        android:textColor="@color/Gray600"></android.support.v7.widget.SwitchCompat>
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@id/action_save"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:layout_marginTop="20.0dip">
+        android:orientation="vertical">
 
         <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="50.0dip"
-            android:layout_centerInParent="true"
-            android:background="@color/Green"
-            android:gravity="center"
-            android:text="@string/save"
-            android:textColor="@color/White"
-            android:textSize="@dimen/text_second" />
-    </LinearLayout>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="管理员请注意购电用户的倍率与电价是否正确，如有错误，请及时修改"
+            android:textColor="@android:color/holo_red_light"></TextView>
 
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="用户信息 "></TextView>
+
+        <TextView
+            android:id="@+id/userInfoTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableRight="@drawable/edit"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:textColor="@color/Black"></TextView>
+
+        <TextView
+            android:id="@+id/userInfoBeilvTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textColor="@color/Black"></TextView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/line_color"></View>
+
+
+        <fr.ganfra.materialspinner.MaterialSpinner
+            android:id="@id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_10"
+            app:ms_alignLabels="false"
+            app:ms_arrowColor="@color/disabled_color"
+            app:ms_arrowSize="@dimen/text_third"
+            app:ms_baseColor="@color/disabled_color"
+            app:ms_enableErrorLabel="false"
+            app:ms_enableFloatingLabel="false"
+            app:ms_errorColor="@color/error_color"
+            app:ms_floatingLabelColor="@color/disabled_color"
+            app:ms_floatingLabelText="购电类型"
+            app:ms_highlightColor="@color/Green"
+            app:ms_hint="请选择购电类型"
+            app:ms_multiline="false" />
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/spotTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_10"
+            android:drawableLeft="@drawable/iconfont_must"
+            android:hint="请输入购电金额"
+            android:inputType="textNoSuggestions"
+            android:textSize="@dimen/text_third"
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelText="购电金额"
+            app:met_singleLineEllipsis="true" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/isChangeSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text="是否同步倍率电价"
+            android:textColor="@color/Gray600"></android.support.v7.widget.SwitchCompat>
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/isTrSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text="是否保电投入"
+            android:textColor="@color/Gray600"></android.support.v7.widget.SwitchCompat>
+
+        <LinearLayout
+            android:id="@id/action_save"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_marginTop="20.0dip">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="50.0dip"
+                android:layout_centerInParent="true"
+                android:background="@color/Green"
+                android:gravity="center"
+                android:text="@string/save"
+                android:textColor="@color/White"
+                android:textSize="@dimen/text_second" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

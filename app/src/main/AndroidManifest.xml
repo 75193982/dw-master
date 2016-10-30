@@ -102,6 +102,9 @@
         <activity
             android:name=".ui.activity.AboutActivity"
             android:windowSoftInputMode="stateHidden"></activity>
+        <activity
+            android:name=".ui.activity.UserInfoAcvitity"
+            android:windowSoftInputMode="stateHidden"></activity>
     </application>
 
 </manifest>

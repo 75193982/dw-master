@@ -25,6 +25,30 @@
             app:met_floatingLabelText="手机ime码"
             app:met_singleLineEllipsis="true" />
 
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/user_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/iconfont_must"
+            android:hint="@string/store_id"
+            android:inputType="number"
+            android:textSize="@dimen/text_third"
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelText="@string/store_id"
+            app:met_singleLineEllipsis="true" />
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/iconfont_must"
+            android:hint="@string/store_name"
+            android:inputType="textNoSuggestions"
+            android:textSize="@dimen/text_third"
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelText="@string/store_name"
+            app:met_singleLineEllipsis="true" />
+
         <LinearLayout
             android:id="@+id/store_layout"
             android:layout_width="fill_parent"
@@ -102,30 +126,6 @@
                 app:ms_multiline="false" />
         </LinearLayout>
 
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/user_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/iconfont_must"
-            android:hint="@string/store_id"
-            android:inputType="number"
-            android:textSize="@dimen/text_third"
-            app:met_floatingLabel="highlight"
-            app:met_floatingLabelText="@string/store_id"
-            app:met_singleLineEllipsis="true" />
-
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/user_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/iconfont_must"
-            android:hint="@string/store_name"
-
-            android:inputType="textNoSuggestions"
-            android:textSize="@dimen/text_third"
-            app:met_floatingLabel="highlight"
-            app:met_floatingLabelText="@string/store_name"
-            app:met_singleLineEllipsis="true" />
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/voltageRatio"
