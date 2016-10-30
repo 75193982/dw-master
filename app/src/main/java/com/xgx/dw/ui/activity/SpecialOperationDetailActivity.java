@@ -237,8 +237,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                 break;
             case 2:
                 setToolbarTitle("保电投入");
-                temp = String.format(BlueOperationContact.BaoDianTrSendTemp, currentTime);
-                OperationStr = String.format(BlueOperationContact.BaoDianTrSend, currentTime, MyUtils.getJyCode(temp));
+                OperationStr = BlueOperationContact.BaoDianTrSend;
 
                 break;
             case 3:
@@ -539,23 +538,20 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                                     Setting setting = new Setting(getContext());
                                     String userId = LoginInformation.getInstance().getUser().getUserId();
                                     setting.saveBoolean(userId + "_isFirstBuy", false);
-
-
                                     btnTv.setText("购电成功");
                                     btnTv.setTextColor(ContextCompat.getColor(getContext(), R.color.Orange));
 
                                 } else if (title == 66 || title == 6) {
                                     if (dlbean != null) {
-                                        dlbean.setFinishtype("2");
                                         PricingDaoHelper.getInstance().addData(dlbean);
                                         //购电成功后 检查是否要保电投入
                                         if (dlbean.getFinishtype().contains("3")) {
                                             title = 2;
-                                            String currentTime = CommonUtils.formatDateTime1(new Date());
-                                            String temp = String.format(BlueOperationContact.BaoDianTrSendTemp, currentTime);
-                                            OperationStr = String.format(BlueOperationContact.BaoDianTrSend, currentTime, MyUtils.getJyCode(temp));
+                                            OperationStr = BlueOperationContact.BaoDianTrSend;
                                             sendData();
                                         }
+                                        dlbean.setFinishtype("2");
+
                                     }
                                     btnTv.setText("购电成功");
                                     btnTv.setTextColor(ContextCompat.getColor(getContext(), R.color.Orange));

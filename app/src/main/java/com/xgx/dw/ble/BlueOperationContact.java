@@ -17,8 +17,7 @@ public class BlueOperationContact {
     public static String TiaoZaSendTemp = "4A " + deviceId + " 05 E1 01 01 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s";
 
     //保电投入 发送
-    public static String BaoDianTrSend = "68 8E 00 8E 00 68 4A " + deviceId + " 05 EB 00 00 01 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s %s 16";
-    public static String BaoDianTrSendTemp = "4A " + deviceId + " 05 EB 00 00 01 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s";
+    public static String BaoDianTrSend = "68 8E 00 8E 00 68 4A 00 00 FF FF 21 05 EB 00 00 01 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 0C 25 36 17 04 05 E4 16";
 
     //保电解除 发送
     public static String BaoDianJcSend = "68 8A 00 8A 00 68 6A 00 00 FF FF 21 05 EC 00 00 01 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 0D 40 37 17 04 05 23 16";
@@ -87,8 +86,6 @@ public class BlueOperationContact {
         TiaoZaSendTemp = "4A " + deviceId + " 05 E1 01 01 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s";
 
         //保电投入 发送
-        BaoDianTrSend = "68 8E 00 8E 00 68 4A " + deviceId + " 05 EB 00 00 01 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s %s 16";
-        BaoDianTrSendTemp = "4A " + deviceId + " 05 EB 00 00 01 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s";
 
         //报警解除发送
         BaoJingJcSend = "68 8A 00 8A 00 68 6A " + deviceId + " 05 E2 00 00 02 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 %s %s 16";

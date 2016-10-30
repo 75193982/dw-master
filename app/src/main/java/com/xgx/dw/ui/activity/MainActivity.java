@@ -398,7 +398,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                             }
                             startActivity(new Intent(getContext(), CreateUserOneAcvitity.class).putExtra("ime", bean.getIme()));
                         } else if (bean.getEcodeType().equals("1")) {
-                            if ("admin,31".contains(type)) {
+                            if ("admin,10".contains(type)) {
                                 startActivity(new Intent(getContext(), CreateUserTwoAcvitity.class).putExtra("ime", bean.getIme()));
                             } else {
                                 showToast("当前账号没有权限创建台区管理员");
@@ -418,7 +418,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                             if (userAllInfo.getSpotBeans().getId() != null) {
                                 SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());
                             }
-                        } else if (bean.getEcodeType().equals("4") && ("admin,30,31").contains(type)) {
+                        } else if (bean.getEcodeType().equals("4") && ("admin,30,31,10,11").contains(type)) {
                             //保存用户 方便登录
                             try {
                                 IUserPresenter presenter = new UserPresenterImpl();
