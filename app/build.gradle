@@ -15,8 +15,8 @@ android {
         applicationId "com.xgx.dw"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 10
-        versionName "1.0.10"
+        versionCode 16
+        versionName "1.0.16"
     }
     buildTypes {
         release {

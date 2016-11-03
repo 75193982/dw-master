@@ -97,6 +97,10 @@ public class CreateUserTwoAcvitity extends BaseAppCompatActivity implements IUse
             } else if (bean.getIsTest().equals("1")) {
                 testSwitch.setChecked(true);
             }
+            if (!"admin,10".contains(LoginInformation.getInstance().getUser().getType())) {
+                buySwitch.setEnabled(false);
+                testSwitch.setEnabled(false);
+            }
         } else {
             if (LoginInformation.getInstance().getUser().getType().equals("11")) {//台区管理员
                 setSpinner(LoginInformation.getInstance().getUser().getStoreId(), LoginInformation.getInstance().getUser().getTransformerId());
@@ -222,10 +226,11 @@ public class CreateUserTwoAcvitity extends BaseAppCompatActivity implements IUse
         this.presenter.saveUser(this, userBean, 11, false);
     }
 
-    public void saveTransformer(boolean paramBoolean) {
+    public void saveTransformer(boolean paramBoolean, String id) {
         hideProgress();
         if (paramBoolean) {
             showToast("保存成功");
+            startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 3).putExtra("id", id));
             finish();
         }
     }

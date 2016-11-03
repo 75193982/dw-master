@@ -64,6 +64,7 @@ import butterknife.OnClick;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
 
 public class MainActivity extends BaseActivity implements IMainView, IUserView {
+
     private final String ACTION_FILTER = "com.xgx.dw.main";
     @Bind(R.id.wei_xin_s)
     ImageView weiXinS;
@@ -342,8 +343,9 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
         tabWeiXinS.setAlpha(1.0F);
     }
 
+
     @Override
-    public void saveTransformer(boolean b) {
+    public void saveTransformer(boolean b, String id) {
 
     }
 
@@ -419,6 +421,13 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                                 SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());
                             }
                         } else if (bean.getEcodeType().equals("4") && ("admin,30,31,10,11").contains(type)) {
+                            if ("10,11".contains(type)) {
+                                if (!LoginInformation.getInstance().getUser().getIsBuy().equals("1")) {
+                                    //你当前没有权限扫描购电信息
+                                    showToast("你当前没有权限扫描购电信息");
+                                    return;
+                                }
+                            }
                             //保存用户 方便登录
                             try {
                                 IUserPresenter presenter = new UserPresenterImpl();

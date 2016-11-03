@@ -16,6 +16,7 @@ import com.xgx.dw.StoreBean;
 import com.xgx.dw.TransformerBean;
 import com.xgx.dw.UserBean;
 import com.xgx.dw.base.BaseAppCompatActivity;
+import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.dao.StoreBeanDaoHelper;
 import com.xgx.dw.presenter.impl.UserPresenterImpl;
 import com.xgx.dw.presenter.interfaces.IUserPresenter;
@@ -97,6 +98,10 @@ public class CreateUserOneAcvitity extends BaseAppCompatActivity implements IUse
             } else if (bean.getIsTest().equals("1")) {
                 testSwitch.setChecked(true);
             }
+            if (!LoginInformation.getInstance().getUser().getType().equals("admin")) {
+                buySwitch.setEnabled(false);
+                testSwitch.setEnabled(false);
+            }
         } else {
             getSupportActionBar().setTitle(R.string.create_userone);
         }
@@ -145,13 +150,6 @@ public class CreateUserOneAcvitity extends BaseAppCompatActivity implements IUse
         this.presenter.saveUser(this, userBean, 10, false);
     }
 
-    public void saveTransformer(boolean paramBoolean) {
-        hideProgress();
-        if (paramBoolean) {
-            showToast("保存成功");
-            finish();
-        }
-    }
 
     public boolean onCreateOptionsMenu(Menu paramMenu) {
         if (bean != null && !TextUtils.isEmpty(bean.getUserId())) {
@@ -168,5 +166,15 @@ public class CreateUserOneAcvitity extends BaseAppCompatActivity implements IUse
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void saveTransformer(boolean b, String id) {
+        hideProgress();
+        if (b) {
+            showToast("保存成功");
+            startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 3).putExtra("id", id));
+            finish();
+        }
     }
 }

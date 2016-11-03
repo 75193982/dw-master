@@ -300,10 +300,13 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
         this.presenter.saveUser(this, userBean, 20, isSave);
     }
 
-    public void saveTransformer(boolean paramBoolean) {
+    public void saveTransformer(boolean paramBoolean, String id) {
         hideProgress();
         if (paramBoolean) {
             showToast("保存成功");
+            if (isSave) {
+                startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 3).putExtra("id", id));
+            }
             finish();
         }
     }

@@ -2,44 +2,49 @@ package com.xgx.dw.ui.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar.OnMenuItemClickListener;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.xgx.dw.R;
-import com.xgx.dw.StoreBean;
 import com.xgx.dw.UserBean;
-import com.xgx.dw.adapter.StoresAdapter;
 import com.xgx.dw.adapter.UserAdapter;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
+import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.dao.UserBeanDaoHelper;
-import com.xgx.dw.presenter.impl.StorePresenterImpl;
 import com.xgx.dw.presenter.impl.UserPresenterImpl;
-import com.xgx.dw.presenter.interfaces.IStoresPresenter;
 import com.xgx.dw.presenter.interfaces.IUserPresenter;
-import com.xgx.dw.ui.view.interfaces.IStoresView;
 import com.xgx.dw.ui.view.interfaces.IUserListView;
-import com.xgx.dw.ui.view.interfaces.IUserView;
-import com.xgx.dw.vo.request.StoresRequest;
+import com.xgx.dw.utils.MyStringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class UserMgrActivity extends BaseAppCompatActivity implements IUserListView, OnMenuItemClickListener {
     private static int REFRESH_RECYCLERVIEW = 0;
+    @Bind(R.id.query)
+    EditText query;
+    @Bind(R.id.numTv)
+    TextView numTv;
     private UserAdapter adapter;
     private List<UserBean> beans;
     private IUserPresenter presenter;
@@ -97,6 +102,10 @@ public class UserMgrActivity extends BaseAppCompatActivity implements IUserListV
             public void onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
                 super.onItemLongClick(adapter, view, position);
                 final UserBean userbean = (UserBean) baseQuickAdapter.getItem(position);
+                if (userbean.getUserId().equals(LoginInformation.getInstance().getUser().getUserId())) {
+                    showToast("不能删除自己");
+                    return;
+                }
 
                 final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
                 alertDialog.setTitle("请注意");
@@ -119,6 +128,50 @@ public class UserMgrActivity extends BaseAppCompatActivity implements IUserListV
                 alertDialog.show();
             }
         });
+
+        query.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filterData(s.toString());
+            }
+        });
+    }
+
+    private void filterData(String filterStr) {
+        List<UserBean> filterDateList = new ArrayList<UserBean>();
+        if (TextUtils.isEmpty(filterStr)) {
+            filterDateList = beans;
+        } else {
+            filterDateList.clear();
+            for (UserBean bean : beans) {
+                try {
+                    String name = checkText(bean.getUserName());
+                    String userId = checkText(bean.getUserId());
+                    if (name.contains(filterStr) || userId.contains(filterStr)) {
+                        filterDateList.add(bean);
+                    }
+                } catch (Exception e) {
+                }
+
+            }
+        }
+        if (filterDateList != null && filterDateList.size() > 0) {
+            numTv.setText("共搜索到" + filterDateList.size() + "个用户");
+        } else {
+            numTv.setText("共搜索到0个用户");
+
+        }
+        adapter.setNewData(filterDateList);
     }
 
     @Override
@@ -167,6 +220,14 @@ public class UserMgrActivity extends BaseAppCompatActivity implements IUserListV
 
     @Override
     public void getUserList(List<UserBean> userList) {
+        beans = userList;
         adapter.setNewData(userList);
+        if (userList != null && userList.size() > 0) {
+            numTv.setText("共搜索到" + userList.size() + "个用户");
+        } else {
+            numTv.setText("共搜索到0个用户");
+
+        }
     }
+
 }

@@ -19,7 +19,7 @@
         android:drawableLeft="@drawable/ease_search_bar_icon_normal"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:hint="输入购电号查询"
+        android:hint="输入用户编号或者姓名查询"
         android:paddingBottom="5dp"
         android:paddingLeft="5dp"
         android:paddingTop="5dp"

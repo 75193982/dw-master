@@ -3,7 +3,9 @@ package com.xgx.dw.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
@@ -22,7 +24,9 @@ import com.xgx.dw.dao.UserBeanDaoHelper;
 import com.xgx.dw.utils.AES;
 import com.xgx.dw.utils.CommonUtils;
 import com.xgx.dw.utils.Logger;
+import com.xgx.dw.utils.NumberToCn;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,6 +51,8 @@ public class BuySpotActivity extends BaseAppCompatActivity {
     SwitchCompat isChangeSwitch;
     @Bind(R.id.isTrSwitch)
     SwitchCompat isTrSwitch;
+    @Bind(R.id.cnTv)
+    TextView cnTv;
     private UserAllInfo userAllInfo;
 
     @Override
@@ -76,6 +82,29 @@ public class BuySpotActivity extends BaseAppCompatActivity {
         ArrayAdapter localArrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, arrayOfString);
         localArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(localArrayAdapter);
+        spotTv.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    BigDecimal numberOfMoney = new BigDecimal(s.toString());
+                    String newStr = NumberToCn.number2CNMontrayUnit(numberOfMoney);
+                    cnTv.setText(newStr);
+                } catch (Exception e) {
+
+                }
+
+            }
+        });
     }
 
     @Override
@@ -132,14 +161,14 @@ public class BuySpotActivity extends BaseAppCompatActivity {
             }
             if (isChangeSwitch.isChecked()) {
 
-                if (isChangeSwitch.isChecked()) {
+                if (isTrSwitch.isChecked()) {
                     bean.setFinishtype("1,3");
                 } else {
                     bean.setFinishtype("1");
                 }
             } else {
 
-                if (isChangeSwitch.isChecked()) {
+                if (isTrSwitch.isChecked()) {
                     bean.setFinishtype("0,3");
                 } else {
                     bean.setFinishtype("0");

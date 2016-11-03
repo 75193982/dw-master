@@ -154,7 +154,7 @@ public class UserInfoAcvitity extends BaseAppCompatActivity implements IUserView
     }
 
 
-    public void saveTransformer(boolean paramBoolean) {
+    public void saveTransformer(boolean paramBoolean, String id) {
         hideProgress();
         if (paramBoolean) {
             showToast("保存成功");

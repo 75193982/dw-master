@@ -543,7 +543,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
 
                                 } else if (title == 66 || title == 6) {
                                     if (dlbean != null) {
-                                        PricingDaoHelper.getInstance().addData(dlbean);
+
                                         //购电成功后 检查是否要保电投入
                                         if (dlbean.getFinishtype().contains("3")) {
                                             title = 2;
@@ -551,7 +551,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                                             sendData();
                                         }
                                         dlbean.setFinishtype("2");
-
+                                        PricingDaoHelper.getInstance().addData(dlbean);
                                     }
                                     btnTv.setText("购电成功");
                                     btnTv.setTextColor(ContextCompat.getColor(getContext(), R.color.Orange));

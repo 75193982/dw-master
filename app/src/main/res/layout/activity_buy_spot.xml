@@ -7,6 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/color_divider_line_gray"
         android:orientation="vertical">
 
         <TextView
@@ -41,7 +42,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/line_color"></View>
+            android:background="@color/Gray100"></View>
 
 
         <fr.ganfra.materialspinner.MaterialSpinner
@@ -62,18 +63,37 @@
             app:ms_hint="请选择购电类型"
             app:ms_multiline="false" />
 
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/spotTv"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_10"
-            android:drawableLeft="@drawable/iconfont_must"
-            android:hint="请输入购电金额"
-            android:inputType="textNoSuggestions"
-            android:textSize="@dimen/text_third"
-            app:met_floatingLabel="highlight"
-            app:met_floatingLabelText="购电金额"
-            app:met_singleLineEllipsis="true" />
+            android:layout_margin="10dp"
+            android:background="@drawable/actionsheet_single_normal"
+            android:orientation="vertical">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/spotTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/iconfont_must"
+                android:hint="请输入购电金额"
+                android:inputType="numberDecimal"
+                android:padding="10dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:met_baseColor="@color/Orange"
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelText="购电金额(元)"
+                app:met_floatingLabelTextColor="@color/Black"
+                app:met_hideUnderline="true"
+                app:met_singleLineEllipsis="true" />
+
+            <TextView
+                android:id="@+id/cnTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/holo_red_light"></TextView>
+        </LinearLayout>
+
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/isChangeSwitch"

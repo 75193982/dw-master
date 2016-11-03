@@ -57,11 +57,11 @@ public class UserPresenterImpl extends BasePresenter implements IUserPresenter {
             if (isSave == true) {//表示保存
                 if (tempUser == null) {//新建用户
                     UserBeanDaoHelper.getInstance().addData(userBean);
-                    IBaseView.saveTransformer(true);
+                    IBaseView.saveTransformer(true, userBean.getId());
                 } else {
                     if (tempUser.getIme().contains(userBean.getIme())) {//说明已经存在
                         IBaseView.showToast("已经存在该用户");
-                        IBaseView.saveTransformer(false);
+                        IBaseView.saveTransformer(false, userBean.getId());
                     } else {
                         userBean.setId(tempUser.getId());
                         StringBuilder sb = new StringBuilder();
@@ -71,12 +71,12 @@ public class UserPresenterImpl extends BasePresenter implements IUserPresenter {
                         }
                         userBean.setIme(sb.toString());
                         UserBeanDaoHelper.getInstance().addData(userBean);
-                        IBaseView.saveTransformer(true);
+                        IBaseView.saveTransformer(true, userBean.getId());
                     }
                 }
             } else {//编辑状态 直接保存即可
                 UserBeanDaoHelper.getInstance().addData(userBean);
-                IBaseView.saveTransformer(true);
+                IBaseView.saveTransformer(true, userBean.getId());
             }
             IBaseView.hideProgress();
         } catch (Exception e) {
@@ -112,6 +112,10 @@ public class UserPresenterImpl extends BasePresenter implements IUserPresenter {
                         sb.append("," + bean.getIme());
                     }
                     bean.setIme(sb.toString());
+                    UserBeanDaoHelper.getInstance().addData(bean);
+                } else {
+                    bean.setId(tempUser.getId());
+                    bean.setIme(tempUser.getIme());
                     UserBeanDaoHelper.getInstance().addData(bean);
                 }
             }
