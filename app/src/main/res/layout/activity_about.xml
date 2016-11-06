@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="140.0dip"
+        android:layout_height="120.0dip"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10.0dip"
+        android:contentDescription="@string/empty"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/logo" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="程序出现故障等问题咨询管理员"
+        android:textColor="@color/Black"></TextView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/dp_10"
+        android:text="咨询电话：13569957291  席先生"></TextView>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView
+            style="@style/TextStyle_login1"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/login_detail" />
+    </RelativeLayout>
+</LinearLayout>
