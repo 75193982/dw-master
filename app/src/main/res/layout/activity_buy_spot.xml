@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,7 +61,7 @@
             app:ms_floatingLabelText="购电类型"
             app:ms_highlightColor="@color/Green"
             app:ms_hint="请选择购电类型"
-            app:ms_multiline="false" />
+            app:ms_multiline="false"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -85,13 +85,39 @@
                 app:met_floatingLabelText="购电金额(元)"
                 app:met_floatingLabelTextColor="@color/Black"
                 app:met_hideUnderline="true"
-                app:met_singleLineEllipsis="true" />
+                app:met_singleLineEllipsis="true"/>
 
             <TextView
                 android:id="@+id/cnTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_margin"
                 android:textColor="@android:color/holo_red_light"></TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/actionsheet_single_normal"
+            android:orientation="vertical">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/bjPriceTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/iconfont_must"
+                android:hint="请输入报警金额"
+                android:inputType="numberDecimal"
+                android:padding="10dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:met_baseColor="@color/Orange"
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelText="报警金额(元)"
+                app:met_floatingLabelTextColor="@color/Black"
+                app:met_hideUnderline="true"
+                app:met_singleLineEllipsis="true"/>
         </LinearLayout>
 
 
@@ -126,7 +152,7 @@
                 android:gravity="center"
                 android:text="@string/save"
                 android:textColor="@color/White"
-                android:textSize="@dimen/text_second" />
+                android:textSize="@dimen/text_second"/>
         </LinearLayout>
 
     </LinearLayout>

@@ -268,7 +268,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                 } catch (Exception e) {
                     price = "";
                 }
-                changDlStr(price, "0", "0", dlbean.getSpotpriceId(), dlbean.getType());
+                changDlStr(price, dlbean.getBjprice(), "0", dlbean.getSpotpriceId(), dlbean.getType());
                 break;
             case 41:
                 setToolbarTitle("电费查询");
@@ -342,6 +342,8 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             type = "55";
         } else if (type.equals("刷新")) {
             type = "AA";
+        }else{
+            type = "55";
         }
         String temp = String.format(BlueOperationContact.DianfeiLuruSendTemp, newId, type, gdl, bjdl, tzdl, currentTime);
         OperationStr = String.format(BlueOperationContact.DianfeiLuruSend, newId, type, gdl, bjdl, tzdl, currentTime, MyUtils.getJyCode(temp));
@@ -529,7 +531,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                                         } catch (Exception e) {
                                             priceNum = "";
                                         }
-                                        changDlStr(priceNum, "0", "0", dlbean.getSpotpriceId(), dlbean.getType());
+                                        changDlStr(priceNum, dlbean.getBjprice(), "0", dlbean.getSpotpriceId(), dlbean.getType());
                                     } else {
                                         title = 6;
                                         changDlStr(gdlEt.getText().toString(), bjEt.getText().toString(), tzEt.getText().toString(), "1", "刷新");
@@ -670,7 +672,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                         } catch (Exception e) {
                             priceNum = "";
                         }
-                        changDlStr(priceNum, "0", "0", dlbean.getSpotpriceId(), dlbean.getType());
+                        changDlStr(priceNum, dlbean.getBjprice(), "0", dlbean.getSpotpriceId(), dlbean.getType());
                     }
                 }
             }

@@ -45,6 +45,8 @@ public class BuySpotActivity extends BaseAppCompatActivity {
     TextView userInfoBeilvTv;
     @Bind(R.id.spotTv)
     MaterialEditText spotTv;
+    @Bind(R.id.bjPriceTv)
+    MaterialEditText bjPriceTv;
     @Bind(R.id.spinner)
     MaterialSpinner spinner;
     @Bind(R.id.isChangeSwitch)
@@ -66,8 +68,7 @@ public class BuySpotActivity extends BaseAppCompatActivity {
         userAllInfo = (UserAllInfo) getIntent().getSerializableExtra("userAllInfo");
         if (userAllInfo != null) {
             UserBean user = UserBeanDaoHelper.getInstance().getDataById(userAllInfo.getUser().getId());
-            if (TextUtils.isEmpty(user.getVoltageRatio()) && TextUtils.isEmpty(user.getCurrentRatio())
-                    && TextUtils.isEmpty(user.getPrice())) {
+            if (TextUtils.isEmpty(user.getVoltageRatio()) && TextUtils.isEmpty(user.getCurrentRatio()) && TextUtils.isEmpty(user.getPrice())) {
                 showToast("该用户的电压倍率/电流倍率/电价信息不完整，请联系管理员");
                 finish();
                 return;
@@ -134,6 +135,7 @@ public class BuySpotActivity extends BaseAppCompatActivity {
                 price = "";
             }
             bean.setPrice(price);
+            bean.setBjprice(bjPriceTv.getText().toString());
             bean.setUserId(user.getUserId());
             bean.setUserPrimaryid(user.getId());
             bean.setUserName(user.getUserName());
@@ -207,8 +209,7 @@ public class BuySpotActivity extends BaseAppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1001) {
             UserBean user = UserBeanDaoHelper.getInstance().getDataById(userAllInfo.getUser().getId());
-            if (TextUtils.isEmpty(user.getVoltageRatio()) && TextUtils.isEmpty(user.getCurrentRatio())
-                    && TextUtils.isEmpty(user.getPrice())) {
+            if (TextUtils.isEmpty(user.getVoltageRatio()) && TextUtils.isEmpty(user.getCurrentRatio()) && TextUtils.isEmpty(user.getPrice())) {
                 showToast("该用户的电压倍率/电流倍率/电价信息不完整，请联系管理员");
                 finish();
                 return;
