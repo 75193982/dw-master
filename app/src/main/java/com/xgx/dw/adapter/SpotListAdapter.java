@@ -13,6 +13,7 @@ import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
 import com.xgx.dw.dao.UserBeanDaoHelper;
 import com.xgx.dw.utils.AES;
+import com.xgx.dw.utils.MyStringUtils;
 import com.xgx.dw.utils.MyUtils;
 
 import java.util.List;

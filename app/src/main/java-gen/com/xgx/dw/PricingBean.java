@@ -131,7 +131,7 @@ public class PricingBean implements Serializable {
     }
 
     public String getAdminPhone() {
-        return adminPhone;
+        return adminPhone == null ? "" : adminPhone;
     }
 
     public void setAdminPhone(String adminPhone) {
@@ -187,7 +187,14 @@ public class PricingBean implements Serializable {
     }
 
     public String getType() {
-        return type;
+        if (type == null) {
+            return "追加";
+        }
+        if (type.equals("追加") || type.equals("刷新")) {
+            return type;
+
+        }
+        return "追加";
     }
 
     public void setType(String type) {
