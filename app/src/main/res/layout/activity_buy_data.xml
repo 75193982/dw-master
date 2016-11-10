@@ -20,7 +20,9 @@
             android:background="@color/bg_color"
             android:gravity="center"
             android:hint="开始时间"
-            android:padding="@dimen/text_margin"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textSize="@dimen/text_four"
             >
         </TextView>
 
@@ -33,12 +35,14 @@
             android:background="@color/bg_color"
             android:gravity="center"
             android:hint="结束时间"
-            android:padding="@dimen/text_margin"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textSize="@dimen/text_four"
             >
         </TextView>
 
 
-        <Button
+        <TextView
             android:id="@+id/comfirmBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -46,10 +50,12 @@
             android:layout_weight="1"
             android:background="@color/Green"
             android:gravity="center"
-            android:padding="@dimen/text_margin"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:text="查询"
-            android:textColor="@color/White">
-        </Button>
+            android:textColor="@color/White"
+            android:textSize="@dimen/text_four">
+        </TextView>
     </LinearLayout>
 
 
@@ -70,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="合计10000元\n购电用户128位"
+            android:text=""
             />
     </LinearLayout>
 

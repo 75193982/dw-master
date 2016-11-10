@@ -45,7 +45,7 @@ public class BuyUserDataActivity extends BaseAppCompatActivity {
     @Bind(R.id.endTimeTv)
     TextView endTimeTv;
     @Bind(R.id.comfirmBtn)
-    Button comfirmBtn;
+    TextView comfirmBtn;
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
     @Bind(R.id.resultTv)
@@ -107,7 +107,7 @@ public class BuyUserDataActivity extends BaseAppCompatActivity {
         adapter.setNewData(beans);
     }
 
-      @OnClick({R.id.startTimeTv, R.id.endTimeTv, R.id.comfirmBtn})
+    @OnClick({R.id.startTimeTv, R.id.endTimeTv, R.id.comfirmBtn})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.startTimeTv:
@@ -130,9 +130,9 @@ public class BuyUserDataActivity extends BaseAppCompatActivity {
                 List<PricingBean> tempList = new ArrayList<>();
                 for (int j = 0; j < beans.size(); j++) {
                     String createTime = beans.get(j).getCreateTime();
-                    int k1 = compare_date(starttime, createTime);
-                    int k2 = compare_date(createTime, endTime);
-                    if (k1 != 1 && k2 != -1) {
+                    int k1 = compare_date(createTime, starttime);
+                    int k2 = compare_date(endTime, createTime);
+                    if (k1 != -1 && k2 != -1) {
                         tempList.add(beans.get(j));
                     }
                 }
@@ -158,7 +158,7 @@ public class BuyUserDataActivity extends BaseAppCompatActivity {
     public static int compare_date(String DATE1, String DATE2) {
 
 
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd  EE");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date dt1 = df.parse(DATE1);
             Date dt2 = df.parse(DATE2);

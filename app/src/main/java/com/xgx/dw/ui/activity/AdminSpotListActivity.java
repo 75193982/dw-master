@@ -2,6 +2,12 @@ package com.xgx.dw.ui.activity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.os.Environment;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -27,6 +33,8 @@ import com.xgx.dw.dao.PricingDaoHelper;
 import com.xgx.dw.utils.AES;
 import com.xgx.dw.utils.MyStringUtils;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,7 +63,7 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
     @Bind(R.id.endTimeTv)
     TextView endTimeTv;
     @Bind(R.id.comfirmBtn)
-    Button comfirmBtn;
+    TextView comfirmBtn;
     private DatePickerDialog mDataPicker;
 
     @Override
@@ -76,7 +84,14 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
         recyclerView.setAdapter(this.adapter);
         recyclerView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
-            public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+            public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, final View view, int i) {
+                //生产订单图片
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        viewSaveToImage(view);
+                    }
+                });
                 startActivity(new Intent(getContext(), TestGeneratectivity.class).putExtra("type", 5).putExtra("id", adapter.getItem(i).getUserPrimaryid()));
             }
         });
@@ -133,9 +148,9 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
                 List<PricingBean> tempList = new ArrayList<>();
                 for (int j = 0; j < beans.size(); j++) {
                     String createTime = beans.get(j).getCreateTime();
-                    int k1 = compare_date(starttime, createTime);
-                    int k2 = compare_date(createTime, endTime);
-                    if (k1 != 1 && k2 != -1) {
+                    int k1 = compare_date(createTime, starttime);
+                    int k2 = compare_date(endTime, createTime);
+                    if (k1 != -1 && k2 != -1) {
                         tempList.add(beans.get(j));
                     }
                 }
@@ -161,7 +176,7 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
     public static int compare_date(String DATE1, String DATE2) {
 
 
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd  EE");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date dt1 = df.parse(DATE1);
             Date dt2 = df.parse(DATE2);
@@ -192,7 +207,7 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, monthOfYear, dayOfMonth);
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd  EE");
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                 switch (targetView.getId()) {
                     case R.id.startTimeTv:
                         startTimeTv.setText(df.format(calendar.getTime()));
@@ -205,4 +220,82 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
 
+    public void viewSaveToImage(View view) {
+        view.setDrawingCacheEnabled(true);
+        view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        view.setDrawingCacheBackgroundColor(Color.WHITE);
+
+        // 把一个View转换成图片
+        Bitmap cachebmp = loadBitmapFromView(view);
+
+        // 添加水印
+        Bitmap bitmap = Bitmap.createBitmap(createWatermarkBitmap(cachebmp, "@ Zhang Phil"));
+
+        FileOutputStream fos;
+        try {
+            // 判断手机设备是否有SD卡
+            boolean isHasSDCard = Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
+            if (isHasSDCard) {
+                // SD卡根目录
+                File sdRoot = Environment.getExternalStorageDirectory();
+                File file = new File(sdRoot, "test.PNG");
+                fos = new FileOutputStream(file);
+            } else throw new Exception("创建文件失败!");
+
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
+
+            fos.flush();
+            fos.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        view.destroyDrawingCache();
+    }
+
+    private Bitmap loadBitmapFromView(View v) {
+        int w = v.getWidth();
+        int h = v.getHeight();
+
+        Bitmap bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(bmp);
+
+        c.drawColor(Color.WHITE);
+        /** 如果不设置canvas画布为白色，则生成透明 */
+
+        v.layout(0, 0, w, h);
+        v.draw(c);
+
+        return bmp;
+    }
+
+    // 为图片target添加水印
+    private Bitmap createWatermarkBitmap(Bitmap target, String str) {
+        int w = target.getWidth();
+        int h = target.getHeight();
+
+        Bitmap bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bmp);
+
+        Paint p = new Paint();
+
+        // 水印的颜色
+        p.setColor(Color.RED);
+
+        // 水印的字体大小
+        p.setTextSize(16);
+
+        p.setAntiAlias(true);// 去锯齿
+
+        canvas.drawBitmap(target, 0, 0, p);
+
+        // 在中间位置开始添加水印
+        canvas.drawText(str, w / 2, h / 2, p);
+
+        canvas.save(Canvas.ALL_SAVE_FLAG);
+        canvas.restore();
+
+        return bmp;
+    }
 }

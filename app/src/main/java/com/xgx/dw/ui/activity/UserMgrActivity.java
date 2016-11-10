@@ -53,7 +53,7 @@ public class UserMgrActivity extends BaseAppCompatActivity implements IUserListV
     private String currentUserType;
 
     public void initContentView() {
-        super.baseSetContentView(R.layout.activity_stores_mgr);
+        super.baseSetContentView(R.layout.activity_user_mgr);
     }
 
     public void initPresenter() {

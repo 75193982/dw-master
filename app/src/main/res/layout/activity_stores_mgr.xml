@@ -4,15 +4,6 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/search_layout" />
-
-    <TextView
-        android:id="@+id/numTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/dp_10"
-        android:textColor="@color/Green"></TextView>
-
     <android.support.v7.widget.RecyclerView
         android:id="@id/list"
         android:layout_width="fill_parent"
