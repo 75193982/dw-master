@@ -75,33 +75,6 @@ public class SpotListActivity extends BaseAppCompatActivity {
         });
     }
 
-    private void filterData(String filterStr) {
-        List<PricingBean> filterDateList = new ArrayList<PricingBean>();
-        if (TextUtils.isEmpty(filterStr)) {
-            filterDateList = beans;
-        } else {
-            filterDateList.clear();
-            for (PricingBean bean : beans) {
-                try {
-                    String name = checkText(bean.getSpotpriceId());
-                    if (name.contains(filterStr)) {
-                        filterDateList.add(bean);
-                    }
-                } catch (Exception e) {
-                }
-
-            }
-        }
-
-        if (filterDateList != null && filterDateList.size() > 0) {
-            int num = 0;
-            for (int i = 0; i < filterDateList.size(); i++) {
-                num += MyStringUtils.toInt(filterDateList.get(i).getPrice(), 0);
-            }
-            numTv.setText(num + "");
-        }
-        adapter.setNewData(filterDateList);
-    }
 
     @Override
     protected void onResume() {

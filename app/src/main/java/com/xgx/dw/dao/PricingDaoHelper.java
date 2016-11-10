@@ -106,6 +106,18 @@ public class PricingDaoHelper implements THDaoHelperInterface {
 
     }
 
+    public List<PricingBean> queryByAdminId(String id) {
+        try {
+            QueryBuilder localQueryBuilder = this.userBeanDao.queryBuilder();
+            localQueryBuilder.where(PricingBeanDao.Properties.AdminName.eq(id));
+            localQueryBuilder.orderDesc(PricingBeanDao.Properties.CreateTime);
+            return localQueryBuilder.list();
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+
+    }
+
     public List<PricingBean> queryByUserDeviceId(String id) {
         try {
             QueryBuilder localQueryBuilder = this.userBeanDao.queryBuilder();

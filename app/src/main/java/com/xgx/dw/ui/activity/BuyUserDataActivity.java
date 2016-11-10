@@ -1,18 +1,14 @@
 package com.xgx.dw.ui.activity;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -35,20 +31,14 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.xgx.dw.R.id.resultTv;
-
 /**
- * Created by Administrator on 2016/10/16 0016.
+ * Created by Administrator on 2016/11/9.
  */
-public class AdminSpotListActivity extends BaseAppCompatActivity {
-    @Bind(R.id.recyclerView)
-    RecyclerView recyclerView;
-    SpotListAdapter adapter;
-    private List<PricingBean> beans;
-    @Bind(R.id.numTv)
-    TextView numTv;
+
+public class BuyUserDataActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.startTimeTv)
     TextView startTimeTv;
@@ -56,16 +46,23 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
     TextView endTimeTv;
     @Bind(R.id.comfirmBtn)
     Button comfirmBtn;
+    @Bind(R.id.recyclerView)
+    RecyclerView recyclerView;
+    @Bind(R.id.resultTv)
+    TextView resultTv;
     private DatePickerDialog mDataPicker;
+    private DatePickerDialog mDataEndTimePicker;
+    private List<PricingBean> beans;
+    private SpotListAdapter adapter;
 
     @Override
     public void initContentView() {
-        baseSetContentView(R.layout.activity_spot_list);
+        baseSetContentView(R.layout.activity_buy_data);
     }
 
     @Override
     public void initView() {
-        setToolbarTitle("购电记录");
+        setToolbarTitle("购电报表");
         beans = new ArrayList();
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, 1, false));
@@ -77,25 +74,25 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
         recyclerView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                startActivity(new Intent(getContext(), TestGeneratectivity.class).putExtra("type", 5).putExtra("id", adapter.getItem(i).getUserPrimaryid()));
             }
         });
     }
 
+    @Override
+    public void initPresenter() {
+        getData();
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
-    @Override
-    public void initPresenter() {
-        //查询电价
-        String userid = getIntent().getStringExtra("id");
-        beans = PricingDaoHelper.getInstance().queryByUserId(userid);
+    private void getData() {
+        String userid = LoginInformation.getInstance().getUser().getId();
+        beans = PricingDaoHelper.getInstance().queryByAdminId(userid);
+        int num = 0;
         if (beans != null && beans.size() > 0) {
-            int num = 0;
             for (int i = 0; i < beans.size(); i++) {
                 String price = "";
                 try {
@@ -105,12 +102,12 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
                 }
                 num += MyStringUtils.toInt(price, 0);
             }
-            numTv.setText(num + "元");
+            resultTv.setText("合计 " + num + "元\n购电用户 " + beans.size() + " 位");
         }
         adapter.setNewData(beans);
     }
 
-    @OnClick({R.id.startTimeTv, R.id.endTimeTv, R.id.comfirmBtn})
+      @OnClick({R.id.startTimeTv, R.id.endTimeTv, R.id.comfirmBtn})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.startTimeTv:
@@ -152,7 +149,7 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
                         num += MyStringUtils.toInt(price, 0);
                     }
                 }
-                numTv.setText(num + "元");
+                resultTv.setText("合计 " + num + "元\n购电用户 " + tempList.size() + " 位");
                 adapter.setNewData(tempList);
                 break;
         }
@@ -204,5 +201,4 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
-
 }
