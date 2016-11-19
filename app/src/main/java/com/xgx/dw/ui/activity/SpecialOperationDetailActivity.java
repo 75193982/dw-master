@@ -121,6 +121,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
     private String OperationStr = "";
     private int setp = 0;
     private PricingBean dlbean;
+    private boolean isLuru = false;
 
 
     @Override
@@ -261,6 +262,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                 break;
             case 66:
                 setToolbarTitle("电费录入");
+                isLuru = true;
                 dlbean = (PricingBean) getIntent().getSerializableExtra("dlbean");
                 String price = "";
                 try {
@@ -342,7 +344,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             type = "55";
         } else if (type.equals("刷新")) {
             type = "AA";
-        }else{
+        } else {
             type = "55";
         }
         String temp = String.format(BlueOperationContact.DianfeiLuruSendTemp, newId, type, gdl, bjdl, tzdl, currentTime);
@@ -507,56 +509,64 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                                     buf.append(hexStr);
                                     buf.append(' ');
                                 }
-                                UserBean bean = LoginInformation.getInstance().getUser();
-                                if (!bean.getType().equals("20")) {
-                                    resultTv.setText(Html.fromHtml("报文返回数据为：" + buf.toString() + "<br/>" + MyUtils.decodeHex367(title, buf.toString())));   //显示数据
+                                if (!buf.toString().toUpperCase().startsWith("68")) {
+                                    btnTv.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.White));
+                                    btnTv.setTextColor(ContextCompat.getColor(getContext(), R.color.Orange));
+                                    btnTv.setText("操作失败，设备没有成功恢复数据");
                                 } else {
-                                    resultTv.setText(Html.fromHtml(MyUtils.decodeHex367(title, buf.toString())));   //显示数据
-                                }
-                                actionSave.setEnabled(false);
-                                btnTv.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.White));
-                                btnTv.setText("操作成功");
-                                btnTv.setTextColor(ContextCompat.getColor(getContext(), R.color.Orange));
-                                if (title == 4) {//表示倍率录入成功
-                                    String dj = bean.getPrice();
-                                    title = 5;
-                                    changDjStr(dj);
-                                    sendData();
-                                } else if (title == 5) {
-                                    if (getIntent().getIntExtra("type", -1) == 66) {
-                                        title = 66;
-                                        String priceNum = "";
-                                        try {
-                                            priceNum = AES.decrypt(G.appsecret, dlbean.getPrice());
-                                        } catch (Exception e) {
-                                            priceNum = "";
-                                        }
-                                        changDlStr(priceNum, dlbean.getBjprice(), "0", dlbean.getSpotpriceId(), dlbean.getType());
+                                    UserBean bean = LoginInformation.getInstance().getUser();
+                                    if (!bean.getType().equals("20")) {
+                                        resultTv.setText(Html.fromHtml("报文返回数据为：" + buf.toString() + "<br/>" + MyUtils.decodeHex367(title, buf.toString())));   //显示数据
                                     } else {
-                                        title = 6;
-                                        changDlStr(gdlEt.getText().toString(), bjEt.getText().toString(), tzEt.getText().toString(), "1", "刷新");
+                                        resultTv.setText(Html.fromHtml(MyUtils.decodeHex367(title, buf.toString())));   //显示数据
                                     }
-                                    sendData();
-                                    Setting setting = new Setting(getContext());
-                                    String userId = LoginInformation.getInstance().getUser().getUserId();
-                                    setting.saveBoolean(userId + "_isFirstBuy", false);
-                                    btnTv.setText("购电成功");
+                                    actionSave.setEnabled(false);
+                                    btnTv.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.White));
+                                    btnTv.setText("操作成功");
                                     btnTv.setTextColor(ContextCompat.getColor(getContext(), R.color.Orange));
 
-                                } else if (title == 66 || title == 6) {
-                                    if (dlbean != null) {
-
-                                        //购电成功后 检查是否要保电投入
-                                        if (dlbean.getFinishtype().contains("3")) {
-                                            title = 2;
-                                            OperationStr = BlueOperationContact.BaoDianTrSend;
-                                            sendData();
+                                    if (title == 4 && isLuru == true) {//表示倍率录入成功
+                                        String dj = bean.getPrice();
+                                        title = 5;
+                                        changDjStr(dj);
+                                        sendData();
+                                    } else if (title == 5 && isLuru == true) {
+                                        if (getIntent().getIntExtra("type", -1) == 66) {
+                                            title = 66;
+                                            String priceNum = "";
+                                            try {
+                                                priceNum = AES.decrypt(G.appsecret, dlbean.getPrice());
+                                            } catch (Exception e) {
+                                                priceNum = "";
+                                            }
+                                            changDlStr(priceNum, dlbean.getBjprice(), "0", dlbean.getSpotpriceId(), dlbean.getType());
+                                        } else {
+                                            title = 6;
+                                            changDlStr(gdlEt.getText().toString(), bjEt.getText().toString(), tzEt.getText().toString(), "1", "刷新");
                                         }
-                                        dlbean.setFinishtype("2");
-                                        PricingDaoHelper.getInstance().addData(dlbean);
+                                        sendData();
+                                        Setting setting = new Setting(getContext());
+                                        String userId = LoginInformation.getInstance().getUser().getUserId();
+                                        setting.saveBoolean(userId + "_isFirstBuy", false);
+                                        btnTv.setText("购电成功");
+                                        btnTv.setTextColor(ContextCompat.getColor(getContext(), R.color.Orange));
+
+                                    } else if (title == 66 || title == 6) {
+                                        if (dlbean != null) {
+
+                                            //购电成功后 检查是否要保电投入
+                                            if (dlbean.getFinishtype().contains("3")) {
+                                                title = 2;
+                                                OperationStr = BlueOperationContact.BaoDianTrSend;
+                                                sendData();
+                                            }
+                                            dlbean.setFinishtype("2");
+                                            PricingDaoHelper.getInstance().addData(dlbean);
+                                        }
+                                        btnTv.setText("购电成功");
+                                        btnTv.setTextColor(ContextCompat.getColor(getContext(), R.color.Orange));
+                                        setResult(1001);
                                     }
-                                    btnTv.setText("购电成功");
-                                    btnTv.setTextColor(ContextCompat.getColor(getContext(), R.color.Orange));
                                 }
                             }
                         } catch (Exception e) {

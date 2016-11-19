@@ -18,6 +18,7 @@ public class PricingBean implements Serializable {
     private String userId;
     private String userName;
     private String adminName;
+    private String adminNickName;
     private String adminPhone;
     private String storeId;
     private String storeName;
@@ -36,7 +37,7 @@ public class PricingBean implements Serializable {
         this.id = id;
     }
 
-    public PricingBean(String id, String userPrimaryid, String pid, String price, String bjprice, String spotpriceId, String userId, String userName, String adminName, String adminPhone, String storeId, String storeName, String storeAddress, String transformerId, String transformerName, String createTime, String type, String finishtype, String ime) {
+    public PricingBean(String id, String userPrimaryid, String pid, String price, String bjprice, String spotpriceId, String userId, String userName, String adminName, String adminNickName, String adminPhone, String storeId, String storeName, String storeAddress, String transformerId, String transformerName, String createTime, String type, String finishtype, String ime) {
         this.id = id;
         this.userPrimaryid = userPrimaryid;
         this.pid = pid;
@@ -46,6 +47,7 @@ public class PricingBean implements Serializable {
         this.userId = userId;
         this.userName = userName;
         this.adminName = adminName;
+        this.adminNickName = adminNickName;
         this.adminPhone = adminPhone;
         this.storeId = storeId;
         this.storeName = storeName;
@@ -128,6 +130,14 @@ public class PricingBean implements Serializable {
 
     public void setAdminName(String adminName) {
         this.adminName = adminName;
+    }
+
+    public String getAdminNickName() {
+        return adminNickName == null ? "" : adminNickName;
+    }
+
+    public void setAdminNickName(String adminNickName) {
+        this.adminNickName = adminNickName;
     }
 
     public String getAdminPhone() {

@@ -60,7 +60,7 @@ public class SpotListAdapter extends BaseQuickAdapter<PricingBean> {
                 "\n购电金额(元)：" + priceNum +
                 "\n购电类型：" + bean.getType() +
                 "\n操作员名称：" + bean.getAdminName() +
-                "\n联系人名称：" + bean.getAdminName() +
+                "\n联系人名称：" + bean.getAdminNickName() +
                 "\n联系人电话：" + bean.getAdminPhone());
         String type = "";
         if (bean.getFinishtype().contains("0")) {

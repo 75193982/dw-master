@@ -1,13 +1,16 @@
 package com.xgx.dw.ui.activity;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -85,14 +88,37 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
         recyclerView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, final View view, int i) {
-                //生产订单图片
-                new Handler().post(new Runnable() {
+
+
+                startActivity(new Intent(getContext(), TestGeneratectivity.class).putExtra("type", 5).putExtra("id", adapter.getItem(i).getUserPrimaryid()));
+            }
+
+            @Override
+            public void onItemLongClick(final BaseQuickAdapter baseQuickAdapter, final View view, final int position) {
+                super.onItemLongClick(baseQuickAdapter, view, position);
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+                alertDialog.setTitle("提示");
+                alertDialog.setMessage("是否要生成打印单？");
+                alertDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
-                    public void run() {
-                        viewSaveToImage(view);
+                    public void onClick(DialogInterface dialogInterface, final int i) {
+                        dialogInterface.dismiss();
+                        //生产订单图片
+                        new Handler().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                viewSaveToImage(view, adapter.getItem(position).getUserPrimaryid() + "-" + adapter.getItem(position).getCreateTime());
+                            }
+                        });
                     }
                 });
-                startActivity(new Intent(getContext(), TestGeneratectivity.class).putExtra("type", 5).putExtra("id", adapter.getItem(i).getUserPrimaryid()));
+                alertDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                alertDialog.show();
             }
         });
     }
@@ -220,7 +246,7 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
 
-    public void viewSaveToImage(View view) {
+    public void viewSaveToImage(View view, String name) {
         view.setDrawingCacheEnabled(true);
         view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         view.setDrawingCacheBackgroundColor(Color.WHITE);
@@ -229,21 +255,30 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
         Bitmap cachebmp = loadBitmapFromView(view);
 
         // 添加水印
-        Bitmap bitmap = Bitmap.createBitmap(createWatermarkBitmap(cachebmp, "@ Zhang Phil"));
+        Bitmap bitmap = Bitmap.createBitmap(createWatermarkBitmap(cachebmp, "中衡电气"));
 
         FileOutputStream fos;
         try {
             // 判断手机设备是否有SD卡
             boolean isHasSDCard = Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
+
             if (isHasSDCard) {
                 // SD卡根目录
                 File sdRoot = Environment.getExternalStorageDirectory();
-                File file = new File(sdRoot, "test.PNG");
+                String image_dir = Environment.getExternalStorageDirectory() + "/dw/Cache/ecodeEr";
+
+                File image_dirs = new File(image_dir);
+                if (!image_dirs.exists()) {
+                    image_dirs.mkdirs();
+                }
+                String filenewpath = image_dir + "/" + name + ".PNG";
+                File file = new File(filenewpath);
                 fos = new FileOutputStream(file);
+                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + filenewpath)));
+                showToast("成功创建打印图片,保存于：" + filenewpath);
             } else throw new Exception("创建文件失败!");
 
             bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
-
             fos.flush();
             fos.close();
 

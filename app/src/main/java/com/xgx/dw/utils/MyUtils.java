@@ -194,10 +194,10 @@ public class MyUtils {
             resultString.append(String.format("<br/>当前剩余电费：   <big><font color='blue'>%.3f</font></big>   元<br/>", Float.valueOf(mBuffer.get(0).substring(1) + mBuffer.get(1) + mBuffer.get(2) + mBuffer.get(3))));
 
         } else if (mBuffer.get(0).startsWith("5")) {
-            resultString.append(String.format("<br/>当前剩余电费：  <big><font color='blue'>%.3f</font></big>   元<br/>", Float.valueOf(mBuffer.get(0).substring(1) + mBuffer.get(1) + mBuffer.get(2) + mBuffer.get(3))));
+            resultString.append(String.format("<br/>当前剩余电费：  <big><font color='red'>-%.3f</font></big>   元<br/>", Float.valueOf(mBuffer.get(0).substring(1) + mBuffer.get(1) + mBuffer.get(2) + mBuffer.get(3))));
 
         } else if (mBuffer.get(0).startsWith("1")) {
-            resultString.append(String.format("<br/>当前剩余电费：  <big><font color='blue'>%.3f</font></big>   元<br/>", Float.valueOf(mBuffer.get(0).substring(1) + mBuffer.get(1) + mBuffer.get(2) + mBuffer.get(3)) / 1000));
+            resultString.append(String.format("<br/>当前剩余电费：  <big><font color='red'>-%.3f</font></big>   元<br/>", Float.valueOf(mBuffer.get(0).substring(1) + mBuffer.get(1) + mBuffer.get(2) + mBuffer.get(3)) / 1000));
 
         }
     }

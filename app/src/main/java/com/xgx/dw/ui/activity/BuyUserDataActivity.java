@@ -1,7 +1,17 @@
 package com.xgx.dw.ui.activity;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -23,6 +33,8 @@ import com.xgx.dw.dao.PricingDaoHelper;
 import com.xgx.dw.utils.AES;
 import com.xgx.dw.utils.MyStringUtils;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,7 +63,6 @@ public class BuyUserDataActivity extends BaseAppCompatActivity {
     @Bind(R.id.resultTv)
     TextView resultTv;
     private DatePickerDialog mDataPicker;
-    private DatePickerDialog mDataEndTimePicker;
     private List<PricingBean> beans;
     private SpotListAdapter adapter;
 
@@ -75,6 +86,34 @@ public class BuyUserDataActivity extends BaseAppCompatActivity {
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
             }
+
+            @Override
+            public void onItemLongClick(final BaseQuickAdapter baseQuickAdapter, final View view, final int position) {
+                super.onItemLongClick(baseQuickAdapter, view, position);
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+                alertDialog.setTitle("提示");
+                alertDialog.setMessage("是否要生成打印单？");
+                alertDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, final int i) {
+                        dialogInterface.dismiss();
+                        //生产订单图片
+                        new Handler().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                viewSaveToImage(view, adapter.getItem(position).getUserPrimaryid() + "-" + adapter.getItem(position).getCreateTime());
+                            }
+                        });
+                    }
+                });
+                alertDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                alertDialog.show();
+            }
         });
     }
 
@@ -89,7 +128,7 @@ public class BuyUserDataActivity extends BaseAppCompatActivity {
     }
 
     private void getData() {
-        String userid = LoginInformation.getInstance().getUser().getId();
+        String userid = LoginInformation.getInstance().getUser().getUserId();
         beans = PricingDaoHelper.getInstance().queryByAdminId(userid);
         int num = 0;
         if (beans != null && beans.size() > 0) {
@@ -200,5 +239,92 @@ public class BuyUserDataActivity extends BaseAppCompatActivity {
                 }
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+    }
+
+    public void viewSaveToImage(View view, String name) {
+        view.setDrawingCacheEnabled(true);
+        view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        view.setDrawingCacheBackgroundColor(Color.WHITE);
+
+        // 把一个View转换成图片
+        Bitmap cachebmp = loadBitmapFromView(view);
+
+        // 添加水印
+        Bitmap bitmap = Bitmap.createBitmap(createWatermarkBitmap(cachebmp, "中衡电气"));
+
+        FileOutputStream fos;
+        try {
+            // 判断手机设备是否有SD卡
+            boolean isHasSDCard = Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
+
+            if (isHasSDCard) {
+                // SD卡根目录
+                File sdRoot = Environment.getExternalStorageDirectory();
+                String image_dir = Environment.getExternalStorageDirectory() + "/dw/Cache/ecodeEr";
+                File image_dirs = new File(image_dir);
+                if (!image_dirs.exists()) {
+                    image_dirs.mkdirs();
+                }
+                String filenewpath = image_dir + "/" + name + ".PNG";
+                File file = new File(filenewpath);
+                fos = new FileOutputStream(file);
+                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + filenewpath)));
+                showToast("成功创建打印图片,保存于：" + filenewpath);
+            } else throw new Exception("创建文件失败!");
+
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
+            fos.flush();
+            fos.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        view.destroyDrawingCache();
+    }
+
+    private Bitmap loadBitmapFromView(View v) {
+        int w = v.getWidth();
+        int h = v.getHeight();
+
+        Bitmap bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(bmp);
+
+        c.drawColor(Color.WHITE);
+        /** 如果不设置canvas画布为白色，则生成透明 */
+
+        v.layout(0, 0, w, h);
+        v.draw(c);
+
+        return bmp;
+    }
+
+    // 为图片target添加水印
+    private Bitmap createWatermarkBitmap(Bitmap target, String str) {
+        int w = target.getWidth();
+        int h = target.getHeight();
+
+        Bitmap bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bmp);
+
+        Paint p = new Paint();
+
+        // 水印的颜色
+        p.setColor(Color.RED);
+
+        // 水印的字体大小
+        p.setTextSize(16);
+
+        p.setAntiAlias(true);// 去锯齿
+
+        canvas.drawBitmap(target, 0, 0, p);
+
+        // 在中间位置开始添加水印
+        canvas.drawText(str, w / 2, h / 2, p);
+
+        canvas.save(Canvas.ALL_SAVE_FLAG);
+        canvas.restore();
+
+        return bmp;
     }
 }

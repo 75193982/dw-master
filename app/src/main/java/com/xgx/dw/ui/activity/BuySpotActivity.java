@@ -141,6 +141,7 @@ public class BuySpotActivity extends BaseAppCompatActivity {
             bean.setUserName(user.getUserName());
             bean.setAdminPhone(LoginInformation.getInstance().getUser().getPhone());
             bean.setAdminName(LoginInformation.getInstance().getUser().getUserId());
+            bean.setAdminNickName(LoginInformation.getInstance().getUser().getUserName());
             bean.setType((String) spinner.getSelectedItem());
             bean.setStoreId(user.getStoreId());
             bean.setStoreName(user.getStoreName());
