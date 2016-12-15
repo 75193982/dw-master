@@ -151,6 +151,33 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
                 userAllInfo.setSpotBeans(spotPricingBeans);
                 userAllInfo.setPricingSize(pricings.size());
                 break;
+            case 6:
+                setToolbarTitle("返回购电用户信息");
+
+                bean = UserBeanDaoHelper.getInstance().getDataById(id);
+                if (bean.getType().equals("10")) {
+                    storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
+                } else if (bean.getType().equals("11")) {
+                    storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
+                    transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
+                } else if (bean.getType().equals("20")) {
+                    storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
+                    transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
+                    try {
+                        spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
+                    } catch (Exception e) {
+                        Logger.e(e.getMessage());
+                    }
+                }
+                userAllInfo.setSpotBeans(spotPricingBeans);
+                userAllInfo.setStoreBean(storebean);
+                userAllInfo.setTransformerBean(transbean);
+                pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getId());
+                if (pricings.size() > 0) {
+                    userAllInfo.setPricings(pricings.get(0));
+                }
+                userAllInfo.setPricingSize(pricings.size());
+                break;
         }
         bean.setEcodeType(type + "");
         userAllInfo.setUser(bean);

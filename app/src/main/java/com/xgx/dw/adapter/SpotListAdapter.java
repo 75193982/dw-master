@@ -1,6 +1,7 @@
 package com.xgx.dw.adapter;
 
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -49,6 +50,7 @@ public class SpotListAdapter extends BaseQuickAdapter<PricingBean> {
             priceNum = "";
         }
         baseViewHolder.setText(R.id.title, "购电单号：" + bean.getSpotpriceId() +
+                "\n购电用户名称：" + userBean.getUserName() + (TextUtils.isEmpty(userBean.getPhone()) ? "" : "--" + userBean.getPhone()) +
                 "\n营业厅名称：" + bean.getStoreName() +
                 "\n营业厅地址：" + bean.getStoreAddress() +
                 "\n倍率：" + userBean.getVoltageRatio() + "*" + userBean.getCurrentRatio() +

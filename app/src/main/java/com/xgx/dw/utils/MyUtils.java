@@ -92,6 +92,7 @@ public class MyUtils {
                     bean.setType("1");
                     bean.setUserId(LoginInformation.getInstance().getUser().getUserId());
                     bean.setContent(resultString.toString());
+                    bean.setCreateTime(CommonUtils.parseDateTime(System.currentTimeMillis()));
                     SearchDlDaoHelper.getInstance().addData(bean);
                 } catch (Exception e) {
                     resultString = new StringBuilder();
@@ -108,6 +109,7 @@ public class MyUtils {
                     bean.setType("2");
                     bean.setUserId(LoginInformation.getInstance().getUser().getUserId());
                     bean.setContent(resultString.toString());
+                    bean.setCreateTime(CommonUtils.parseDateTime(System.currentTimeMillis()));
                     SearchDlDaoHelper.getInstance().addData(bean);
                 } catch (Exception e) {
                     resultString = new StringBuilder();

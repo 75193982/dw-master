@@ -27,6 +27,7 @@ public class SearchDlLogDao extends AbstractDao<SearchDlLog, String> {
         public final static Property Content = new Property(1, String.class, "content", false, "CONTENT");
         public final static Property Type = new Property(2, String.class, "type", false, "TYPE");
         public final static Property UserId = new Property(3, String.class, "userId", false, "USER_ID");
+        public final static Property CreateTime = new Property(4, String.class, "createTime", false, "CREATE_TIME");
     };
 
 
@@ -45,7 +46,8 @@ public class SearchDlLogDao extends AbstractDao<SearchDlLog, String> {
                 "'ID' TEXT PRIMARY KEY NOT NULL ," + // 0: id
                 "'CONTENT' TEXT," + // 1: content
                 "'TYPE' TEXT," + // 2: type
-                "'USER_ID' TEXT);"); // 3: userId
+                "'USER_ID' TEXT," + // 3: userId
+                "'CREATE_TIME' TEXT);"); // 4: createTime
     }
 
     /** Drops the underlying database table. */
@@ -78,6 +80,11 @@ public class SearchDlLogDao extends AbstractDao<SearchDlLog, String> {
         if (userId != null) {
             stmt.bindString(4, userId);
         }
+ 
+        String createTime = entity.getCreateTime();
+        if (createTime != null) {
+            stmt.bindString(5, createTime);
+        }
     }
 
     /** @inheritdoc */
@@ -93,7 +100,8 @@ public class SearchDlLogDao extends AbstractDao<SearchDlLog, String> {
             cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // content
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // type
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // userId
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // userId
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // createTime
         );
         return entity;
     }
@@ -105,6 +113,7 @@ public class SearchDlLogDao extends AbstractDao<SearchDlLog, String> {
         entity.setContent(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setType(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setUserId(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setCreateTime(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
      }
     
     /** @inheritdoc */

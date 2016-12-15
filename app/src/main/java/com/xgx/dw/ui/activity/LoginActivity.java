@@ -34,6 +34,7 @@ import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.bean.UserAllInfo;
+import com.xgx.dw.dao.PricingDaoHelper;
 import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
 import com.xgx.dw.dao.StoreBeanDaoHelper;
 import com.xgx.dw.dao.TransformerBeanDaoHelper;
@@ -252,7 +253,7 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
         Logger.e(getContext(), "扫描结果：" + decryptString);
         UserAllInfo userAllInfo = new Gson().fromJson(decryptString, UserAllInfo.class);
         if (userAllInfo != null) {
-            if (userAllInfo.getUser().getEcodeType().equals("3")) {
+            if (userAllInfo.getUser().getEcodeType().equals("3") || userAllInfo.getUser().getEcodeType().equals("6")) {
                 //保存用户 方便登录
                 IUserPresenter presenter = new UserPresenterImpl();
                 presenter.saveOrUpdateUser(userAllInfo.getUser());
@@ -265,6 +266,13 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                 if (userAllInfo.getSpotBeans().getId() != null) {
                     SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());
                 }
+                if (userAllInfo.getSpotBeans().getId() != null) {
+                    SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());
+                }
+                if (userAllInfo.getPricings().getId() != null) {
+                    PricingDaoHelper.getInstance().addData(userAllInfo.getPricings());
+                }
+
                 UserBean temp = UserBeanDaoHelper.getInstance().queryByTransFormUserId(userAllInfo.getUser().getUserId());
                 //自动登录 比较 ime账号
                 if (temp.getIme().contains(MyUtils.getuniqueId(getContext()))) {

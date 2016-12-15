@@ -1,39 +1,46 @@
+
+
+
+
+
+
+
 package com.xgx.dw.ui.activity;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.widget.SwitchCompat;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+        import android.content.Intent;
+        import android.os.Bundle;
+        import android.support.v7.widget.SwitchCompat;
+        import android.text.Editable;
+        import android.text.TextUtils;
+        import android.text.TextWatcher;
+        import android.widget.ArrayAdapter;
+        import android.widget.TextView;
 
-import com.rengwuxian.materialedittext.MaterialEditText;
-import com.xgx.dw.PricingBean;
-import com.xgx.dw.R;
-import com.xgx.dw.StoreBean;
-import com.xgx.dw.UserBean;
-import com.xgx.dw.app.G;
-import com.xgx.dw.base.BaseAppCompatActivity;
-import com.xgx.dw.bean.LoginInformation;
-import com.xgx.dw.bean.UserAllInfo;
-import com.xgx.dw.dao.PricingDaoHelper;
-import com.xgx.dw.dao.StoreBeanDaoHelper;
-import com.xgx.dw.dao.UserBeanDaoHelper;
-import com.xgx.dw.utils.AES;
-import com.xgx.dw.utils.CommonUtils;
-import com.xgx.dw.utils.Logger;
-import com.xgx.dw.utils.NumberToCn;
+        import com.rengwuxian.materialedittext.MaterialEditText;
+        import com.xgx.dw.PricingBean;
+        import com.xgx.dw.R;
+        import com.xgx.dw.StoreBean;
+        import com.xgx.dw.UserBean;
+        import com.xgx.dw.app.G;
+        import com.xgx.dw.base.BaseAppCompatActivity;
+        import com.xgx.dw.bean.LoginInformation;
+        import com.xgx.dw.bean.UserAllInfo;
+        import com.xgx.dw.dao.PricingDaoHelper;
+        import com.xgx.dw.dao.StoreBeanDaoHelper;
+        import com.xgx.dw.dao.UserBeanDaoHelper;
+        import com.xgx.dw.utils.AES;
+        import com.xgx.dw.utils.CommonUtils;
+        import com.xgx.dw.utils.Logger;
+        import com.xgx.dw.utils.NumberToCn;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.UUID;
+        import java.math.BigDecimal;
+        import java.util.List;
+        import java.util.UUID;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import fr.ganfra.materialspinner.MaterialSpinner;
+        import butterknife.Bind;
+        import butterknife.ButterKnife;
+        import butterknife.OnClick;
+        import fr.ganfra.materialspinner.MaterialSpinner;
 
 /**
  * Created by Administrator on 2016/10/15 0015.
@@ -180,11 +187,14 @@ public class BuySpotActivity extends BaseAppCompatActivity {
             //这里要注意的是 需要带入 二维码传过来的ime
             bean.setIme(userAllInfo.getUser().getIme());
             PricingDaoHelper.getInstance().addData(bean);
-            finish();
-            //比对 电压 电价，电流  是否一致
-            //查询本地的userbean
-            startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 5).putExtra("id", bean.getUserPrimaryid()));
 
+            int type = 5;
+            if (userAllInfo.getUser().getEcodeType().equals("6")) {
+                type = 6;
+            }
+            startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", type).putExtra("id", bean.getUserPrimaryid()));
+
+            finish();
         } catch (Exception e) {
             Logger.e(e.getMessage());
         }

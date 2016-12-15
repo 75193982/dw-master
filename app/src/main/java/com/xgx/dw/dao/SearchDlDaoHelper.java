@@ -3,6 +3,7 @@ package com.xgx.dw.dao;
 import android.text.TextUtils;
 
 import com.xgx.dw.PricingBean;
+import com.xgx.dw.PricingBeanDao;
 import com.xgx.dw.SearchDlLog;
 import com.xgx.dw.SearchDlLogDao;
 import com.xgx.dw.THDaoHelperInterface;
@@ -94,6 +95,8 @@ public class SearchDlDaoHelper implements THDaoHelperInterface {
     public List<SearchDlLog> queryByUserId(String type, String userId) {
         QueryBuilder localQueryBuilder = this.userBeanDao.queryBuilder();
         localQueryBuilder.where(SearchDlLogDao.Properties.Type.eq(type), SearchDlLogDao.Properties.UserId.eq(userId));
+        localQueryBuilder.orderDesc(SearchDlLogDao.Properties.CreateTime);
+
         return localQueryBuilder.list();
     }
 

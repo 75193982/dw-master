@@ -13,6 +13,7 @@ public class SearchDlLog implements Serializable {
     private String content;
     private String type;
     private String userId;
+    private String createTime;
 
     public SearchDlLog() {
     }
@@ -21,11 +22,12 @@ public class SearchDlLog implements Serializable {
         this.id = id;
     }
 
-    public SearchDlLog(String id, String content, String type, String userId) {
+    public SearchDlLog(String id, String content, String type, String userId, String createTime) {
         this.id = id;
         this.content = content;
         this.type = type;
         this.userId = userId;
+        this.createTime = createTime;
     }
 
     public String getId() {
@@ -58,6 +60,14 @@ public class SearchDlLog implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
 }

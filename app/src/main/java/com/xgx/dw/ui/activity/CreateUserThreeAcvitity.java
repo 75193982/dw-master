@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.xgx.dw.PricingBean;
 import com.xgx.dw.R;
 import com.xgx.dw.SpotPricingBean;
 import com.xgx.dw.StoreBean;
@@ -24,6 +25,8 @@ import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.bean.LoginInformation;
+import com.xgx.dw.bean.UserAllInfo;
+import com.xgx.dw.dao.PricingDaoHelper;
 import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
 import com.xgx.dw.dao.StoreBeanDaoHelper;
 import com.xgx.dw.dao.TransformerBeanDaoHelper;
@@ -32,9 +35,11 @@ import com.xgx.dw.presenter.impl.UserPresenterImpl;
 import com.xgx.dw.presenter.interfaces.IUserPresenter;
 import com.xgx.dw.ui.view.interfaces.IUserView;
 import com.xgx.dw.utils.Logger;
+import com.xgx.dw.utils.MyUtils;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -305,8 +310,34 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
         if (paramBoolean) {
             showToast("保存成功");
             if (isSave) {
-                startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 3).putExtra("id", id));
+                //进入购电界面
+
+                UserAllInfo userAllInfo = new UserAllInfo();
+                UserBean bean = new UserBean();
+                StoreBean storebean = new StoreBean();
+                TransformerBean transbean = new TransformerBean();
+                List<PricingBean> pricings = new ArrayList<>();
+                SpotPricingBean spotPricingBeans = new SpotPricingBean();
+                bean = UserBeanDaoHelper.getInstance().getDataById(id);
+                bean.setIme(MyUtils.getuniqueId(this));
+                storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
+                transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
+                try {
+                    spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
+                } catch (Exception e) {
+                    Logger.e(e.getMessage());
+                }
+                userAllInfo.setSpotBeans(spotPricingBeans);
+                userAllInfo.setStoreBean(storebean);
+                userAllInfo.setTransformerBean(transbean);
+                pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getId());
+                userAllInfo.setPricingSize(pricings.size());
+                bean.setEcodeType(6 + "");
+                userAllInfo.setUser(bean);
+                startActivity(new Intent(getContext(), BuySpotActivity.class).putExtra("userAllInfo", userAllInfo));
+
             }
+
             finish();
         }
     }

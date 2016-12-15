@@ -25,6 +25,7 @@ import com.xgx.dw.ui.activity.MainActivity;
 import com.xgx.dw.ui.activity.SpecialOperationDetailActivity;
 import com.xgx.dw.ui.custom.TitleBar;
 import com.xgx.dw.ui.fragment.dummy.DummyContent;
+import com.xgx.dw.utils.MyUtils;
 
 import java.util.ArrayList;
 
@@ -90,6 +91,7 @@ public class SpecialOperationFragment extends BaseFragment implements MyOnItemCl
                     // localArrayList.add(new DummyContent("6", "电表地址", "电表地址", this.drawableInt[6]));
                     localArrayList.add(new DummyContent(5, "电价录入", "电价录入", this.drawableInt[6]));
                     localArrayList.add(new DummyContent(6, "电费录入", "电费录入", this.drawableInt[6]));
+                    localArrayList.add(new DummyContent(7, "定值设置", "定值设置", this.drawableInt[6]));
                 }
             } else {
                 localArrayList.add(new DummyContent(0, "合闸", "合闸", this.drawableInt[0]));
@@ -100,6 +102,7 @@ public class SpecialOperationFragment extends BaseFragment implements MyOnItemCl
                 // localArrayList.add(new DummyContent("6", "电表地址", "电表地址", this.drawableInt[6]));
                 localArrayList.add(new DummyContent(5, "电价录入", "电价录入", this.drawableInt[6]));
                 localArrayList.add(new DummyContent(6, "电费录入", "电费录入", this.drawableInt[6]));
+                localArrayList.add(new DummyContent(7, "定值设置", "定值设置", this.drawableInt[6]));
             }
 
 
@@ -120,7 +123,12 @@ public class SpecialOperationFragment extends BaseFragment implements MyOnItemCl
     }
 
     public void onrRecyclerViewItemClick(int paramInt) {
-        startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", paramInt));
+        if (paramInt != 7) {
+            startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", paramInt));
+
+        } else {
+            showToast("敬请期待");
+        }
         // startActivity(new Intent(getActivity(), .class));
     }
 

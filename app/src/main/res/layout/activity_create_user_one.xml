@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/iconfont_must"
         android:hint="手机ime码"
-        android:inputType="number"
+        android:inputType="numberPassword"
         android:textSize="@dimen/text_third"
         app:met_floatingLabel="highlight"
         app:met_floatingLabelText="手机ime码"

@@ -113,5 +113,6 @@ public class MyDaoGenerator {
         userBean.addStringProperty("content");
         userBean.addStringProperty("type");
         userBean.addStringProperty("userId");
+        userBean.addStringProperty("createTime");
     }
 }
