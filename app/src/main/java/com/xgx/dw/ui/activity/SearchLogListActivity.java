@@ -48,7 +48,7 @@ public class SearchLogListActivity extends BaseAppCompatActivity {
         if (type.equals("1")) {
             setToolbarTitle("查表记录");
         } else if (type.equals("2")) {
-            setToolbarTitle("倍率记录");
+            setToolbarTitle("功率记录");
         }
         beans = new ArrayList();
         recyclerView.setHasFixedSize(true);

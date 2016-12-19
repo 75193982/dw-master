@@ -227,4 +227,5 @@ public class PricingBean implements Serializable {
         this.ime = ime;
     }
 
+
 }
