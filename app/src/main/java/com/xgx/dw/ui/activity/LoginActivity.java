@@ -247,44 +247,46 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
         String decryptString = "";
         try {
             decryptString = result;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Logger.e(getContext(), "扫描结果：" + decryptString);
-        UserAllInfo userAllInfo = new Gson().fromJson(decryptString, UserAllInfo.class);
-        if (userAllInfo != null) {
-            if (userAllInfo.getUser().getEcodeType().equals("3") || userAllInfo.getUser().getEcodeType().equals("6")) {
-                //保存用户 方便登录
-                IUserPresenter presenter = new UserPresenterImpl();
-                presenter.saveOrUpdateUser(userAllInfo.getUser());
-                if (userAllInfo.getStoreBean().getId() != null) {
-                    StoreBeanDaoHelper.getInstance().addData(userAllInfo.getStoreBean());
-                }
-                if (userAllInfo.getTransformerBean().getId() != null) {
-                    TransformerBeanDaoHelper.getInstance().addData(userAllInfo.getTransformerBean());
-                }
-                if (userAllInfo.getSpotBeans().getId() != null) {
-                    SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());
-                }
-                if (userAllInfo.getSpotBeans().getId() != null) {
-                    SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());
-                }
-                if (userAllInfo.getPricings().getId() != null) {
-                    PricingDaoHelper.getInstance().addData(userAllInfo.getPricings());
-                }
 
-                UserBean temp = UserBeanDaoHelper.getInstance().queryByTransFormUserId(userAllInfo.getUser().getUserId());
-                //自动登录 比较 ime账号
-                if (temp.getIme().contains(MyUtils.getuniqueId(getContext()))) {
-                    //则登录成功 当前账号为 bean.getUserName
-                    loginCallback(temp);
+            Logger.e(getContext(), "扫描结果：" + decryptString);
+            UserAllInfo userAllInfo = new Gson().fromJson(decryptString, UserAllInfo.class);
+            if (userAllInfo != null) {
+                if (userAllInfo.getUser().getEcodeType().equals("3") || userAllInfo.getUser().getEcodeType().equals("6")) {
+                    //保存用户 方便登录
+                    IUserPresenter presenter = new UserPresenterImpl();
+                    presenter.saveOrUpdateUser(userAllInfo.getUser());
+                    if (userAllInfo.getStoreBean().getId() != null) {
+                        StoreBeanDaoHelper.getInstance().addData(userAllInfo.getStoreBean());
+                    }
+                    if (userAllInfo.getTransformerBean().getId() != null) {
+                        TransformerBeanDaoHelper.getInstance().addData(userAllInfo.getTransformerBean());
+                    }
+                    if (userAllInfo.getSpotBeans().getId() != null) {
+                        SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());
+                    }
+                    if (userAllInfo.getSpotBeans().getId() != null) {
+                        SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());
+                    }
+                    if (userAllInfo.getPricings().getId() != null) {
+                        PricingDaoHelper.getInstance().addData(userAllInfo.getPricings());
+                    }
+
+                    UserBean temp = UserBeanDaoHelper.getInstance().queryByTransFormUserId(userAllInfo.getUser().getUserId());
+                    //自动登录 比较 ime账号
+                    if (temp.getIme().contains(MyUtils.getuniqueId(getContext()))) {
+                        //则登录成功 当前账号为 bean.getUserName
+                        loginCallback(temp);
+                    } else {
+                        showToast("该账户无法在您手机登录，请联系管理员");
+                    }
                 } else {
-                    showToast("该账户无法在您手机登录，请联系管理员");
+                    showToast("二维码信息错误，请选择正确二维码");
                 }
             } else {
                 showToast("二维码信息错误，请选择正确二维码");
             }
-        } else {
+        } catch (Exception e) {
+            e.printStackTrace();
             showToast("二维码信息错误，请选择正确二维码");
         }
     }

@@ -319,7 +319,6 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
                 List<PricingBean> pricings = new ArrayList<>();
                 SpotPricingBean spotPricingBeans = new SpotPricingBean();
                 bean = UserBeanDaoHelper.getInstance().getDataById(id);
-                bean.setIme(MyUtils.getuniqueId(this));
                 storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
                 transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
                 try {
