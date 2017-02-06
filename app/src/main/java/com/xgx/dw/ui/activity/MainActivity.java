@@ -115,6 +115,10 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
     private int[] viewId;
     private String currentUserType;
 
+    public FloatingActionButton getFab() {
+        return fab;
+    }
+
     public void checkVersionCallBack(UploadResponse paramUpdateVersionResult) {
         try {
             Intent localIntent = new Intent(this, UploadDialogActivity.class);
@@ -224,12 +228,28 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
 
             public void onPageSelected(int paramAnonymousInt) {
                 if (MainActivity.this.mListText.get(paramAnonymousInt).getText().toString().equals("特殊操作")) {
-                    fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_bluetooth_searching_black_24dp));
+                    final Setting setting = new Setting(getContext());
+                    boolean isWifi = setting.loadBoolean("isWifi");
+                    if (isWifi) {
+                        fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_signal_wifi_4_bar_black_24dp));
+                    } else {
+                        fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_bluetooth_searching_black_24dp));
+                    }
+
                     fab.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View view) {
                             if (MainActivity.this.mOnFABClickListener != null) {
                                 MainActivity.this.mOnFABClickListener.OnFABClickListener(view);
                             }
+                        }
+                    });
+                    fab.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            if (MainActivity.this.mOnFABClickListener != null) {
+                                MainActivity.this.mOnFABClickListener.OnFABLongClickListener(v);
+                            }
+                            return false;
                         }
                     });
                     ViewCompat.animate(fab).scaleX(1.0F).scaleY(1.0F).setInterpolator(new LinearOutSlowInInterpolator()).setListener(new ViewPropertyAnimatorListenerAdapter() {
@@ -358,9 +378,10 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
         }
     }
 
-    public static abstract interface OnFABClickListener {
-        public abstract void OnFABClickListener(View paramView);
+    public interface OnFABClickListener {
+        void OnFABClickListener(View paramView);
 
+        void OnFABLongClickListener(View paramView);
     }
 
     private static final int REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY = 666;

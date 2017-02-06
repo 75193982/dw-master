@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -170,8 +171,8 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
                     }
                 }
                 userAllInfo.setSpotBeans(spotPricingBeans);
-                userAllInfo.setStoreBean(storebean);
-                userAllInfo.setTransformerBean(transbean);
+                //  userAllInfo.setStoreBean(storebean);
+                // userAllInfo.setTransformerBean(transbean);
                 pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getId());
                 if (pricings.size() > 0) {
                     userAllInfo.setPricings(pricings.get(0));

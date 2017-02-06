@@ -33,11 +33,11 @@ public class UserInfoAcvitity extends BaseAppCompatActivity implements IUserView
     @Bind(R.id.imeTv)
     TextView imeTv;
     @Bind(R.id.store_spinner)
-    MaterialSpinner storeSpinner;
+    TextView storeSpinner;
     @Bind(R.id.store_layout)
     LinearLayout storeLayout;
     @Bind(R.id.transformer_spinner)
-    MaterialSpinner transformerSpinner;
+    TextView transformerSpinner;
     @Bind(R.id.transformer_layout)
     LinearLayout transformerLayout;
     @Bind(R.id.user_id)
@@ -64,7 +64,7 @@ public class UserInfoAcvitity extends BaseAppCompatActivity implements IUserView
 
 
     public void initContentView() {
-        baseSetContentView(R.layout.activity_create_user_three);
+        baseSetContentView(R.layout.activity_user_info);
     }
 
     public void initPresenter() {
@@ -78,7 +78,6 @@ public class UserInfoAcvitity extends BaseAppCompatActivity implements IUserView
         Setting setting = new Setting(this);
         currentStoreId = setting.loadString(G.currentStoreId);
         currentStoreName = setting.loadString(G.currentStoreName);
-        initSpinnerData();
         initEditInfo();
     }
 
@@ -95,36 +94,28 @@ public class UserInfoAcvitity extends BaseAppCompatActivity implements IUserView
             currentRatio.setText(checkText(bean.getCurrentRatio()));
             voltageRatio.setText(checkText(bean.getVoltageRatio()));
             imeTv.setText(checkText(bean.getIme()));
-            try {
-                for (int i = 0; i < storebeans.size(); i++) {
-                    if (bean.getStoreId().equals(((StoreBean) storebeans.get(i)).getId())) {
-                        storeSpinner.setSelection(i + 1);
-                        storeSpinner.setEnabled(false);
-                    }
-                }
-            } catch (Exception e) {
-
-            }
-            try {
-                transformerBean = TransformerBeanDaoHelper.getInstance().testQueryBy(bean.getStoreId());
-                if ((transformerBean != null) && (transformerBean.size() > 0)) {
-                    String[] arrayOfString = new String[transformerBean.size()];
-                    for (int j = 0; j < transformerBean.size(); j++) {
-                        arrayOfString[j] = ((TransformerBean) transformerBean.get(j)).getName();
-                    }
-                    ArrayAdapter localArrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, arrayOfString);
-                    localArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    transformerSpinner.setAdapter(localArrayAdapter);
-                }
-                for (int i = 0; i < transformerBean.size(); i++) {
-                    if (bean.getTransformerId().equals(((TransformerBean) transformerBean.get(i)).getId())) {
-                        transformerSpinner.setSelection(i + 1);
-                        transformerSpinner.setEnabled(false);
-                    }
-                }
-            } catch (Exception e) {
-
-            }
+            storeSpinner.setText(bean.getStoreName());
+            transformerSpinner.setText(bean.getTransformerName());
+//            try {
+//                transformerBean = TransformerBeanDaoHelper.getInstance().testQueryBy(bean.getStoreId());
+//                if ((transformerBean != null) && (transformerBean.size() > 0)) {
+//                    String[] arrayOfString = new String[transformerBean.size()];
+//                    for (int j = 0; j < transformerBean.size(); j++) {
+//                        arrayOfString[j] = ((TransformerBean) transformerBean.get(j)).getName();
+//                    }
+//                    ArrayAdapter localArrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, arrayOfString);
+//                    localArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                    transformerSpinner.setAdapter(localArrayAdapter);
+//                }
+//                for (int i = 0; i < transformerBean.size(); i++) {
+//                    if (bean.getTransformerId().equals(((TransformerBean) transformerBean.get(i)).getId())) {
+//                        transformerSpinner.setSelection(i + 1);
+//                        transformerSpinner.setEnabled(false);
+//                    }
+//                }
+//            } catch (Exception e) {
+//
+//            }
         }
         storeSpinner.setEnabled(false);
         transformerSpinner.setEnabled(false);
@@ -136,23 +127,6 @@ public class UserInfoAcvitity extends BaseAppCompatActivity implements IUserView
         phone.setEnabled(false);
         actionSave.setVisibility(View.GONE);
     }
-
-
-    private void initSpinnerData() {
-        //如果是10级用户 则直接拉去当前用户的营业厅，如果是11用户 则直接显示当前用户的营业厅和台区
-        storebeans = StoreBeanDaoHelper.getInstance().getAllData();
-        if ((this.storebeans != null) && (this.storebeans.size() > 0)) {
-            String[] arrayOfString = new String[this.storebeans.size()];
-            for (int j = 0; j < this.storebeans.size(); j++) {
-                arrayOfString[j] = ((StoreBean) this.storebeans.get(j)).getName();
-            }
-            ArrayAdapter localArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, arrayOfString);
-            localArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            this.storeSpinner.setAdapter(localArrayAdapter);
-        }
-
-    }
-
 
     public void saveTransformer(boolean paramBoolean, String id) {
         hideProgress();

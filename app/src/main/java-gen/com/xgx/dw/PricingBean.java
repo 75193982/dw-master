@@ -157,7 +157,7 @@ public class PricingBean implements Serializable {
     }
 
     public String getStoreName() {
-        return storeName;
+        return storeName == null ? "" : storeName;
     }
 
     public void setStoreName(String storeName) {
@@ -165,7 +165,7 @@ public class PricingBean implements Serializable {
     }
 
     public String getStoreAddress() {
-        return storeAddress;
+        return storeAddress == null ? "" : storeAddress;
     }
 
     public void setStoreAddress(String storeAddress) {

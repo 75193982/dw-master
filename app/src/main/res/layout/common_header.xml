@@ -1,10 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:focusable="true" android:baselineAligned="false" style="@style/TitleBar"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:gravity="center|left" android:orientation="horizontal" android:id="@id/header_layout_leftview_container" android:paddingLeft="10.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_alignParentLeft="true" />
-    <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/header_title" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_centerHorizontal="true" android:layout_centerVertical="true">
-        <TextView android:id="@id/header_htv_subtitle" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/TitleBarText" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/TitleBar"
+    android:baselineAligned="false"
+    android:focusable="true">
+
+    <LinearLayout
+        android:id="@id/header_layout_leftview_container"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:gravity="center|left"
+        android:orientation="horizontal"
+        android:paddingLeft="10.0dip" />
+
+    <LinearLayout
+        android:id="@id/header_title"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@id/header_htv_subtitle"
+            style="@style/TitleBarText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
-    <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/header_layout_middleview_container" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_centerHorizontal="true" android:layout_centerVertical="true" />
-    <LinearLayout android:gravity="center|right" android:orientation="horizontal" android:id="@id/header_layout_rightview_container" android:paddingRight="10.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_alignParentRight="true" />
+
+    <LinearLayout
+        android:id="@id/header_layout_middleview_container"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@id/header_layout_rightview_container"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:gravity="center|right"
+        android:orientation="horizontal"
+        android:paddingRight="10.0dip" />
 </RelativeLayout>

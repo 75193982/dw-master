@@ -15,7 +15,12 @@
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.FLASHLIGHT"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <!-- 使用相机 -->
     <application
         android:name=".app.BaseApplication"
@@ -107,6 +112,9 @@
             android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".ui.activity.BuyUserDataActivity"
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity
+            android:name=".wifi.WifiActivity"
             android:windowSoftInputMode="stateHidden"></activity>
     </application>
 

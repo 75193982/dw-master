@@ -14,7 +14,7 @@ public class AboutActivity extends BaseAppCompatActivity {
 
     @Override
     public void initView() {
-
+        setToolbarTitle("服务中心");
     }
 
     @Override

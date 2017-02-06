@@ -1,7 +1,9 @@
 package com.xgx.dw.ui.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.GridLayoutManager.SpanSizeLookup;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 
 import butterknife.Bind;
 
+import com.squareup.haha.perflib.Main;
 import com.xgx.dw.R;
 import com.xgx.dw.adapter.DataSearchItemAdapter;
 import com.xgx.dw.adapter.DataSearchItemAdapter.MyOnItemClickListner;
@@ -26,6 +29,7 @@ import com.xgx.dw.ui.activity.SpecialOperationDetailActivity;
 import com.xgx.dw.ui.custom.TitleBar;
 import com.xgx.dw.ui.fragment.dummy.DummyContent;
 import com.xgx.dw.utils.MyUtils;
+import com.xgx.dw.wifi.WifiActivity;
 
 import java.util.ArrayList;
 
@@ -134,8 +138,61 @@ public class SpecialOperationFragment extends BaseFragment implements MyOnItemCl
 
     @Override
     public void OnFABClickListener(View paramView) {
-        Intent intent = new Intent(getBaseActivity(), DeviceListActivity.class);
-        startActivity(intent);
+        final Setting setting = new Setting(getContext());
+        boolean isWifi = setting.loadBoolean("isWifi");
+        if (isWifi) {
+            Intent intent = new Intent(getBaseActivity(), WifiActivity.class);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(getBaseActivity(), DeviceListActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void OnFABLongClickListener(View paramView) {
+        final Setting setting = new Setting(getContext());
+        boolean isWifi = setting.loadBoolean("isWifi");
+        if (isWifi) {
+            AlertDialog.Builder alertdialog = new AlertDialog.Builder(getContext());
+            alertdialog.setTitle("请注意");
+            alertdialog.setMessage("您是否要切换成蓝牙连接模式");
+            alertdialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    ((MainActivity) getActivity()).getFab().setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_bluetooth_searching_black_24dp));
+                    setting.saveBoolean("isWifi", false);
+                }
+            });
+            alertdialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            alertdialog.show();
+        } else {
+            AlertDialog.Builder alertdialog = new AlertDialog.Builder(getContext());
+            alertdialog.setTitle("请注意");
+            alertdialog.setMessage("您是否要切换成wifi连接模式");
+            alertdialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    ((MainActivity) getActivity()).getFab().setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_signal_wifi_4_bar_black_24dp));
+                    setting.saveBoolean("isWifi", true);
+                }
+            });
+            alertdialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            alertdialog.show();
+        }
+
     }
 }
 

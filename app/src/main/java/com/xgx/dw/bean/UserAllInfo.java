@@ -30,7 +30,7 @@ public class UserAllInfo implements Serializable {
     }
 
     public StoreBean getStoreBean() {
-        return storeBean;
+        return storeBean == null ? new StoreBean() : storeBean;
     }
 
     public void setStoreBean(StoreBean storeBean) {
@@ -38,7 +38,8 @@ public class UserAllInfo implements Serializable {
     }
 
     public TransformerBean getTransformerBean() {
-        return transformerBean;
+        return transformerBean == null ? new TransformerBean() : transformerBean;
+
     }
 
     public void setTransformerBean(TransformerBean transformerBean) {
