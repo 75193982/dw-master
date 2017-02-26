@@ -1,75 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center"  >    
-	
-	<TableLayout android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-   		android:stretchColumns="*">
-   		 <TableRow>
-	    	<TextView 
-	    	    android:text="热点名" 
-	    	    android:id="@+id/AP_view"		  		  
-			  	android:textSize="15px"		  
-			  	android:layout_column="1"		
-			  	android:layout_width="wrap_content"
-			  	android:layout_marginLeft="30dip"
-			  	android:textColor="#FFFFFFFF" />
-			<EditText 
-			    android:id="@+id/AP"
-		  		android:gravity="left"
-		  		android:text="mywifi"
-		  		android:layout_marginRight="30dip" />	
-		</TableRow>
-	    
-	   <TableRow>
-	    	<TextView 
-	    	    android:text="密码" 
-	    	    android:textColor="#FFFFFFFF" 
-	    	    android:id="@+id/passwd_view"		  		  
-			  	android:textSize="15px"		  
-			  	android:layout_column="1"		
-			  	android:layout_width="wrap_content"
-			  	android:layout_marginLeft="30dip" />
-			<EditText 
-			    android:id="@+id/passwd"
-		  		android:gravity="left"
-		  		android:text=""
-		  		android:layout_marginRight="30dip" />	
-		</TableRow>
-		
-	    <TableRow>
-	    	<TextView 
-	    	    android:text="远程IP" 
-	    	    android:textColor="#FFFFFFFF" 
-	    	    android:id="@+id/remoteIP_view"		  		  
-			  	android:textSize="15px"		  
-			  	android:layout_column="1"		
-			  	android:layout_width="wrap_content"
-			  	android:layout_marginLeft="30dip" />
-			<EditText 
-			    android:id="@+id/remoteIP"
-		  		android:gravity="left"
-		  		android:text="192.168.0.10"
-		  		android:layout_marginRight="30dip" />	
-		</TableRow>
-		
-		<TableRow>
-			<TextView 
-			    android:text="监听端口" 	
-			    android:textColor="#FFFFFFFF" 	  
-		  		android:textSize="15px"
-		  		android:layout_column="1"
-		  		android:layout_marginLeft="30dip"/>	
-	
-			<EditText 
-			    android:id="@+id/remotePort"
-		  		android:gravity="left"	
-		  		android:text="8080"
-		  		android:layout_marginRight="30dip" />
-		</TableRow>
-		
-	</TableLayout>	
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*">
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/AP_view"
+                android:layout_width="wrap_content"
+                android:layout_column="1"
+                android:layout_marginLeft="30dip"
+                android:text="热点名"
+                android:textSize="15px" />
+
+            <EditText
+                android:id="@+id/AP"
+                android:layout_marginRight="30dip"
+                android:gravity="left"
+                android:text="HC-22-5ecf7f89c1e9" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/passwd_view"
+                android:layout_width="wrap_content"
+                android:layout_column="1"
+                android:layout_marginLeft="30dip"
+                android:text="密码"
+                android:textSize="15px" />
+
+            <EditText
+                android:id="@+id/passwd"
+                android:layout_marginRight="30dip"
+                android:gravity="left"
+                android:text="" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/remoteIP_view"
+                android:layout_width="wrap_content"
+                android:layout_column="1"
+                android:layout_marginLeft="30dip"
+                android:text="远程IP"
+                android:textSize="15px" />
+
+            <EditText
+                android:id="@+id/remoteIP"
+                android:layout_marginRight="30dip"
+                android:gravity="left"
+                android:text="192.168.4.1" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_column="1"
+                android:layout_marginLeft="30dip"
+                android:text="监听端口"
+                android:textSize="15px" />
+
+            <EditText
+                android:id="@+id/remotePort"
+                android:layout_marginRight="30dip"
+                android:gravity="left"
+                android:text="80" />
+        </TableRow>
+
+    </TableLayout>
 </LinearLayout>

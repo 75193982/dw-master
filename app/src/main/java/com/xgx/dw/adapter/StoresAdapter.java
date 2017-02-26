@@ -8,7 +8,7 @@ import com.xgx.dw.StoreBean;
 import java.util.List;
 
 public class StoresAdapter
-        extends BaseQuickAdapter<StoreBean> {
+        extends BaseQuickAdapter<StoreBean, BaseViewHolder> {
     public StoresAdapter(List<StoreBean> paramList) {
         super(R.layout.base_list_item, paramList);
     }

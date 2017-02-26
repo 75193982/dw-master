@@ -13,25 +13,22 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import butterknife.Bind;
-
-import com.squareup.haha.perflib.Main;
 import com.xgx.dw.R;
 import com.xgx.dw.adapter.DataSearchItemAdapter;
 import com.xgx.dw.adapter.DataSearchItemAdapter.MyOnItemClickListner;
-import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseFragment;
 import com.xgx.dw.bean.LoginInformation;
-import com.xgx.dw.ui.activity.DeviceListActivity;
+import com.xgx.dw.ui.activity.DeviceListNewActivity;
 import com.xgx.dw.ui.activity.MainActivity;
 import com.xgx.dw.ui.activity.SpecialOperationDetailActivity;
 import com.xgx.dw.ui.custom.TitleBar;
 import com.xgx.dw.ui.fragment.dummy.DummyContent;
-import com.xgx.dw.utils.MyUtils;
 import com.xgx.dw.wifi.WifiActivity;
 
 import java.util.ArrayList;
+
+import butterknife.Bind;
 
 public class SpecialOperationFragment extends BaseFragment implements MyOnItemClickListner, MainActivity.OnFABClickListener {
     private int[] drawableInt = {R.drawable.home_paylists_big, R.drawable.home_useelesafe_unrule_big, R.drawable.home_set_serviceauthorize, R.drawable.home_elecri_big, R.drawable.home_paylists_big, R.drawable.home_elecri_big, R.drawable.home_analysis};
@@ -144,7 +141,7 @@ public class SpecialOperationFragment extends BaseFragment implements MyOnItemCl
             Intent intent = new Intent(getBaseActivity(), WifiActivity.class);
             startActivity(intent);
         } else {
-            Intent intent = new Intent(getBaseActivity(), DeviceListActivity.class);
+            Intent intent = new Intent(getBaseActivity(), DeviceListNewActivity.class);
             startActivity(intent);
         }
     }

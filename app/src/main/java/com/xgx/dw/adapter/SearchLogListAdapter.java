@@ -11,7 +11,7 @@ import com.xgx.dw.ui.view.interfaces.TextViewExpandableAnimation;
 
 import java.util.List;
 
-public class SearchLogListAdapter extends BaseQuickAdapter<SearchDlLog> {
+public class SearchLogListAdapter extends BaseQuickAdapter<SearchDlLog, BaseViewHolder> {
     public SearchLogListAdapter(List<SearchDlLog> paramList) {
         super(R.layout.searchlog_list_item, paramList);
     }

@@ -62,7 +62,6 @@ public class BlueOperationContact {
         if (!LoginInformation.getInstance().getUser().getType().equals("20")) {
             deviceId = "00 00 FF FF 21";
         } else {
-
             try {
                 StringBuilder sb = new StringBuilder();
                 String meterNum = LoginInformation.getInstance().getUser().getUserId();

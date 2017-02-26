@@ -8,7 +8,7 @@ import com.xgx.dw.TransformerBean;
 import java.util.List;
 
 public class TransformerAdapter
-        extends BaseQuickAdapter<TransformerBean> {
+        extends BaseQuickAdapter<TransformerBean, BaseViewHolder> {
     public TransformerAdapter(List<TransformerBean> paramList) {
         super(R.layout.base_list_item, paramList);
     }

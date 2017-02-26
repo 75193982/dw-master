@@ -19,7 +19,7 @@ import com.xgx.dw.utils.MyUtils;
 
 import java.util.List;
 
-public class SpotListAdapter extends BaseQuickAdapter<PricingBean> {
+public class SpotListAdapter extends BaseQuickAdapter<PricingBean, BaseViewHolder> {
     public SpotListAdapter(List<PricingBean> paramList) {
         super(R.layout.base_list_item, paramList);
     }

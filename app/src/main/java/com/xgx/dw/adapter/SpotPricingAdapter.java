@@ -8,7 +8,7 @@ import com.xgx.dw.SpotPricingBean;
 import java.util.List;
 
 public class SpotPricingAdapter
-        extends BaseQuickAdapter<SpotPricingBean> {
+        extends BaseQuickAdapter<SpotPricingBean, BaseViewHolder> {
     public SpotPricingAdapter(List<SpotPricingBean> paramList) {
         super(R.layout.base_list_item, paramList);
     }

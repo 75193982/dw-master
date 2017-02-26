@@ -8,7 +8,7 @@ import com.xgx.dw.UserBean;
 
 import java.util.List;
 
-public class UserAdapter extends BaseQuickAdapter<UserBean> {
+public class UserAdapter extends BaseQuickAdapter<UserBean, BaseViewHolder> {
     public UserAdapter(List<UserBean> paramList) {
         super(R.layout.base_list_item, paramList);
     }

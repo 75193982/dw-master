@@ -344,7 +344,7 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
 
     public boolean onCreateOptionsMenu(Menu paramMenu) {
         if (bean != null && !TextUtils.isEmpty(bean.getUserId())) {
-            getMenuInflater().inflate(R.menu.menu_erweima, paramMenu);
+            getMenuInflater().inflate(R.menu.menu_erweima1, paramMenu);
         }
         return true;
     }
@@ -359,6 +359,26 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
                 Intent intent = new Intent(getContext(), AdminSpotListActivity.class);
                 intent.putExtra("id", bean.getId());
                 startActivity(intent);
+                break;
+            case R.id.action_buy:
+                UserAllInfo userAllInfo = new UserAllInfo();
+                StoreBean storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
+
+                TransformerBean transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
+                SpotPricingBean spotPricingBeans = null;
+                try {
+                    spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
+                } catch (Exception e) {
+                    Logger.e(e.getMessage());
+                }
+                userAllInfo.setSpotBeans(spotPricingBeans);
+                userAllInfo.setStoreBean(storebean);
+                userAllInfo.setTransformerBean(transbean);
+                List<PricingBean> pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getId());
+                userAllInfo.setPricingSize(pricings.size());
+                bean.setEcodeType(4 + "");
+                userAllInfo.setUser(bean);
+                startActivity(new Intent(getContext(), BuySpotActivity.class).putExtra("userAllInfo", userAllInfo));
                 break;
         }
         return true;

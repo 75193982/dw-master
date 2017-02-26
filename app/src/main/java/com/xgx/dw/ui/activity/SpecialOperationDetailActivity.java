@@ -38,10 +38,15 @@ import com.xgx.dw.utils.AES;
 import com.xgx.dw.utils.CommonUtils;
 import com.xgx.dw.utils.Logger;
 import com.xgx.dw.utils.MyUtils;
+import com.xgx.dw.wifi.WifiActivity;
+import com.xgx.dw.wifi.WifiFunction;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -112,6 +117,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
     public String filename = ""; //用来保存存储的文件名
     BluetoothDevice _device = null;     //蓝牙设备
     BluetoothSocket _socket = null;      //蓝牙通信socket
+    Socket mSocketClient = null;
     boolean _discoveryFinished = false;
     boolean bRun = true;
     boolean bThread = false;
@@ -122,6 +128,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
     private int setp = 0;
     private PricingBean dlbean;
     private boolean isLuru = false;
+    private boolean isWifi = false;
 
 
     @Override
@@ -131,26 +138,19 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
 
     @Override
     public void initView() {
-        BlueOperationContact.reset();
-        if (_bluetooth == null) {
-            Toast.makeText(this, "无法打开手机蓝牙，请确认手机是否有蓝牙功能！", Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }
-
-        // 设置设备可以被搜索
-        new Thread() {
-            public void run() {
-                if (_bluetooth.isEnabled() == false) {
-                    _bluetooth.enable();
-                }
-            }
-        }.start();
         getFab().setVisibility(View.VISIBLE);
         getFab().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onConnectButtonClicked(v);
+                Setting setting = new Setting(getContext());
+                boolean isWifi = setting.loadBoolean("isWifi");
+                //根据偏好设置确定是走wifi模块还是蓝牙模块
+                if (isWifi) {
+                    //wifi模块
+                } else {
+                    //蓝牙连接
+                    onConnectButtonClicked(v);
+                }
             }
         });
         mBuffer = new ArrayList<Integer>();
@@ -163,72 +163,36 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         gdlEt.addTextChangedListener(new MyDlTextWather());
         bjEt.addTextChangedListener(new MyDlTextWather());
         tzEt.addTextChangedListener(new MyDlTextWather());
-    }
-
-    private void changStr() {
-        String dl = "";
-        String dy = "";
-        String eddy = "";
-        if (TextUtils.isEmpty(dlblEt.getText().toString())) {
-            dl = "00 00";
-        } else {
-            //先转换成int型 再转成16进制
-            dl = toHexString(dlblEt.getText().toString()).toUpperCase();
-        }
-        if (TextUtils.isEmpty(dyblEt.getText().toString())) {
-            dy = "00 00";
-        } else {
-            dy = toHexString(dyblEt.getText().toString()).toUpperCase();
-        }
-        eddy = "00 10";
-        eddyEt.setText("100");
-        String currentTime = CommonUtils.formatDateTime1(new Date());
-        String temp = String.format(BlueOperationContact.BeiLvLuruSendTemp, dy, dl, eddy, currentTime);
-        OperationStr = String.format(BlueOperationContact.BeiLvLuruSend, dy, dl, eddy, currentTime, MyUtils.getJyCode(temp));
-        sendTv.setText(OperationStr);
-
-    }
-
-    private String toHexString(String tempStr) {
-        String dlbl = tempStr;
-        try {
-            int bl = Integer.valueOf(dlbl);
-            dlbl = Integer.toHexString(bl);
-            //自动补全4位
-            if (dlbl.length() == 0) {
-                dlbl = "00 00";
-            } else if (dlbl.length() == 1) {
-                dlbl = "0" + dlbl + " 00";
-            } else if (dlbl.length() == 2) {
-                dlbl = dlbl + " 00";
-            } else if (dlbl.length() == 3) {
-                dlbl = dlbl.substring(1, 3) + " 0" + dlbl.substring(0, 1);
-            } else if (dlbl.length() == 4) {
-                dlbl = dlbl.substring(2, 4) + " " + dlbl.substring(0, 2);
-            } else if (dlbl.length() > 4) {
-                dlbl = "00 00";
-            }
-        } catch (Exception e) {
-
-        }
-        return dlbl;
+        //查询是否有配对成功的设备，如果配对成功则自动连接
+        title = getIntent().getIntExtra("type", -1);
+        setDatas();
     }
 
     @Override
     public void initPresenter() {
-        //查询是否有配对成功的设备，如果配对成功则自动连接
+        Setting setting = new Setting(getContext());
+        isWifi = setting.loadBoolean("isWifi");
+        //根据偏好设置确定是走wifi模块还是蓝牙模块
+        if (isWifi) {
+            //wifi模块
+            changeToWifi();
+        } else {
+            //蓝牙连接
+            changeToBle();
+        }
 
-        title = getIntent().getIntExtra("type", -1);
+    }
+
+    private void setDatas() {
+        BlueOperationContact.reset();
         String currentTime = CommonUtils.formatDateTime1(new Date());
         String temp = "";
         switch (title) {
             case 0:
                 setToolbarTitle("合闸");
-
                 temp = String.format(BlueOperationContact.HeZaSendTemp, currentTime);
                 OperationStr = String.format(BlueOperationContact.HeZaSend, currentTime, MyUtils.getJyCode(temp));
                 // OperationStr = "68 8A 00 8A 00 68 6A 00 00 FF FF 21 05 E0 01 01 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 23 12 17 04 05 C8 16";
-
                 break;
             case 1:
                 setToolbarTitle("分闸");
@@ -304,11 +268,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         btnTv.setText(getToolbarTitle());
         resultTitle.setText(getToolbarTitle() + "结果");
         sendTitle.setText(getToolbarTitle() + "发送参数");
-        if (!TextUtils.isEmpty(BaseApplication.getSetting().loadString(BaseApplication.getSetting().loadString(G.currentUsername) + "_bleAddress"))) {
-            showProgress("连接设备中");
-            connect(BaseApplication.getSetting().loadString(BaseApplication.getSetting().loadString(G.currentUsername) + "_bleAddress"));
-            hideProgress();
-        }
+
         UserBean bean = LoginInformation.getInstance().getUser();
         if (title != 66) {
             sendTv.setText(OperationStr);
@@ -317,6 +277,91 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             sendTv.setVisibility(View.VISIBLE);
         }
     }
+
+    private WifiFunction mwififunction;
+
+    private void changeToWifi() {
+
+        mwififunction = new WifiFunction(this);
+        String apstr = "HC-22-5ecf7f89c1e9";
+        String passwdstr = "";
+        mwififunction.addNetWork(mwififunction.CreateWifiInfo(apstr, "", 1));
+        connectToWifi();
+    }
+
+    private void changeToBle() {
+        BlueOperationContact.reset();
+        if (_bluetooth == null) {
+            Toast.makeText(this, "无法打开手机蓝牙，请确认手机是否有蓝牙功能！", Toast.LENGTH_LONG).show();
+            finish();
+        }
+        // 设置设备可以被搜索
+        new Thread() {
+            public void run() {
+                if (_bluetooth.isEnabled() == false) {
+                    _bluetooth.enable();
+
+                }
+            }
+        }.start();
+
+        if (!TextUtils.isEmpty(BaseApplication.getSetting().loadString(BaseApplication.getSetting().loadString(G.currentUsername) + "_bleAddress"))) {
+            showProgress("连接设备中");
+            connect(BaseApplication.getSetting().loadString(BaseApplication.getSetting().loadString(G.currentUsername) + "_bleAddress"));
+            hideProgress();
+        }
+
+    }
+
+    private void changStr() {
+        String dl = "";
+        String dy = "";
+        String eddy = "";
+        if (TextUtils.isEmpty(dlblEt.getText().toString())) {
+            dl = "00 00";
+        } else {
+            //先转换成int型 再转成16进制
+            dl = toHexString(dlblEt.getText().toString()).toUpperCase();
+        }
+        if (TextUtils.isEmpty(dyblEt.getText().toString())) {
+            dy = "00 00";
+        } else {
+            dy = toHexString(dyblEt.getText().toString()).toUpperCase();
+        }
+        eddy = "00 10";
+        eddyEt.setText("100");
+        String currentTime = CommonUtils.formatDateTime1(new Date());
+        String temp = String.format(BlueOperationContact.BeiLvLuruSendTemp, dy, dl, eddy, currentTime);
+        OperationStr = String.format(BlueOperationContact.BeiLvLuruSend, dy, dl, eddy, currentTime, MyUtils.getJyCode(temp));
+        sendTv.setText(OperationStr);
+
+    }
+
+    private String toHexString(String tempStr) {
+        String dlbl = tempStr;
+        try {
+            int bl = Integer.valueOf(dlbl);
+            dlbl = Integer.toHexString(bl);
+            //自动补全4位
+            if (dlbl.length() == 0) {
+                dlbl = "00 00";
+            } else if (dlbl.length() == 1) {
+                dlbl = "0" + dlbl + " 00";
+            } else if (dlbl.length() == 2) {
+                dlbl = dlbl + " 00";
+            } else if (dlbl.length() == 3) {
+                dlbl = dlbl.substring(1, 3) + " 0" + dlbl.substring(0, 1);
+            } else if (dlbl.length() == 4) {
+                dlbl = dlbl.substring(2, 4) + " " + dlbl.substring(0, 2);
+            } else if (dlbl.length() > 4) {
+                dlbl = "00 00";
+            }
+        } catch (Exception e) {
+
+        }
+        return dlbl;
+    }
+
 
     private void changDjStr() {
         String fdj = "";
@@ -432,6 +477,58 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         }
     }
 
+    private void connectToWifi() {
+
+        // 用服务号得到socket
+        Thread mThreadClient = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if ((mSocketClient != null) && (mSocketClient.isConnected())) {
+                        try {
+                            mSocketClient.close();
+                            mSocketClient = null;
+                        } catch (IOException e) {
+                            //e.printStackTrace();
+                        }
+                    }
+                    int timeout = 2000;
+                    String sIP = "192.168.4.1";
+                    String sPort = "80";
+                    int port = Integer.parseInt(sPort);
+                    mSocketClient = new Socket();    //portnum
+                    SocketAddress isa = new InetSocketAddress(sIP, port);
+                    mSocketClient.connect(isa, timeout);
+                    Message msg = new Message();
+                    msg.what = 1;
+                    mHandler.sendMessage(msg);
+                } catch (Exception e) {
+                    Message msg = new Message();
+                    msg.what = -1;
+                    mHandler.sendMessage(msg);
+                }
+
+                //打开接收线程
+                try {
+                    is = mSocketClient.getInputStream();   //得到WIFI数据输入流
+                } catch (IOException e) {
+                    Message msg = new Message();
+                    msg.what = -2;
+                    mHandler.sendMessage(msg);
+                    return;
+                }
+                if (bThread == false) {
+                    ReadThread.start();
+                    bThread = true;
+                } else {
+                    bRun = true;
+                }
+            }
+        });
+        mThreadClient.start();
+
+    }
+
     private String fmsg;
     private String smsg;
     //接收数据线程
@@ -462,8 +559,18 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            String s = (String) msg.obj;
-            showToast("出现错误：" + s);
+            if (msg.what == 1) {
+                Toast.makeText(SpecialOperationDetailActivity.this, "连接服务器成功", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (msg.what == -1) {
+                Toast.makeText(SpecialOperationDetailActivity.this, "连接服务器失败,请检测网络连接！", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (msg.what == -2) {
+                Toast.makeText(SpecialOperationDetailActivity.this, "断开服务器连接！", Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
     };
     List<Integer> mBuffer;
@@ -513,6 +620,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                                     btnTv.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.White));
                                     btnTv.setTextColor(ContextCompat.getColor(getContext(), R.color.Orange));
                                     btnTv.setText("操作失败，设备没有成功恢复数据");
+                                    isPause = true;
                                 } else {
                                     UserBean bean = LoginInformation.getInstance().getUser();
                                     if (!bean.getType().equals("20")) {
@@ -595,6 +703,14 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             } catch (IOException e) {
             }
         //	_bluetooth.disable();  //关闭蓝牙服务
+        if ((mSocketClient != null) && (mSocketClient.isConnected())) {
+            try {
+                mSocketClient.close();
+                mSocketClient = null;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
@@ -604,10 +720,9 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             Toast.makeText(this, " 打开蓝牙中...", Toast.LENGTH_LONG).show();
             return;
         }
-
         //如未连接设备则打开DeviceListActivity进行设备搜索
         if (_socket == null) {
-            Intent serverIntent = new Intent(this, DeviceListActivity.class); //跳转程序设置
+            Intent serverIntent = new Intent(this, DeviceListNewActivity.class); //跳转程序设置
             startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);  //设置返回宏定义
         } else {
             //关闭连接socket
@@ -743,18 +858,24 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
 
     private void sendData() {
         try {
-            if (_socket == null) {
-                onConnectButtonClicked(null);
-                return;
+            OutputStream os = null;
+            if (isWifi) {
+                os = mSocketClient.getOutputStream();
+            } else {
+                if (_socket == null) {
+                    onConnectButtonClicked(null);
+                    return;
+                }
+                os = _socket.getOutputStream();
             }
-            OutputStream os = _socket.getOutputStream();   //蓝牙连接输出流
             String input = OperationStr;
             String[] data = input.split(" ");
             byte[] tmp = new byte[data.length];
             for (int i = 0; i < data.length; i++) {
+                Logger.e("" + data[i]);
                 tmp[i] = (byte) Integer.parseInt(data[i], 16);
             }
-
+            Logger.e(tmp.toString());
             os.write(tmp);
         } catch (Exception e) {
             Logger.e(e.getMessage());
@@ -821,4 +942,5 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         }
 
     }
+
 }
