@@ -448,17 +448,25 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                                     showToast("你当前没有权限扫描购电信息");
                                     return;
                                 }
+                                if (type.equals("10")) {
+                                    if (!bean.getStoreId().equals(LoginInformation.getInstance().getUser().getStoreId())) {
+                                        //比较下当前是否在营业厅台区下
+                                        showToast("该用户不在的营业厅下");
+                                        return;
+                                    }
+                                }
+                                if (type.equals("11")) {
+                                    if (!bean.getTransformerId().equals(LoginInformation.getInstance().getUser().getTransformerId())) {
+                                        //比较下当前是否在营业厅台区下
+                                        showToast("该用户不在的台区下");
+                                        return;
+                                    }
+                                }
                             }
                             //保存用户 方便登录
                             try {
                                 IUserPresenter presenter = new UserPresenterImpl();
                                 presenter.saveOrUpdateUser(bean);
-                                if (userAllInfo.getStoreBean().getId() != null) {
-                                    StoreBeanDaoHelper.getInstance().addData(userAllInfo.getStoreBean());
-                                }
-                                if (userAllInfo.getTransformerBean().getId() != null) {
-                                    TransformerBeanDaoHelper.getInstance().addData(userAllInfo.getTransformerBean());
-                                }
                                 if (userAllInfo.getSpotBeans().getId() != null) {
                                     SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());
                                 }

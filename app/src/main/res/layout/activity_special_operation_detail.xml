@@ -50,7 +50,17 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_10"
             android:textIsSelectable="true"
-            android:visibility="invisible"></TextView>
+            android:visibility="gone"></TextView>
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/input_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:hint="请输入你要调试的指令"
+            android:textSize="@dimen/dp_14"
+            android:visibility="gone"
+            app:met_singleLineEllipsis="false" />
 
         <LinearLayout
             android:id="@+id/inputBeilvLayout"
@@ -369,7 +379,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_10"
-            android:text="合闸结果"></TextView>
+            android:text="结果"></TextView>
 
         <TextView
             android:id="@+id/resultTv"

@@ -363,7 +363,6 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
             case R.id.action_buy:
                 UserAllInfo userAllInfo = new UserAllInfo();
                 StoreBean storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
-
                 TransformerBean transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
                 SpotPricingBean spotPricingBeans = null;
                 try {

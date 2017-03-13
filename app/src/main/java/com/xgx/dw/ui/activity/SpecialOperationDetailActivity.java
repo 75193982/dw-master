@@ -41,6 +41,8 @@ import com.xgx.dw.utils.MyUtils;
 import com.xgx.dw.wifi.WifiActivity;
 import com.xgx.dw.wifi.WifiFunction;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -100,6 +102,8 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
     TextView deviceTv;
     @Bind(R.id.dyblEt)
     MaterialEditText dyblEt;
+    @Bind(R.id.input_editText)
+    MaterialEditText inputEditText;
     @Bind(R.id.dlblEt)
     MaterialEditText dlblEt;
     @Bind(R.id.eddyEt)
@@ -264,6 +268,9 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                 temp = String.format(BlueOperationContact.DianjiaCxSendTemp, currentTime);
                 OperationStr = String.format(BlueOperationContact.DianjiaCxSend, currentTime, MyUtils.getJyCode(temp));
                 break;
+            case 8:
+                setToolbarTitle("超管调试");
+                break;
         }
         btnTv.setText(getToolbarTitle());
         resultTitle.setText(getToolbarTitle() + "结果");
@@ -274,7 +281,11 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             sendTv.setText(OperationStr);
         }
         if (!bean.getType().equals("20")) {
-            sendTv.setVisibility(View.VISIBLE);
+            if (title == 8) {
+                inputEditText.setVisibility(View.VISIBLE);
+            } else {
+                sendTv.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -623,6 +634,10 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                                     isPause = true;
                                 } else {
                                     UserBean bean = LoginInformation.getInstance().getUser();
+                                    if (title == 8) {
+                                        resultTv.setText(Html.fromHtml("报文返回数据为：" + buf.toString()));
+                                        return;
+                                    }
                                     if (!bean.getType().equals("20")) {
                                         resultTv.setText(Html.fromHtml("报文返回数据为：" + buf.toString() + "<br/>" + MyUtils.decodeHex367(title, buf.toString())));   //显示数据
                                     } else {
@@ -800,6 +815,12 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                         changDlStr(priceNum, dlbean.getBjprice(), "0", dlbean.getSpotpriceId(), dlbean.getType());
                     }
                 }
+            }
+        } else if (title == 8) {
+            OperationStr = inputEditText.getText().toString();
+            if (TextUtils.isEmpty(OperationStr)) {
+                showToast("请输入指令");
+                return;
             }
         }
         sendData();

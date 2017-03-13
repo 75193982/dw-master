@@ -78,6 +78,17 @@ public class SpecialOperationFragment extends BaseFragment implements MyOnItemCl
             localArrayList.add(new DummyContent(2, "保电投入", "保电投入", this.drawableInt[2]));
             localArrayList.add(new DummyContent(3, "保电解除", "保电解除", this.drawableInt[3]));
 
+        } else if (currentUserType.equals("admin")) {
+            localArrayList.add(new DummyContent(0, "合闸", "合闸", this.drawableInt[0]));
+            localArrayList.add(new DummyContent(1, "分闸", "分闸", this.drawableInt[1]));
+            localArrayList.add(new DummyContent(2, "保电投入", "保电投入", this.drawableInt[2]));
+            localArrayList.add(new DummyContent(3, "保电解除", "保电解除", this.drawableInt[3]));
+            localArrayList.add(new DummyContent(4, "倍率录入", "倍率录入", this.drawableInt[6]));
+            // localArrayList.add(new DummyContent("6", "电表地址", "电表地址", this.drawableInt[6]));
+            localArrayList.add(new DummyContent(5, "电价录入", "电价录入", this.drawableInt[6]));
+            localArrayList.add(new DummyContent(6, "电费录入", "电费录入", this.drawableInt[6]));
+            localArrayList.add(new DummyContent(7, "定值设置", "定值设置", this.drawableInt[6]));
+            localArrayList.add(new DummyContent(8, "超管调试", "超管调试", this.drawableInt[6]));
         } else {
             if ("10,11".contains(currentUserType)) {
                 if (!LoginInformation.getInstance().getUser().getIsTest().equals("1")) {
