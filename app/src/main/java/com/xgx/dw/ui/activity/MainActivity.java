@@ -476,7 +476,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
 
 
                             startActivity(new Intent(getContext(), BuySpotActivity.class).putExtra("userAllInfo", userAllInfo));
-                        } else if (bean.getEcodeType().equals("5")) {
+                        } else if (bean.getEcodeType().equals("5") || bean.getEcodeType().equals("6")) {
                             //用户购电
                             List<PricingBean> pricingBeen = PricingDaoHelper.getInstance().queryByUserId(LoginInformation.getInstance().getUser().getUserId(), userAllInfo.getPricings().getIme(), userAllInfo.getPricings().getId());
                             if (pricingBeen.size() > 0) {
@@ -484,8 +484,10 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                             } else {
                                 if (LoginInformation.getInstance().getUser().getId().equals(bean.getId())) {
                                     IUserPresenter presenter = new UserPresenterImpl();
-                                    presenter.saveOrUpdateUser(userAllInfo.getUser());
-                                    setLoginInfomation(bean);
+                                    if (userAllInfo.getUser() != null) {
+                                        presenter.saveOrUpdateUser(userAllInfo.getUser());
+                                        setLoginInfomation(bean);
+                                    }
                                     if (userAllInfo.getSpotBeans().getId() != null) {
                                         SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());
                                     }

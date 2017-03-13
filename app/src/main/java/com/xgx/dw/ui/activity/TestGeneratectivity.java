@@ -138,31 +138,47 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
                 spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
                 if (pricings.size() > 0) {
                     userAllInfo.setPricings(pricings.get(0));
+                    if (pricings.get(0).getFinishtype().contains("1")) {
+                        userAllInfo.setUser(bean);
+                        if (bean.getType().equals("20")) {
+                            try {
+                                spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
+                            } catch (Exception e) {
+                                Logger.e(e.getMessage());
+                            }
+                            userAllInfo.setSpotBeans(spotPricingBeans);
+                        }
+                    }
                 }
-                userAllInfo.setSpotBeans(spotPricingBeans);
                 userAllInfo.setPricingSize(pricings.size());
                 break;
             case 6:
                 setToolbarTitle("返回购电用户信息");
                 bean = UserBeanDaoHelper.getInstance().getDataById(id);
-                if (bean.getType().equals("20")) {
-                    try {
-                        spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
-                    } catch (Exception e) {
-                        Logger.e(e.getMessage());
-                    }
-                    userAllInfo.setSpotBeans(spotPricingBeans);
-                }//  userAllInfo.setStoreBean(storebean);
+                //  userAllInfo.setStoreBean(storebean);
                 // userAllInfo.setTransformerBean(transbean);
                 pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getId());
                 if (pricings.size() > 0) {
                     userAllInfo.setPricings(pricings.get(0));
+                    if (pricings.get(0).getFinishtype().contains("1")) {
+                        userAllInfo.setUser(bean);
+                        if (bean.getType().equals("20")) {
+                            try {
+                                spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
+                            } catch (Exception e) {
+                                Logger.e(e.getMessage());
+                            }
+                            userAllInfo.setSpotBeans(spotPricingBeans);
+                        }
+                    }
                 }
                 userAllInfo.setPricingSize(pricings.size());
                 break;
         }
         bean.setEcodeType(type + "");
-        userAllInfo.setUser(bean);
+        if (type != 5 && type != 6) {
+            userAllInfo.setUser(bean);
+        }
         createChineseQRCode(new Gson().toJson(userAllInfo));
     }
 
