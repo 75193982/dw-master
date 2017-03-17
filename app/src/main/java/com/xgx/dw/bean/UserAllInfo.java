@@ -20,6 +20,15 @@ public class UserAllInfo implements Serializable {
     private int pricingSize;
     private PricingBean pricings;
     private SpotPricingBean spotBeans;
+    private String ecodeType;
+
+    public String getEcodeType() {
+        return ecodeType;
+    }
+
+    public void setEcodeType(String ecodeType) {
+        this.ecodeType = ecodeType;
+    }
 
     public UserBean getUser() {
         return user;

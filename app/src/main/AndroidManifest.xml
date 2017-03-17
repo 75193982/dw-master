@@ -89,6 +89,9 @@
             android:name=".ui.activity.DeviceListNewActivity"
             android:windowSoftInputMode="stateHidden"></activity>
         <activity
+            android:name=".ui.activity.TestScanActivity"
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity
             android:name=".ui.activity.UserMgrActivity"
             android:windowSoftInputMode="stateHidden"></activity>
         <activity

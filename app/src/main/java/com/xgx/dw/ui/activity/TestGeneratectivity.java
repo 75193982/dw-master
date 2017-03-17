@@ -175,10 +175,10 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
                 userAllInfo.setPricingSize(pricings.size());
                 break;
         }
-        bean.setEcodeType(type + "");
         if (type != 5 && type != 6) {
             userAllInfo.setUser(bean);
         }
+        userAllInfo.setEcodeType(type + "");
         createChineseQRCode(new Gson().toJson(userAllInfo));
     }
 
@@ -194,7 +194,7 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
             Toast.makeText(this, "当前没有用户", Toast.LENGTH_SHORT).show();
             return;
         }
-        Bitmap mBitmap = CodeUtils.createImage(encryptResultStr, 800, 800, BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
+        Bitmap mBitmap = CodeUtils.createImage(encryptResultStr, 600, 600, null);
         mChineseIv.setImageBitmap(mBitmap);
     }
 

@@ -1,6 +1,7 @@
 package com.xgx.dw.ui.activity;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -62,6 +63,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends BaseActivity implements IMainView, IUserView {
 
@@ -130,6 +133,27 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    private static final int REQUEST_CODE_QRCODE_PERMISSIONS = 1;
+
+    @AfterPermissionGranted(REQUEST_CODE_QRCODE_PERMISSIONS)
+    private void requestCodeQRCodePermissions() {
+        String[] perms = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if (!EasyPermissions.hasPermissions(this, perms)) {
+            EasyPermissions.requestPermissions(this, "扫描二维码需要打开相机和散光灯的权限", REQUEST_CODE_QRCODE_PERMISSIONS, perms);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        requestCodeQRCodePermissions();
+
+    }
 
     public void initContentView() {
         setContentView(R.layout.activity_main);
@@ -145,7 +169,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
         fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_erweima_searching_black_24dp));
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), CaptureActivity.class);
+                Intent intent = new Intent(getContext(), TestScanActivity.class);
                 startActivityForResult(intent, REQUEST_CODE);
             }
         });
@@ -267,7 +291,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                     fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_erweima_searching_black_24dp));
                     fab.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View view) {
-                            Intent intent = new Intent(getContext(), CaptureActivity.class);
+                            Intent intent = new Intent(getContext(), TestScanActivity.class);
                             startActivityForResult(intent, REQUEST_CODE);
                         }
                     });
@@ -285,7 +309,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                     fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_erweima_searching_black_24dp));
                     fab.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View view) {
-                            Intent intent = new Intent(getContext(), CaptureActivity.class);
+                            Intent intent = new Intent(getContext(), TestScanActivity.class);
                             startActivityForResult(intent, REQUEST_CODE);
                         }
                     });
@@ -413,25 +437,25 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                         UserBean bean = userAllInfo.getUser();
                         String type = LoginInformation.getInstance().getUser().getType();
                         //自动登录 比较 ime账号
-                        if (bean.getEcodeType().equals("0") && type.equals("admin")) {
+                        if (userAllInfo.getEcodeType().equals("0") && type.equals("admin")) {
                             if ("admin".contains(type)) {
                                 startActivity(new Intent(getContext(), CreateUserOneAcvitity.class).putExtra("ime", bean.getIme()));
                             } else {
                                 showToast("当前账号没有权限创建营业厅管理员");
                             }
                             startActivity(new Intent(getContext(), CreateUserOneAcvitity.class).putExtra("ime", bean.getIme()));
-                        } else if (bean.getEcodeType().equals("1")) {
+                        } else if (userAllInfo.getEcodeType().equals("1")) {
                             if ("admin,10".contains(type)) {
                                 startActivity(new Intent(getContext(), CreateUserTwoAcvitity.class).putExtra("ime", bean.getIme()));
                             } else {
                                 showToast("当前账号没有权限创建台区管理员");
                             }
-                        } else if (bean.getEcodeType().equals("2")) {
+                        } else if (userAllInfo.getEcodeType().equals("2")) {
                             startActivity(new Intent(getContext(), CreateUserThreeAcvitity.class).putExtra("ime", bean.getIme()));
-                        } else if (bean.getEcodeType().equals("3")) {
+                        } else if (userAllInfo.getEcodeType().equals("3")) {
                             //保存用户 方便登录
                             IUserPresenter presenter = new UserPresenterImpl();
-                            presenter.saveOrUpdateUser(bean);
+                            presenter.saveOrUpdateUser(userAllInfo.getUser());
                             if (userAllInfo.getStoreBean().getId() != null) {
                                 StoreBeanDaoHelper.getInstance().addData(userAllInfo.getStoreBean());
                             }
@@ -441,7 +465,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                             if (userAllInfo.getSpotBeans().getId() != null) {
                                 SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());
                             }
-                        } else if (bean.getEcodeType().equals("4") && ("admin,30,31,10,11").contains(type)) {
+                        } else if (userAllInfo.getEcodeType().equals("4") && ("admin,30,31,10,11").contains(type)) {
                             if ("10,11".contains(type)) {
                                 if (!LoginInformation.getInstance().getUser().getIsBuy().equals("1")) {
                                     //你当前没有权限扫描购电信息
@@ -476,13 +500,13 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
 
 
                             startActivity(new Intent(getContext(), BuySpotActivity.class).putExtra("userAllInfo", userAllInfo));
-                        } else if (bean.getEcodeType().equals("5") || bean.getEcodeType().equals("6")) {
+                        } else if (userAllInfo.getEcodeType().equals("5") || userAllInfo.getEcodeType().equals("6")) {
                             //用户购电
                             List<PricingBean> pricingBeen = PricingDaoHelper.getInstance().queryByUserId(LoginInformation.getInstance().getUser().getUserId(), userAllInfo.getPricings().getIme(), userAllInfo.getPricings().getId());
                             if (pricingBeen.size() > 0) {
                                 showToast("不能扫描该二维码,已经扫过一次了");
                             } else {
-                                if (LoginInformation.getInstance().getUser().getId().equals(bean.getId())) {
+                                if (LoginInformation.getInstance().getUser().getId().equals(userAllInfo.getPricings().getUserId())) {
                                     IUserPresenter presenter = new UserPresenterImpl();
                                     if (userAllInfo.getUser() != null) {
                                         presenter.saveOrUpdateUser(userAllInfo.getUser());

@@ -251,7 +251,7 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
             Logger.e(getContext(), "扫描结果：" + decryptString);
             UserAllInfo userAllInfo = new Gson().fromJson(decryptString, UserAllInfo.class);
             if (userAllInfo != null) {
-                if (userAllInfo.getUser().getEcodeType().equals("3") || userAllInfo.getUser().getEcodeType().equals("6")) {
+                if (userAllInfo.getEcodeType().equals("3") || userAllInfo.getEcodeType().equals("6")) {
                     //保存用户 方便登录
                     IUserPresenter presenter = new UserPresenterImpl();
                     presenter.saveOrUpdateUser(userAllInfo.getUser());
