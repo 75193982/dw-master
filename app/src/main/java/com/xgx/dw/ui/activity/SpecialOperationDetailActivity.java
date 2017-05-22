@@ -790,7 +790,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                     String dl = bean.getCurrentRatio();
                     String dj = bean.getPrice();
                     if (TextUtils.isEmpty(bean.getVoltageRatio()) || TextUtils.isEmpty(bean.getCurrentRatio()) || TextUtils.isEmpty(bean.getPrice())) {
-                        showToast("电压倍率/电流倍率/电价信息不完整");
+                        showToast("电压倍率/电流倍率/电价信息不完整,请联系管理员");
                         return;
                     }
                     title = 4;
@@ -800,7 +800,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                         String dy = bean.getVoltageRatio();
                         String dl = bean.getCurrentRatio();
                         if (TextUtils.isEmpty(bean.getVoltageRatio()) || TextUtils.isEmpty(bean.getCurrentRatio()) || TextUtils.isEmpty(bean.getPrice())) {
-                            showToast("电压倍率/电流倍率/电价信息不完整");
+                            showToast("电压倍率/电流倍率/电价信息不完整,请联系管理员");
                             return;
                         }
                         title = 4;

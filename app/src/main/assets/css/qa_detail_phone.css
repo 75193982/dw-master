@@ -1,0 +1,153 @@
+html, body {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-text-size-adjust: none;
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: #f0eff5;
+}
+
+body {
+    word-wrap: break-word;
+}
+
+html, body, div, span, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, a, address, em, img, ol, ul, li, fieldset, form, label, legend, table, tbody, tfoot, thead, tr, th, td, i, b, s {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-weight: inherit;
+    font-style: inherit;
+    font-size: 100%;
+    font-family: Helvetica,Arial,sans-serif;
+}
+
+.q-title {
+    position: relative;
+    padding: 15px 15px 10px 15px;
+    font-size: 16px;
+    line-height: 24px;
+    background: #fff;
+    font-weight: bolder;
+}
+
+.q-title:after {
+    content: "";
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    border-bottom: 1px solid #e1e1df;
+    -webkit-transform: scaleY(0.5);
+    -webkit-transform-origin: 0 0;
+    margin: 0 15px;
+}
+.q-content {
+    font-size: 15px;
+    color: #333;
+    line-height: 24px;
+    padding: 10px 15px 0 15px;
+    background: #fff;
+    text-align: justify;
+}
+
+.praise {
+    position: relative;
+    padding: 30px 0 20px 0;
+    background: #fff;
+    text-align: center;
+}
+
+.praise .result a {
+    display: inline-block;
+    position: relative;
+    line-height: 24px;
+    margin: 0 10px;
+    padding: 3px 15px;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.praise a {
+    color: #919191;
+}
+
+a {
+    text-decoration: none;
+}
+
+.praise .result a:before, .praise .reason a:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    -webkit-transform: scale(0.5);
+    -ms-transform: scale(0.5);
+    transform: scale(0.5);
+    -webkit-transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
+    transform-origin: 0 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
+.praise i.icon-like {
+    background-image: url(../img/icon-like.png);
+    background-size: 22px 22px;
+}
+
+.praise .result i {
+    display: inline-block;
+    vertical-align: top;
+    width: 22px;
+    height: 22px;
+    margin-right: 5px;
+}
+
+.praise a:before {
+    border: 1px solid #919191;
+}
+
+.praise .result i.icon-repost {
+    background-image: url(../img/icon-repost.png);
+    background-size: 22px 22px;
+    margin-top: 1px;
+}
+
+.mod-list-title {
+    padding: 12px 15px 12px 15px;
+    font-size: 14px;
+    height: 14px;
+    color: #6d6d6d;
+}
+
+.mod-list .mod-list-item {
+    padding: 12px 15px 13px 15px;
+    min-height: 25px;
+    position: relative;
+    cursor: pointer;
+}
+
+.mod-list-item {
+    display: -webkit-box;
+    background-color: #fff;
+}
+
+.vm {
+    -webkit-box-align: center;
+}
+
+.mod-list .list-info {
+    -webkit-box-flex: 1;
+    padding-right: 5px;
+}
+
+img, canvas, iframe, video, svg {
+    max-width: 100%;
+}

@@ -23,7 +23,7 @@ public class UserAllInfo implements Serializable {
     private String ecodeType;
 
     public String getEcodeType() {
-        return ecodeType;
+        return ecodeType == null ? "" : ecodeType;
     }
 
     public void setEcodeType(String ecodeType) {

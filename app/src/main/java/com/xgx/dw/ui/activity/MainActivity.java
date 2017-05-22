@@ -18,6 +18,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -169,7 +170,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
         fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_erweima_searching_black_24dp));
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), TestScanActivity.class);
+                Intent intent = new Intent(getContext(), CaptureActivity.class);
                 startActivityForResult(intent, REQUEST_CODE);
             }
         });
@@ -291,7 +292,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                     fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_erweima_searching_black_24dp));
                     fab.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View view) {
-                            Intent intent = new Intent(getContext(), TestScanActivity.class);
+                            Intent intent = new Intent(getContext(), CaptureActivity.class);
                             startActivityForResult(intent, REQUEST_CODE);
                         }
                     });
@@ -309,7 +310,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                     fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_erweima_searching_black_24dp));
                     fab.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View view) {
-                            Intent intent = new Intent(getContext(), TestScanActivity.class);
+                            Intent intent = new Intent(getContext(), CaptureActivity.class);
                             startActivityForResult(intent, REQUEST_CODE);
                         }
                     });
@@ -506,7 +507,10 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                             if (pricingBeen.size() > 0) {
                                 showToast("不能扫描该二维码,已经扫过一次了");
                             } else {
-                                if (LoginInformation.getInstance().getUser().getId().equals(userAllInfo.getPricings().getUserId())) {
+                                Log.e("扫描结果-LoginInformation--", LoginInformation.getInstance().getUser().getUserId());
+                                Log.e("扫描结果--pricings--", userAllInfo.getPricings().getUserId());
+                                if (LoginInformation.getInstance().getUser().getUserId().equals(userAllInfo.getPricings().getUserId())) {
+
                                     IUserPresenter presenter = new UserPresenterImpl();
                                     if (userAllInfo.getUser() != null) {
                                         presenter.saveOrUpdateUser(userAllInfo.getUser());

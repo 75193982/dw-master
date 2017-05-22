@@ -15,10 +15,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!-- 使用相机 -->
@@ -59,6 +57,9 @@
             android:name=".ui.activity.CreateStoreActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
+            android:name=".ui.activity.H5WebActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
             android:name=".ui.activity.TransformerActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
@@ -87,9 +88,6 @@
             android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".ui.activity.DeviceListNewActivity"
-            android:windowSoftInputMode="stateHidden"></activity>
-        <activity
-            android:name=".ui.activity.TestScanActivity"
             android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".ui.activity.UserMgrActivity"

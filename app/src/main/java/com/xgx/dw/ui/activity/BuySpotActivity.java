@@ -86,6 +86,7 @@ public class BuySpotActivity extends BaseAppCompatActivity {
         ArrayAdapter localArrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, arrayOfString);
         localArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(localArrayAdapter);
+        spinner.setSelection(1);
         spotTv.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

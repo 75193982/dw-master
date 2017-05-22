@@ -331,10 +331,10 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
                 userAllInfo.setTransformerBean(transbean);
                 pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getId());
                 userAllInfo.setPricingSize(pricings.size());
-                bean.setEcodeType(6 + "");
+                //  bean.setEcodeType(6 + "");
                 userAllInfo.setUser(bean);
-                startActivity(new Intent(getContext(), BuySpotActivity.class).putExtra("userAllInfo", userAllInfo));
-
+                //startActivity(new Intent(getContext(), BuySpotActivity.class).putExtra("userAllInfo", userAllInfo));
+                startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 3).putExtra("id", id));
             }
 
             finish();
@@ -377,6 +377,7 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
                 userAllInfo.setPricingSize(pricings.size());
                 bean.setEcodeType(4 + "");
                 userAllInfo.setUser(bean);
+                userAllInfo.setEcodeType("4");
                 startActivity(new Intent(getContext(), BuySpotActivity.class).putExtra("userAllInfo", userAllInfo));
                 break;
         }
