@@ -996,8 +996,8 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         String dl = "00";
 
         try {
-            if (Integer.valueOf(et.getText().toString()) < 26 && Integer.valueOf(et.getText().toString()) > 0) {
-                dl = Integer.toHexString(Integer.valueOf(et.getText().toString()) * 10);
+            if (Double.valueOf(et.getText().toString()) < 26 && Double.valueOf(et.getText().toString()) > 0) {
+                dl = Integer.toHexString((int) (Double.valueOf(et.getText().toString()) * 10));
                 if (dl.length() == 1) {
                     dl = "0" + dl;
                 }

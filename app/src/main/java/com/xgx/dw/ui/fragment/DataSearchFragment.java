@@ -68,8 +68,8 @@ public class DataSearchFragment extends BaseFragment implements MyOnItemClickLis
             localArrayList.add(new DummyContent(6, "倍率查询", "倍率查询", this.drawableInt[5]));
             localArrayList.add(new DummyContent(7, "电价查询", "电价查询", this.drawableInt[5]));
             localArrayList.add(new DummyContent(8, "个人资料", "个人资料", this.drawableInt[5]));
-            localArrayList.add(new DummyContent(9, "故障查询", "故障查询", this.drawableInt[5]));
-            localArrayList.add(new DummyContent(10, "定值查询", "定值查询", this.drawableInt[5]));
+            localArrayList.add(new DummyContent(10, "故障查询", "故障查询", this.drawableInt[5]));
+            localArrayList.add(new DummyContent(11, "定值查询", "定值查询", this.drawableInt[5]));
 
         } else {
             localArrayList.add(new DummyContent(0, "购电记录", "购电记录", this.drawableInt[0]));
@@ -134,11 +134,11 @@ public class DataSearchFragment extends BaseFragment implements MyOnItemClickLis
                 startActivity(new Intent(getActivity(), BuyUserDataActivity.class).putExtra("bean", LoginInformation.getInstance().getUser()));
                 break;
             case 10:
-                startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", 51));
+                startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", 50));
 
                 break;
             case 11:
-                startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", 50));
+                startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", 51));
                 break;
         }
     }
