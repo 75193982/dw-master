@@ -10,12 +10,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,10 +39,7 @@ import com.xgx.dw.utils.AES;
 import com.xgx.dw.utils.CommonUtils;
 import com.xgx.dw.utils.Logger;
 import com.xgx.dw.utils.MyUtils;
-import com.xgx.dw.wifi.WifiActivity;
 import com.xgx.dw.wifi.WifiFunction;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -83,6 +81,38 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
     MaterialEditText tzEt;
     @Bind(R.id.inputDianfeiLayout)
     LinearLayout inputDianfeiLayout;
+    @Bind(R.id.dzTimeEt)
+    MaterialEditText dzTimeEt;
+    @Bind(R.id.dzA1Et)
+    MaterialEditText dzA1Et;
+    @Bind(R.id.dzA1TEt)
+    MaterialEditText dzA1TEt;
+    @Bind(R.id.dzA2Et)
+    MaterialEditText dzA2Et;
+    @Bind(R.id.dzA2TEt)
+    MaterialEditText dzA2TEt;
+    @Bind(R.id.dzA3Et)
+    MaterialEditText dzA3Et;
+    @Bind(R.id.dzA3TEt)
+    MaterialEditText dzA3TEt;
+    @Bind(R.id.dzV1Et)
+    MaterialEditText dzV1Et;
+    @Bind(R.id.dzV1TEt)
+    MaterialEditText dzV1TEt;
+    @Bind(R.id.dzS1Et)
+    SwitchCompat dzS1Et;
+    @Bind(R.id.dzS2Et)
+    SwitchCompat dzS2Et;
+    @Bind(R.id.dzS2T1Et)
+    MaterialEditText dzS2T1Et;
+    @Bind(R.id.dzS2T2Et)
+    MaterialEditText dzS2T2Et;
+    @Bind(R.id.dzS2T3Et)
+    MaterialEditText dzS2T3Et;
+    @Bind(R.id.saveTvTv)
+    TextView saveTvTv;
+    @Bind(R.id.dingzhi)
+    LinearLayout dingzhi;
     private String beilvType = "4A";
     private int beilvNum = 0;
     private final static String MY_UUID = "00001101-0000-1000-8000-00805F9B34FB";   //SPP服务UUID号
@@ -167,6 +197,30 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         gdlEt.addTextChangedListener(new MyDlTextWather());
         bjEt.addTextChangedListener(new MyDlTextWather());
         tzEt.addTextChangedListener(new MyDlTextWather());
+        dzTimeEt.addTextChangedListener(new MyDzWather());
+        dzA1Et.addTextChangedListener(new MyDzWather());
+        dzA1TEt.addTextChangedListener(new MyDzWather());
+        dzA2Et.addTextChangedListener(new MyDzWather());
+        dzA2TEt.addTextChangedListener(new MyDzWather());
+        dzA3Et.addTextChangedListener(new MyDzWather());
+        dzA3TEt.addTextChangedListener(new MyDzWather());
+        dzV1Et.addTextChangedListener(new MyDzWather());
+        dzV1TEt.addTextChangedListener(new MyDzWather());
+        dzS2T1Et.addTextChangedListener(new MyDzWather());
+        dzS2T2Et.addTextChangedListener(new MyDzWather());
+        dzS2T3Et.addTextChangedListener(new MyDzWather());
+        dzS1Et.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                changDzStr();
+            }
+        });
+        dzS2Et.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                changDzStr();
+            }
+        });
         //查询是否有配对成功的设备，如果配对成功则自动连接
         title = getIntent().getIntExtra("type", -1);
         setDatas();
@@ -267,6 +321,28 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                 setToolbarTitle("电价查询");
                 temp = String.format(BlueOperationContact.DianjiaCxSendTemp, currentTime);
                 OperationStr = String.format(BlueOperationContact.DianjiaCxSend, currentTime, MyUtils.getJyCode(temp));
+                break;
+            case 49:
+                setToolbarTitle("更换电表");
+                OperationStr = BlueOperationContact.changeDbTemp;
+                break;
+            case 50:
+                setToolbarTitle("故障查询");
+                OperationStr = BlueOperationContact.faultInquiryDbTemp;
+                break;
+            case 51:
+                setToolbarTitle("定值查询");
+                OperationStr = BlueOperationContact.dingzhiTemp;
+                break;
+            case 52:
+                setToolbarTitle("定值设置");
+                OperationStr = getIntent().getStringExtra("data");
+                break;
+            case 7:
+                setToolbarTitle("定值设置");
+                OperationStr = BlueOperationContact.dingzhiShezhiTemp;
+                dingzhi.setVisibility(View.VISIBLE);
+                changDzStr();
                 break;
             case 8:
                 setToolbarTitle("超管调试");
@@ -848,6 +924,108 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         OperationStr = String.format(BlueOperationContact.BeiLvLuruSend, dy, dl, eddy, currentTime, MyUtils.getJyCode(temp));
     }
 
+    private void changDzStr() {
+        OperationStr = BlueOperationContact.dingzhiShezhiTemp;
+        //零序跳闸时间
+        String dzTimeStr = "";
+        String dzA1EtStr = "";
+        String dzA1TEtStr = "";
+        String dzA2EtStr = "";
+        String dzA3EtStr = "";
+        String dzA2TEtStr = "";
+        String dzA3TEtStr = "";
+        String dzV1EtStr = "";
+        String dzV1TEtStr = "";
+        String dzS2T1TEtStr = "";
+        String dzS2T2TEtStr = "";
+        String dzS2T3TEtStr = "";
+        String dzS1EtStr = "";
+        String dzS2EtStr = "";
+        dzTimeStr = getTimeEt(dzTimeEt);//零序跳闸时间3s
+        dzA1EtStr = getDlEt(dzA1Et);
+        dzA2EtStr = getDlEt(dzA2Et);
+        dzA3EtStr = getDlEt(dzA3Et);
+        dzV1EtStr = getDyEt(dzV1Et);
+        // dzA1Et.getText().     //过流1段电流5.0A
+        dzA1TEtStr = getTimeEt(dzA1TEt);
+        dzA2TEtStr = getTimeEt(dzA2TEt);
+        dzA3TEtStr = getTimeEt(dzA3TEt);
+        dzA2TEtStr = getTimeEt(dzA2TEt);
+        dzA3TEtStr = getTimeEt(dzA3TEt);
+        dzS2T1TEtStr = getTimeEt(dzS2T1Et);
+        dzS2T2TEtStr = getTimeEt(dzS2T2Et);
+        dzS2T3TEtStr = getTimeEt(dzS2T3Et);
+        dzV1TEtStr = getTimeEt(dzV1TEt);
+        dzS1EtStr = dzS1Et.isChecked() ? "55" : "00";
+        dzS2EtStr = dzS2Et.isChecked() ? "55" : "00";
+        OperationStr = OperationStr + " " + dzTimeStr + " " + dzA1EtStr + " " + dzA1TEtStr
+                + " " + dzA2EtStr + " " + dzA2TEtStr
+                + " " + dzA3EtStr + " " + dzA3TEtStr
+                + " " + dzV1EtStr + " " + dzV1TEtStr + " " + dzS1EtStr
+                + " " + dzS2T1TEtStr + " " + dzS2T2TEtStr + " " + dzS2T3TEtStr + " " + dzS2EtStr + " 2C 16";
+        sendTv.setText(OperationStr);
+    }
+
+    private String getDyEt(MaterialEditText et) {
+        String dl = "00";
+        try {
+            if (Integer.valueOf(et.getText().toString()) < 250 && Integer.valueOf(et.getText().toString()) > 0) {
+                dl = Integer.toHexString(Integer.valueOf(et.getText().toString()));
+                if (dl.length() == 1) {
+                    dl = "0" + dl;
+                }
+
+            } else {
+                showToast("无法设置超过0-250的电压");
+                et.setText("");
+            }
+        } catch (Exception e) {
+
+        }
+
+        return dl;
+    }
+
+    private String getDlEt(MaterialEditText et) {
+        String dl = "00";
+
+        try {
+            if (Integer.valueOf(et.getText().toString()) < 26 && Integer.valueOf(et.getText().toString()) > 0) {
+                dl = Integer.toHexString(Integer.valueOf(et.getText().toString()) * 10);
+                if (dl.length() == 1) {
+                    dl = "0" + dl;
+                }
+
+            } else {
+                showToast("无法设置超过0-25的电流");
+                et.setText("");
+            }
+        } catch (Exception e) {
+
+        }
+
+        return dl;
+    }
+
+    private String getTimeEt(MaterialEditText et) {
+        String tzTime = "00";
+        try {
+            if (Integer.valueOf(et.getText().toString()) > 100) {
+                showToast("无法设置超过100秒");
+                et.setText("");
+            } else {
+                tzTime = Integer.toHexString(Integer.valueOf(et.getText().toString()));
+                if (tzTime.length() == 1) {
+                    tzTime = "0" + tzTime;
+                }
+            }
+        } catch (Exception e) {
+
+        }
+
+        return tzTime;
+    }
+
     private void changDjStr(String dj) {
         //根据ID获取电价
         SpotPricingBean pricingbean = SpotPricingBeanDaoHelper.getInstance().getDataById(dj);
@@ -903,6 +1081,20 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         }
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
+    }
+
+    @OnClick(R.id.action_saveecode)
+    public void onSaveEcodeClick() {//保存二维码
+
+        //进入二位码保存界面
+        startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 7).putExtra("data", OperationStr));
+
+    }
+
 
     class MyTextWather implements TextWatcher
 
@@ -923,6 +1115,29 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         }
 
     }
+
+    class MyDzWather implements TextWatcher
+
+    {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (!TextUtils.isEmpty(s)) {
+                changDzStr();
+            }
+        }
+
+    }
+
 
     class MyDjTextWather implements TextWatcher
 

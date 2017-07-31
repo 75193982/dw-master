@@ -77,7 +77,7 @@ public class DataSearchFragment extends BaseFragment implements MyOnItemClickLis
             localArrayList.add(new DummyContent(2, "电量查询", "电量查询", this.drawableInt[2]));
             localArrayList.add(new DummyContent(3, "功率查询", "功率查询", this.drawableInt[3]));
             localArrayList.add(new DummyContent(4, "电量报表", "电量报表", this.drawableInt[4]));
-            localArrayList.add(new DummyContent(5, "功率报表", "功率报表", this.drawableInt[5]));
+            localArrayList.add(new DummyContent(5, "更换电表", "更换电表", this.drawableInt[5]));
             localArrayList.add(new DummyContent(6, "倍率查询", "倍率查询", this.drawableInt[5]));
             localArrayList.add(new DummyContent(7, "电价查询", "电价查询", this.drawableInt[5]));
             localArrayList.add(new DummyContent(8, "个人资料", "个人资料", this.drawableInt[5]));
@@ -119,7 +119,7 @@ public class DataSearchFragment extends BaseFragment implements MyOnItemClickLis
                 startActivity(new Intent(getActivity(), SearchLogListActivity.class).putExtra("type", "1"));
                 break;
             case 5:
-                startActivity(new Intent(getActivity(), SearchLogListActivity.class).putExtra("type", "2"));
+                startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", 49));
                 break;
             case 6:
                 startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", 47));
@@ -134,10 +134,11 @@ public class DataSearchFragment extends BaseFragment implements MyOnItemClickLis
                 startActivity(new Intent(getActivity(), BuyUserDataActivity.class).putExtra("bean", LoginInformation.getInstance().getUser()));
                 break;
             case 10:
-                showToast("敬请期待");
+                startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", 51));
+
                 break;
             case 11:
-                showToast("敬请期待");
+                startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", 50));
                 break;
         }
     }

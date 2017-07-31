@@ -5,16 +5,11 @@ import android.content.Context;
 import android.telephony.TelephonyManager;
 
 import com.xgx.dw.SearchDlLog;
-import com.xgx.dw.app.BaseApplication;
-import com.xgx.dw.app.G;
-import com.xgx.dw.app.Setting;
 import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.dao.SearchDlDaoHelper;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,7 +42,9 @@ public class MyUtils {
 //        }
         StringBuilder resultString = new StringBuilder();
         List<String> mBuffer = Arrays.asList(s.split(" "));
-        Collections.reverse(mBuffer);
+        if (type != 50) {
+            Collections.reverse(mBuffer);
+        }
         switch (type) {
             case 0://合闸
                 resultString.append("合闸成功");
@@ -71,7 +68,12 @@ public class MyUtils {
             case 6://电价录入
                 resultString.append("电费录入成功");
                 break;
-
+            case 7://定值设置
+                resultString.append("定值设置成功");
+                break;
+            case 52://定值设置
+                resultString.append("定值设置成功");
+                break;
             case 41://剩余电费
                 //获取时间格式
                 try {
@@ -136,8 +138,104 @@ public class MyUtils {
                     resultString.append("当前没有电价信息");
                 }
                 break;
+            case 49://电价录入
+                resultString.append("更换成功");
+                break;
+            case 50://故障查询
+                try {
+                    mBuffer = mBuffer.subList(18, 27);
+                    getFaultInquiry(resultString, mBuffer);
+                } catch (Exception e) {
+                    resultString = new StringBuilder();
+                    resultString.append("当前没有故障信息");
+                }
+                break;
+            case 51://定值查询
+                try {
+                    mBuffer = mBuffer.subList(18, 33);
+                    getDingzhi(resultString, mBuffer);
+                } catch (Exception e) {
+                    resultString = new StringBuilder();
+                    resultString.append("当前没有定值信息");
+                }
+                break;
         }
         return resultString.toString();
+    }
+
+    /**
+     * 03 零序跳闸时间3s
+     * 32 过流1段电流5.0A（单位0.1A）
+     * 02 过流1段时间2s
+     * 64 过流2段电流10.0A（单位0.1A）
+     * 04 过流2段时间4s
+     * 96 过流3段电流15.0A（单位0.1A）
+     * 06 过流3段时间6s
+     * 64 失压跳闸电压100V（单位1V）
+     * 05 失压跳闸时间5s
+     * 00 失压跳闸未投入（投入：55，其他值：未投入）
+     * 0A 重合闸1段时间10s
+     * 14 重合闸2段时间20s
+     * 3C 重合闸3段时间60s
+     * 55 重合闸投入
+     *
+     * @param resultString
+     * @param mBuffer
+     */
+    private static void getDingzhi(StringBuilder resultString, List<String> mBuffer) {
+        resultString.append(String.format("零序跳闸时间：<big><font color='blue'>%ss</font></big><br/>", mBuffer.get(0)));
+        resultString.append(String.format("过流1段电流：<big><font color='blue'>%sA（单位0.1A）</font></big><br/>", Integer.parseInt(mBuffer.get(1), 16) * 0.1 + ""));
+        resultString.append(String.format("过流1段时间：<big><font color='blue'>%ss</font></big><br/>", mBuffer.get(2)));
+        resultString.append(String.format("过流2段电流：<big><font color='blue'>%sA（单位0.1A）</font></big><br/>", Integer.parseInt(mBuffer.get(3), 16) * 0.1 + ""));
+        resultString.append(String.format("过流2段时间：<big><font color='blue'>%ss</font></big><br/>", mBuffer.get(4)));
+        resultString.append(String.format("过流3段电流：<big><font color='blue'>%sA（单位0.1A）</font></big><br/>", Integer.parseInt(mBuffer.get(5), 16) * 0.1 + ""));
+        resultString.append(String.format("过流3段时间：<big><font color='blue'>%ss</font></big><br/>", mBuffer.get(6)));
+        resultString.append(String.format("失压跳闸电压：<big><font color='blue'>%sV（单位1V）</font></big><br/>", Integer.parseInt(mBuffer.get(7), 16) + ""));
+        resultString.append(String.format("失压跳闸：<big><font color='blue'>%s</font></big><br/>", mBuffer.get(8).equals("55") ? "投入" : "未投入"));
+        resultString.append(String.format("重合闸1段时间：<big><font color='blue'>%ss</font></big><br/>", Integer.parseInt(mBuffer.get(9), 16) + ""));
+        resultString.append(String.format("重合闸2段时间：<big><font color='blue'>%ss</font></big><br/>", Integer.parseInt(mBuffer.get(10), 16) + ""));
+        resultString.append(String.format("重合闸3段时间：<big><font color='blue'>%ss</font></big><br/>", Integer.parseInt(mBuffer.get(11), 16) + ""));
+        resultString.append(String.format("重合闸：<big><font color='blue'>%s</font></big><br/>", mBuffer.get(12).equals("55") ? "投入" : "未投入"));
+
+    }
+
+    /**
+     * A5 （5A-跳闸，A5合闸）
+     * 05 （0-速断，1-过流，2-零序，3-费控，4-手动，5-远程，6-失压）
+     * 00 （电压-XXX伏，电流-XX.X安）
+     * 25 45 21 29 07 17 （发生时间：17年07月29日21点45分25秒）
+     * 3  4  5  6  7  8
+     *
+     * @param resultString
+     * @param mBuffer
+     */
+    private static void getFaultInquiry(StringBuilder resultString, List<String> mBuffer) {
+        resultString.append(String.format(mBuffer.get(0) + "：<big><font color='blue'>%s</font></big><br/>", mBuffer.get(0).equals("A5") ? "合闸" : "跳闸"));
+        String type = "";
+        String str3 = "";
+        if (mBuffer.get(1).equals("00")) {
+            type = "速断";
+            str3 = "电流-" + mBuffer.get(2);
+        } else if (mBuffer.get(1).equals("01")) {
+            type = "过流";
+            str3 = "电流-" + mBuffer.get(2);
+        } else if (mBuffer.get(1).equals("02")) {
+            type = "零序";
+            str3 = "电流-" + mBuffer.get(2);
+        } else if (mBuffer.get(1).equals("03")) {
+            type = "费控";
+        } else if (mBuffer.get(1).equals("04")) {
+            type = "手动";
+        } else if (mBuffer.get(1).equals("05")) {
+            type = "远程";
+        } else if (mBuffer.get(1).equals("06")) {
+            type = "失压";
+            str3 = "电压-" + mBuffer.get(2);
+        }
+        resultString.append(String.format(mBuffer.get(1) + "：<big><font color='blue'>%s</font></big><br/>", type));
+        resultString.append(String.format(mBuffer.get(2) + "：<big><font color='blue'>%s</font></big><br/>", str3));
+        resultString.append(String.format("发生时间：%s年%s月%s日 %s时%s分%s秒<br/><br/>", mBuffer.get(8), mBuffer.get(7), mBuffer.get(6), mBuffer.get(5), mBuffer.get(4), mBuffer.get(3)));
+
     }
 
     private static void getDj(StringBuilder resultString, List<String> mBuffer) {
@@ -242,11 +340,12 @@ public class MyUtils {
 
 
     public static void main(String args[]) throws Exception {
-        // System.out.println(decodeHex367(42, " b6 01 b6 01 68 88 00 41 02 00 20 0c e1 01 01 01 04 34 11 07 09 16 04 00 13 02 39 00 00 21 48 06 00 00 65 54 07 00 00 31 39 14 00 00 94 59 10 00 44 18 05 00 45 91 00 00 65 86 00 00 18 81 01 00 14 59 01 00 ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee ee"));
+        //System.out.println(decodeHex367(50, "68 3A 07 3A 07 68 88 00 41 01 00 20 0C 65 00 00 01 18 A5 05 00 25 45 21 29 07 17 5A 05 00 18 45 21 29 07 17 A5 05 00 42 41 21 29 07 17 5A 05 00 00 00 21 29 07 17 5A 05 00 19 38 21 29 07 17 5A 04 00 13 38 21 29 07 17 5A 05 00 00 38 21 29 07 17 5A 05 00 48 37 21 29 07 17 5A 05 00 40 34 21 29 07 17 A5 05 00 26 34 21 29 07 17 5A 05 00 08 34 21 29 07 17 A5 05 00 08 34 21 29 07 17 5A 05 00 08 34 21 29 07 17 5A 05 00 03 34 21 29 07 17 A5 04 00 57 33 21 29 07 17 5A 04 00 53 33 21 29 07 17 5A 05 00 50 31 21 29 07 17 A5 05 00 35 31 21 29 07 17 A5 04 00 23 29 21 29 07 17 5A 04 00 23 29 21 29 07 17 A5 04 00 21 29 21 29 07 17 5A 04 00 21 29 21 29 07 17 A5 04 00 20 29 21 29 07 17 5A 04 00 19 29 21 29 07 17 A5 04 00 17 29 21 29 07 17 5A 04 00 16 29 21 29 07 17 A5 04 00 15 29 21 29 07 17 5A 04 00 14 29 21 29 07 17 A5 04 00 14 29 21 29 07 17 5A 04 00 12 29 21 29 07 17 A5 04 00 10 29 21 29 07 17 5A 04 00 10 29 21 29 07 17 5A 04 00 09 29 21 29 07 17 A5 04 00 09 29 21 29 07 17 5A 04 00 07 29 21 29 07 17 A5 04 00 07 29 21 29 07 17 5A 04 00 07 29 21 29 07 17 A5 04 00 50 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 F0 16"));
+        System.out.println(decodeHex367(51, "68 6A 00 6A 00 68 4A 00 00 FF FF 20 04 63 01 01 02 06 03 32 02 64 04 96 06 64 05 00 0A 14 3C 55 2C 16"));
         // System.out.println(decodeHex367(41, "68 5A 00 5A 00 68 88 00 41 01 00 20 0C E6 01 01 40 02 40 90 70 08 09 29 19 11 04 05 cf 16"));
         // System.out.println(changeDjStr("21.2345"));
-        "003C".replaceFirst("0", "");
-        System.out.println(Integer.valueOf("4", 16));
+        //"003C".replaceFirst("0", "");
+        // System.out.println(Integer.valueOf("4", 16));
     }
 
 

@@ -179,6 +179,10 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
                 }
                 userAllInfo.setPricingSize(pricings.size());
                 break;
+            case 7:
+                setToolbarTitle("定值设置二维码");
+                userAllInfo.setData(getIntent().getStringExtra("data"));
+                break;
         }
         userAllInfo.setEcodeType(type + "");
         createChineseQRCode(new Gson().toJson(userAllInfo));
