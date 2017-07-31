@@ -962,7 +962,13 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                 + " " + dzA2EtStr + " " + dzA2TEtStr
                 + " " + dzA3EtStr + " " + dzA3TEtStr
                 + " " + dzV1EtStr + " " + dzV1TEtStr + " " + dzS1EtStr
-                + " " + dzS2T1TEtStr + " " + dzS2T2TEtStr + " " + dzS2T3TEtStr + " " + dzS2EtStr + " 2C 16";
+                + " " + dzS2T1TEtStr + " " + dzS2T2TEtStr + " " + dzS2T3TEtStr + " " + dzS2EtStr;
+        String OperationStrTemp = "4A 00 00 FF FF 20 04 63 01 01 02 06 " + dzTimeStr + " " + dzA1EtStr + " " + dzA1TEtStr
+                + " " + dzA2EtStr + " " + dzA2TEtStr
+                + " " + dzA3EtStr + " " + dzA3TEtStr
+                + " " + dzV1EtStr + " " + dzV1TEtStr + " " + dzS1EtStr
+                + " " + dzS2T1TEtStr + " " + dzS2T2TEtStr + " " + dzS2T3TEtStr + " " + dzS2EtStr;
+        OperationStr = OperationStr + " " + MyUtils.getJyCode(OperationStrTemp) + " 16";
         sendTv.setText(OperationStr);
     }
 
