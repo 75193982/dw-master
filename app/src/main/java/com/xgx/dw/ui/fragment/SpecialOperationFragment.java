@@ -79,9 +79,10 @@ public class SpecialOperationFragment extends BaseFragment implements MyOnItemCl
         String currentUserType = LoginInformation.getInstance().getUser().getType();
         if (currentUserType.equals("20")) {
             localArrayList.add(new DummyContent(0, "合闸", "合闸", this.drawableInt[0]));
+            localArrayList.add(new DummyContent(1, "分闸", "分闸", this.drawableInt[1]));
             localArrayList.add(new DummyContent(7, "定值设置", "定值设置", this.drawableInt[6]));
 
-            //  localArrayList.add(new DummyContent(1, "分闸", "分闸", this.drawableInt[1]));
+
             // localArrayList.add(new DummyContent(6, "电费录入", "电费录入", this.drawableInt[6]));
         } else if (currentUserType.equals("30")) {
             localArrayList.add(new DummyContent(0, "合闸", "合闸", this.drawableInt[0]));
