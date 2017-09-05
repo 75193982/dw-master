@@ -58,7 +58,8 @@ public class BlueOperationContact {
     public final static String changeDbTemp = "68 FE 00 FE 00 68 6A 00 00 FF FF 21 04 E0 00 00 02 01 01 00 01 00 00 00 81 1E 00 00 00 00 00 00 00 00 00 00 00 00 04 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 42 11 08 03 05 7A 16";
     public final static String faultInquiryDbTemp = "68 32 00 32 00 68 4B 00 00 FF FF 20 0C 65 00 00 01 18 F3 16";
     public final static String dingzhiTemp = "68 32 00 32 00 68 6B 00 00 FF FF 20 0A 64 01 01 02 06 01 16";
-    public final static String dingzhiShezhiTemp = "68 6A 00 6A 00 68 4A 00 00 FF FF 20 04 63 01 01 02 06";
+
+    public final static String dingzhiShezhiTemp = "68 76 00 76 00 68 4A 00 00 FF FF 20 04 63 01 01 02 06";
 
     public static void reset() {
         //如果是管理员则 按00 00 FF FF 21来

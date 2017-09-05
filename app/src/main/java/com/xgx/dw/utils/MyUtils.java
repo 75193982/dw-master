@@ -155,7 +155,7 @@ public class MyUtils {
                 break;
             case 51://定值查询
                 try {
-                    mBuffer = mBuffer.subList(18, 33);
+                    mBuffer = mBuffer.subList(18, 36);
                     getDingzhi(resultString, mBuffer);
                 } catch (Exception e) {
                     resultString = new StringBuilder();
@@ -186,14 +186,18 @@ public class MyUtils {
      * @param mBuffer
      */
     private static void getDingzhi(StringBuilder resultString, List<String> mBuffer) {
-        resultString.append(String.format("零序跳闸时间：<big><font color='blue'>%ss</font></big><br/>", Integer.parseInt(mBuffer.get(0), 16)));
-        resultString.append(String.format("过流1段电流：<big><font color='blue'>%.1fA</font></big> <big><font color='blue'>%ss</font></big><br/>", Float.valueOf(Integer.parseInt(mBuffer.get(1), 16)) / 10, Integer.parseInt(mBuffer.get(2), 16)));
-        resultString.append(String.format("过流2段电流：<big><font color='blue'>%.1fA</font></big> <big><font color='blue'>%ss</font></big><br/>", Float.valueOf(Integer.parseInt(mBuffer.get(3), 16)) / 10, Integer.parseInt(mBuffer.get(4), 16)));
-        resultString.append(String.format("过流3段电流：<big><font color='blue'>%.1fA</font></big> <big><font color='blue'>%ss</font></big><br/>", Float.valueOf(Integer.parseInt(mBuffer.get(5), 16)) / 10, Integer.parseInt(mBuffer.get(6), 16)));
-        resultString.append(String.format("失压保护：<big><font color='blue'>%sV</font></big> <big><font color='blue'>%ss</font></big><br/><br/>", Integer.parseInt(mBuffer.get(7), 16) + "", Integer.parseInt(mBuffer.get(8), 16)));
-        resultString.append(String.format("失压保护：<big><font color='blue'>%s</font></big><br/>", mBuffer.get(9).equals("55") ? "投入" : "退出"));
-        resultString.append(String.format("重合闸：<big><font color='blue'>1-%ss</font></big> <big><font color='blue'>2-%ss</font></big> <big><font color='blue'>3-%ss</font></big><br/>", Integer.parseInt(mBuffer.get(10), 16) + "", Integer.parseInt(mBuffer.get(11), 16) + "", Integer.parseInt(mBuffer.get(12), 16) + ""));
-        resultString.append(String.format("重合闸：<big><font color='blue'>%s</font></big><br/>", mBuffer.get(13).equals("55") ? "投入" : "退出"));
+        resultString.append(String.format("速断电流：<big><font color='blue'>%.1fA</font></big>    <big><font color='blue'>%.1fs</font></big><br/>", Float.valueOf(Integer.parseInt(mBuffer.get(0), 16)) / 10, Float.valueOf(Integer.parseInt(mBuffer.get(1), 16)) / 10));
+        resultString.append(String.format("零序电流：<big><font color='blue'>%.1fA</font></big>    <big><font color='blue'>%.1fs</font></big><br/>", Float.valueOf(Integer.parseInt(mBuffer.get(2), 16)) / 10, Float.valueOf(Integer.parseInt(mBuffer.get(3), 16)) / 10));
+        resultString.append(String.format("过流1段电流：<big><font color='blue'>%.1fA</font></big>    <big><font color='blue'>%.1fs</font></big><br/>", Float.valueOf(Integer.parseInt(mBuffer.get(4), 16)) / 10, Float.valueOf(Integer.parseInt(mBuffer.get(5), 16)) / 10));
+        resultString.append(String.format("过流2段电流：<big><font color='blue'>%.1fA</font></big>    <big><font color='blue'>%.1fs</font></big><br/>", Float.valueOf(Integer.parseInt(mBuffer.get(6), 16)) / 10, Float.valueOf(Integer.parseInt(mBuffer.get(7), 16)) / 10));
+        resultString.append(String.format("过流3段电流：<big><font color='blue'>%.1fA</font></big>    <big><font color='blue'>%.1fs</font></big><br/>", Float.valueOf(Integer.parseInt(mBuffer.get(8), 16)) / 10, Float.valueOf(Integer.parseInt(mBuffer.get(9), 16)) / 10));
+        resultString.append(String.format("失压保护：<big><font color='blue'>%sV</font></big> <big>    <font color='blue'>%.1fs</font></big><br/><br/>", Integer.parseInt(mBuffer.get(10), 16) + "", Float.valueOf(Integer.parseInt(mBuffer.get(11), 16)) / 10));
+        resultString.append(String.format("失压保护：<big><font color='blue'>%s</font></big><br/>", mBuffer.get(12).equals("55") ? "投入" : "退出"));
+        resultString.append(String.format("重合闸：<big><font color='blue'>%s</font></big>  <big><font color='blue'>1-- %.1fs</font></big> <big><font color='blue'>2-- %.1fs</font></big> <big><font color='blue'>3-- %.1fs</font></big><br/>"
+                , mBuffer.get(16).equals("55") ? "投入" : "退出",
+                Float.valueOf(Integer.parseInt(mBuffer.get(13), 16))
+                , Float.valueOf(Integer.parseInt(mBuffer.get(14), 16))
+                , Float.valueOf(Integer.parseInt(mBuffer.get(15), 16))));
     }
 
     /**
@@ -211,23 +215,23 @@ public class MyUtils {
         String type = "";
         String str3 = "";
         if (mBuffer.get(1).equals("00")) {
-            type = "速断" + s;
-            str3 = "电流-" + String.format("%.1fA", Float.valueOf(Integer.parseInt(mBuffer.get(2), 16)) / 10);
+            type = "速断   " + s;
+            str3 = "电流 = " + String.format("%.1fA", Float.valueOf(Integer.parseInt(mBuffer.get(2), 16)) / 10);
         } else if (mBuffer.get(1).equals("01")) {
-            type = "过流" + s;
-            str3 = "电流-" + String.format("%.1fA", Float.valueOf(Integer.parseInt(mBuffer.get(2), 16)) / 10);
+            type = "过流   " + s;
+            str3 = "电流 = " + String.format("%.1fA", Float.valueOf(Integer.parseInt(mBuffer.get(2), 16)) / 10);
         } else if (mBuffer.get(1).equals("02")) {
-            type = "零序" + s;
-            str3 = "电流-" + String.format("%.1fA", Float.valueOf(Integer.parseInt(mBuffer.get(2), 16)) / 10);
+            type = "零序  " + s;
+            str3 = "电流 = " + String.format("%.1fA", Float.valueOf(Integer.parseInt(mBuffer.get(2), 16)) / 10);
         } else if (mBuffer.get(1).equals("03")) {
-            type = "费控" + s;
+            type = "费控  " + s;
         } else if (mBuffer.get(1).equals("04")) {
-            type = "手动" + s;
+            type = "手动  " + s;
         } else if (mBuffer.get(1).equals("05")) {
-            type = "远程" + s;
+            type = "远程  " + s;
         } else if (mBuffer.get(1).equals("06")) {
-            type = "失压" + s;
-            str3 = "电压-" + Integer.parseInt(mBuffer.get(2), 16) + "V";
+            type = "失压  " + s;
+            str3 = "电压 = " + Integer.parseInt(mBuffer.get(2), 16) + "V";
         }
         resultString.append(String.format(type + "：<big><font color='blue'>%s</font></big><br/>%s年%s月%s日 %s时%s分%s秒<br/><br/><br/>", str3, mBuffer.get(8), mBuffer.get(7), mBuffer.get(6), mBuffer.get(5), mBuffer.get(4), mBuffer.get(3)));
     }
@@ -335,7 +339,9 @@ public class MyUtils {
 
     public static void main(String args[]) throws Exception {
         //System.out.println(decodeHex367(50, "68 3A 07 3A 07 68 88 00 41 01 00 20 0C 65 00 00 01 18 A5 05 00 25 45 21 29 07 17 5A 05 00 18 45 21 29 07 17 A5 05 00 42 41 21 29 07 17 5A 05 00 00 00 21 29 07 17 5A 05 00 19 38 21 29 07 17 5A 04 00 13 38 21 29 07 17 5A 05 00 00 38 21 29 07 17 5A 05 00 48 37 21 29 07 17 5A 05 00 40 34 21 29 07 17 A5 05 00 26 34 21 29 07 17 5A 05 00 08 34 21 29 07 17 A5 05 00 08 34 21 29 07 17 5A 05 00 08 34 21 29 07 17 5A 05 00 03 34 21 29 07 17 A5 04 00 57 33 21 29 07 17 5A 04 00 53 33 21 29 07 17 5A 05 00 50 31 21 29 07 17 A5 05 00 35 31 21 29 07 17 A5 04 00 23 29 21 29 07 17 5A 04 00 23 29 21 29 07 17 A5 04 00 21 29 21 29 07 17 5A 04 00 21 29 21 29 07 17 A5 04 00 20 29 21 29 07 17 5A 04 00 19 29 21 29 07 17 A5 04 00 17 29 21 29 07 17 5A 04 00 16 29 21 29 07 17 A5 04 00 15 29 21 29 07 17 5A 04 00 14 29 21 29 07 17 A5 04 00 14 29 21 29 07 17 5A 04 00 12 29 21 29 07 17 A5 04 00 10 29 21 29 07 17 5A 04 00 10 29 21 29 07 17 5A 04 00 09 29 21 29 07 17 A5 04 00 09 29 21 29 07 17 5A 04 00 07 29 21 29 07 17 A5 04 00 07 29 21 29 07 17 5A 04 00 07 29 21 29 07 17 A5 04 00 50 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 5A 04 00 49 22 21 29 07 17 F0 16"));
-        System.out.println(decodeHex367(51, "68 6a 00 6a 00 68 88 74 03 cb 27 20 0a 64 01 01 02 06 01 0c 05 0c 05 0c 05 37 00 00 05 0a 0f 00 12 16"));
+        // System.out.println(decodeHex367(51, "68 6a 00 6a 00 68 88 74 03 cb 27 20 0a 64 01 01 02 06 01 0c 05 0c 05 0c 05 37 00 00 05 0a 0f 00 12 16"));
+        System.out.println(decodeHex367(51, "68 76 00 76 00 68 4A 00 00 FF FF 20 04 63 01 01 02 06 EE EE EE 03 32 02 64 04 96 06 64 05 00 0A 14 3C 55 F6 16"));
+
         // System.out.println(decodeHex367(41, "68 5A 00 5A 00 68 88 00 41 01 00 20 0C E6 01 01 40 02 40 90 70 08 09 29 19 11 04 05 cf 16"));
         // System.out.println(changeDjStr("21.2345"));
         //"003C".replaceFirst("0", "");

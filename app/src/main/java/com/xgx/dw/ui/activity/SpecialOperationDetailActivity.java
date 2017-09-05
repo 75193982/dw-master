@@ -15,6 +15,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -81,8 +82,6 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
     MaterialEditText tzEt;
     @Bind(R.id.inputDianfeiLayout)
     LinearLayout inputDianfeiLayout;
-    @Bind(R.id.dzTimeEt)
-    MaterialEditText dzTimeEt;
     @Bind(R.id.dzA1Et)
     MaterialEditText dzA1Et;
     @Bind(R.id.dzA1TEt)
@@ -113,6 +112,16 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
     TextView saveTvTv;
     @Bind(R.id.dingzhi)
     LinearLayout dingzhi;
+    @Bind(R.id.sdEt)
+    MaterialEditText sdEt;
+    @Bind(R.id.sdTimeEt)
+    MaterialEditText sdTimeEt;
+    @Bind(R.id.lxEt)
+    MaterialEditText lxEt;
+    @Bind(R.id.lxTimeEt)
+    MaterialEditText lxTimeEt;
+    @Bind(R.id.action_saveecode)
+    LinearLayout actionSaveecode;
     private String beilvType = "4A";
     private int beilvNum = 0;
     private final static String MY_UUID = "00001101-0000-1000-8000-00805F9B34FB";   //SPP服务UUID号
@@ -197,7 +206,10 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         gdlEt.addTextChangedListener(new MyDlTextWather());
         bjEt.addTextChangedListener(new MyDlTextWather());
         tzEt.addTextChangedListener(new MyDlTextWather());
-        dzTimeEt.addTextChangedListener(new MyDzWather());
+        lxTimeEt.addTextChangedListener(new MyDzWather());
+        lxEt.addTextChangedListener(new MyDzWather());
+        sdEt.addTextChangedListener(new MyDzWather());
+        sdTimeEt.addTextChangedListener(new MyDzWather());
         dzA1Et.addTextChangedListener(new MyDzWather());
         dzA1TEt.addTextChangedListener(new MyDzWather());
         dzA2Et.addTextChangedListener(new MyDzWather());
@@ -927,7 +939,10 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
     private void changDzStr() {
         OperationStr = BlueOperationContact.dingzhiShezhiTemp;
         //零序跳闸时间
-        String dzTimeStr = "";
+        String lxTimeStr = "";
+        String lxStr = "";
+        String sdTimeStr = "";
+        String sdStr = "";
         String dzA1EtStr = "";
         String dzA1TEtStr = "";
         String dzA2EtStr = "";
@@ -941,7 +956,10 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         String dzS2T3TEtStr = "";
         String dzS1EtStr = "";
         String dzS2EtStr = "";
-        dzTimeStr = getTimeEt(dzTimeEt);//零序跳闸时间3s
+        sdStr = getDlEt(sdEt);
+        sdTimeStr = getTimeEt(sdTimeEt);
+        lxStr = getDlEt(lxEt);
+        lxTimeStr = getTimeEt(lxTimeEt);//零序跳闸时间3s
         dzA1EtStr = getDlEt(dzA1Et);
         dzA2EtStr = getDlEt(dzA2Et);
         dzA3EtStr = getDlEt(dzA3Et);
@@ -950,20 +968,24 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         dzA1TEtStr = getTimeEt(dzA1TEt);
         dzA2TEtStr = getTimeEt(dzA2TEt);
         dzA3TEtStr = getTimeEt(dzA3TEt);
-        dzA2TEtStr = getTimeEt(dzA2TEt);
-        dzA3TEtStr = getTimeEt(dzA3TEt);
-        dzS2T1TEtStr = getTimeEt(dzS2T1Et);
-        dzS2T2TEtStr = getTimeEt(dzS2T2Et);
-        dzS2T3TEtStr = getTimeEt(dzS2T3Et);
+        dzS2T1TEtStr = getTimeEt1(dzS2T1Et);
+        dzS2T2TEtStr = getTimeEt1(dzS2T2Et);
+        dzS2T3TEtStr = getTimeEt1(dzS2T3Et);
         dzV1TEtStr = getTimeEt(dzV1TEt);
         dzS1EtStr = dzS1Et.isChecked() ? "55" : "00";
         dzS2EtStr = dzS2Et.isChecked() ? "55" : "00";
-        OperationStr = OperationStr + " " + dzTimeStr + " " + dzA1EtStr + " " + dzA1TEtStr
+        OperationStr = OperationStr
+                + " " + sdStr + " " + sdTimeStr
+                + " " + lxStr + " " + lxTimeStr
+                + " " + dzA1EtStr + " " + dzA1TEtStr
                 + " " + dzA2EtStr + " " + dzA2TEtStr
                 + " " + dzA3EtStr + " " + dzA3TEtStr
                 + " " + dzV1EtStr + " " + dzV1TEtStr + " " + dzS1EtStr
                 + " " + dzS2T1TEtStr + " " + dzS2T2TEtStr + " " + dzS2T3TEtStr + " " + dzS2EtStr;
-        String OperationStrTemp = "4A 00 00 FF FF 20 04 63 01 01 02 06 " + dzTimeStr + " " + dzA1EtStr + " " + dzA1TEtStr
+        String OperationStrTemp = "4A 00 00 FF FF 20 04 63 01 01 02 06"
+                + " " + sdStr + " " + sdTimeStr
+                + " " + lxStr + " " + lxTimeStr
+                + " " + dzA1EtStr + " " + dzA1TEtStr
                 + " " + dzA2EtStr + " " + dzA2TEtStr
                 + " " + dzA3EtStr + " " + dzA3TEtStr
                 + " " + dzV1EtStr + " " + dzV1TEtStr + " " + dzS1EtStr
@@ -996,28 +1018,28 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         String dl = "00";
 
         try {
-            if (Double.valueOf(et.getText().toString()) < 26 && Double.valueOf(et.getText().toString()) > 0) {
+            if (Double.valueOf(et.getText().toString()) < 26) {
                 dl = Integer.toHexString((int) (Double.valueOf(et.getText().toString()) * 10));
                 if (dl.length() == 1) {
                     dl = "0" + dl;
                 }
 
             } else {
-                showToast("无法设置超过0-25的电流");
+                showToast("无法设置超过25的电流");
                 et.setText("");
             }
         } catch (Exception e) {
-
+            Log.i("xgx", e.getMessage());
         }
 
         return dl;
     }
 
-    private String getTimeEt(MaterialEditText et) {
+    private String getTimeEt1(MaterialEditText et) {
         String tzTime = "00";
         try {
-            if (Integer.valueOf(et.getText().toString()) > 100) {
-                showToast("无法设置超过100秒");
+            if (Float.valueOf(et.getText().toString()) > 255) {
+                showToast("无法设置超过255秒");
                 et.setText("");
             } else {
                 tzTime = Integer.toHexString(Integer.valueOf(et.getText().toString()));
@@ -1026,7 +1048,26 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                 }
             }
         } catch (Exception e) {
+            Log.i("xgx", e.getMessage());
+        }
 
+        return tzTime;
+    }
+
+    private String getTimeEt(MaterialEditText et) {
+        String tzTime = "00";
+        try {
+            if (Float.valueOf(et.getText().toString()) * 10 > 255) {
+                showToast("无法设置超过25.5秒");
+                et.setText("");
+            } else {
+                tzTime = Integer.toHexString((int) (Float.valueOf(et.getText().toString()) * 10));
+                if (tzTime.length() == 1) {
+                    tzTime = "0" + tzTime;
+                }
+            }
+        } catch (Exception e) {
+            Log.i("xgx", e.getMessage());
         }
 
         return tzTime;
