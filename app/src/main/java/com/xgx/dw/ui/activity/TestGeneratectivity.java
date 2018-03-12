@@ -45,20 +45,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class TestGeneratectivity extends BaseAppCompatActivity {
-    @Bind(R.id.iv_chinese)
+    @BindView(R.id.iv_chinese)
     ImageView mChineseIv;
-    @Bind(R.id.iv_english)
+    @BindView(R.id.iv_english)
     ImageView mEnglishIv;
-    @Bind(R.id.iv_chinese_logo)
+    @BindView(R.id.iv_chinese_logo)
     ImageView mChineseLogoIv;
-    @Bind(R.id.iv_english_logo)
+    @BindView(R.id.iv_english_logo)
     ImageView mEnglishLogoIv;
-    @Bind(R.id.decode_isbn)
+    @BindView(R.id.decode_isbn)
     TextView decodeIsbn;
     private int type;
 

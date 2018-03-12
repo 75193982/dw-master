@@ -43,35 +43,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IUserView, Toolbar.OnMenuItemClickListener {
-    @Bind(R.id.imeTv)
+    @BindView(R.id.imeTv)
     MaterialEditText imeTv;
-    @Bind(R.id.store_spinner)
+    @BindView(R.id.store_spinner)
     MaterialSpinner storeSpinner;
-    @Bind(R.id.store_layout)
+    @BindView(R.id.store_layout)
     LinearLayout storeLayout;
-    @Bind(R.id.transformer_spinner)
+    @BindView(R.id.transformer_spinner)
     MaterialSpinner transformerSpinner;
-    @Bind(R.id.transformer_layout)
+    @BindView(R.id.transformer_layout)
     LinearLayout transformerLayout;
-    @Bind(R.id.user_id)
+    @BindView(R.id.user_id)
     MaterialEditText userId;
-    @Bind(R.id.user_name)
+    @BindView(R.id.user_name)
     MaterialEditText userName;
-    @Bind(R.id.voltageRatio)
+    @BindView(R.id.voltageRatio)
     MaterialEditText voltageRatio;
-    @Bind(R.id.currentRatio)
+    @BindView(R.id.currentRatio)
     MaterialEditText currentRatio;
-    @Bind(R.id.price)
+    @BindView(R.id.price)
     TextView price;
-    @Bind(R.id.phone)
+    @BindView(R.id.phone)
     MaterialEditText phone;
-    @Bind(R.id.action_save)
+    @BindView(R.id.action_save)
     LinearLayout actionSave;
     private IUserPresenter presenter;
     private List<StoreBean> storebeans;
@@ -82,14 +82,17 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
     private boolean isFirst;
     private boolean isSave;
 
+    @Override
     public void initContentView() {
         baseSetContentView(R.layout.activity_create_user_three);
     }
 
+    @Override
     public void initPresenter() {
         presenter = new UserPresenterImpl();
     }
 
+    @Override
     public void initView() {
         getToolbar().setOnMenuItemClickListener(this);
         String ime = getIntent().getStringExtra("ime");
@@ -200,6 +203,7 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
 
     private void setOnItemSelected() {
         storeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
             public void onItemSelected(AdapterView<?> paramAnonymousAdapterView, View paramAnonymousView, int position, long paramAnonymousLong) {
                 if (position != -1) {
                     String id = storebeans.get(position).getId();
@@ -217,6 +221,7 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
 
             }
 
+            @Override
             public void onNothingSelected(AdapterView<?> paramAnonymousAdapterView) {
             }
         });
@@ -305,6 +310,7 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
         this.presenter.saveUser(this, userBean, 20, isSave);
     }
 
+    @Override
     public void saveTransformer(boolean paramBoolean, String id) {
         hideProgress();
         if (paramBoolean) {
@@ -342,6 +348,7 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
     }
 
 
+    @Override
     public boolean onCreateOptionsMenu(Menu paramMenu) {
         if (bean != null && !TextUtils.isEmpty(bean.getUserId())) {
             getMenuInflater().inflate(R.menu.menu_erweima1, paramMenu);
@@ -350,6 +357,7 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
     }
 
 
+    @Override
     public boolean onMenuItemClick(MenuItem paramMenuItem) {
         switch (paramMenuItem.getItemId()) {
             case R.id.action_showerweima:

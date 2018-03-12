@@ -36,26 +36,28 @@ import com.xgx.dw.utils.MyStringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class UserMgrActivity extends BaseAppCompatActivity implements IUserListView, OnMenuItemClickListener {
     private static int REFRESH_RECYCLERVIEW = 0;
-    @Bind(R.id.query)
+    @BindView(R.id.query)
     EditText query;
-    @Bind(R.id.numTv)
+    @BindView(R.id.numTv)
     TextView numTv;
     private UserAdapter adapter;
     private List<UserBean> beans;
     private IUserPresenter presenter;
-    @Bind({R.id.list})
+    @BindView(R.id.list)
     RecyclerView recyclerView;
     private String currentUserType;
 
+    @Override
     public void initContentView() {
         super.baseSetContentView(R.layout.activity_user_mgr);
     }
 
+    @Override
     public void initPresenter() {
 
         presenter = new UserPresenterImpl();
@@ -63,6 +65,7 @@ public class UserMgrActivity extends BaseAppCompatActivity implements IUserListV
         presenter.searchUser(this);
     }
 
+    @Override
     public void initView() {
         getSupportActionBar().setTitle(R.string.user_one);
         getToolbar().setOnMenuItemClickListener(this);
@@ -182,6 +185,7 @@ public class UserMgrActivity extends BaseAppCompatActivity implements IUserListV
         }
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu paramMenu) {
         getMenuInflater().inflate(R.menu.menu_user_create, paramMenu);
         Setting setting = new Setting(this);
@@ -198,6 +202,7 @@ public class UserMgrActivity extends BaseAppCompatActivity implements IUserListV
     }
 
 
+    @Override
     public boolean onMenuItemClick(MenuItem paramMenuItem) {
         Intent intent = new Intent();
         switch (paramMenuItem.getItemId()) {

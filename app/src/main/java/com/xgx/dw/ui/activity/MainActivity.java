@@ -60,7 +60,7 @@ import com.xgx.dw.vo.response.UpdateVersionResult;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
@@ -70,47 +70,47 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class MainActivity extends BaseActivity implements IMainView, IUserView {
 
     private final String ACTION_FILTER = "com.xgx.dw.main";
-    @Bind(R.id.wei_xin_s)
+    @BindView(R.id.wei_xin_s)
     ImageView weiXinS;
-    @Bind(R.id.tab_weiXin)
+    @BindView(R.id.tab_weiXin)
     TextView tabWeiXin;
-    @Bind(R.id.tab_weiXin_s)
+    @BindView(R.id.tab_weiXin_s)
     TextView tabWeiXinS;
-    @Bind(R.id.ll_wx)
+    @BindView(R.id.ll_wx)
     LinearLayout llWx;
-    @Bind(R.id.address_book_s)
+    @BindView(R.id.address_book_s)
     ImageView addressBookS;
-    @Bind(R.id.tab_address)
+    @BindView(R.id.tab_address)
     TextView tabAddress;
-    @Bind(R.id.tab_address_s)
+    @BindView(R.id.tab_address_s)
     TextView tabAddressS;
-    @Bind(R.id.ll_address)
+    @BindView(R.id.ll_address)
     LinearLayout llAddress;
-    @Bind(R.id.find_s)
+    @BindView(R.id.find_s)
     ImageView findS;
-    @Bind(R.id.tab_find)
+    @BindView(R.id.tab_find)
     TextView tabFind;
-    @Bind(R.id.tab_find_s)
+    @BindView(R.id.tab_find_s)
     TextView tabFindS;
-    @Bind(R.id.ll_find)
+    @BindView(R.id.ll_find)
     LinearLayout llFind;
-    @Bind(R.id.me_s)
+    @BindView(R.id.me_s)
     ImageView meS;
-    @Bind(R.id.tab_me)
+    @BindView(R.id.tab_me)
     TextView tabMe;
-    @Bind(R.id.tab_me_s)
+    @BindView(R.id.tab_me_s)
     TextView tabMeS;
-    @Bind(R.id.ll_me)
+    @BindView(R.id.ll_me)
     LinearLayout llMe;
-    @Bind(R.id.ll_tab)
+    @BindView(R.id.ll_tab)
     LinearLayout llTab;
-    @Bind(R.id.line)
+    @BindView(R.id.line)
     View line;
-    @Bind(R.id.viewPage)
+    @BindView(R.id.viewPage)
     ViewPager viewPage;
-    @Bind(R.id.coordinatorLayout)
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
-    @Bind(R.id.fab)
+    @BindView(R.id.fab)
     FloatingActionButton fab;
     private List<ImageView> mListImage = new ArrayList();
     private List<TextView> mListText = new ArrayList();
@@ -123,6 +123,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
         return fab;
     }
 
+    @Override
     public void checkVersionCallBack(UploadResponse paramUpdateVersionResult) {
         try {
             Intent localIntent = new Intent(this, UploadDialogActivity.class);
@@ -156,19 +157,23 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
 
     }
 
+    @Override
     public void initContentView() {
         setContentView(R.layout.activity_main);
     }
 
+    @Override
     public void initPresenter() {
         mMainPresenter = new MainPresenterImpl(this);
     }
 
+    @Override
     public void initView() {
 
         fab.setVisibility(View.VISIBLE);
         fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_erweima_searching_black_24dp));
         fab.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), CaptureActivity.class);
                 startActivityForResult(intent, REQUEST_CODE);
@@ -229,6 +234,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
         mMainPresenter.switchNavigation(paramView.getId());
     }
 
+    @Override
     protected void onResume() {
         super.onResume();
     }
@@ -239,9 +245,11 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
 
     public void setViewPageListener() {
         viewPage.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
             public void onPageScrollStateChanged(int paramAnonymousInt) {
             }
 
+            @Override
             public void onPageScrolled(int paramAnonymousInt1, float paramAnonymousFloat, int paramAnonymousInt2) {
                 if (paramAnonymousFloat > 0.0F) {
                     ((ImageView) MainActivity.this.mListImage.get(paramAnonymousInt1)).setAlpha(1.0F - paramAnonymousFloat);
@@ -251,6 +259,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                 }
             }
 
+            @Override
             public void onPageSelected(int paramAnonymousInt) {
                 if (MainActivity.this.mListText.get(paramAnonymousInt).getText().toString().equals("特殊操作")) {
                     final Setting setting = new Setting(getContext());
@@ -262,6 +271,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                     }
 
                     fab.setOnClickListener(new View.OnClickListener() {
+                        @Override
                         public void onClick(View view) {
                             if (MainActivity.this.mOnFABClickListener != null) {
                                 MainActivity.this.mOnFABClickListener.OnFABClickListener(view);
@@ -278,6 +288,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                         }
                     });
                     ViewCompat.animate(fab).scaleX(1.0F).scaleY(1.0F).setInterpolator(new LinearOutSlowInInterpolator()).setListener(new ViewPropertyAnimatorListenerAdapter() {
+                        @Override
                         public void onAnimationEnd(View paramAnonymous2View) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                                 if ((MainActivity.this.isFinishing()) || ((ApiLevelHelper.isAtLeast(17)) && (MainActivity.this.isDestroyed()))) {
@@ -291,12 +302,14 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                 } else if (MainActivity.this.mListText.get(paramAnonymousInt).getText().toString().equals("资料管理")) {
                     fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_erweima_searching_black_24dp));
                     fab.setOnClickListener(new View.OnClickListener() {
+                        @Override
                         public void onClick(View view) {
                             Intent intent = new Intent(getContext(), CaptureActivity.class);
                             startActivityForResult(intent, REQUEST_CODE);
                         }
                     });
                     ViewCompat.animate(fab).scaleX(1.0F).scaleY(1.0F).setInterpolator(new LinearOutSlowInInterpolator()).setListener(new ViewPropertyAnimatorListenerAdapter() {
+                        @Override
                         public void onAnimationEnd(View paramAnonymous2View) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                                 if ((MainActivity.this.isFinishing()) || ((ApiLevelHelper.isAtLeast(17)) && (MainActivity.this.isDestroyed()))) {
@@ -309,12 +322,14 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                 } else if (MainActivity.this.mListText.get(paramAnonymousInt).getText().toString().equals("用户购电")) {
                     fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_erweima_searching_black_24dp));
                     fab.setOnClickListener(new View.OnClickListener() {
+                        @Override
                         public void onClick(View view) {
                             Intent intent = new Intent(getContext(), CaptureActivity.class);
                             startActivityForResult(intent, REQUEST_CODE);
                         }
                     });
                     ViewCompat.animate(fab).scaleX(1.0F).scaleY(1.0F).setInterpolator(new LinearOutSlowInInterpolator()).setListener(new ViewPropertyAnimatorListenerAdapter() {
+                        @Override
                         public void onAnimationEnd(View paramAnonymous2View) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                                 if ((MainActivity.this.isFinishing()) || ((ApiLevelHelper.isAtLeast(17)) && (MainActivity.this.isDestroyed()))) {
@@ -326,6 +341,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                     }).start();
                 } else {
                     ViewCompat.animate(fab).scaleX(0.0F).scaleY(0.0F).setInterpolator(new FastOutSlowInInterpolator()).setStartDelay(100L).setListener(new ViewPropertyAnimatorListenerAdapter() {
+                        @Override
                         public void onAnimationEnd(View paramAnonymous2View) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                                 if ((MainActivity.this.isFinishing()) || ((ApiLevelHelper.isAtLeast(17)) && (MainActivity.this.isDestroyed()))) {
@@ -340,6 +356,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
         });
     }
 
+    @Override
     public void switchAddressBook() {
         if ("20,30,32".contains(currentUserType)) {
             viewPage.setCurrentItem(0, false);
@@ -350,6 +367,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
         tabAddressS.setAlpha(1.0F);
     }
 
+    @Override
     public void switchAlpha(int paramInt) {
         for (int i = 0; i < viewId.length; i++) {
             if (paramInt != viewId[i]) {
@@ -359,6 +377,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
         }
     }
 
+    @Override
     public void switchFind() {
         if ("31".contains(currentUserType)) {
             viewPage.setCurrentItem(0, false);
@@ -372,6 +391,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
         tabFindS.setAlpha(1.0F);
     }
 
+    @Override
     public void switchMe() {
         if ("20,30,32".contains(currentUserType)) {
             viewPage.setCurrentItem(2, false);
@@ -382,6 +402,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
         tabMeS.setAlpha(1.0F);
     }
 
+    @Override
     public void switchWX() {
         viewPage.setCurrentItem(0, false);
         weiXinS.setAlpha(1.0F);
@@ -399,6 +420,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
         public MainBoradcastReceiver() {
         }
 
+        @Override
         public void onReceive(Context paramContext, Intent paramIntent) {
         }
     }

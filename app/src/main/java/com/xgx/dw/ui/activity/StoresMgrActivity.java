@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
@@ -34,19 +34,22 @@ public class StoresMgrActivity extends BaseAppCompatActivity implements IStoresV
     private StoresAdapter adapter;
     private List<StoreBean> beans;
     private IStoresPresenter presenter;
-    @Bind({R.id.list})
+    @BindView(R.id.list)
     RecyclerView recyclerView;
 
+    @Override
     public void initContentView() {
         super.baseSetContentView(R.layout.activity_stores_mgr);
     }
 
+    @Override
     public void initPresenter() {
         this.presenter = new StorePresenterImpl();
         StoresRequest localStoresRequest = new StoresRequest();
         this.presenter.searchStores(this, localStoresRequest);
     }
 
+    @Override
     public void initView() {
         getSupportActionBar().setTitle(R.string.stores);
         getToolbar().setOnMenuItemClickListener(this);
@@ -69,6 +72,7 @@ public class StoresMgrActivity extends BaseAppCompatActivity implements IStoresV
         });
     }
 
+    @Override
     protected void onActivityResult(int paramInt1, int paramInt2, Intent paramIntent) {
         super.onActivityResult(paramInt1, paramInt2, paramIntent);
         if (paramInt1 == REFRESH_RECYCLERVIEW) {
@@ -77,12 +81,14 @@ public class StoresMgrActivity extends BaseAppCompatActivity implements IStoresV
         }
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu paramMenu) {
         getMenuInflater().inflate(R.menu.menu_main, paramMenu);
         return true;
     }
 
 
+    @Override
     public boolean onMenuItemClick(MenuItem paramMenuItem) {
         switch (paramMenuItem.getItemId()) {
             case R.id.action_save:
@@ -92,6 +98,7 @@ public class StoresMgrActivity extends BaseAppCompatActivity implements IStoresV
         return true;
     }
 
+    @Override
     public void searchStores(List<StoreBean> paramList) {
         this.beans = paramList;
         this.adapter.setNewData(this.beans);

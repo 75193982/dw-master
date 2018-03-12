@@ -26,24 +26,25 @@ import com.xgx.dw.bean.MySection;
 import java.util.ArrayList;
 import java.util.Set;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class DeviceListNewActivity extends BaseAppCompatActivity {
 
 
-    @Bind(R.id.deviceRecyclerView)
+    @BindView(R.id.deviceRecyclerView)
     RecyclerView deviceRecyclerView;
-    @Bind(R.id.button_scan)
+    @BindView(R.id.button_scan)
     LinearLayout buttonScan;
-    @Bind(R.id.scanTv)
+    @BindView(R.id.scanTv)
     TextView scanTv;
     private DeviceListAdapter deviceListAdapter;
     ArrayList<MySection> mySectionList;
     private ArrayList<MySection> myBondedList;
     private ArrayList<MySection> myFoundList;
 
+    @Override
     public void initContentView() {
         baseSetContentView(R.layout.activity_device_list);
     }
@@ -59,6 +60,7 @@ public class DeviceListNewActivity extends BaseAppCompatActivity {
         unregisterReceiver(mReceiver);
     }
 
+    @Override
     public void initPresenter() {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         // 获取所有已经绑定的蓝牙设备

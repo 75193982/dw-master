@@ -23,15 +23,15 @@ import com.xgx.dw.dao.SearchDlDaoHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by Administrator on 2016/10/16 0016.
  */
 public class SearchLogListActivity extends BaseAppCompatActivity {
-    @Bind(R.id.recyclerView)
+    @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
-    @Bind(R.id.numTv)
+    @BindView(R.id.numTv)
     TextView numTv;
     SearchLogListAdapter adapter;
     private List<SearchDlLog> beans;

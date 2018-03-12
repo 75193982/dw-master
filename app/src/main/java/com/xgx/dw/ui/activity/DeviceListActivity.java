@@ -64,6 +64,7 @@ public class DeviceListActivity extends BaseAppCompatActivity {
         setToolbarTitle("搜索设备");   // 设定扫描按键响应
         Button scanButton = (Button) findViewById(R.id.button_scan);
         scanButton.setOnClickListener(new OnClickListener() {
+            @Override
             public void onClick(View v) {
                 doDiscovery();
                 v.setVisibility(View.GONE);
@@ -123,7 +124,9 @@ public class DeviceListActivity extends BaseAppCompatActivity {
      * 开始服务和设备查找
      */
     private void doDiscovery() {
-        if (D) Log.d(TAG, "doDiscovery()");
+        if (D) {
+            Log.d(TAG, "doDiscovery()");
+        }
 
         // 在窗口显示查找中信息
         setProgressBarIndeterminateVisibility(true);
@@ -142,6 +145,7 @@ public class DeviceListActivity extends BaseAppCompatActivity {
 
     // 选择设备响应函数
     private OnItemClickListener mDeviceClickListener = new OnItemClickListener() {
+        @Override
         public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
             // 准备连接设备，关闭服务查找
             mBtAdapter.cancelDiscovery();

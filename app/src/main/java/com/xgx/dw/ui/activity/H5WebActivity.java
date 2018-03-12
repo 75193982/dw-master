@@ -31,10 +31,10 @@ import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 public class H5WebActivity extends BaseAppCompatActivity {
-    @Bind(R.id.ccwebview)
+    @BindView(R.id.ccwebview)
     WebView webview;
     private static final String TAG = "H5WebActivity";
     private String url = "";

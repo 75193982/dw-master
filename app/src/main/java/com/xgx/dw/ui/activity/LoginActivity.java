@@ -52,7 +52,7 @@ import com.xgx.dw.vo.request.LoginRequest;
 import java.util.List;
 import java.util.UUID;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
@@ -61,27 +61,29 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class LoginActivity extends BaseAppCompatActivity implements ILoginView, EasyPermissions.PermissionCallbacks, PopupMenu.OnMenuItemClickListener {
     ILoginPresenter loginPresenter;
-    @Bind(R.id.login_username)
+    @BindView(R.id.login_username)
     EditText loginUsername;
-    @Bind(R.id.login_password)
+    @BindView(R.id.login_password)
     EditText loginPassword;
-    @Bind(R.id.login_btn)
+    @BindView(R.id.login_btn)
     Button loginBtn;
     private static final int REQUEST_CODE_QRCODE_PERMISSIONS = 1;
-    @Bind(R.id.login_register)
+    @BindView(R.id.login_register)
     TextView loginRegister;
-    @Bind(R.id.login_forget)
+    @BindView(R.id.login_forget)
     TextView loginForget;
-    @Bind(R.id.login_from)
+    @BindView(R.id.login_from)
     TextView loginFrom;
 
     private PopupMenu popupMenu;
 
 
+    @Override
     public void initContentView() {
         baseSetContentView(R.layout.activity_login);
     }
 
+    @Override
     public void initPresenter() {
         setToolbarTitle("登录");
         Thread t = new Thread() {
@@ -93,7 +95,7 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                 boolean isInit = setting.loadBoolean("isInit");
                 if (!isInit) {
                     UserBean localUserBean = new UserBean("0", "admin", "超级管理员", "888888", "admin", "867628025884339");
-                    UserBean localUserBean2 = new UserBean("1", "666666", "超级管理员", "888888", "admin", "867567020720108");
+                    UserBean localUserBean2 = new UserBean("1", "666666", "超级管理员", "888888", "admin", "866703036809590");
 //        UserBean localUserBean10 = new UserBean("4101001", "一级营业厅管理员", "888888", "10");
 //        UserBean localUserBean11 = new UserBean("4101101", "一级台区管理员", "888888", "11");
 //        UserBean localUserBean2 = new UserBean("4102001", "二级账户", "888888", "20");
@@ -111,6 +113,7 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
         this.loginPresenter = new LoginPresenterImpl();
     }
 
+    @Override
     public void initView() {
         Setting setting = new Setting(this);
         String username = setting.loadString(G.currentUsername);
@@ -120,6 +123,7 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
 
     }
 
+    @Override
     public void loginCallback(UserBean userBean) {
         //登录成功后，将登录信息保存到偏好设置中
         setLoginInfomation(userBean);

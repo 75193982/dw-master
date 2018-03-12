@@ -19,34 +19,37 @@ import com.xgx.dw.ui.view.interfaces.ICreateTransformerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class CreateTransformerAcvitity extends BaseAppCompatActivity implements ICreateTransformerView {
 
-    @Bind(R.id.spinner)
+    @BindView(R.id.spinner)
     MaterialSpinner spinner;
-    @Bind(R.id.transformer_id)
+    @BindView(R.id.transformer_id)
     MaterialEditText transformerId;
-    @Bind(R.id.transformer_name)
+    @BindView(R.id.transformer_name)
     MaterialEditText transformerName;
-    @Bind(R.id.action_save)
+    @BindView(R.id.action_save)
     LinearLayout actionSave;
     private TransformerPresenterImpl presenter;
     private List<StoreBean> storebeans;
     private TransformerBean bean;
 
 
+    @Override
     public void initContentView() {
         baseSetContentView(R.layout.activity_create_transformer);
     }
 
+    @Override
     public void initPresenter() {
         presenter = new TransformerPresenterImpl();
     }
 
+    @Override
     public void initView() {
         Setting setting = new Setting(this);
         String currentUserType = setting.loadString(G.currentUserType);
@@ -106,6 +109,7 @@ public class CreateTransformerAcvitity extends BaseAppCompatActivity implements 
         this.presenter.saveTransformer(this, localTransformerBean, false);
     }
 
+    @Override
     public void saveTransformer(boolean paramBoolean) {
         hideProgress();
         if (paramBoolean) {

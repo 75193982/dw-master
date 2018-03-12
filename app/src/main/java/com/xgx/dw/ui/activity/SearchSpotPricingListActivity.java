@@ -26,20 +26,22 @@ import com.xgx.dw.ui.view.interfaces.ISpotPricingView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 public class SearchSpotPricingListActivity extends BaseAppCompatActivity implements ISpotPricingView {
     private static int REFRESH_RECYCLERVIEW = 0;
     private SpotPricingAdapter adapter;
     private List<SpotPricingBean> beans;
     private ISpotPricingPresenter presenter;
-    @Bind({R.id.list})
+    @BindView(R.id.list)
     RecyclerView recyclerView;
 
+    @Override
     public void initContentView() {
         baseSetContentView(R.layout.activity_spot_pricing);
     }
 
+    @Override
     public void initPresenter() {
         String storeId = LoginInformation.getInstance().getUser().getStoreId();
         if (TextUtils.isEmpty(storeId)) {
@@ -49,6 +51,7 @@ public class SearchSpotPricingListActivity extends BaseAppCompatActivity impleme
         }
     }
 
+    @Override
     public void initView() {
         getSupportActionBar().setTitle(R.string.spotpricing);
         this.beans = new ArrayList();
@@ -70,11 +73,13 @@ public class SearchSpotPricingListActivity extends BaseAppCompatActivity impleme
         });
     }
 
+    @Override
     protected void onActivityResult(int paramInt1, int paramInt2, Intent paramIntent) {
         super.onActivityResult(paramInt1, paramInt2, paramIntent);
     }
 
 
+    @Override
     public void searchSpotPricing(List<SpotPricingBean> paramList) {
         this.beans = paramList;
         this.adapter.setNewData(this.beans);

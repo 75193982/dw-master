@@ -28,30 +28,30 @@ import com.xgx.dw.ui.view.interfaces.IUserView;
 import java.util.List;
 import java.util.UUID;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class CreateUserTwoAcvitity extends BaseAppCompatActivity implements IUserView, Toolbar.OnMenuItemClickListener {
-    @Bind(R.id.store_spinner)
+    @BindView(R.id.store_spinner)
     MaterialSpinner storeSpinner;
-    @Bind(R.id.transformer_spinner)
+    @BindView(R.id.transformer_spinner)
     MaterialSpinner transformerSpinner;
-    @Bind(R.id.buy_switch)
+    @BindView(R.id.buy_switch)
     SwitchCompat buySwitch;
-    @Bind(R.id.test_switch)
+    @BindView(R.id.test_switch)
     SwitchCompat testSwitch;
-    @Bind(R.id.action_save)
+    @BindView(R.id.action_save)
     LinearLayout actionSave;
-    @Bind(R.id.store_layout)
+    @BindView(R.id.store_layout)
     LinearLayout storeLayout;
-    @Bind(R.id.transformer_layout)
+    @BindView(R.id.transformer_layout)
     LinearLayout transformerLayout;
-    @Bind(R.id.user_id)
+    @BindView(R.id.user_id)
     MaterialEditText userId;
-    @Bind(R.id.user_name)
+    @BindView(R.id.user_name)
     MaterialEditText userName;
-    @Bind(R.id.imeTv)
+    @BindView(R.id.imeTv)
     MaterialEditText imeTv;
     private IUserPresenter presenter;
     private List<StoreBean> storebeans;
@@ -59,14 +59,17 @@ public class CreateUserTwoAcvitity extends BaseAppCompatActivity implements IUse
     private List<TransformerBean> transformerBean;
 
 
+    @Override
     public void initContentView() {
         baseSetContentView(R.layout.activity_create_user_two);
     }
 
+    @Override
     public void initPresenter() {
         presenter = new UserPresenterImpl();
     }
 
+    @Override
     public void initView() {
         getToolbar().setOnMenuItemClickListener(this);
         String ime = getIntent().getStringExtra("ime");
@@ -119,6 +122,7 @@ public class CreateUserTwoAcvitity extends BaseAppCompatActivity implements IUse
 
     private void setOnItemSelected() {
         storeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
             public void onItemSelected(AdapterView<?> paramAnonymousAdapterView, View paramAnonymousView, int position, long paramAnonymousLong) {
                 if (position != -1) {
                     String id = storebeans.get(position).getId();
@@ -136,6 +140,7 @@ public class CreateUserTwoAcvitity extends BaseAppCompatActivity implements IUse
 
             }
 
+            @Override
             public void onNothingSelected(AdapterView<?> paramAnonymousAdapterView) {
             }
         });
@@ -226,6 +231,7 @@ public class CreateUserTwoAcvitity extends BaseAppCompatActivity implements IUse
         this.presenter.saveUser(this, userBean, 11, false);
     }
 
+    @Override
     public void saveTransformer(boolean paramBoolean, String id) {
         hideProgress();
         if (paramBoolean) {
@@ -235,6 +241,7 @@ public class CreateUserTwoAcvitity extends BaseAppCompatActivity implements IUse
         }
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu paramMenu) {
         if (bean != null && !TextUtils.isEmpty(bean.getUserId())) {
             getMenuInflater().inflate(R.menu.menu_erweima, paramMenu);
@@ -243,6 +250,7 @@ public class CreateUserTwoAcvitity extends BaseAppCompatActivity implements IUse
     }
 
 
+    @Override
     public boolean onMenuItemClick(MenuItem paramMenuItem) {
         switch (paramMenuItem.getItemId()) {
             case R.id.action_showerweima:

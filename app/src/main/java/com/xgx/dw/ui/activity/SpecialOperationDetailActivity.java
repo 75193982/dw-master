@@ -53,7 +53,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -64,94 +64,94 @@ import butterknife.OnClick;
 public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
 
     private final static int REQUEST_CONNECT_DEVICE = 1;    //宏定义查询设备句柄
-    @Bind(R.id.jdjEt)
+    @BindView(R.id.jdjEt)
     MaterialEditText jdjEt;
-    @Bind(R.id.fdjEt)
+    @BindView(R.id.fdjEt)
     MaterialEditText fdjEt;
-    @Bind(R.id.pdjEt)
+    @BindView(R.id.pdjEt)
     MaterialEditText pdjEt;
-    @Bind(R.id.gdjEt)
+    @BindView(R.id.gdjEt)
     MaterialEditText gdjEt;
-    @Bind(R.id.inputDianjiaLayout)
+    @BindView(R.id.inputDianjiaLayout)
     LinearLayout inputDianjiaLayout;
-    @Bind(R.id.gdlEt)
+    @BindView(R.id.gdlEt)
     MaterialEditText gdlEt;
-    @Bind(R.id.bjEt)
+    @BindView(R.id.bjEt)
     MaterialEditText bjEt;
-    @Bind(R.id.tzEt)
+    @BindView(R.id.tzEt)
     MaterialEditText tzEt;
-    @Bind(R.id.inputDianfeiLayout)
+    @BindView(R.id.inputDianfeiLayout)
     LinearLayout inputDianfeiLayout;
-    @Bind(R.id.dzA1Et)
+    @BindView(R.id.dzA1Et)
     MaterialEditText dzA1Et;
-    @Bind(R.id.dzA1TEt)
+    @BindView(R.id.dzA1TEt)
     MaterialEditText dzA1TEt;
-    @Bind(R.id.dzA2Et)
+    @BindView(R.id.dzA2Et)
     MaterialEditText dzA2Et;
-    @Bind(R.id.dzA2TEt)
+    @BindView(R.id.dzA2TEt)
     MaterialEditText dzA2TEt;
-    @Bind(R.id.dzA3Et)
+    @BindView(R.id.dzA3Et)
     MaterialEditText dzA3Et;
-    @Bind(R.id.dzA3TEt)
+    @BindView(R.id.dzA3TEt)
     MaterialEditText dzA3TEt;
-    @Bind(R.id.dzV1Et)
+    @BindView(R.id.dzV1Et)
     MaterialEditText dzV1Et;
-    @Bind(R.id.dzV1TEt)
+    @BindView(R.id.dzV1TEt)
     MaterialEditText dzV1TEt;
-    @Bind(R.id.dzS1Et)
+    @BindView(R.id.dzS1Et)
     SwitchCompat dzS1Et;
-    @Bind(R.id.dzS2Et)
+    @BindView(R.id.dzS2Et)
     SwitchCompat dzS2Et;
-    @Bind(R.id.dzS2T1Et)
+    @BindView(R.id.dzS2T1Et)
     MaterialEditText dzS2T1Et;
-    @Bind(R.id.dzS2T2Et)
+    @BindView(R.id.dzS2T2Et)
     MaterialEditText dzS2T2Et;
-    @Bind(R.id.dzS2T3Et)
+    @BindView(R.id.dzS2T3Et)
     MaterialEditText dzS2T3Et;
-    @Bind(R.id.saveTvTv)
+    @BindView(R.id.saveTvTv)
     TextView saveTvTv;
-    @Bind(R.id.dingzhi)
+    @BindView(R.id.dingzhi)
     LinearLayout dingzhi;
-    @Bind(R.id.sdEt)
+    @BindView(R.id.sdEt)
     MaterialEditText sdEt;
-    @Bind(R.id.sdTimeEt)
+    @BindView(R.id.sdTimeEt)
     MaterialEditText sdTimeEt;
-    @Bind(R.id.lxEt)
+    @BindView(R.id.lxEt)
     MaterialEditText lxEt;
-    @Bind(R.id.lxTimeEt)
+    @BindView(R.id.lxTimeEt)
     MaterialEditText lxTimeEt;
-    @Bind(R.id.action_saveecode)
+    @BindView(R.id.action_saveecode)
     LinearLayout actionSaveecode;
     private String beilvType = "4A";
     private int beilvNum = 0;
     private final static String MY_UUID = "00001101-0000-1000-8000-00805F9B34FB";   //SPP服务UUID号
-    @Bind(R.id.sendTitle)
+    @BindView(R.id.sendTitle)
     TextView sendTitle;
-    @Bind(R.id.sendTv)
+    @BindView(R.id.sendTv)
     TextView sendTv;
-    @Bind(R.id.resultTitle)
+    @BindView(R.id.resultTitle)
     TextView resultTitle;
-    @Bind(R.id.resultTv)
+    @BindView(R.id.resultTv)
     TextView resultTv;
-    @Bind(R.id.action_save)
+    @BindView(R.id.action_save)
     LinearLayout actionSave;
-    @Bind(R.id.btnTv)
+    @BindView(R.id.btnTv)
     TextView btnTv;
-    @Bind(R.id.deviceTv)
+    @BindView(R.id.deviceTv)
     TextView deviceTv;
-    @Bind(R.id.dyblEt)
+    @BindView(R.id.dyblEt)
     MaterialEditText dyblEt;
-    @Bind(R.id.input_editText)
+    @BindView(R.id.input_editText)
     MaterialEditText inputEditText;
-    @Bind(R.id.dlblEt)
+    @BindView(R.id.dlblEt)
     MaterialEditText dlblEt;
-    @Bind(R.id.eddyEt)
+    @BindView(R.id.eddyEt)
     MaterialEditText eddyEt;
-    @Bind(R.id.eddlEt)
+    @BindView(R.id.eddlEt)
     MaterialEditText eddlEt;
-    @Bind(R.id.edfhEt)
+    @BindView(R.id.edfhEt)
     MaterialEditText edfhEt;
-    @Bind(R.id.inputBeilvLayout)
+    @BindView(R.id.inputBeilvLayout)
     LinearLayout inputBeilvLayout;
 
     private InputStream is;    //输入流，用来接收蓝牙数据
@@ -1126,12 +1126,6 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         } catch (Exception e) {
             Logger.e(e.getMessage());
         }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
     }
 
     @OnClick(R.id.action_saveecode)

@@ -127,8 +127,9 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseVie
 
     @Override
     public void hideProgress() {
-        if (mProgressDialog == null)
+        if (mProgressDialog == null) {
             return;
+        }
 
         if (mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();

@@ -45,7 +45,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.xgx.dw.R.id.resultTv;
@@ -54,18 +54,18 @@ import static com.xgx.dw.R.id.resultTv;
  * Created by Administrator on 2016/10/16 0016.
  */
 public class AdminSpotListActivity extends BaseAppCompatActivity {
-    @Bind(R.id.recyclerView)
+    @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     SpotListAdapter adapter;
     private List<PricingBean> beans;
-    @Bind(R.id.numTv)
+    @BindView(R.id.numTv)
     TextView numTv;
 
-    @Bind(R.id.startTimeTv)
+    @BindView(R.id.startTimeTv)
     TextView startTimeTv;
-    @Bind(R.id.endTimeTv)
+    @BindView(R.id.endTimeTv)
     TextView endTimeTv;
-    @Bind(R.id.comfirmBtn)
+    @BindView(R.id.comfirmBtn)
     TextView comfirmBtn;
     private DatePickerDialog mDataPicker;
 
@@ -276,7 +276,9 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
                 fos = new FileOutputStream(file);
                 sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + filenewpath)));
                 showToast("成功创建打印图片,保存于：" + filenewpath);
-            } else throw new Exception("创建文件失败!");
+            } else {
+                throw new Exception("创建文件失败!");
+            }
 
             bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
             fos.flush();

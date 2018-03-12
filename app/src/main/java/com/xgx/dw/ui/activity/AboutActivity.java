@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.xgx.dw.R;
 import com.xgx.dw.base.BaseAppCompatActivity;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -16,7 +16,7 @@ import butterknife.OnClick;
  * Created by xgx on 2016/10/29 0029 for dw-master
  */
 public class AboutActivity extends BaseAppCompatActivity {
-    @Bind(R.id.flowTv)
+    @BindView(R.id.flowTv)
     TextView flowTv;
 
     @Override

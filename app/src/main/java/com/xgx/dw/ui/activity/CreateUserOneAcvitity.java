@@ -25,26 +25,26 @@ import com.xgx.dw.ui.view.interfaces.IUserView;
 import java.util.List;
 import java.util.UUID;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class CreateUserOneAcvitity extends BaseAppCompatActivity implements IUserView, Toolbar.OnMenuItemClickListener {
-    @Bind(R.id.imeTv)
+    @BindView(R.id.imeTv)
     MaterialEditText imeTv;
-    @Bind(R.id.spinner)
+    @BindView(R.id.spinner)
     MaterialSpinner spinner;
-    @Bind(R.id.buy_switch)
+    @BindView(R.id.buy_switch)
     SwitchCompat buySwitch;
-    @Bind(R.id.test_switch)
+    @BindView(R.id.test_switch)
     SwitchCompat testSwitch;
-    @Bind(R.id.action_save)
+    @BindView(R.id.action_save)
     LinearLayout actionSave;
-    @Bind(R.id.store_layout)
+    @BindView(R.id.store_layout)
     LinearLayout storeLayout;
-    @Bind(R.id.user_id)
+    @BindView(R.id.user_id)
     MaterialEditText userId;
-    @Bind(R.id.user_name)
+    @BindView(R.id.user_name)
     MaterialEditText userName;
     private IUserPresenter presenter;
     private List<StoreBean> storebeans;
@@ -52,14 +52,17 @@ public class CreateUserOneAcvitity extends BaseAppCompatActivity implements IUse
     private List<TransformerBean> transformerBean;
 
 
+    @Override
     public void initContentView() {
         baseSetContentView(R.layout.activity_create_user_one);
     }
 
+    @Override
     public void initPresenter() {
         presenter = new UserPresenterImpl();
     }
 
+    @Override
     public void initView() {
         getToolbar().setOnMenuItemClickListener(this);
         String ime = getIntent().getStringExtra("ime");

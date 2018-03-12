@@ -11,36 +11,39 @@ import com.xgx.dw.presenter.impl.StorePresenterImpl;
 import com.xgx.dw.ui.view.interfaces.ICreateStoresView;
 import com.xgx.dw.vo.request.StoresRequest;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 public class CreateStoreActivity extends BaseAppCompatActivity implements ICreateStoresView {
 
-    @Bind(R.id.store_id)
+    @BindView(R.id.store_id)
     MaterialEditText storeId;
-    @Bind(R.id.normal_with_input_text)
+    @BindView(R.id.normal_with_input_text)
     LinearLayout normalWithInputText;
-    @Bind(R.id.store_name)
+    @BindView(R.id.store_name)
     MaterialEditText storeName;
-    @Bind(R.id.store_address)
+    @BindView(R.id.store_address)
     MaterialEditText storeAddress;
-    @Bind(R.id.store_linkname)
+    @BindView(R.id.store_linkname)
     MaterialEditText storeLinkname;
-    @Bind(R.id.store_ContactWay)
+    @BindView(R.id.store_ContactWay)
     MaterialEditText storeContactWay;
-    @Bind(R.id.action_save)
+    @BindView(R.id.action_save)
     LinearLayout actionSave;
     private StorePresenterImpl presenter;
     private StoreBean bean;
 
+    @Override
     public void initContentView() {
         baseSetContentView(R.layout.activity_create_store);
     }
 
+    @Override
     public void initPresenter() {
         presenter = new StorePresenterImpl();
     }
 
+    @Override
     public void initView() {
         bean = ((StoreBean) getIntent().getSerializableExtra("bean"));
         if (this.bean != null && !TextUtils.isEmpty(this.bean.getId())) {
@@ -72,6 +75,7 @@ public class CreateStoreActivity extends BaseAppCompatActivity implements ICreat
         this.presenter.saveStore(this, localStoresRequest, false);
     }
 
+    @Override
     public void saveStores(boolean paramBoolean) {
         hideProgress();
         if (paramBoolean) {

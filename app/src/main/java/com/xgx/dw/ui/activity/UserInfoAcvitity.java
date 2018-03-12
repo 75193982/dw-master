@@ -26,33 +26,33 @@ import com.xgx.dw.ui.view.interfaces.IUserView;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class UserInfoAcvitity extends BaseAppCompatActivity implements IUserView, Toolbar.OnMenuItemClickListener {
-    @Bind(R.id.imeTv)
+    @BindView(R.id.imeTv)
     TextView imeTv;
-    @Bind(R.id.store_spinner)
+    @BindView(R.id.store_spinner)
     TextView storeSpinner;
-    @Bind(R.id.store_layout)
+    @BindView(R.id.store_layout)
     LinearLayout storeLayout;
-    @Bind(R.id.transformer_spinner)
+    @BindView(R.id.transformer_spinner)
     TextView transformerSpinner;
-    @Bind(R.id.transformer_layout)
+    @BindView(R.id.transformer_layout)
     LinearLayout transformerLayout;
-    @Bind(R.id.user_id)
+    @BindView(R.id.user_id)
     MaterialEditText userId;
-    @Bind(R.id.user_name)
+    @BindView(R.id.user_name)
     MaterialEditText userName;
-    @Bind(R.id.voltageRatio)
+    @BindView(R.id.voltageRatio)
     MaterialEditText voltageRatio;
-    @Bind(R.id.currentRatio)
+    @BindView(R.id.currentRatio)
     MaterialEditText currentRatio;
-    @Bind(R.id.price)
+    @BindView(R.id.price)
     TextView price;
-    @Bind(R.id.phone)
+    @BindView(R.id.phone)
     MaterialEditText phone;
-    @Bind(R.id.action_save)
+    @BindView(R.id.action_save)
     LinearLayout actionSave;
     private IUserPresenter presenter;
     private List<StoreBean> storebeans;
@@ -63,14 +63,17 @@ public class UserInfoAcvitity extends BaseAppCompatActivity implements IUserView
     private boolean isFirst;
 
 
+    @Override
     public void initContentView() {
         baseSetContentView(R.layout.activity_user_info);
     }
 
+    @Override
     public void initPresenter() {
         presenter = new UserPresenterImpl();
     }
 
+    @Override
     public void initView() {
         getToolbar().setOnMenuItemClickListener(this);
         String ime = getIntent().getStringExtra("ime");
@@ -128,6 +131,7 @@ public class UserInfoAcvitity extends BaseAppCompatActivity implements IUserView
         actionSave.setVisibility(View.GONE);
     }
 
+    @Override
     public void saveTransformer(boolean paramBoolean, String id) {
         hideProgress();
         if (paramBoolean) {
@@ -137,6 +141,7 @@ public class UserInfoAcvitity extends BaseAppCompatActivity implements IUserView
     }
 
 
+    @Override
     public boolean onCreateOptionsMenu(Menu paramMenu) {
         if (bean != null && !TextUtils.isEmpty(bean.getUserId())) {
             getMenuInflater().inflate(R.menu.menu_erweima, paramMenu);
@@ -145,6 +150,7 @@ public class UserInfoAcvitity extends BaseAppCompatActivity implements IUserView
     }
 
 
+    @Override
     public boolean onMenuItemClick(MenuItem paramMenuItem) {
         switch (paramMenuItem.getItemId()) {
             case R.id.action_showerweima:
