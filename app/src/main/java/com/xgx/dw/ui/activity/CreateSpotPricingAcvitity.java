@@ -25,31 +25,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class CreateSpotPricingAcvitity extends BaseAppCompatActivity implements ICreateSpotPricingView {
-    @Bind(R.id.spinner)
+    @BindView(R.id.spinner)
     MaterialSpinner spinner;
-    @Bind(R.id.spotPricing_name)
+    @BindView(R.id.spotPricing_name)
     MaterialEditText spotPricingName;
-    @Bind(R.id.spotPricing_id)
+    @BindView(R.id.spotPricing_id)
     MaterialEditText spotPricing_id;
-    @Bind(R.id.spotpricing_priceCount)
+    @BindView(R.id.spotpricing_priceCount)
     MaterialEditText spotpricingPriceCount;
-    @Bind(R.id.spinner_type)
+    @BindView(R.id.spinner_type)
     MaterialSpinner spinnerType;
-    @Bind(R.id.spotpricing_pointedPrice)
+    @BindView(R.id.spotpricing_pointedPrice)
     MaterialEditText spotpricingPointedPrice;
-    @Bind(R.id.spotpricing_peakPrice)
+    @BindView(R.id.spotpricing_peakPrice)
     MaterialEditText spotpricingPeakPrice;
-    @Bind(R.id.spotpricing_flatPrice)
+    @BindView(R.id.spotpricing_flatPrice)
     MaterialEditText spotpricingFlatPrice;
-    @Bind(R.id.spotpricing_valleyPrice)
+    @BindView(R.id.spotpricing_valleyPrice)
     MaterialEditText spotpricingValleyPrice;
-    @Bind(R.id.action_save)
+    @BindView(R.id.action_save)
     LinearLayout actionSave;
     private List<StoreBean> storebeans;
     private SpotPricingPresenterImpl spotPricingPresenter;

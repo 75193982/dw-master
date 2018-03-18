@@ -33,7 +33,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import fr.ganfra.materialspinner.MaterialSpinner;
@@ -42,21 +42,21 @@ import fr.ganfra.materialspinner.MaterialSpinner;
  * Created by Administrator on 2016/10/15 0015.
  */
 public class BuySpotActivity extends BaseAppCompatActivity {
-    @Bind(R.id.userInfoTv)
+    @BindView(R.id.userInfoTv)
     TextView userInfoTv;
-    @Bind(R.id.userInfoBeilvTv)
+    @BindView(R.id.userInfoBeilvTv)
     TextView userInfoBeilvTv;
-    @Bind(R.id.spotTv)
+    @BindView(R.id.spotTv)
     MaterialEditText spotTv;
-    @Bind(R.id.bjPriceTv)
+    @BindView(R.id.bjPriceTv)
     MaterialEditText bjPriceTv;
-    @Bind(R.id.spinner)
+    @BindView(R.id.spinner)
     MaterialSpinner spinner;
-    @Bind(R.id.isChangeSwitch)
+    @BindView(R.id.isChangeSwitch)
     SwitchCompat isChangeSwitch;
-    @Bind(R.id.isTrSwitch)
+    @BindView(R.id.isTrSwitch)
     SwitchCompat isTrSwitch;
-    @Bind(R.id.cnTv)
+    @BindView(R.id.cnTv)
     TextView cnTv;
     private UserAllInfo userAllInfo;
 

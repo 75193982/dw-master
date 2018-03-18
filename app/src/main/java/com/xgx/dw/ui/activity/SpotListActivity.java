@@ -48,7 +48,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -56,19 +56,19 @@ import butterknife.OnClick;
  * Created by Administrator on 2016/10/16 0016.
  */
 public class SpotListActivity extends BaseAppCompatActivity {
-    @Bind(R.id.recyclerView)
+    @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     SpotListAdapter adapter;
-    @Bind(R.id.numTv)
+    @BindView(R.id.numTv)
     TextView numTv;
     private List<PricingBean> beans;
-    @Bind(R.id.startTimeTv)
+    @BindView(R.id.startTimeTv)
     TextView startTimeTv;
-    @Bind(R.id.endTimeTv)
+    @BindView(R.id.endTimeTv)
     TextView endTimeTv;
-    @Bind(R.id.comfirmBtn)
+    @BindView(R.id.comfirmBtn)
     TextView comfirmBtn;
-    @Bind(R.id.search_layout)
+    @BindView(R.id.search_layout)
     LinearLayout search_layout;
     private DatePickerDialog mDataPicker;
 

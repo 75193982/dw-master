@@ -42,7 +42,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -52,15 +52,15 @@ import butterknife.OnClick;
 
 public class BuyUserDataActivity extends BaseAppCompatActivity {
 
-    @Bind(R.id.startTimeTv)
+    @BindView(R.id.startTimeTv)
     TextView startTimeTv;
-    @Bind(R.id.endTimeTv)
+    @BindView(R.id.endTimeTv)
     TextView endTimeTv;
-    @Bind(R.id.comfirmBtn)
+    @BindView(R.id.comfirmBtn)
     TextView comfirmBtn;
-    @Bind(R.id.recyclerView)
+    @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
-    @Bind(R.id.resultTv)
+    @BindView(R.id.resultTv)
     TextView resultTv;
     private DatePickerDialog mDataPicker;
     private List<PricingBean> beans;

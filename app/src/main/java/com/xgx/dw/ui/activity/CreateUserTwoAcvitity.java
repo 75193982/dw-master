@@ -28,30 +28,30 @@ import com.xgx.dw.ui.view.interfaces.IUserView;
 import java.util.List;
 import java.util.UUID;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class CreateUserTwoAcvitity extends BaseAppCompatActivity implements IUserView, Toolbar.OnMenuItemClickListener {
-    @Bind(R.id.store_spinner)
+    @BindView(R.id.store_spinner)
     MaterialSpinner storeSpinner;
-    @Bind(R.id.transformer_spinner)
+    @BindView(R.id.transformer_spinner)
     MaterialSpinner transformerSpinner;
-    @Bind(R.id.buy_switch)
+    @BindView(R.id.buy_switch)
     SwitchCompat buySwitch;
-    @Bind(R.id.test_switch)
+    @BindView(R.id.test_switch)
     SwitchCompat testSwitch;
-    @Bind(R.id.action_save)
+    @BindView(R.id.action_save)
     LinearLayout actionSave;
-    @Bind(R.id.store_layout)
+    @BindView(R.id.store_layout)
     LinearLayout storeLayout;
-    @Bind(R.id.transformer_layout)
+    @BindView(R.id.transformer_layout)
     LinearLayout transformerLayout;
-    @Bind(R.id.user_id)
+    @BindView(R.id.user_id)
     MaterialEditText userId;
-    @Bind(R.id.user_name)
+    @BindView(R.id.user_name)
     MaterialEditText userName;
-    @Bind(R.id.imeTv)
+    @BindView(R.id.imeTv)
     MaterialEditText imeTv;
     private IUserPresenter presenter;
     private List<StoreBean> storebeans;

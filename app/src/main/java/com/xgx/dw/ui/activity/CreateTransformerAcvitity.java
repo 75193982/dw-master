@@ -19,20 +19,20 @@ import com.xgx.dw.ui.view.interfaces.ICreateTransformerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class CreateTransformerAcvitity extends BaseAppCompatActivity implements ICreateTransformerView {
 
-    @Bind(R.id.spinner)
+    @BindView(R.id.spinner)
     MaterialSpinner spinner;
-    @Bind(R.id.transformer_id)
+    @BindView(R.id.transformer_id)
     MaterialEditText transformerId;
-    @Bind(R.id.transformer_name)
+    @BindView(R.id.transformer_name)
     MaterialEditText transformerName;
-    @Bind(R.id.action_save)
+    @BindView(R.id.action_save)
     LinearLayout actionSave;
     private TransformerPresenterImpl presenter;
     private List<StoreBean> storebeans;

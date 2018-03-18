@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
@@ -34,7 +34,7 @@ public class StoresMgrActivity extends BaseAppCompatActivity implements IStoresV
     private StoresAdapter adapter;
     private List<StoreBean> beans;
     private IStoresPresenter presenter;
-    @Bind({R.id.list})
+    @BindView(R.id.list)
     RecyclerView recyclerView;
 
     public void initContentView() {

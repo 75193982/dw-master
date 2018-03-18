@@ -36,19 +36,19 @@ import com.xgx.dw.utils.MyStringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class UserMgrActivity extends BaseAppCompatActivity implements IUserListView, OnMenuItemClickListener {
     private static int REFRESH_RECYCLERVIEW = 0;
-    @Bind(R.id.query)
+    @BindView(R.id.query)
     EditText query;
-    @Bind(R.id.numTv)
+    @BindView(R.id.numTv)
     TextView numTv;
     private UserAdapter adapter;
     private List<UserBean> beans;
     private IUserPresenter presenter;
-    @Bind({R.id.list})
+    @BindView({R.id.list})
     RecyclerView recyclerView;
     private String currentUserType;
 

@@ -26,18 +26,18 @@ import com.xgx.dw.bean.MySection;
 import java.util.ArrayList;
 import java.util.Set;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class DeviceListNewActivity extends BaseAppCompatActivity {
 
 
-    @Bind(R.id.deviceRecyclerView)
+    @BindView(R.id.deviceRecyclerView)
     RecyclerView deviceRecyclerView;
-    @Bind(R.id.button_scan)
+    @BindView(R.id.button_scan)
     LinearLayout buttonScan;
-    @Bind(R.id.scanTv)
+    @BindView(R.id.scanTv)
     TextView scanTv;
     private DeviceListAdapter deviceListAdapter;
     ArrayList<MySection> mySectionList;

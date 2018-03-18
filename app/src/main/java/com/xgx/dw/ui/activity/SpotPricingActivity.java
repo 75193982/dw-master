@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
@@ -33,7 +33,7 @@ public class SpotPricingActivity extends BaseAppCompatActivity implements ISpotP
     private SpotPricingAdapter adapter;
     private List<SpotPricingBean> beans;
     private ISpotPricingPresenter presenter;
-    @Bind({R.id.list})
+    @BindView(R.id.list)
     RecyclerView recyclerView;
 
     public void initContentView() {

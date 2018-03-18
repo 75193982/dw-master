@@ -52,7 +52,7 @@ import com.xgx.dw.vo.request.LoginRequest;
 import java.util.List;
 import java.util.UUID;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
@@ -61,18 +61,18 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class LoginActivity extends BaseAppCompatActivity implements ILoginView, EasyPermissions.PermissionCallbacks, PopupMenu.OnMenuItemClickListener {
     ILoginPresenter loginPresenter;
-    @Bind(R.id.login_username)
+    @BindView(R.id.login_username)
     EditText loginUsername;
-    @Bind(R.id.login_password)
+    @BindView(R.id.login_password)
     EditText loginPassword;
-    @Bind(R.id.login_btn)
+    @BindView(R.id.login_btn)
     Button loginBtn;
     private static final int REQUEST_CODE_QRCODE_PERMISSIONS = 1;
-    @Bind(R.id.login_register)
+    @BindView(R.id.login_register)
     TextView loginRegister;
-    @Bind(R.id.login_forget)
+    @BindView(R.id.login_forget)
     TextView loginForget;
-    @Bind(R.id.login_from)
+    @BindView(R.id.login_from)
     TextView loginFrom;
 
     private PopupMenu popupMenu;

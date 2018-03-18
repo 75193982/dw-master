@@ -23,15 +23,15 @@ import com.xgx.dw.R;
 import com.xgx.dw.net.AsyncHttpNetCenter;
 import com.xgx.dw.ui.custom.CustomConfirmDialog;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public abstract class BaseBlueAppCompatActivity extends AppCompatActivity implements IBaseView {
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.toolbar_title)
+    @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
-    @Bind(R.id.fab)
+    @BindView(R.id.fab)
     FloatingActionButton fab;
 
     public FloatingActionButton getFab() {

@@ -29,7 +29,7 @@ import com.xgx.dw.ui.fragment.dummy.DummyContent;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -37,9 +37,9 @@ public class DataSearchFragment extends BaseFragment implements MyOnItemClickLis
     private DataSearchItemAdapter adapter;
     private int[] drawableInt = {R.drawable.home_paylists_big, R.drawable.home_useelesafe_unrule_big, R.drawable.home_set_serviceauthorize, R.drawable.home_elecri_big, R.drawable.home_paylists_big, R.drawable.home_elecri_big, R.drawable.home_analysis};
     private ImageView headLogo;
-    @Bind({R.id.list})
+    @BindView({R.id.list})
     RecyclerView recyclerView;
-    @Bind({R.id.title_bar})
+    @BindView({R.id.title_bar})
     TitleBar titleBar;
 
     public int getLayoutRes() {

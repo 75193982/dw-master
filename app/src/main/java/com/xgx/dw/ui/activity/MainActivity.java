@@ -60,7 +60,7 @@ import com.xgx.dw.vo.response.UpdateVersionResult;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
@@ -70,47 +70,47 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class MainActivity extends BaseActivity implements IMainView, IUserView {
 
     private final String ACTION_FILTER = "com.xgx.dw.main";
-    @Bind(R.id.wei_xin_s)
+    @BindView(R.id.wei_xin_s)
     ImageView weiXinS;
-    @Bind(R.id.tab_weiXin)
+    @BindView(R.id.tab_weiXin)
     TextView tabWeiXin;
-    @Bind(R.id.tab_weiXin_s)
+    @BindView(R.id.tab_weiXin_s)
     TextView tabWeiXinS;
-    @Bind(R.id.ll_wx)
+    @BindView(R.id.ll_wx)
     LinearLayout llWx;
-    @Bind(R.id.address_book_s)
+    @BindView(R.id.address_book_s)
     ImageView addressBookS;
-    @Bind(R.id.tab_address)
+    @BindView(R.id.tab_address)
     TextView tabAddress;
-    @Bind(R.id.tab_address_s)
+    @BindView(R.id.tab_address_s)
     TextView tabAddressS;
-    @Bind(R.id.ll_address)
+    @BindView(R.id.ll_address)
     LinearLayout llAddress;
-    @Bind(R.id.find_s)
+    @BindView(R.id.find_s)
     ImageView findS;
-    @Bind(R.id.tab_find)
+    @BindView(R.id.tab_find)
     TextView tabFind;
-    @Bind(R.id.tab_find_s)
+    @BindView(R.id.tab_find_s)
     TextView tabFindS;
-    @Bind(R.id.ll_find)
+    @BindView(R.id.ll_find)
     LinearLayout llFind;
-    @Bind(R.id.me_s)
+    @BindView(R.id.me_s)
     ImageView meS;
-    @Bind(R.id.tab_me)
+    @BindView(R.id.tab_me)
     TextView tabMe;
-    @Bind(R.id.tab_me_s)
+    @BindView(R.id.tab_me_s)
     TextView tabMeS;
-    @Bind(R.id.ll_me)
+    @BindView(R.id.ll_me)
     LinearLayout llMe;
-    @Bind(R.id.ll_tab)
+    @BindView(R.id.ll_tab)
     LinearLayout llTab;
-    @Bind(R.id.line)
+    @BindView(R.id.line)
     View line;
-    @Bind(R.id.viewPage)
+    @BindView(R.id.viewPage)
     ViewPager viewPage;
-    @Bind(R.id.coordinatorLayout)
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
-    @Bind(R.id.fab)
+    @BindView(R.id.fab)
     FloatingActionButton fab;
     private List<ImageView> mListImage = new ArrayList();
     private List<TextView> mListText = new ArrayList();

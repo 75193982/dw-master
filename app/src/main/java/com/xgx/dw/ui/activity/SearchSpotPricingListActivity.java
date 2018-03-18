@@ -26,14 +26,14 @@ import com.xgx.dw.ui.view.interfaces.ISpotPricingView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 public class SearchSpotPricingListActivity extends BaseAppCompatActivity implements ISpotPricingView {
     private static int REFRESH_RECYCLERVIEW = 0;
     private SpotPricingAdapter adapter;
     private List<SpotPricingBean> beans;
     private ISpotPricingPresenter presenter;
-    @Bind({R.id.list})
+    @BindView(R.id.list)
     RecyclerView recyclerView;
 
     public void initContentView() {
