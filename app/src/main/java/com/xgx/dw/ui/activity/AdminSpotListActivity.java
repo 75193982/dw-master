@@ -46,6 +46,7 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.xgx.dw.R.id.resultTv;
@@ -276,9 +277,7 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
                 fos = new FileOutputStream(file);
                 sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + filenewpath)));
                 showToast("成功创建打印图片,保存于：" + filenewpath);
-            } else {
-                throw new Exception("创建文件失败!");
-            }
+            } else throw new Exception("创建文件失败!");
 
             bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
             fos.flush();

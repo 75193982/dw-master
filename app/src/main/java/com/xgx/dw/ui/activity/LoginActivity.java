@@ -23,7 +23,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.StringUtils;
 import com.google.gson.Gson;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.xgx.dw.R;
@@ -39,6 +42,9 @@ import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
 import com.xgx.dw.dao.StoreBeanDaoHelper;
 import com.xgx.dw.dao.TransformerBeanDaoHelper;
 import com.xgx.dw.dao.UserBeanDaoHelper;
+import com.xgx.dw.net.DialogCallback;
+import com.xgx.dw.net.LzyResponse;
+import com.xgx.dw.net.URLs;
 import com.xgx.dw.presenter.impl.LoginPresenterImpl;
 import com.xgx.dw.presenter.impl.UserPresenterImpl;
 import com.xgx.dw.presenter.interfaces.ILoginPresenter;
@@ -49,6 +55,7 @@ import com.xgx.dw.utils.Logger;
 import com.xgx.dw.utils.MyUtils;
 import com.xgx.dw.vo.request.LoginRequest;
 
+import java.net.URL;
 import java.util.List;
 import java.util.UUID;
 
@@ -183,7 +190,21 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                 LoginRequest localLoginRequest = new LoginRequest();
                 localLoginRequest.bianhao = loginUsername.getText().toString();
                 localLoginRequest.mima = loginPassword.getText().toString();
-                this.loginPresenter.login(this, localLoginRequest);
+                if (StringUtils.isEmpty(loginUsername.getText().toString())) {
+                    showToast("用户名不能为空");
+                    return;
+                }
+                if (StringUtils.isEmpty(loginPassword.getText().toString())) {
+                    showToast("密码不能为空");
+                    return;
+                }
+                OkGo.<LzyResponse<UserBean>>post(URLs.getURL(URLs.USER_SIGNIN)).params("userName", loginUsername.getText().toString()).params("passWord", loginPassword.getText().toString()).execute(new DialogCallback<LzyResponse<UserBean>>(this) {
+                    @Override
+                    public void onSuccess(Response<LzyResponse<UserBean>> response) {
+                        setLoginInfomation(response.body().model);
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    }
+                });
                 break;
             case R.id.login_register:
 

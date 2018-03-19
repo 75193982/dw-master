@@ -1,5 +1,6 @@
 package com.xgx.dw.presenter.impl;
 
+import com.lzy.okgo.OkGo;
 import com.xgx.dw.R;
 import com.xgx.dw.UserBean;
 import com.xgx.dw.base.BasePresenter;
@@ -17,6 +18,8 @@ public class LoginPresenterImpl extends BasePresenter implements ILoginPresenter
     public void login(ILoginView paramILoginView, LoginRequest request) {
         if (isEmpty(request.bianhao, paramILoginView, "用户名不能为空")) return;
         if (isEmpty(request.mima, paramILoginView, "密码不能为空")) return;
+
+
         //这里不用验证了 ，只在购电的时候进行测试就可以，如果没有这个用户 则创建一个用户，
         UserBean localUserBean = UserBeanDaoHelper.getInstance().queryByTransFormUserId(request.bianhao);
         if (localUserBean == null) {

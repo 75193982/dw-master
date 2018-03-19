@@ -48,16 +48,14 @@ public class UserMgrActivity extends BaseAppCompatActivity implements IUserListV
     private UserAdapter adapter;
     private List<UserBean> beans;
     private IUserPresenter presenter;
-    @BindView(R.id.list)
+    @BindView({R.id.list})
     RecyclerView recyclerView;
     private String currentUserType;
 
-    @Override
     public void initContentView() {
         super.baseSetContentView(R.layout.activity_user_mgr);
     }
 
-    @Override
     public void initPresenter() {
 
         presenter = new UserPresenterImpl();
@@ -65,7 +63,6 @@ public class UserMgrActivity extends BaseAppCompatActivity implements IUserListV
         presenter.searchUser(this);
     }
 
-    @Override
     public void initView() {
         getSupportActionBar().setTitle(R.string.user_one);
         getToolbar().setOnMenuItemClickListener(this);
@@ -185,7 +182,6 @@ public class UserMgrActivity extends BaseAppCompatActivity implements IUserListV
         }
     }
 
-    @Override
     public boolean onCreateOptionsMenu(Menu paramMenu) {
         getMenuInflater().inflate(R.menu.menu_user_create, paramMenu);
         Setting setting = new Setting(this);
@@ -202,7 +198,6 @@ public class UserMgrActivity extends BaseAppCompatActivity implements IUserListV
     }
 
 
-    @Override
     public boolean onMenuItemClick(MenuItem paramMenuItem) {
         Intent intent = new Intent();
         switch (paramMenuItem.getItemId()) {

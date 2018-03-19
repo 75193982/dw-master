@@ -60,11 +60,13 @@ dependencies {
     compile 'org.sufficientlysecure:html-textview:2.0'
     compile 'com.hymane.expandtextview:library:1.0.1'
     compile 'com.liaoinstan.springview:library:1.2.6'
-    //必须使用
-
-    compile 'com.lzy.net:okgo:3.0.4'
+    compile 'com.lzy.net:okgo:3.0.2'
     //以下三个选择添加，okrx和okrx2不能同时使用
     compile 'com.lzy.net:okserver:2.0.2'
+    compile 'com.google.code.gson:gson:2.5'
+    //工具库
+    compile 'com.blankj:utilcode:1.10.0'
+
     //下拉刷新
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta1'
