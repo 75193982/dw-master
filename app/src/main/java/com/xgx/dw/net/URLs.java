@@ -6,7 +6,8 @@ package com.xgx.dw.net;
  * @author Ht
  */
 public class URLs {
-    public static final String HOST = "http://221.176.209.130:9558/";
+    //public static final String HOST = "http://221.176.209.130:80/";
+    public static final String HOST = "http://192.168.100.5:80/";
     public static final String PROJECT_NAME = "";
     public static final String API = "dw/";
 
@@ -19,7 +20,7 @@ public class URLs {
      */
     public static final String OAUTH_SIGNIN = "xxx";
     public static final String UPDATE_VERSION = "commons/apkVersionCompare.do";
-    public static final String USER_SIGNIN = "userRequest/login.do";
+    public static final String USER_SIGNIN = "auth";
     public static final String USER_SIGNUP = "xxx";
 
     /**

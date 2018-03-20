@@ -26,12 +26,14 @@ import android.widget.Toast;
 import com.blankj.utilcode.util.StringUtils;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.Response;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.xgx.dw.R;
 import com.xgx.dw.SpotPricingBean;
 import com.xgx.dw.UserBean;
+import com.xgx.dw.app.BaseApplication;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
@@ -201,8 +203,20 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                 OkGo.<LzyResponse<UserBean>>post(URLs.getURL(URLs.USER_SIGNIN)).params("userName", loginUsername.getText().toString()).params("passWord", loginPassword.getText().toString()).execute(new DialogCallback<LzyResponse<UserBean>>(this) {
                     @Override
                     public void onSuccess(Response<LzyResponse<UserBean>> response) {
-                        setLoginInfomation(response.body().model);
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        String token = response.body().token;
+                        new Setting(LoginActivity.this).saveString("token", ""+token);
+                        HttpHeaders headerstemp = new HttpHeaders();
+                        headerstemp.put(BaseApplication.token, token);
+                        OkGo.getInstance().addCommonHeaders(headerstemp);
+//                        MyHttpService.initService();
+//                        SysUserModel user = response.body().user;
+//                        MyUtil.showToast("登录成功");
+//                        loginTm(user);
+//                        Gson gson = new Gson();
+//                        String userStr = gson.toJson(user);
+//                        setLoginInfomation(user.getUserName(), "", userStr);
+//                        setLoginInfomation(response.body().model);
+//                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     }
                 });
                 break;

@@ -515,6 +515,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
     }
 
     //接收活动结果，响应startActivityForResult()
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_CONNECT_DEVICE:     //连接结果，由DeviceListActivity设置返回

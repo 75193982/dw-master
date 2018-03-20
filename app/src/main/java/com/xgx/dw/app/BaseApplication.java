@@ -76,7 +76,7 @@ public class BaseApplication extends Application {
         initOkGo();
     }
 
-    public static String token = "X-Auth-Token";
+    public static String token = "Authorization";
     public static String appSign = "X-Auth-Sign";
 
     private void initOkGo() {

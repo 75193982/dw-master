@@ -12,6 +12,7 @@ public class LzyResponse<T> implements Serializable {
 
     public List<T> list;
     public T model;
-
-
+    public String token;
+    public T mode;
+    public String randomKey;
 }
