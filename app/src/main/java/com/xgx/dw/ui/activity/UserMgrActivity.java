@@ -48,7 +48,7 @@ public class UserMgrActivity extends BaseAppCompatActivity implements IUserListV
     private UserAdapter adapter;
     private List<UserBean> beans;
     private IUserPresenter presenter;
-    @BindView({R.id.list})
+    @BindView(R.id.list)
     RecyclerView recyclerView;
     private String currentUserType;
 

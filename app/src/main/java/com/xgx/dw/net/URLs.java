@@ -7,9 +7,9 @@ package com.xgx.dw.net;
  */
 public class URLs {
     //public static final String HOST = "http://221.176.209.130:80/";
-    public static final String HOST = "http://192.168.100.5:80/";
+    public static final String HOST = "http://192.168.0.116:80/";
     public static final String PROJECT_NAME = "";
-    public static final String API = "dw/";
+    public static final String API = "";
 
     // 归属地查询
     public static final String TEST_API = "get";
@@ -21,6 +21,7 @@ public class URLs {
     public static final String OAUTH_SIGNIN = "xxx";
     public static final String UPDATE_VERSION = "commons/apkVersionCompare.do";
     public static final String USER_SIGNIN = "auth";
+    public static final String COUNTY_LIST = "mtzCounty/countyList";
     public static final String USER_SIGNUP = "xxx";
 
     /**

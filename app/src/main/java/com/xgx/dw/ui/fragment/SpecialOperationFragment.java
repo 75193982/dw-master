@@ -52,9 +52,9 @@ import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
 public class SpecialOperationFragment extends BaseFragment implements MyOnItemClickListner, MainActivity.OnFABClickListener {
     private int[] drawableInt = {R.drawable.home_paylists_big, R.drawable.home_useelesafe_unrule_big, R.drawable.home_set_serviceauthorize, R.drawable.home_elecri_big, R.drawable.home_paylists_big, R.drawable.home_elecri_big, R.drawable.home_analysis};
     private ImageView headLogo;
-    @BindView({R.id.list})
+    @BindView(R.id.list)
     RecyclerView recyclerView;
-    @BindView({R.id.title_bar})
+    @BindView(R.id.title_bar)
     TitleBar titleBar;
 
     public int getLayoutRes() {

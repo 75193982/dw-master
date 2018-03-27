@@ -3,17 +3,10 @@ package com.xgx.dw.ui.activity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
-import android.text.TextUtils;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,7 +16,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.HttpHeaders;
@@ -31,13 +27,13 @@ import com.lzy.okgo.model.Response;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.xgx.dw.R;
-import com.xgx.dw.SpotPricingBean;
 import com.xgx.dw.UserBean;
 import com.xgx.dw.app.BaseApplication;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.bean.LoginInformation;
+import com.xgx.dw.bean.SysUser;
 import com.xgx.dw.bean.UserAllInfo;
 import com.xgx.dw.dao.PricingDaoHelper;
 import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
@@ -52,17 +48,14 @@ import com.xgx.dw.presenter.impl.UserPresenterImpl;
 import com.xgx.dw.presenter.interfaces.ILoginPresenter;
 import com.xgx.dw.presenter.interfaces.IUserPresenter;
 import com.xgx.dw.ui.view.interfaces.ILoginView;
-import com.xgx.dw.utils.AES;
 import com.xgx.dw.utils.Logger;
+import com.xgx.dw.utils.MD5Util;
 import com.xgx.dw.utils.MyUtils;
 import com.xgx.dw.vo.request.LoginRequest;
 
-import java.net.URL;
 import java.util.List;
-import java.util.UUID;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -200,23 +193,31 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                     showToast("密码不能为空");
                     return;
                 }
-                OkGo.<LzyResponse<UserBean>>post(URLs.getURL(URLs.USER_SIGNIN)).params("userName", loginUsername.getText().toString()).params("passWord", loginPassword.getText().toString()).execute(new DialogCallback<LzyResponse<UserBean>>(this) {
+                OkGo.<LzyResponse<SysUser>>post(URLs.getURL(URLs.USER_SIGNIN)).params("userName", loginUsername.getText().toString()).params("password", loginPassword.getText().toString()).execute(new DialogCallback<LzyResponse<SysUser>>(this) {
                     @Override
-                    public void onSuccess(Response<LzyResponse<UserBean>> response) {
+                    public void onSuccess(Response<LzyResponse<SysUser>> response) {
                         String token = response.body().token;
-                        new Setting(LoginActivity.this).saveString("token", ""+token);
+                        String randomKey = response.body().randomKey;
+                        SysUser user = ((JSONObject) response.body().model).toJavaObject(SysUser.class);
+                        new Setting(LoginActivity.this).saveString("token", token);
                         HttpHeaders headerstemp = new HttpHeaders();
-                        headerstemp.put(BaseApplication.token, token);
+                        headerstemp.put(BaseApplication.token, "Bearer " + token);
                         OkGo.getInstance().addCommonHeaders(headerstemp);
-//                        MyHttpService.initService();
-//                        SysUserModel user = response.body().user;
-//                        MyUtil.showToast("登录成功");
-//                        loginTm(user);
-//                        Gson gson = new Gson();
-//                        String userStr = gson.toJson(user);
-//                        setLoginInfomation(user.getUserName(), "", userStr);
-//                        setLoginInfomation(response.body().model);
-//                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        if (user != null) {
+                            UserBean localUserBean = new UserBean(user.getId() + "", user.getAccount(), user.getName(), loginPassword.getText().toString(), "admin", "866703036809590");
+
+                            setLoginInfomation(localUserBean);
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        } else {
+                            ToastUtils.showShort("账号不存在");
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Response<LzyResponse<SysUser>> response) {
+                        super.onError(response);
+                        ToastUtils.showShort(response.getException().getMessage());
                     }
                 });
                 break;

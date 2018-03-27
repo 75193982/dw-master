@@ -1,19 +1,18 @@
 package com.xgx.dw.ui.activity;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.Toolbar.OnMenuItemClickListener;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
-import butterknife.BindView;
+import android.widget.EditText;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
@@ -29,8 +28,13 @@ import com.xgx.dw.vo.request.StoresRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class StoresMgrActivity extends BaseAppCompatActivity implements IStoresView, Toolbar.OnMenuItemClickListener {
     private static int REFRESH_RECYCLERVIEW = 0;
+    @BindView(R.id.queryEt)
+    EditText queryEt;
     private StoresAdapter adapter;
     private List<StoreBean> beans;
     private IStoresPresenter presenter;
@@ -45,8 +49,7 @@ public class StoresMgrActivity extends BaseAppCompatActivity implements IStoresV
     @Override
     public void initPresenter() {
         this.presenter = new StorePresenterImpl();
-        StoresRequest localStoresRequest = new StoresRequest();
-        this.presenter.searchStores(this, localStoresRequest);
+        getDatas();
     }
 
     @Override
@@ -70,15 +73,36 @@ public class StoresMgrActivity extends BaseAppCompatActivity implements IStoresV
                 startActivityForResult(localIntent, REFRESH_RECYCLERVIEW);
             }
         });
+        queryEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                getDatas();
+            }
+        });
     }
 
     @Override
     protected void onActivityResult(int paramInt1, int paramInt2, Intent paramIntent) {
         super.onActivityResult(paramInt1, paramInt2, paramIntent);
         if (paramInt1 == REFRESH_RECYCLERVIEW) {
-            StoresRequest localStoresRequest = new StoresRequest();
-            this.presenter.searchStores(this, localStoresRequest);
+            getDatas();
         }
+    }
+
+    private void getDatas() {
+        StoresRequest localStoresRequest = new StoresRequest();
+        localStoresRequest.storeName = queryEt.getText().toString();
+        this.presenter.searchStores(this, localStoresRequest);
     }
 
     @Override
@@ -103,4 +127,5 @@ public class StoresMgrActivity extends BaseAppCompatActivity implements IStoresV
         this.beans = paramList;
         this.adapter.setNewData(this.beans);
     }
+
 }

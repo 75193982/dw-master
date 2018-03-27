@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 
@@ -29,6 +30,8 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 import com.xgx.dw.THDatabaseLoader;
+import com.xgx.dw.bean.DaoMaster;
+import com.xgx.dw.bean.DaoSession;
 
 import java.io.File;
 import java.security.cert.CertificateException;
@@ -64,6 +67,11 @@ public class BaseApplication extends Application {
      * 屏幕密度
      */
     public static float screenDensity;
+    private static DaoSession daoSession;
+
+    public static DaoSession getDaoInstant() {
+        return daoSession;
+    }
 
     @Override
     public void onCreate() {
@@ -74,6 +82,23 @@ public class BaseApplication extends Application {
         initScreenSize();
         THDatabaseLoader.init();
         initOkGo();
+        //配置数据库
+        setupDatabase();
+        //初始化腾讯im
+    }
+
+    /**
+     * 配置数据库
+     */
+    private void setupDatabase() {
+        //创建数据库shop.db"
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "file.db", null);
+        //获取可写数据库
+        SQLiteDatabase db = helper.getWritableDatabase();
+        //获取数据库对象
+        DaoMaster daoMaster = new DaoMaster(db);
+        //获取Dao对象管理者
+        daoSession = daoMaster.newSession();
     }
 
     public static String token = "Authorization";
@@ -84,8 +109,9 @@ public class BaseApplication extends Application {
         HttpHeaders headers = new HttpHeaders();
         headers.put("Connection", "keep-alive");    //header不支持中文，不允许有特殊字符
         headers.put("Proxy-Connection", "keep-alive");
+        headers.put("Content-Type", "application/json");
         String localToken = new Setting(this).loadString(token);
-        headers.put(token, localToken);
+        headers.put(token, "Bearer " + localToken);
         HttpParams params = new HttpParams();
         //----------------------------------------------------------------------------------------//
 
@@ -129,6 +155,8 @@ public class BaseApplication extends Application {
                 .setRetryCount(3)                               //全局统一超时重连次数，默认为三次，那么最差的情况会请求4次(一次原始请求，三次重连请求)，不需要可以设置为0
                 .addCommonHeaders(headers)                      //全局公共头
                 .addCommonParams(params);                       //全局公共参数
+
+
     }
 
     /**

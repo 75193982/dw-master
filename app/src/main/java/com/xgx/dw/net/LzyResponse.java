@@ -10,9 +10,7 @@ public class LzyResponse<T> implements Serializable {
     public String result;
     public String resultInfo;
 
-    public List<T> list;
-    public T model;
+    public Object model;
     public String token;
-    public T mode;
     public String randomKey;
 }

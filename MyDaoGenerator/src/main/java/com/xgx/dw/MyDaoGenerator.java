@@ -14,8 +14,28 @@ public class MyDaoGenerator {
         initSpotPricingBean(schema);
         initStoreBean(schema);
         initPricingBean(schema);
-        initSearchLogBean(schema);
+        initSysUser(schema);
         new DaoGenerator().generateAll(schema, args[0]);
+    }
+
+    private static void initSysUser(Schema schema) {
+        Entity userBean = schema.addEntity("SysUser");
+        userBean.setTableName("sys_user");
+        userBean.addStringProperty("id").primaryKey();
+        userBean.addStringProperty("avatar");
+        userBean.addStringProperty("account");
+        userBean.addStringProperty("password");
+        userBean.addStringProperty("salt");
+        userBean.addStringProperty("name");
+        userBean.addStringProperty("birthday");
+        userBean.addStringProperty("sex");
+        userBean.addStringProperty("email");
+        userBean.addStringProperty("phone");
+        userBean.addStringProperty("roleid");
+        userBean.addStringProperty("deptid");
+        userBean.addStringProperty("status");
+        userBean.addStringProperty("createtime");
+        userBean.addStringProperty("version");
     }
 
 
