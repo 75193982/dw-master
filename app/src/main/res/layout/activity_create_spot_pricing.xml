@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -16,7 +16,8 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="0.0dip"
@@ -25,7 +26,7 @@
                 android:layout_marginStart="16.0dip"
                 android:layout_weight="1.0"
                 android:text="电价编号"
-                android:textSize="@dimen/text_third" />
+                android:textSize="@dimen/text_third"/>
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/spotPricing_id"
@@ -37,7 +38,7 @@
                 android:textSize="@dimen/text_third"
                 app:met_floatingLabel="highlight"
                 app:met_floatingLabelText="电价编号"
-                app:met_singleLineEllipsis="true" />
+                app:met_singleLineEllipsis="true"/>
         </LinearLayout>
 
         <LinearLayout
@@ -53,25 +54,20 @@
                 android:layout_marginStart="16.0dip"
                 android:layout_weight="1.0"
                 android:text="@string/transformer_cotainStore"
-                android:textSize="@dimen/text_third" />
+                android:textSize="@dimen/text_third"/>
 
-            <fr.ganfra.materialspinner.MaterialSpinner
-                android:id="@id/spinner"
+            <TextView
+                android:id="@+id/contyTv"
                 android:layout_width="0.0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="3.0"
-                app:ms_alignLabels="false"
-                app:ms_arrowColor="@color/disabled_color"
-                app:ms_arrowSize="@dimen/text_third"
-                app:ms_baseColor="@color/disabled_color"
-                app:ms_enableErrorLabel="false"
-                app:ms_enableFloatingLabel="false"
-                app:ms_errorColor="@color/error_color"
-                app:ms_floatingLabelColor="@color/disabled_color"
-                app:ms_floatingLabelText="@string/transformer_cotainStore"
-                app:ms_highlightColor="@color/Green"
-                app:ms_hint="@string/selected_store"
-                app:ms_multiline="false" />
+                android:drawableBottom="@drawable/common_list_item_selector"
+                android:drawableRight="@drawable/arrow_gray_right"
+                android:hint="@string/transformer_cotainStore"
+                android:inputType="textNoSuggestions"
+                android:padding="@dimen/dp_10"
+                android:textSize="@dimen/text_third"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -86,7 +82,7 @@
                 android:layout_marginStart="16.0dip"
                 android:layout_weight="1.0"
                 android:text="@string/store_name"
-                android:textSize="@dimen/text_third" />
+                android:textSize="@dimen/text_third"/>
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@id/spotPricing_name"
@@ -98,7 +94,7 @@
                 android:textSize="@dimen/text_third"
                 app:met_floatingLabel="highlight"
                 app:met_floatingLabelText="@string/store_name"
-                app:met_singleLineEllipsis="true" />
+                app:met_singleLineEllipsis="true"/>
         </LinearLayout>
 
 
@@ -115,7 +111,7 @@
                 android:layout_marginStart="16.0dip"
                 android:layout_weight="1.0"
                 android:text="@string/spotpricing_type"
-                android:textSize="@dimen/text_third" />
+                android:textSize="@dimen/text_third"/>
 
             <fr.ganfra.materialspinner.MaterialSpinner
                 android:id="@id/spinner_type"
@@ -133,7 +129,7 @@
                 app:ms_floatingLabelText="@string/spotpricing_type"
                 app:ms_highlightColor="@color/Green"
                 app:ms_hint="@string/spotpricing_type"
-                app:ms_multiline="false" />
+                app:ms_multiline="false"/>
         </LinearLayout>
 
         <LinearLayout
@@ -148,7 +144,7 @@
                 android:layout_marginStart="16.0dip"
                 android:layout_weight="1.0"
                 android:text="@string/spotpricing_priceCount"
-                android:textSize="@dimen/text_third" />
+                android:textSize="@dimen/text_third"/>
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@id/spotpricing_priceCount"
@@ -160,7 +156,7 @@
                 android:textSize="@dimen/text_third"
                 app:met_floatingLabel="highlight"
                 app:met_floatingLabelText="@string/spotpricing_priceCount"
-                app:met_singleLineEllipsis="true" />
+                app:met_singleLineEllipsis="true"/>
         </LinearLayout>
 
         <LinearLayout
@@ -175,7 +171,7 @@
                 android:layout_marginStart="16.0dip"
                 android:layout_weight="1.0"
                 android:text="@string/spotpricing_pointedPrice"
-                android:textSize="@dimen/text_third" />
+                android:textSize="@dimen/text_third"/>
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@id/spotpricing_pointedPrice"
@@ -187,7 +183,7 @@
                 android:textSize="@dimen/text_third"
                 app:met_floatingLabel="highlight"
                 app:met_floatingLabelText="@string/spotpricing_pointedPrice"
-                app:met_singleLineEllipsis="true" />
+                app:met_singleLineEllipsis="true"/>
         </LinearLayout>
 
         <LinearLayout
@@ -202,7 +198,7 @@
                 android:layout_marginStart="16.0dip"
                 android:layout_weight="1.0"
                 android:text="@string/spotpricing_peakPrice"
-                android:textSize="@dimen/text_third" />
+                android:textSize="@dimen/text_third"/>
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@id/spotpricing_peakPrice"
@@ -214,7 +210,7 @@
                 android:textSize="@dimen/text_third"
                 app:met_floatingLabel="highlight"
                 app:met_floatingLabelText="@string/spotpricing_peakPrice"
-                app:met_singleLineEllipsis="true" />
+                app:met_singleLineEllipsis="true"/>
         </LinearLayout>
 
         <LinearLayout
@@ -229,7 +225,7 @@
                 android:layout_marginStart="16.0dip"
                 android:layout_weight="1.0"
                 android:text="@string/spotpricing_flatPrice"
-                android:textSize="@dimen/text_third" />
+                android:textSize="@dimen/text_third"/>
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@id/spotpricing_flatPrice"
@@ -241,7 +237,7 @@
                 android:textSize="@dimen/text_third"
                 app:met_floatingLabel="highlight"
                 app:met_floatingLabelText="@string/spotpricing_flatPrice"
-                app:met_singleLineEllipsis="true" />
+                app:met_singleLineEllipsis="true"/>
         </LinearLayout>
 
         <LinearLayout
@@ -256,7 +252,7 @@
                 android:layout_marginStart="16.0dip"
                 android:layout_weight="1.0"
                 android:text="@string/spotpricing_valleyPrice"
-                android:textSize="@dimen/text_third" />
+                android:textSize="@dimen/text_third"/>
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@id/spotpricing_valleyPrice"
@@ -268,7 +264,7 @@
                 android:textSize="@dimen/text_third"
                 app:met_floatingLabel="highlight"
                 app:met_floatingLabelText="@string/spotpricing_valleyPrice"
-                app:met_singleLineEllipsis="true" />
+                app:met_singleLineEllipsis="true"/>
         </LinearLayout>
 
         <LinearLayout
@@ -285,7 +281,7 @@
                 android:gravity="center"
                 android:text="@string/save"
                 android:textColor="@color/White"
-                android:textSize="@dimen/text_second" />
+                android:textSize="@dimen/text_second"/>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

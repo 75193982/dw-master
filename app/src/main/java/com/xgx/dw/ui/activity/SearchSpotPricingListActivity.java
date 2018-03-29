@@ -18,11 +18,13 @@ import com.xgx.dw.SpotPricingBean;
 import com.xgx.dw.adapter.SpotPricingAdapter;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.bean.LoginInformation;
+import com.xgx.dw.bean.Price;
 import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
 import com.xgx.dw.presenter.impl.SpotPricingPresenterImpl;
 import com.xgx.dw.presenter.interfaces.ISpotPricingPresenter;
 import com.xgx.dw.ui.view.interfaces.ISpotPricingView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +33,7 @@ import butterknife.BindView;
 public class SearchSpotPricingListActivity extends BaseAppCompatActivity implements ISpotPricingView {
     private static int REFRESH_RECYCLERVIEW = 0;
     private SpotPricingAdapter adapter;
-    private List<SpotPricingBean> beans;
+    private List<Price> beans;
     private ISpotPricingPresenter presenter;
     @BindView(R.id.list)
     RecyclerView recyclerView;
@@ -44,11 +46,9 @@ public class SearchSpotPricingListActivity extends BaseAppCompatActivity impleme
     @Override
     public void initPresenter() {
         String storeId = LoginInformation.getInstance().getUser().getStoreId();
-        if (TextUtils.isEmpty(storeId)) {
-            searchSpotPricing(SpotPricingBeanDaoHelper.getInstance().getAllData());
-        } else {
-            searchSpotPricing(SpotPricingBeanDaoHelper.getInstance().testQueryBy(LoginInformation.getInstance().getUser().getStoreId()));
-        }
+        Price price = new Price();
+        price.setCountyid(storeId);
+        presenter.searchSpotPricing(this, price);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class SearchSpotPricingListActivity extends BaseAppCompatActivity impleme
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
                 Intent intent = new Intent();
-                intent.putExtra("entity", adapter.getItem(i));
+                intent.putExtra("entity", (Serializable) adapter.getItem(i));
                 setResult(1001, intent);
                 finish();
             }
@@ -80,7 +80,7 @@ public class SearchSpotPricingListActivity extends BaseAppCompatActivity impleme
 
 
     @Override
-    public void searchSpotPricing(List<SpotPricingBean> paramList) {
+    public void searchSpotPricing(List<Price> paramList) {
         this.beans = paramList;
         this.adapter.setNewData(this.beans);
     }

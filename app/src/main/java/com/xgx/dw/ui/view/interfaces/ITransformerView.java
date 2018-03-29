@@ -1,12 +1,11 @@
 package com.xgx.dw.ui.view.interfaces;
 
-import com.xgx.dw.TransformerBean;
 import com.xgx.dw.base.IBaseView;
+import com.xgx.dw.bean.Taiqu;
 
 import java.util.List;
 
-public abstract interface ITransformerView
-        extends IBaseView {
-    public abstract void searchTransformer(List<TransformerBean> paramList);
+public interface ITransformerView extends IBaseView {
+    void searchTransformer(List<Taiqu> paramList);
 }
 

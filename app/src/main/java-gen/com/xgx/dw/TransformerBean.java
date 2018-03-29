@@ -9,10 +9,10 @@ import java.io.Serializable;
  */
 public class TransformerBean implements Serializable {
 
-    private String id;
-    private String name;
-    private String store_id;
-    private String store_name;
+    private String id = "";
+    private String name = "";
+    private String store_id = "";
+    private String store_name = "";
 
     public TransformerBean() {
     }

@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
@@ -20,26 +21,34 @@ import com.xgx.dw.R;
 import com.xgx.dw.StoreBean;
 import com.xgx.dw.adapter.StoresAdapter;
 import com.xgx.dw.base.BaseAppCompatActivity;
+import com.xgx.dw.base.BaseEventBusActivity;
+import com.xgx.dw.base.EventCenter;
+import com.xgx.dw.bean.County;
 import com.xgx.dw.presenter.impl.StorePresenterImpl;
 import com.xgx.dw.presenter.interfaces.IStoresPresenter;
 import com.xgx.dw.ui.view.interfaces.IStoresView;
 import com.xgx.dw.vo.request.StoresRequest;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class StoresMgrActivity extends BaseAppCompatActivity implements IStoresView, Toolbar.OnMenuItemClickListener {
+public class StoresMgrActivity extends BaseEventBusActivity implements IStoresView, Toolbar.OnMenuItemClickListener {
     private static int REFRESH_RECYCLERVIEW = 0;
-    @BindView(R.id.queryEt)
+    @BindView(R.id.query)
     EditText queryEt;
     private StoresAdapter adapter;
-    private List<StoreBean> beans;
+    private List<County> beans;
     private IStoresPresenter presenter;
     @BindView(R.id.list)
     RecyclerView recyclerView;
+    @BindView(R.id.numTv)
+    TextView numTv;
 
     @Override
     public void initContentView() {
@@ -67,12 +76,18 @@ public class StoresMgrActivity extends BaseAppCompatActivity implements IStoresV
         recyclerView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                StoreBean localStoreBean = (StoreBean) baseQuickAdapter.getItem(i);
-                Intent localIntent = new Intent(getContext(), CreateStoreActivity.class);
-                localIntent.putExtra("bean", localStoreBean);
-                startActivityForResult(localIntent, REFRESH_RECYCLERVIEW);
+                if (getIntent().getBooleanExtra("isSelect", false)) {
+                    EventBus.getDefault().post(new EventCenter<County>(EventCenter.COUNTY_SELECT, adapter.getItem(i)));
+                    finish();
+                } else {
+                    Intent localIntent = new Intent(getContext(), CreateStoreActivity.class);
+                    localIntent.putExtra("bean", (Serializable) adapter.getItem(i));
+                    startActivityForResult(localIntent, REFRESH_RECYCLERVIEW);
+                }
+
             }
         });
+        queryEt.setHint("根据营业厅名称查询");
         queryEt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -94,15 +109,12 @@ public class StoresMgrActivity extends BaseAppCompatActivity implements IStoresV
     @Override
     protected void onActivityResult(int paramInt1, int paramInt2, Intent paramIntent) {
         super.onActivityResult(paramInt1, paramInt2, paramIntent);
-        if (paramInt1 == REFRESH_RECYCLERVIEW) {
-            getDatas();
-        }
     }
 
     private void getDatas() {
-        StoresRequest localStoresRequest = new StoresRequest();
-        localStoresRequest.storeName = queryEt.getText().toString();
-        this.presenter.searchStores(this, localStoresRequest);
+        County county = new County();
+        county.setCountyname(queryEt.getText().toString());
+        this.presenter.searchStores(this, county);
     }
 
     @Override
@@ -123,9 +135,21 @@ public class StoresMgrActivity extends BaseAppCompatActivity implements IStoresV
     }
 
     @Override
-    public void searchStores(List<StoreBean> paramList) {
+    public void searchStores(List<County> paramList) {
         this.beans = paramList;
+        numTv.setText("共搜索到" + paramList.size() + "个营业厅");
         this.adapter.setNewData(this.beans);
     }
 
+    @Override
+    protected void onEventComming(EventCenter eventCenter) {
+        if (EventCenter.COUNTY_SAVE == eventCenter.getEventCode()) {
+            getDatas();
+        }
+    }
+
+    @Override
+    public boolean isBindEventBusHere() {
+        return true;
+    }
 }

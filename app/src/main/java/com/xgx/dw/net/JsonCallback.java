@@ -1,8 +1,21 @@
 package com.xgx.dw.net;
 
+import android.content.Intent;
+
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONReader;
+import com.blankj.utilcode.util.ToastUtils;
+import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
+import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.request.base.Request;
+import com.xgx.dw.UserBean;
+import com.xgx.dw.app.BaseApplication;
+import com.xgx.dw.app.G;
+import com.xgx.dw.app.Setting;
+import com.xgx.dw.bean.SysUser;
+import com.xgx.dw.ui.activity.LoginActivity;
+import com.xgx.dw.ui.activity.MainActivity;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -47,7 +60,8 @@ public abstract class JsonCallback<T> extends AbsCallback<T> {
         // 使用的设备信息
         // 可以随意添加,也可以什么都不传
         // 还可以在这里对所有的参数进行加密，均在这里实现
-//        request.headers("header1", "HeaderValue1")//
+        String token = new Setting(BaseApplication.getInstance()).loadString("token");
+        request.headers(BaseApplication.token, "Bearer " + token);//
 //                .params("params1", "ParamsValue1")//
 //                .params("token", "3215sdf13ad1f65asd4f3ads1f");
     }
@@ -70,18 +84,18 @@ public abstract class JsonCallback<T> extends AbsCallback<T> {
             LzyResponse<T> myResponse = reader.readObject(LzyResponse.class);
             if (myResponse != null) {
 
-                if (myResponse.result.equals("000")) {
+                if (myResponse.code.equals("000")) {
+                    return (T) myResponse;
+                } else if (myResponse.code.equals("700")) {
                     return (T) myResponse;
                 } else {
-                    throw new IllegalStateException(myResponse.resultInfo);
+                    throw new IllegalStateException(myResponse.message);
                 }
             } else {
-                throw new IllegalStateException(myResponse.resultInfo);
-
+                throw new IllegalStateException("网络连接异常，请稍后再试");
             }
         } catch (Exception e) {
             throw new IllegalStateException(e.getMessage());
-
         }
 
         // 重要的事情说三遍，不同的业务，这里的代码逻辑都不一样，如果你不修改，那么基本不可用

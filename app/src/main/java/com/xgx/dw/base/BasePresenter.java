@@ -24,4 +24,11 @@ public abstract class BasePresenter {
 
         return false;
     }
+
+    public String checkIsNull(String verifData) {
+        if (TextUtils.isEmpty(verifData) || verifData.equals("NULL") || verifData.equals("null")) {
+            return "";
+        }
+        return verifData;
+    }
 }

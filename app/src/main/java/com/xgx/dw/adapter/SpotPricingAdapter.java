@@ -4,21 +4,16 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xgx.dw.R;
 import com.xgx.dw.SpotPricingBean;
+import com.xgx.dw.bean.Price;
 
 import java.util.List;
 
-public class SpotPricingAdapter
-        extends BaseQuickAdapter<SpotPricingBean, BaseViewHolder> {
-    public SpotPricingAdapter(List<SpotPricingBean> paramList) {
+public class SpotPricingAdapter extends BaseQuickAdapter<Price, BaseViewHolder> {
+    public SpotPricingAdapter(List<Price> paramList) {
         super(R.layout.base_list_item, paramList);
     }
 
-    protected void convert(BaseViewHolder paramBaseViewHolder, SpotPricingBean paramSpotPricingBean) {
-        paramBaseViewHolder.setText(R.id.title, "价格名称：" + paramSpotPricingBean.getName())
-                .setText(R.id.subtitle, "所属营业厅：" + paramSpotPricingBean.getStorename() + "\n价格类型：" +
-                        paramSpotPricingBean.getType()).setText(R.id.content, "总电价(元)：" +
-                paramSpotPricingBean.getPrice_count() + "\n" + "尖电价(元)：" + paramSpotPricingBean.getPointed_price() +
-                "    峰电价(元)：" + paramSpotPricingBean.getPeek_price() + "\n" + "平电价(元)：" +
-                paramSpotPricingBean.getFlat_price() + "    谷电价(元)：" + paramSpotPricingBean.getValley_price());
+    protected void convert(BaseViewHolder paramBaseViewHolder, Price price) {
+        paramBaseViewHolder.setText(R.id.title, "价格名称：" + price.getPricename()).setText(R.id.subtitle, "所属营业厅：" + price.getCountyname() + "\n价格类型：" + price.getPricetype()).setText(R.id.content, "总电价(元)：" + price.getTotalprice() + "\n" + "尖电价(元)：" + price.getPricea() + "    峰电价(元)：" + price.getPriceb() + "\n" + "平电价(元)：" + price.getPricec() + "    谷电价(元)：" + price.getPriced());
     }
 }

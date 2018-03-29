@@ -36,6 +36,7 @@ public abstract class DialogCallback<T> extends JsonCallback<T> {
 
     @Override
     public void onStart(Request<T, ? extends Request> request) {
+        super.onStart(request);
         try {
             if (dialog != null && !dialog.isShowing()) {
                 dialog.show();

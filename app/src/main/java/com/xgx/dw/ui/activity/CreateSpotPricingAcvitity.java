@@ -1,11 +1,13 @@
 package com.xgx.dw.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.xgx.dw.R;
@@ -15,10 +17,15 @@ import com.xgx.dw.TransformerBean;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
+import com.xgx.dw.base.BaseEventBusActivity;
+import com.xgx.dw.base.EventCenter;
+import com.xgx.dw.bean.County;
 import com.xgx.dw.bean.LoginInformation;
+import com.xgx.dw.bean.Price;
 import com.xgx.dw.dao.StoreBeanDaoHelper;
 import com.xgx.dw.dao.TransformerBeanDaoHelper;
 import com.xgx.dw.presenter.impl.SpotPricingPresenterImpl;
+import com.xgx.dw.presenter.interfaces.ISpotPricingPresenter;
 import com.xgx.dw.ui.view.interfaces.ICreateSpotPricingView;
 
 import java.util.ArrayList;
@@ -30,9 +37,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
-public class CreateSpotPricingAcvitity extends BaseAppCompatActivity implements ICreateSpotPricingView {
-    @BindView(R.id.spinner)
-    MaterialSpinner spinner;
+public class CreateSpotPricingAcvitity extends BaseEventBusActivity implements ICreateSpotPricingView {
+    @BindView(R.id.contyTv)
+    TextView contyTv;
     @BindView(R.id.spotPricing_name)
     MaterialEditText spotPricingName;
     @BindView(R.id.spotPricing_id)
@@ -51,9 +58,8 @@ public class CreateSpotPricingAcvitity extends BaseAppCompatActivity implements 
     MaterialEditText spotpricingValleyPrice;
     @BindView(R.id.action_save)
     LinearLayout actionSave;
-    private List<StoreBean> storebeans;
-    private SpotPricingPresenterImpl spotPricingPresenter;
-    private SpotPricingBean bean;
+    private ISpotPricingPresenter spotPricingPresenter;
+    private Price bean;
 
     @Override
     public void initContentView() {
@@ -67,111 +73,92 @@ public class CreateSpotPricingAcvitity extends BaseAppCompatActivity implements 
 
     @Override
     public void initView() {
-        storebeans = new ArrayList<>();
         Setting setting = new Setting(this);
         String currentUserType = LoginInformation.getInstance().getUser().getType();
         String currentStoreId = LoginInformation.getInstance().getUser().getStoreId();
         String currentStoreName = LoginInformation.getInstance().getUser().getStoreName();
-        if (currentUserType.equals("10")) {
-            storebeans.add(new StoreBean(currentStoreId, currentStoreName));
-        } else {
-            storebeans = StoreBeanDaoHelper.getInstance().getAllData();
-        }
-        if ((this.storebeans != null) && (this.storebeans.size() > 0)) {
-            String[] arrayOfString = new String[this.storebeans.size()];
-            for (int j = 0; j < this.storebeans.size(); j++) {
-                arrayOfString[j] = ((StoreBean) this.storebeans.get(j)).getName();
-            }
-            ArrayAdapter localArrayAdapter2 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, arrayOfString);
-            localArrayAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            this.spinner.setAdapter(localArrayAdapter2);
-        }
         ArrayAdapter localArrayAdapter1 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, new String[]{"普通", "分时"});
         localArrayAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        this.spinnerType.setAdapter(localArrayAdapter1);
-        this.spinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerType.setAdapter(localArrayAdapter1);
+        spinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> paramAnonymousAdapterView, View paramAnonymousView, int paramAnonymousInt, long paramAnonymousLong) {
                 if (paramAnonymousInt == 1) {
-                    CreateSpotPricingAcvitity.this.spotpricingPointedPrice.setEnabled(true);
-                    CreateSpotPricingAcvitity.this.spotpricingPeakPrice.setEnabled(true);
-                    CreateSpotPricingAcvitity.this.spotpricingFlatPrice.setEnabled(true);
-                    CreateSpotPricingAcvitity.this.spotpricingValleyPrice.setEnabled(true);
+                    spotpricingPointedPrice.setEnabled(true);
+                    spotpricingPeakPrice.setEnabled(true);
+                    spotpricingFlatPrice.setEnabled(true);
+                    spotpricingValleyPrice.setEnabled(true);
                     spotpricingPriceCount.setEnabled(false);
                     spotpricingPriceCount.setText("0");
                 }
                 while (paramAnonymousInt != 0) {
                     return;
                 }
-                CreateSpotPricingAcvitity.this.spotpricingPointedPrice.setEnabled(false);
-                CreateSpotPricingAcvitity.this.spotpricingPeakPrice.setEnabled(false);
-                CreateSpotPricingAcvitity.this.spotpricingFlatPrice.setEnabled(false);
-                CreateSpotPricingAcvitity.this.spotpricingValleyPrice.setEnabled(false);
+                spotpricingPointedPrice.setEnabled(false);
+                spotpricingPeakPrice.setEnabled(false);
+                spotpricingFlatPrice.setEnabled(false);
+                spotpricingValleyPrice.setEnabled(false);
                 spotpricingPriceCount.setEnabled(true);
-                CreateSpotPricingAcvitity.this.spotpricingPointedPrice.setText("0.00");
-                CreateSpotPricingAcvitity.this.spotpricingPeakPrice.setText("0.00");
-                CreateSpotPricingAcvitity.this.spotpricingFlatPrice.setText("0.00");
-                CreateSpotPricingAcvitity.this.spotpricingValleyPrice.setText("0.00");
+                spotpricingPointedPrice.setText("0.00");
+                spotpricingPeakPrice.setText("0.00");
+                spotpricingFlatPrice.setText("0.00");
+                spotpricingValleyPrice.setText("0.00");
             }
 
             public void onNothingSelected(AdapterView<?> paramAnonymousAdapterView) {
             }
         });
-        bean = ((SpotPricingBean) getIntent().getSerializableExtra("bean"));
-        if ((this.bean != null) && (!TextUtils.isEmpty(this.bean.getId()))) {
-            getSupportActionBar().setTitle(R.string.create_spotpricing);
-            this.spotPricingName.setText(checkText(this.bean.getName()));
-            spotPricing_id.setText(bean.getId());
-            this.spotpricingPriceCount.setText(checkText(this.bean.getPrice_count()));
-            for (int i = 0; i < this.storebeans.size(); i++) {
-                if (this.bean.getStore_id().equals(((StoreBean) this.storebeans.get(i)).getId())) {
-                    this.spinner.setSelection(i + 1);
-                    this.spinner.setEnabled(false);
-                }
+        bean = ((Price) getIntent().getSerializableExtra("bean"));
+        if (bean != null && bean.getId() != null) {
+            spotPricingName.setText(checkText(bean.getPricename()));
+            spotpricingPriceCount.setText(checkText(bean.getTotalprice()));
+            if (!checkText(bean.getPricetype()).equals("普通")) {
+                spinnerType.setSelection(1);
             }
-            if (!checkText(this.bean.getType()).equals("普通")) {
-                this.spinnerType.setSelection(1);
+            if (checkText(bean.getPricetype()).equals("分时")) {
+                spinnerType.setSelection(2);
             }
-            if (checkText(this.bean.getType()).equals("分时")) {
-                this.spinnerType.setSelection(2);
-            }
-            this.spotpricingPointedPrice.setText(checkText(this.bean.getPointed_price()));
-            this.spotpricingPeakPrice.setText(checkText(this.bean.getPeek_price()));
-            this.spotpricingFlatPrice.setText(checkText(this.bean.getFlat_price()));
-            this.spotpricingValleyPrice.setText(checkText(this.bean.getValley_price()));
+            spotpricingPointedPrice.setText(checkText(bean.getPricea()));
+            spotpricingPeakPrice.setText(checkText(bean.getPriceb()));
+            spotpricingFlatPrice.setText(checkText(bean.getPricec()));
+            spotpricingValleyPrice.setText(checkText(bean.getPriced()));
+            contyTv.setText(checkText(bean.getCountyname()));
+            contyTv.setContentDescription(checkText(bean.getCountyid()));
             getSupportActionBar().setTitle(R.string.upgrade_spotpricing);
         } else {
+            if (currentUserType.equals("10")) {
+                contyTv.setText(checkText(currentStoreName));
+                contyTv.setContentDescription(currentStoreId);
+            }
             getSupportActionBar().setTitle(R.string.create_spotpricing);
+        }
+        if (!currentUserType.equals("10")) {
+            contyTv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(CreateSpotPricingAcvitity.this, StoresMgrActivity.class);
+                    intent.putExtra("isSelect", true);
+                    startActivity(intent);
+                }
+            });
         }
     }
 
 
     @OnClick({R.id.action_save})
     public void onSaveClick() {
-        SpotPricingBean bean = new SpotPricingBean();
-        bean.setName(this.spotPricingName.getText().toString());
-        bean.setPeek_price(this.spotpricingPeakPrice.getText().toString());
-        bean.setValley_price(this.spotpricingValleyPrice.getText().toString());
-        bean.setPointed_price(this.spotpricingPointedPrice.getText().toString());
-        bean.setFlat_price(this.spotpricingFlatPrice.getText().toString());
-        bean.setPrice_count(this.spotpricingPriceCount.getText().toString());
-        int i = this.spinner.getSelectedItemPosition();
-        try {
-            StoreBean localStoreBean = (StoreBean) this.storebeans.get(i - 1);
-            bean.setStore_id(localStoreBean.getId());
-            bean.setStorename(localStoreBean.getName());
-        } catch (Exception e) {
-            bean.setStore_id("");
-            bean.setStorename("");
+        if (bean == null) {
+            bean = new Price();
         }
-
-        bean.setType(this.spinnerType.getSelectedItem().toString());
-        bean.setId(spotPricing_id.getText().toString());
-
-        if (this.bean != null && !TextUtils.isEmpty(this.bean.getId())) {
-            this.spotPricingPresenter.saveSpotPricing(this, bean, true);
-            return;
-        }
-        this.spotPricingPresenter.saveSpotPricing(this, bean, false);
+        bean.setPricename(spotPricingName.getText().toString());
+        bean.setPricea(spotpricingPointedPrice.getText().toString());
+        bean.setPriceb(spotpricingPeakPrice.getText().toString());
+        bean.setPricec(spotpricingFlatPrice.getText().toString());
+        bean.setPriced(spotpricingValleyPrice.getText().toString());
+        bean.setTotalprice(spotpricingPriceCount.getText().toString());
+        bean.setPricetype(spinnerType.getSelectedItem().toString());
+        bean.setCountyid(contyTv.getContentDescription() == null ? "" : contyTv.getContentDescription().toString());
+        bean.setCountyname(contyTv.getText().toString());
+        spotPricingPresenter.saveSpotPricing(this, bean);
     }
 
     public void saveSpotPricing(boolean paramBoolean) {
@@ -184,4 +171,21 @@ public class CreateSpotPricingAcvitity extends BaseAppCompatActivity implements 
 
     }
 
+    @Override
+    protected void onEventComming(EventCenter eventCenter) {
+        if (EventCenter.COUNTY_SELECT == eventCenter.getEventCode()) {
+            try {
+                County county = (County) eventCenter.getData();
+                contyTv.setText(checkText(county.getCountyname()));
+                contyTv.setContentDescription(checkText(county.getCountyid()));
+            } catch (Exception e) {
+
+            }
+        }
+    }
+
+    @Override
+    public boolean isBindEventBusHere() {
+        return true;
+    }
 }

@@ -14,6 +14,7 @@ import com.xgx.dw.UserBean;
 import com.xgx.dw.app.BaseApplication;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BasePresenter;
+import com.xgx.dw.base.EventCenter;
 import com.xgx.dw.bean.County;
 import com.xgx.dw.bean.SysUser;
 import com.xgx.dw.dao.StoreBeanDaoHelper;
@@ -27,44 +28,37 @@ import com.xgx.dw.ui.view.interfaces.ICreateStoresView;
 import com.xgx.dw.ui.view.interfaces.IStoresView;
 import com.xgx.dw.vo.request.StoresRequest;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class StorePresenterImpl extends BasePresenter implements IStoresPresenter {
-    public void saveStore(ICreateStoresView paramICreateStoresView, StoresRequest paramStoresRequest, boolean paramBoolean) {
-        if (isEmpty(paramStoresRequest.storeId, paramICreateStoresView, "营业厅编号不能为空")) return;
-        if (isEmpty(paramStoresRequest.storeName, paramICreateStoresView, "营业厅名称不能为空")) return;
-        if ((StoreBeanDaoHelper.getInstance().getDataById(paramStoresRequest.storeId) != null) && (paramBoolean)) {
-            paramICreateStoresView.showToast("已经存在该营业厅");
-            paramICreateStoresView.saveStores(false);
-            return;
-        }
-        StoreBean localStoreBean = new StoreBean();
-        localStoreBean.setId(paramStoresRequest.storeId);
-        localStoreBean.setName(paramStoresRequest.storeName);
-        localStoreBean.setAddress(paramStoresRequest.storeAddress);
-        localStoreBean.setLinkman(paramStoresRequest.storeLinkMan);
-        localStoreBean.setContact_way(paramStoresRequest.storeContactWay);
-        StoreBeanDaoHelper.getInstance().addData(localStoreBean);
-        paramICreateStoresView.saveStores(true);
+    public void saveStore(final ICreateStoresView baseView, County county) {
+        if (isEmpty(county.getCountyid(), baseView, "营业厅编号不能为空")) return;
+        if (isEmpty(county.getCountyname(), baseView, "营业厅名称不能为空")) return;
+        OkGo.<LzyResponse<County>>post(URLs.getURL(URLs.COUNTY_SAVE)).params("id", checkIsNull(county.getId() + "")).params("countyid", checkIsNull(county.getCountyid())).params("countyname", checkIsNull(county.getCountyname())).params("address", checkIsNull(county.getAddress())).params("tel", checkIsNull(county.getTel())).params("contact", checkIsNull(county.getContact())).execute(new DialogCallback<LzyResponse<County>>(baseView.getContext()) {
+            @Override
+            public void onSuccess(Response<LzyResponse<County>> response) {
+                ToastUtils.showShort(response.body().message);
+                baseView.close();
+                EventBus.getDefault().post(new EventCenter<County>(EventCenter.COUNTY_SAVE));
+            }
+
+            @Override
+            public void onError(Response<LzyResponse<County>> response) {
+                super.onError(response);
+                ToastUtils.showShort(response.getException().getMessage());
+            }
+        });
     }
 
-    public void searchStores(final IStoresView paramIStoresView, StoresRequest paramStoresRequest) {
-        OkGo.<LzyResponse<County>>post(URLs.getURL(URLs.COUNTY_LIST)).params("countyname", paramStoresRequest.storeName).execute(new DialogCallback<LzyResponse<County>>(paramIStoresView.getContext()) {
+    public void searchStores(final IStoresView paramIStoresView, County conty) {
+        OkGo.<LzyResponse<County>>post(URLs.getURL(URLs.COUNTY_LIST)).params("countyname", checkIsNull(conty.getCountyname())).execute(new DialogCallback<LzyResponse<County>>(paramIStoresView.getContext()) {
             @Override
             public void onSuccess(Response<LzyResponse<County>> response) {
                 List<County> countyList = ((JSONArray) response.body().model).toJavaList(County.class);
-                List<StoreBean> beans = new ArrayList<>();
-                for (int i = 0; i < countyList.size(); i++) {
-                    StoreBean bean = new StoreBean();
-                    bean.setId(countyList.get(i).getCountyid() + "");
-                    bean.setName(countyList.get(i).getCountyname() + "");
-                    bean.setAddress(countyList.get(i).getAddress());
-                    bean.setContact_way(countyList.get(i).getTel());
-                    bean.setLinkman(countyList.get(i).getContact());
-                    beans.add(bean);
-                }
-                paramIStoresView.searchStores(beans);
+                paramIStoresView.searchStores(countyList);
 
             }
 

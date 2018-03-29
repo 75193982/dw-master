@@ -21,7 +21,15 @@ public class URLs {
     public static final String OAUTH_SIGNIN = "xxx";
     public static final String UPDATE_VERSION = "commons/apkVersionCompare.do";
     public static final String USER_SIGNIN = "auth";
-    public static final String COUNTY_LIST = "mtzCounty/countyList";
+    public static final String COUNTY_LIST = "mtzCounty/countyList"; //营业厅列表
+    public static final String COUNTY_SAVE = "mtzCounty/save"; //保存或者编辑营业厅
+
+    public static final String PRICE_LIST = "mtzPrice/priceList";//电价列表
+    public static final String PRICE_SAVE = "mtzPrice/save";//保存或者编辑电价列表
+
+    public static final String TAIQU_LIST = "mtzTaiqu/taiquList";//台区列表
+    public static final String TAIQU_SAVE = "mtzTaiqu/save";//保存或者编辑台区列表
+
     public static final String USER_SIGNUP = "xxx";
 
     /**
