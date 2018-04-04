@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.butterknife'
 apply plugin: 'org.greenrobot.greendao'
+apply plugin: 'com.mob.sdk'
+// 在MobSDK的扩展中注册SMSSDK的相关信息
+MobSDK {
+    appKey "250907ce71e1b"
+    appSecret "7de655d367becc0c410beaf3b7420c61"
+
+    SMSSDK {}
+}
 android {
     compileSdkVersion 24
     buildToolsVersion '26.0.2'
@@ -14,7 +22,7 @@ android {
 
     defaultConfig {
         applicationId "com.xgx.dw"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 24
         versionCode 33
         versionName "1.0.33"

@@ -20,6 +20,7 @@ import com.lzy.okgo.https.HttpsUtils;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
+import com.mob.MobSDK;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
@@ -67,11 +68,8 @@ public class BaseApplication extends Application {
      * 屏幕密度
      */
     public static float screenDensity;
-    private static DaoSession daoSession;
+    private DaoSession daoSession;
 
-    public static DaoSession getDaoInstant() {
-        return daoSession;
-    }
 
     @Override
     public void onCreate() {
@@ -85,6 +83,8 @@ public class BaseApplication extends Application {
         //配置数据库
         setupDatabase();
         //初始化腾讯im
+
+        MobSDK.init(this);
     }
 
     /**
