@@ -9,8 +9,6 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,7 +22,12 @@ import com.xgx.dw.UserBean;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
+import com.xgx.dw.base.BaseEventBusActivity;
+import com.xgx.dw.base.EventCenter;
+import com.xgx.dw.bean.County;
 import com.xgx.dw.bean.LoginInformation;
+import com.xgx.dw.bean.Price;
+import com.xgx.dw.bean.Taiqu;
 import com.xgx.dw.bean.UserAllInfo;
 import com.xgx.dw.dao.PricingDaoHelper;
 import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
@@ -35,9 +38,6 @@ import com.xgx.dw.presenter.impl.UserPresenterImpl;
 import com.xgx.dw.presenter.interfaces.IUserPresenter;
 import com.xgx.dw.ui.view.interfaces.IUserView;
 import com.xgx.dw.utils.Logger;
-import com.xgx.dw.utils.MyUtils;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,19 +46,10 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import fr.ganfra.materialspinner.MaterialSpinner;
 
-public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IUserView, Toolbar.OnMenuItemClickListener {
+public class CreateUserThreeAcvitity extends BaseEventBusActivity implements IUserView, Toolbar.OnMenuItemClickListener {
     @BindView(R.id.imeTv)
     MaterialEditText imeTv;
-    @BindView(R.id.store_spinner)
-    MaterialSpinner storeSpinner;
-    @BindView(R.id.store_layout)
-    LinearLayout storeLayout;
-    @BindView(R.id.transformer_spinner)
-    MaterialSpinner transformerSpinner;
-    @BindView(R.id.transformer_layout)
-    LinearLayout transformerLayout;
     @BindView(R.id.user_id)
     MaterialEditText userId;
     @BindView(R.id.user_name)
@@ -68,19 +59,23 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
     @BindView(R.id.currentRatio)
     MaterialEditText currentRatio;
     @BindView(R.id.price)
-    TextView price;
+    TextView priceTv;
     @BindView(R.id.phone)
     MaterialEditText phone;
     @BindView(R.id.action_save)
     LinearLayout actionSave;
+    @BindView(R.id.contyTv)
+    TextView contyTv;
+    @BindView(R.id.transformerTv)
+    TextView transformerTv;
     private IUserPresenter presenter;
-    private List<StoreBean> storebeans;
     private UserBean bean;
-    private List<TransformerBean> transformerBean;
     private String currentStoreId;
     private String currentStoreName;
     private boolean isFirst;
     private boolean isSave;
+    private String currentTransformId;
+    private String currentTransformName;
 
     @Override
     public void initContentView() {
@@ -100,7 +95,8 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
         Setting setting = new Setting(this);
         currentStoreId = setting.loadString(G.currentStoreId);
         currentStoreName = setting.loadString(G.currentStoreName);
-        initSpinnerData();
+        currentTransformId = setting.loadString(G.currentTransformId);
+        currentTransformName = setting.loadString(G.currentTransformName);
         bean = ((UserBean) getIntent().getSerializableExtra("bean"));
         isFirst = true;
         initEditInfo(bean);
@@ -138,17 +134,15 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
                 initUserInfo(bean);
                 isSave = false;
             } else {
-                isSave = true;
                 if (LoginInformation.getInstance().getUser().getType().equals("11")) {//台区管理员
-                    setSpinner(LoginInformation.getInstance().getUser().getStoreId(), LoginInformation.getInstance().getUser().getTransformerId());
-                    storeSpinner.setEnabled(false);
-                    transformerSpinner.setEnabled(false);
+                    contyTv.setText(currentStoreName);
+                    contyTv.setContentDescription(currentStoreId);
+                    transformerTv.setText(currentTransformName);
+                    transformerTv.setContentDescription(currentTransformId);
                 } else if (LoginInformation.getInstance().getUser().getType().equals("10")) {//营业厅管理员
-                    setSpinner(LoginInformation.getInstance().getUser().getStoreId(), LoginInformation.getInstance().getUser().getTransformerId());
-                    storeSpinner.setEnabled(false);
-                    setOnItemSelected();
+                    contyTv.setText(currentStoreName);
+                    contyTv.setContentDescription(currentStoreId);
                 } else {
-                    setOnItemSelected();
                 }
                 getSupportActionBar().setTitle("创建二级用户");
             }
@@ -163,150 +157,38 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
         imeTv.setEnabled(false);
         getSupportActionBar().setTitle("编辑二级用户");
         userName.setText(checkText(bean.getUserName()));
-        SpotPricingBean spotPricingBean = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
-        price.setText(checkText(spotPricingBean.getName()));
-        price.setTag(checkText(spotPricingBean.getId()));
+        priceTv.setText(checkText(bean.getPriceName()));
+        priceTv.setTag(checkText(bean.getPrice()));
         phone.setText(checkText(bean.getPhone()));
         currentRatio.setText(checkText(bean.getCurrentRatio()));
         voltageRatio.setText(checkText(bean.getVoltageRatio()));
-        try {
-            for (int i = 0; i < storebeans.size(); i++) {
-                if (bean.getStoreId().equals(((StoreBean) storebeans.get(i)).getId())) {
-                    storeSpinner.setSelection(i + 1);
-                    storeSpinner.setEnabled(false);
-                }
-            }
-        } catch (Exception e) {
-
-        }
-        try {
-            transformerBean = TransformerBeanDaoHelper.getInstance().testQueryBy(bean.getStoreId());
-            if ((transformerBean != null) && (transformerBean.size() > 0)) {
-                String[] arrayOfString = new String[transformerBean.size()];
-                for (int j = 0; j < transformerBean.size(); j++) {
-                    arrayOfString[j] = ((TransformerBean) transformerBean.get(j)).getName();
-                }
-                ArrayAdapter localArrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, arrayOfString);
-                localArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                transformerSpinner.setAdapter(localArrayAdapter);
-            }
-            for (int i = 0; i < transformerBean.size(); i++) {
-                if (bean.getTransformerId().equals(((TransformerBean) transformerBean.get(i)).getId())) {
-                    transformerSpinner.setSelection(i + 1);
-                    transformerSpinner.setEnabled(false);
-                }
-            }
-        } catch (Exception e) {
-
-        }
+        contyTv.setText(bean.getStoreName());
+        contyTv.setContentDescription(bean.getStoreId());
+        transformerTv.setText(bean.getTransformerName());
+        transformerTv.setText(bean.getTransformerId());
     }
 
-    private void setOnItemSelected() {
-        storeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> paramAnonymousAdapterView, View paramAnonymousView, int position, long paramAnonymousLong) {
-                if (position != -1) {
-                    String id = storebeans.get(position).getId();
-                    transformerBean = TransformerBeanDaoHelper.getInstance().testQueryBy(id);
-                    if ((transformerBean != null) && (transformerBean.size() > 0)) {
-                        String[] arrayOfString = new String[transformerBean.size()];
-                        for (int j = 0; j < transformerBean.size(); j++) {
-                            arrayOfString[j] = ((TransformerBean) transformerBean.get(j)).getName();
-                        }
-                        ArrayAdapter localArrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, arrayOfString);
-                        localArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        transformerSpinner.setAdapter(localArrayAdapter);
-                    }
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> paramAnonymousAdapterView) {
-            }
-        });
-    }
-
-    private void setSpinner(String storeId, String transformerId) {
-        try {
-            for (int i = 0; i < storebeans.size(); i++) {
-                if (storeId.equals(((StoreBean) storebeans.get(i)).getId())) {
-                    storeSpinner.setSelection(i + 1);
-                }
-            }
-        } catch (Exception e) {
-
-        }
-        if (!TextUtils.isEmpty(transformerId)) {
-            try {
-                transformerBean = TransformerBeanDaoHelper.getInstance().testQueryBy(storeId);
-                if ((transformerBean != null) && (transformerBean.size() > 0)) {
-                    String[] arrayOfString = new String[transformerBean.size()];
-                    for (int j = 0; j < transformerBean.size(); j++) {
-                        arrayOfString[j] = ((TransformerBean) transformerBean.get(j)).getName();
-                    }
-                    ArrayAdapter localArrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, arrayOfString);
-                    localArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    transformerSpinner.setAdapter(localArrayAdapter);
-                }
-                for (int i = 0; i < transformerBean.size(); i++) {
-                    if (transformerId.equals(((TransformerBean) transformerBean.get(i)).getId())) {
-                        transformerSpinner.setSelection(i + 1);
-                    }
-                }
-            } catch (Exception e) {
-
-            }
-        }
-
-    }
-
-    private void initSpinnerData() {
-        //如果是10级用户 则直接拉去当前用户的营业厅，如果是11用户 则直接显示当前用户的营业厅和台区
-        storebeans = StoreBeanDaoHelper.getInstance().getAllData();
-        if ((this.storebeans != null) && (this.storebeans.size() > 0)) {
-            String[] arrayOfString = new String[this.storebeans.size()];
-            for (int j = 0; j < this.storebeans.size(); j++) {
-                arrayOfString[j] = ((StoreBean) this.storebeans.get(j)).getName();
-            }
-            ArrayAdapter localArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, arrayOfString);
-            localArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            this.storeSpinner.setAdapter(localArrayAdapter);
-        }
-
-    }
 
     @OnClick({R.id.action_save})
     public void onSaveClick() {
         UserBean userBean = new UserBean();
         userBean.setUserId(userId.getText().toString());
         userBean.setUserName(userName.getText().toString());
-        try {
-            StoreBean storeBean = (StoreBean) this.storebeans.get(storeSpinner.getSelectedItemPosition() - 1);
-            userBean.setStoreId(storeBean.getId());
-            userBean.setStoreName(storeBean.getName());
-        } catch (Exception e) {
-            userBean.setStoreId("");
-            userBean.setStoreName("");
-        }
-        try {
-            int y = this.transformerSpinner.getSelectedItemPosition();
-            TransformerBean transFormerBean = (TransformerBean) this.transformerBean.get(y - 1);
-            userBean.setTransformerId(transFormerBean.getId());
-            userBean.setTransformerName(transFormerBean.getName());
-        } catch (Exception e) {
-        }
         userBean.setIme(imeTv.getText().toString());
         userBean.setVoltageRatio(voltageRatio.getText().toString());
         userBean.setCurrentRatio(currentRatio.getText().toString());
         userBean.setPhone(phone.getText().toString());
-        userBean.setPrice(price.getTag() == null ? "" : price.getTag().toString());
-        if (userId.getTag() == null || TextUtils.isEmpty(userId.getTag().toString())) {
-            userBean.setId(UUID.randomUUID().toString());
-        } else {
+        userBean.setPrice(priceTv.getTag() == null ? "" : priceTv.getTag().toString());
+        userBean.setPriceName(priceTv.getText().toString());
+        if (userId.getTag() != null && !TextUtils.isEmpty(userId.getTag().toString())) {
             userBean.setId(userId.getTag().toString());
         }
         userBean.setPassword(userId.getText().toString());
+        userBean.setTransformerId(transformerTv.getContentDescription() != null ? transformerTv.getContentDescription().toString() : "");
+        userBean.setTransformerName(transformerTv.getText().toString());
+        userBean.setStoreId(contyTv.getContentDescription() != null ? contyTv.getContentDescription().toString() : "");
+        userBean.setStoreName(contyTv.getText().toString());
+
         this.presenter.saveUser(this, userBean, 20, isSave);
     }
 
@@ -393,19 +275,77 @@ public class CreateUserThreeAcvitity extends BaseAppCompatActivity implements IU
     }
 
 
-    @OnClick(R.id.price)
-    public void onClickToPrice() {
-        Intent intent = new Intent(getContext(), SearchSpotPricingListActivity.class);
-        startActivityForResult(intent, 1001);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1001 && resultCode == 1001) {
             SpotPricingBean bean = (SpotPricingBean) data.getSerializableExtra("entity");
-            price.setText(bean.getName());
-            price.setTag(bean.getId());
+            priceTv.setText(bean.getName());
+            priceTv.setTag(bean.getId());
+        }
+    }
+
+    @Override
+    protected void onEventComming(EventCenter eventCenter) {
+        if (EventCenter.COUNTY_SELECT == eventCenter.getEventCode()) {
+            try {
+                County county = (County) eventCenter.getData();
+                contyTv.setText(checkText(county.getCountyname()));
+                contyTv.setContentDescription(checkText(county.getCountyid()));
+            } catch (Exception e) {
+
+            }
+        }
+        if (EventCenter.TAIQU_SELECT == eventCenter.getEventCode()) {
+            try {
+                Taiqu taiqu = (Taiqu) eventCenter.getData();
+                transformerTv.setText(checkText(taiqu.getCountyname()));
+                transformerTv.setContentDescription(checkText(taiqu.getCountyid()));
+            } catch (Exception e) {
+
+            }
+        }
+        if (EventCenter.PRICE_SELECT == eventCenter.getEventCode()) {
+            try {
+                Price price = (Price) eventCenter.getData();
+                priceTv.setText(checkText(price.getPricename()));
+                priceTv.setTag(checkText(price.getId() + ""));
+            } catch (Exception e) {
+
+            }
+        }
+    }
+
+    @Override
+    public boolean isBindEventBusHere() {
+        return true;
+    }
+
+    @OnClick({R.id.contyTv, R.id.transformerTv, R.id.price})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.price:
+                Intent priceintent = new Intent(CreateUserThreeAcvitity.this, SpotPricingActivity.class);
+                priceintent.putExtra("isSelect", true);
+                startActivity(priceintent);
+
+                break;
+            case R.id.contyTv:
+                if (LoginInformation.getInstance().getUser().getType().equals("admin")) {
+                    Intent intent = new Intent(CreateUserThreeAcvitity.this, StoresMgrActivity.class);
+                    intent.putExtra("isSelect", true);
+                    startActivity(intent);
+                }
+
+                break;
+            case R.id.transformerTv:
+                if (LoginInformation.getInstance().getUser().getType().equals("admin") || LoginInformation.getInstance().getUser().getType().equals("10")) {
+                    Intent taiquIntent = new Intent(CreateUserThreeAcvitity.this, TransformerActivity.class);
+                    taiquIntent.putExtra("isSelect", true);
+                    startActivity(taiquIntent);
+                }
+
+                break;
         }
     }
 }

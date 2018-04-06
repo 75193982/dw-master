@@ -11,6 +11,9 @@ public class EventCenter<T> {
     public static int TAIQU_SAVE = 2;
     public static int COUNTY_SELECT = 3;
     public static int PRICE_SAVE = 4;
+    public static int USER_SAVE = 5;
+    public static int TAIQU_SELECT = 6;
+    public static int PRICE_SELECT = 7;
 
     public EventCenter(int eventCode) {
         this(eventCode, null);

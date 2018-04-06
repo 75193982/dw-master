@@ -28,8 +28,17 @@ public class UserBean implements Serializable {
     private String remark;
     private String ime;
     private String ecodeType;
+    private String priceName;
 
     public UserBean() {
+    }
+
+    public String getPriceName() {
+        return priceName;
+    }
+
+    public void setPriceName(String priceName) {
+        this.priceName = priceName;
     }
 
     public UserBean(String id, String userId, String name, String pwd, String type, String ime) {

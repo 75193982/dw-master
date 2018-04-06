@@ -28,10 +28,11 @@ public class UserAdapter extends BaseQuickAdapter<UserBean, BaseViewHolder> {
             paramBaseViewHolder.setText(R.id.subtitle, "用户类型：2级用户");
             paramBaseViewHolder.setText(R.id.content, "所属营业厅：" + userBean.getStoreName() +
                     "\n" + "所属台区：" + userBean.getTransformerName() +
-                    "\n" + "电压倍率：" + userBean.getVoltageRatio() + "电流倍率：" + userBean.getCurrentRatio() +
-                    "\n" + "电价：" + userBean.getPrice() +
+                    "\n" + "电压倍率：" + userBean.getVoltageRatio() +
+                    "\n" + "电流倍率：" + userBean.getCurrentRatio() +
+                    "\n" + "电价：" + userBean.getPriceName() +
                     "\n" + "用户号码：" + userBean.getPhone() +
-                    "\n" + "用户表号：" + userBean.getUserId());
+                    "\n" + "用户表号：" + userBean.getId());
         } else {
 
         }

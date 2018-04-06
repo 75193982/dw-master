@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -23,7 +23,7 @@
             android:textSize="@dimen/text_third"
             app:met_floatingLabel="highlight"
             app:met_floatingLabelText="手机ime码"
-            app:met_singleLineEllipsis="true" />
+            app:met_singleLineEllipsis="true"/>
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/user_id"
@@ -35,7 +35,7 @@
             android:textSize="@dimen/text_third"
             app:met_floatingLabel="highlight"
             app:met_floatingLabelText="@string/store_id"
-            app:met_singleLineEllipsis="true" />
+            app:met_singleLineEllipsis="true"/>
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/user_name"
@@ -47,84 +47,37 @@
             android:textSize="@dimen/text_third"
             app:met_floatingLabel="highlight"
             app:met_floatingLabelText="@string/store_name"
-            app:met_singleLineEllipsis="true" />
+            app:met_singleLineEllipsis="true"/>
 
-        <LinearLayout
-            android:id="@+id/store_layout"
+
+        <TextView
+            android:id="@+id/contyTv"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:drawableBottom="@drawable/common_list_item_selector"
+            android:drawableLeft="@drawable/iconfont_must"
+            android:drawableRight="@drawable/arrow_gray_right"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0.0dip"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16.0dip"
-                android:layout_marginRight="16.0dip"
-                android:layout_weight="2.0"
-                android:drawableLeft="@drawable/iconfont_must"
-                android:gravity="center_vertical"
-
-                android:text="@string/transformer_cotainStore"
-                android:textSize="@dimen/text_third" />
-
-            <fr.ganfra.materialspinner.MaterialSpinner
-                android:id="@+id/store_spinner"
-                android:layout_width="0.0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="3.0"
-                app:ms_alignLabels="false"
-                app:ms_arrowColor="@color/disabled_color"
-                app:ms_arrowSize="@dimen/text_third"
-                app:ms_baseColor="@color/disabled_color"
-                app:ms_enableErrorLabel="false"
-                app:ms_enableFloatingLabel="false"
-                app:ms_errorColor="@color/error_color"
-                app:ms_floatingLabelColor="@color/disabled_color"
-                app:ms_floatingLabelText="@string/selected_store"
-                app:ms_highlightColor="@color/Green"
-                app:ms_hint="@string/selected_store"
-                app:ms_multiline="false" />
-        </LinearLayout>
+            android:hint="@string/transformer_cotainStore"
+            android:inputType="textNoSuggestions"
+            android:padding="@dimen/dp_10"
+            android:textSize="@dimen/text_third"
+            />
 
 
-        <LinearLayout
-            android:id="@+id/transformer_layout"
+        <TextView
+            android:id="@+id/transformerTv"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"
+            android:drawableBottom="@drawable/common_list_item_selector"
+            android:drawableLeft="@drawable/iconfont_must"
+            android:drawableRight="@drawable/arrow_gray_right"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0.0dip"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16.0dip"
-                android:layout_marginRight="16.0dip"
-                android:layout_weight="2.0"
-                android:drawableLeft="@drawable/iconfont_must"
-                android:gravity="center_vertical"
-                android:text="@string/transformer_cotain"
-                android:textSize="@dimen/text_third" />
-
-            <fr.ganfra.materialspinner.MaterialSpinner
-                android:id="@+id/transformer_spinner"
-                android:layout_width="0.0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="3.0"
-                app:ms_alignLabels="false"
-                app:ms_arrowColor="@color/disabled_color"
-                app:ms_arrowSize="@dimen/text_third"
-                app:ms_baseColor="@color/disabled_color"
-                app:ms_enableErrorLabel="false"
-                app:ms_enableFloatingLabel="false"
-                app:ms_errorColor="@color/error_color"
-                app:ms_floatingLabelColor="@color/disabled_color"
-                app:ms_floatingLabelText="@string/transformer_cotain"
-                app:ms_highlightColor="@color/Green"
-                app:ms_hint="@string/selected_transformer"
-                app:ms_multiline="false" />
-        </LinearLayout>
+            android:hint="@string/transformer_cotain"
+            android:inputType="textNoSuggestions"
+            android:padding="@dimen/dp_10"
+            android:textSize="@dimen/text_third"
+            />
 
 
         <com.rengwuxian.materialedittext.MaterialEditText
@@ -137,7 +90,7 @@
             android:textSize="@dimen/text_third"
             app:met_floatingLabel="highlight"
             app:met_floatingLabelText="@string/voltageRatio"
-            app:met_singleLineEllipsis="true" />
+            app:met_singleLineEllipsis="true"/>
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/currentRatio"
@@ -149,7 +102,7 @@
             android:textSize="@dimen/text_third"
             app:met_floatingLabel="highlight"
             app:met_floatingLabelText="@string/currentRatio"
-            app:met_singleLineEllipsis="true" />
+            app:met_singleLineEllipsis="true"/>
 
 
         <TextView
@@ -157,12 +110,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/iconfont_must"
-            android:drawableRight="@drawable/common_arrows_right"
+            android:drawableRight="@drawable/arrow_gray_right"
             android:gravity="center_vertical"
             android:hint="@string/input_price"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:textSize="@dimen/text_third" />
+            android:textSize="@dimen/text_third"/>
 
 
         <com.rengwuxian.materialedittext.MaterialEditText
@@ -174,7 +127,7 @@
             android:textSize="@dimen/text_third"
             app:met_floatingLabel="highlight"
             app:met_floatingLabelText="@string/phone"
-            app:met_singleLineEllipsis="true" />
+            app:met_singleLineEllipsis="true"/>
 
         <LinearLayout
             android:id="@id/action_save"
@@ -190,7 +143,7 @@
                 android:gravity="center"
                 android:text="@string/save"
                 android:textColor="@color/White"
-                android:textSize="@dimen/text_second" />
+                android:textSize="@dimen/text_second"/>
         </LinearLayout>
 
     </LinearLayout>

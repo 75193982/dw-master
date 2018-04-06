@@ -3,13 +3,23 @@ package com.xgx.dw.presenter.impl;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.alibaba.fastjson.JSONArray;
+import com.blankj.utilcode.util.ToastUtils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.xgx.dw.TransformerBean;
 import com.xgx.dw.UserBean;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BasePresenter;
+import com.xgx.dw.base.EventCenter;
+import com.xgx.dw.bean.County;
+import com.xgx.dw.bean.Taiqu;
 import com.xgx.dw.dao.TransformerBeanDaoHelper;
 import com.xgx.dw.dao.UserBeanDaoHelper;
+import com.xgx.dw.net.DialogCallback;
+import com.xgx.dw.net.LzyResponse;
+import com.xgx.dw.net.URLs;
 import com.xgx.dw.presenter.interfaces.ITransformerPresenter;
 import com.xgx.dw.presenter.interfaces.IUserPresenter;
 import com.xgx.dw.ui.view.interfaces.ICreateTransformerView;
@@ -18,6 +28,10 @@ import com.xgx.dw.ui.view.interfaces.IUserListView;
 import com.xgx.dw.ui.view.interfaces.IUserView;
 import com.xgx.dw.utils.Logger;
 import com.xgx.dw.utils.MyUtils;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
 
 public class UserPresenterImpl extends BasePresenter implements IUserPresenter {
     public void saveTransformer(ICreateTransformerView paramICreateTransformerView, TransformerBean paramTransformerBean, boolean paramBoolean) {
@@ -40,7 +54,7 @@ public class UserPresenterImpl extends BasePresenter implements IUserPresenter {
     }
 
     @Override
-    public void saveUser(IUserView IBaseView, UserBean userBean, int type, boolean isSave) {
+    public void saveUser(final IUserView IBaseView, final UserBean userBean, int type, boolean isSave) {
         try {
             if (isEmpty(userBean.getUserId(), IBaseView, "用户编号不能为空")) return;
             if (isEmpty(userBean.getUserName(), IBaseView, "用户名称不能为空")) return;
@@ -52,33 +66,20 @@ public class UserPresenterImpl extends BasePresenter implements IUserPresenter {
             }
             userBean.setType(type + "");
             //查询有没有这个设备编号的
-            IBaseView.showProgress("保存用户中...");
-            UserBean tempUser = UserBeanDaoHelper.getInstance().queryByTransFormUserId(userBean.getUserId());
-            if (isSave == true) {//表示保存
-                if (tempUser == null) {//新建用户
-                    UserBeanDaoHelper.getInstance().addData(userBean);
-                    IBaseView.saveTransformer(true, userBean.getId());
-                } else {
-                    if (tempUser.getIme().contains(userBean.getIme())) {//说明已经存在
-                        IBaseView.showToast("已经存在该用户");
-                        IBaseView.saveTransformer(false, userBean.getId());
-                    } else {
-                        userBean.setId(tempUser.getId());
-                        StringBuilder sb = new StringBuilder();
-                        sb.append(tempUser.getIme());
-                        if (!TextUtils.isEmpty(userBean.getIme())) {
-                            sb.append("," + userBean.getIme());
-                        }
-                        userBean.setIme(sb.toString());
-                        UserBeanDaoHelper.getInstance().addData(userBean);
-                        IBaseView.saveTransformer(true, userBean.getId());
-                    }
+            OkGo.<LzyResponse<UserBean>>post(URLs.getURL(URLs.MTUSER_SAVE)).params("id", checkIsNull(userBean.getId() + "")).params("userId", checkIsNull(userBean.getUserId())).params("userName", checkIsNull(userBean.getUserName())).params("password", checkIsNull(userBean.getPassword())).params("type", checkIsNull(userBean.getType())).params("storeId", checkIsNull(userBean.getStoreId())).params("storeName", checkIsNull(userBean.getStoreName())).params("isBuy", checkIsNull(userBean.getIsBuy())).params("isTest", checkIsNull(userBean.getIsTest())).params("transformerId", checkIsNull(userBean.getTransformerId())).params("transformerName", checkIsNull(userBean.getTransformerName())).params("voltageRatio", checkIsNull(userBean.getVoltageRatio())).params("currentRatio", checkIsNull(userBean.getCurrentRatio())).params("price", checkIsNull(userBean.getPrice())).params("priceName", checkIsNull(userBean.getPriceName())).params("phone", checkIsNull(userBean.getPhone())).params("remark", checkIsNull(userBean.getRemark())).params("ime", checkIsNull(userBean.getIme())).params("ecodeType", checkIsNull(userBean.getEcodeType())).execute(new DialogCallback<LzyResponse<UserBean>>(IBaseView.getContext()) {
+                @Override
+                public void onSuccess(Response<LzyResponse<UserBean>> response) {
+                    ToastUtils.showShort(response.body().message);
+                    EventBus.getDefault().post(new EventCenter<Taiqu>(EventCenter.USER_SAVE));
+                    IBaseView.close();
                 }
-            } else {//编辑状态 直接保存即可
-                UserBeanDaoHelper.getInstance().addData(userBean);
-                IBaseView.saveTransformer(true, userBean.getId());
-            }
-            IBaseView.hideProgress();
+
+                @Override
+                public void onError(Response<LzyResponse<UserBean>> response) {
+                    super.onError(response);
+                    ToastUtils.showShort(response.getException().getMessage());
+                }
+            });
         } catch (Exception e) {
             Logger.e(e.getMessage());
         }
@@ -87,14 +88,32 @@ public class UserPresenterImpl extends BasePresenter implements IUserPresenter {
     }
 
     @Override
-    public void searchUser(IUserListView IBaseView) {
-        if (G.currentUserType.equals("10")) {//营业厅管理员 查看当前营业厅下的人
-            IBaseView.getUserList(UserBeanDaoHelper.getInstance().queryByStoreId(G.currentStoreId));
-        } else if (G.currentUserType.equals("11")) {
-            IBaseView.getUserList(UserBeanDaoHelper.getInstance().queryByTransFormId(G.currentTransformId));
-        } else {
-            IBaseView.getUserList(UserBeanDaoHelper.getInstance().getAllData());
-        }
+    public void searchUser(final IUserListView IBaseView) {
+        Setting setting = new Setting(IBaseView.getContext());
+        String currentStoreId = setting.loadString(G.currentStoreId);
+        String currentTransformId = setting.loadString(G.currentStoreId);
+        OkGo.<LzyResponse<UserBean>>post(URLs.getURL(URLs.MTUSER_LIST)).params("countyid", currentStoreId).params("taiqubh", currentTransformId).execute(new DialogCallback<LzyResponse<UserBean>>(IBaseView.getContext()) {
+            @Override
+            public void onSuccess(Response<LzyResponse<UserBean>> response) {
+                List<UserBean> countyList = ((JSONArray) response.body().model).toJavaList(UserBean.class);
+                IBaseView.getUserList(countyList);
+
+            }
+
+            @Override
+            public void onError(Response<LzyResponse<UserBean>> response) {
+                super.onError(response);
+                ToastUtils.showShort(response.getException().getMessage());
+            }
+        });
+
+//        if (G.currentUserType.equals("10")) {//营业厅管理员 查看当前营业厅下的人
+//            IBaseView.getUserList(UserBeanDaoHelper.getInstance().queryByStoreId(G.currentStoreId));
+//        } else if (G.currentUserType.equals("11")) {
+//            IBaseView.getUserList(UserBeanDaoHelper.getInstance().queryByTransFormId(G.currentTransformId));
+//        } else {
+//
+//        }
     }
 
     @Override

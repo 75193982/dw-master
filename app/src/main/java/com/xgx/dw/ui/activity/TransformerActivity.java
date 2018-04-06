@@ -27,10 +27,13 @@ import com.xgx.dw.adapter.TransformerAdapter;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.base.BaseEventBusActivity;
 import com.xgx.dw.base.EventCenter;
+import com.xgx.dw.bean.County;
 import com.xgx.dw.bean.Taiqu;
 import com.xgx.dw.presenter.impl.TransformerPresenterImpl;
 import com.xgx.dw.presenter.interfaces.ITransformerPresenter;
 import com.xgx.dw.ui.view.interfaces.ITransformerView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -91,9 +94,14 @@ public class TransformerActivity extends BaseEventBusActivity implements ITransf
         recyclerView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                Intent localIntent = new Intent(getContext(), CreateTransformerAcvitity.class);
-                localIntent.putExtra("bean", (Serializable) adapter.getItem(i));
-                startActivity(localIntent);
+                if (getIntent().getBooleanExtra("isSelect", false)) {
+                    EventBus.getDefault().post(new EventCenter<Taiqu>(EventCenter.TAIQU_SELECT, adapter.getItem(i)));
+                    finish();
+                } else {
+                    Intent localIntent = new Intent(getContext(), CreateTransformerAcvitity.class);
+                    localIntent.putExtra("bean", (Serializable) adapter.getItem(i));
+                    startActivity(localIntent);
+                }
             }
         });
     }

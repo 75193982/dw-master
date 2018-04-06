@@ -6,8 +6,8 @@ package com.xgx.dw.net;
  * @author Ht
  */
 public class URLs {
-    //public static final String HOST = "http://221.176.209.130:80/";
     public static final String HOST = "http://192.168.0.116:80/";
+    // public static final String HOST = "http://221.176.209.130:8089/";
     public static final String PROJECT_NAME = "";
     public static final String API = "";
 
@@ -29,6 +29,8 @@ public class URLs {
 
     public static final String TAIQU_LIST = "mtzTaiqu/taiquList";//台区列表
     public static final String TAIQU_SAVE = "mtzTaiqu/save";//保存或者编辑台区列表
+    public static final String MTUSER_LIST = "mtzUser/mtzUserList"; //用户资料管理
+    public static final String MTUSER_SAVE = "mtzUser/save"; //用户资料保存
 
     public static final String USER_SIGNUP = "xxx";
 

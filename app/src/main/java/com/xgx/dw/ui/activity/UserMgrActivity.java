@@ -2,7 +2,6 @@ package com.xgx.dw.ui.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,21 +24,20 @@ import com.xgx.dw.UserBean;
 import com.xgx.dw.adapter.UserAdapter;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
-import com.xgx.dw.base.BaseAppCompatActivity;
+import com.xgx.dw.base.BaseEventBusActivity;
+import com.xgx.dw.base.EventCenter;
 import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.dao.UserBeanDaoHelper;
 import com.xgx.dw.presenter.impl.UserPresenterImpl;
 import com.xgx.dw.presenter.interfaces.IUserPresenter;
 import com.xgx.dw.ui.view.interfaces.IUserListView;
-import com.xgx.dw.utils.MyStringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class UserMgrActivity extends BaseAppCompatActivity implements IUserListView, OnMenuItemClickListener {
+public class UserMgrActivity extends BaseEventBusActivity implements IUserListView, OnMenuItemClickListener {
     private static int REFRESH_RECYCLERVIEW = 0;
     @BindView(R.id.query)
     EditText query;
@@ -64,7 +62,7 @@ public class UserMgrActivity extends BaseAppCompatActivity implements IUserListV
     }
 
     public void initView() {
-        getSupportActionBar().setTitle(R.string.user_one);
+        getSupportActionBar().setTitle("用户资料");
         getToolbar().setOnMenuItemClickListener(this);
         beans = new ArrayList();
         recyclerView.setHasFixedSize(true);
@@ -177,9 +175,6 @@ public class UserMgrActivity extends BaseAppCompatActivity implements IUserListV
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REFRESH_RECYCLERVIEW) {
-            presenter.searchUser(this);
-        }
     }
 
     public boolean onCreateOptionsMenu(Menu paramMenu) {
@@ -230,4 +225,19 @@ public class UserMgrActivity extends BaseAppCompatActivity implements IUserListV
         }
     }
 
+    @Override
+    protected void onEventComming(EventCenter eventCenter) {
+        if (EventCenter.USER_SAVE == eventCenter.getEventCode()) {
+            try {
+                presenter.searchUser(this);
+            } catch (Exception e) {
+
+            }
+        }
+    }
+
+    @Override
+    public boolean isBindEventBusHere() {
+        return true;
+    }
 }

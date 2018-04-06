@@ -25,10 +25,13 @@ import com.xgx.dw.R;
 import com.xgx.dw.SpotPricingBean;
 import com.xgx.dw.adapter.SpotPricingAdapter;
 import com.xgx.dw.base.BaseAppCompatActivity;
+import com.xgx.dw.base.EventCenter;
 import com.xgx.dw.bean.Price;
 import com.xgx.dw.presenter.impl.SpotPricingPresenterImpl;
 import com.xgx.dw.presenter.interfaces.ISpotPricingPresenter;
 import com.xgx.dw.ui.view.interfaces.ISpotPricingView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -89,10 +92,15 @@ public class SpotPricingActivity extends BaseAppCompatActivity implements ISpotP
         recyclerView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                Price price = (Price) baseQuickAdapter.getItem(i);
-                Intent localIntent = new Intent(getContext(), CreateSpotPricingAcvitity.class);
-                localIntent.putExtra("bean", (Serializable) price);
-                startActivityForResult(localIntent, REFRESH_RECYCLERVIEW);
+                if (getIntent().getBooleanExtra("isSelect", false)) {
+                    EventBus.getDefault().post(new EventCenter<Price>(EventCenter.PRICE_SELECT, adapter.getItem(i)));
+                    finish();
+                } else {
+                    Price price = (Price) baseQuickAdapter.getItem(i);
+                    Intent localIntent = new Intent(getContext(), CreateSpotPricingAcvitity.class);
+                    localIntent.putExtra("bean", (Serializable) price);
+                    startActivityForResult(localIntent, REFRESH_RECYCLERVIEW);
+                }
             }
         });
     }
