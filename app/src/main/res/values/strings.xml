@@ -16,7 +16,7 @@
     <string name="UMUpdateSize">仅需要下载:</string>
     <string name="UMUpdateTitle">发现新版本</string>
     <string name="action_save">创建</string>
-    <string name="action_sign_in" />
+    <string name="action_sign_in"/>
     <string name="action_sign_in_short">登录</string>
     <string name="app_name">中衡电气</string>
     <string name="appbar_scrolling_view_behavior">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
@@ -28,8 +28,8 @@
     <string name="create_userone">创建营业厅管理员</string>
     <string name="create_usertwo">创建台区管理员</string>
     <string name="create_userThree">创建二级用户</string>
-    <string name="define_roundedimageview" />
-    <string name="empty" />
+    <string name="define_roundedimageview"/>
+    <string name="empty"/>
     <string name="error_field_required">This field is required</string>
     <string name="error_incorrect_password">请输入正确的密码</string>
     <string name="error_invalid_email">This email address is invalid</string>
@@ -96,6 +96,8 @@
     <string name="input_meterNum">请输入设备编号</string>
     <string name="input_phone">请输入手机号码</string>
     <string name="phone">手机号码</string>
+    <string name="company">公司名称</string>
+    <string name="input_company">请输出公司名称</string>
     <string name="expand">查看详情</string>
     <string name="shrink">收缩</string>
 </resources>

@@ -100,7 +100,7 @@ public class SpecialOperationFragment extends BaseFragment implements MyOnItemCl
             localArrayList.add(new DummyContent(2, "保电投入", "保电投入", this.drawableInt[2]));
             localArrayList.add(new DummyContent(3, "保电解除", "保电解除", this.drawableInt[3]));
 
-        } else if (currentUserType.equals("admin")) {
+        } else if (currentUserType.equals("0")) {
             localArrayList.add(new DummyContent(0, "合闸", "合闸", this.drawableInt[0]));
             localArrayList.add(new DummyContent(1, "分闸", "分闸", this.drawableInt[1]));
             localArrayList.add(new DummyContent(2, "保电投入", "保电投入", this.drawableInt[2]));

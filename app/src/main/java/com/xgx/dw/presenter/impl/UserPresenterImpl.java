@@ -14,6 +14,7 @@ import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BasePresenter;
 import com.xgx.dw.base.EventCenter;
 import com.xgx.dw.bean.County;
+import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.bean.Taiqu;
 import com.xgx.dw.dao.TransformerBeanDaoHelper;
 import com.xgx.dw.dao.UserBeanDaoHelper;
@@ -54,7 +55,7 @@ public class UserPresenterImpl extends BasePresenter implements IUserPresenter {
     }
 
     @Override
-    public void saveUser(final IUserView IBaseView, final UserBean userBean, int type, boolean isSave) {
+    public void saveUser(final IUserView IBaseView, final UserBean userBean, int type) {
         try {
             if (isEmpty(userBean.getUserId(), IBaseView, "用户编号不能为空")) return;
             if (isEmpty(userBean.getUserName(), IBaseView, "用户名称不能为空")) return;
@@ -66,7 +67,28 @@ public class UserPresenterImpl extends BasePresenter implements IUserPresenter {
             }
             userBean.setType(type + "");
             //查询有没有这个设备编号的
-            OkGo.<LzyResponse<UserBean>>post(URLs.getURL(URLs.MTUSER_SAVE)).params("id", checkIsNull(userBean.getId() + "")).params("userId", checkIsNull(userBean.getUserId())).params("userName", checkIsNull(userBean.getUserName())).params("password", checkIsNull(userBean.getPassword())).params("type", checkIsNull(userBean.getType())).params("storeId", checkIsNull(userBean.getStoreId())).params("storeName", checkIsNull(userBean.getStoreName())).params("isBuy", checkIsNull(userBean.getIsBuy())).params("isTest", checkIsNull(userBean.getIsTest())).params("transformerId", checkIsNull(userBean.getTransformerId())).params("transformerName", checkIsNull(userBean.getTransformerName())).params("voltageRatio", checkIsNull(userBean.getVoltageRatio())).params("currentRatio", checkIsNull(userBean.getCurrentRatio())).params("price", checkIsNull(userBean.getPrice())).params("priceName", checkIsNull(userBean.getPriceName())).params("phone", checkIsNull(userBean.getPhone())).params("remark", checkIsNull(userBean.getRemark())).params("ime", checkIsNull(userBean.getIme())).params("ecodeType", checkIsNull(userBean.getEcodeType())).execute(new DialogCallback<LzyResponse<UserBean>>(IBaseView.getContext()) {
+            OkGo.<LzyResponse<UserBean>>post(URLs.getURL(URLs.MTUSER_SAVE))
+                    .params("id", checkIsNull(userBean.getId() + ""))
+                    .params("userId", checkIsNull(userBean.getUserId()))
+                    .params("userName", checkIsNull(userBean.getUserName()))
+                    .params("password", checkIsNull(userBean.getPassword()))
+                    .params("type",type+"")
+                    .params("storeId", checkIsNull(userBean.getStoreId()))
+                    .params("storeName", checkIsNull(userBean.getStoreName()))
+                    .params("isBuy", checkIsNull(userBean.getIsBuy()))
+                    .params("isTest", checkIsNull(userBean.getIsTest()))
+                    .params("transformerId", checkIsNull(userBean.getTransformerId()))
+                    .params("transformerName", checkIsNull(userBean.getTransformerName()))
+                    .params("voltageRatio", checkIsNull(userBean.getVoltageRatio()))
+                    .params("currentRatio", checkIsNull(userBean.getCurrentRatio()))
+                    .params("price", checkIsNull(userBean.getPrice()))
+                    .params("mobile", checkIsNull(userBean.getMobile()))
+                    .params("priceName", checkIsNull(userBean.getPriceName()))
+                    .params("phone", checkIsNull(userBean.getPhone()))
+                    .params("remark", checkIsNull(userBean.getRemark()))
+                    .params("ime", checkIsNull(userBean.getIme()))
+                    .params("companyName", checkIsNull(userBean.getCompanyName()))
+                    .params("ecodeType", checkIsNull(userBean.getEcodeType())).execute(new DialogCallback<LzyResponse<UserBean>>(IBaseView.getContext()) {
                 @Override
                 public void onSuccess(Response<LzyResponse<UserBean>> response) {
                     ToastUtils.showShort(response.body().message);
@@ -90,9 +112,11 @@ public class UserPresenterImpl extends BasePresenter implements IUserPresenter {
     @Override
     public void searchUser(final IUserListView IBaseView) {
         Setting setting = new Setting(IBaseView.getContext());
-        String currentStoreId = setting.loadString(G.currentStoreId);
-        String currentTransformId = setting.loadString(G.currentStoreId);
-        OkGo.<LzyResponse<UserBean>>post(URLs.getURL(URLs.MTUSER_LIST)).params("countyid", currentStoreId).params("taiqubh", currentTransformId).execute(new DialogCallback<LzyResponse<UserBean>>(IBaseView.getContext()) {
+        OkGo.<LzyResponse<UserBean>>post(URLs.getURL(URLs.MTUSER_LIST))
+                .params("countyid",  LoginInformation.getInstance().getUser().getStoreId())
+                .params("taiqubh", LoginInformation.getInstance().getUser().getTransformerId())
+                .params("audiotype",    LoginInformation.getInstance().getUser().getType())
+                .execute(new DialogCallback<LzyResponse<UserBean>>(IBaseView.getContext()) {
             @Override
             public void onSuccess(Response<LzyResponse<UserBean>> response) {
                 List<UserBean> countyList = ((JSONArray) response.body().model).toJavaList(UserBean.class);

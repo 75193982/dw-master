@@ -81,7 +81,7 @@ public class DataSearchFragment extends BaseFragment implements MyOnItemClickLis
             localArrayList.add(new DummyContent(6, "倍率查询", "倍率查询", this.drawableInt[5]));
             localArrayList.add(new DummyContent(7, "电价查询", "电价查询", this.drawableInt[5]));
             localArrayList.add(new DummyContent(8, "个人资料", "个人资料", this.drawableInt[5]));
-            if ("admin,10,11".contains(currentUserType)) {
+            if ("0,10,11".contains(currentUserType)) {
                 localArrayList.add(new DummyContent(9, "购电报表", "购电报表", this.drawableInt[5]));
             }
             localArrayList.add(new DummyContent(10, "故障查询", "故障查询", this.drawableInt[5]));

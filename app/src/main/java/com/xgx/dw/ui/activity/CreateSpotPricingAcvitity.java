@@ -111,16 +111,17 @@ public class CreateSpotPricingAcvitity extends BaseEventBusActivity implements I
         if (bean != null && bean.getId() != null) {
             spotPricingName.setText(checkText(bean.getPricename()));
             spotpricingPriceCount.setText(checkText(bean.getTotalprice()));
-            if (!checkText(bean.getPricetype()).equals("普通")) {
+            if ("普通".equals(bean.getPricetype())) {
                 spinnerType.setSelection(1);
             }
-            if (checkText(bean.getPricetype()).equals("分时")) {
+            if ("分时".equals(bean.getPricetype())) {
                 spinnerType.setSelection(2);
             }
             spotpricingPointedPrice.setText(checkText(bean.getPricea()));
             spotpricingPeakPrice.setText(checkText(bean.getPriceb()));
             spotpricingFlatPrice.setText(checkText(bean.getPricec()));
             spotpricingValleyPrice.setText(checkText(bean.getPriced()));
+            spotpricingPriceCount.setText(checkText(bean.getTotalprice()));
             contyTv.setText(checkText(bean.getCountyname()));
             contyTv.setContentDescription(checkText(bean.getCountyid()));
             getSupportActionBar().setTitle(R.string.upgrade_spotpricing);

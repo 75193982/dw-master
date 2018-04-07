@@ -114,6 +114,7 @@ public class TransformerActivity extends BaseEventBusActivity implements ITransf
     private void setDatas() {
         Taiqu taiqu = new Taiqu();
         taiqu.setName(queryEt.getText().toString());
+        taiqu.setCountyid(getIntent().getStringExtra("countyid"));
         this.presenter.searchTransformer(this, taiqu);
     }
 

@@ -48,7 +48,10 @@ public class TransformerPresenterImpl extends BasePresenter implements ITransfor
 
     public void searchTransformer(final ITransformerView paramITransformerView, Taiqu taiqu) {
 
-        OkGo.<LzyResponse<Taiqu>>post(URLs.getURL(URLs.TAIQU_LIST)).params("name", checkIsNull(taiqu.getName())).execute(new DialogCallback<LzyResponse<Taiqu>>(paramITransformerView.getContext()) {
+        OkGo.<LzyResponse<Taiqu>>post(URLs.getURL(URLs.TAIQU_LIST))
+                .params("name", checkIsNull(taiqu.getName()))
+                .params("countyid", checkIsNull(taiqu.getCountyid()))
+                .execute(new DialogCallback<LzyResponse<Taiqu>>(paramITransformerView.getContext()) {
             @Override
             public void onSuccess(Response<LzyResponse<Taiqu>> response) {
                 List<Taiqu> taiquList = ((JSONArray) response.body().model).toJavaList(Taiqu.class);

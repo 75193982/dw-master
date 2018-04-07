@@ -182,7 +182,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
         Setting setting = new Setting(this);
         currentUserType = setting.loadString(G.currentUserType);
         FragmentAdapter localFragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), currentUserType);
-        if ("20,30,32".contains(currentUserType)) {//普通用户 不显示资源管理按钮
+        if ("20".equals(currentUserType) || "30".equals(currentUserType) || "32".equals(currentUserType)) {//普通用户 不显示资源管理按钮
             viewId = new int[]{R.id.ll_address, R.id.ll_find, R.id.ll_me};
             llWx.setVisibility(View.GONE);
             mListImage.add(addressBookS);
@@ -460,15 +460,15 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                         UserBean bean = userAllInfo.getUser();
                         String type = LoginInformation.getInstance().getUser().getType();
                         //自动登录 比较 ime账号
-                        if (userAllInfo.getEcodeType().equals("0") && type.equals("admin")) {
-                            if ("admin".contains(type)) {
+                        if (userAllInfo.getEcodeType().equals("0") && type.equals("0")) {
+                            if ("0".equals(type)) {
                                 startActivity(new Intent(getContext(), CreateUserOneAcvitity.class).putExtra("ime", bean.getIme()));
                             } else {
                                 showToast("当前账号没有权限创建营业厅管理员");
                             }
                             startActivity(new Intent(getContext(), CreateUserOneAcvitity.class).putExtra("ime", bean.getIme()));
                         } else if (userAllInfo.getEcodeType().equals("1")) {
-                            if ("admin,10".contains(type)) {
+                            if ("0".contains(type) || "10".contains(type)) {
                                 startActivity(new Intent(getContext(), CreateUserTwoAcvitity.class).putExtra("ime", bean.getIme()));
                             } else {
                                 showToast("当前账号没有权限创建台区管理员");
@@ -488,7 +488,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                             if (userAllInfo.getSpotBeans().getId() != null) {
                                 SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());
                             }
-                        } else if (userAllInfo.getEcodeType().equals("4") && ("admin,30,31,10,11").contains(type)) {
+                        } else if (userAllInfo.getEcodeType().equals("4") && ("0,30,31,10,11").contains(type)) {
                             if ("10,11".contains(type)) {
                                 if (!LoginInformation.getInstance().getUser().getIsBuy().equals("1")) {
                                     //你当前没有权限扫描购电信息

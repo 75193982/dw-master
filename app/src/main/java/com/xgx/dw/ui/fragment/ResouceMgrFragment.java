@@ -20,6 +20,7 @@ import com.xgx.dw.adapter.DataSearchItemAdapter.MyOnItemClickListner;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseFragment;
+import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.ui.activity.CreateUserOneAcvitity;
 import com.xgx.dw.ui.activity.SpotPricingActivity;
 import com.xgx.dw.ui.activity.StoresMgrActivity;
@@ -91,10 +92,10 @@ public class ResouceMgrFragment extends BaseFragment implements MyOnItemClickLis
                 startActivity(new Intent(getActivity(), StoresMgrActivity.class));
                 return;
             case 1:
-                startActivity(new Intent(getActivity(), TransformerActivity.class));
+                startActivity(new Intent(getActivity(), TransformerActivity.class).putExtra("countyid", LoginInformation.getInstance().getUser().getStoreId()));
                 return;
             case 2:
-                startActivity(new Intent(getActivity(), SpotPricingActivity.class));
+                startActivity(new Intent(getActivity(), SpotPricingActivity.class).putExtra("countyid", LoginInformation.getInstance().getUser().getStoreId()));
                 return;
             case 3:
                 startActivity(new Intent(getActivity(), UserMgrActivity.class));

@@ -101,7 +101,41 @@ public class SysUser implements Serializable, Parcelable {
      */
     @Property
     private Integer version;
-
+    /**
+     * 营业厅id
+     */
+    @Property
+    private String countyid;
+    /**
+     * 营业厅名称
+     */
+    @Property
+    private String countyname;
+    /**
+     * 台区id
+     */
+    @Property
+    private String taiquid;
+    /**
+     * 台区名称
+     */
+    @Property
+    private String taiquname;
+    /**
+     * 用户类型
+     */
+    @Property
+    private Integer userType;
+    /**
+     * 购买权限
+     */
+    @Property
+    private String isBuy;
+    /**
+     * 测试权限
+     */
+    @Property
+    private String isTest;
 
     public Integer getId() {
         return id;
@@ -223,6 +257,62 @@ public class SysUser implements Serializable, Parcelable {
         this.version = version;
     }
 
+    public String getCountyid() {
+        return countyid;
+    }
+
+    public void setCountyid(String countyid) {
+        this.countyid = countyid;
+    }
+
+    public String getCountyname() {
+        return countyname;
+    }
+
+    public void setCountyname(String countyname) {
+        this.countyname = countyname;
+    }
+
+    public String getTaiquid() {
+        return taiquid;
+    }
+
+    public void setTaiquid(String taiquid) {
+        this.taiquid = taiquid;
+    }
+
+    public String getTaiquname() {
+        return taiquname;
+    }
+
+    public void setTaiquname(String taiquname) {
+        this.taiquname = taiquname;
+    }
+
+    public Integer getUserType() {
+        return userType;
+    }
+
+    public void setUserType(Integer userType) {
+        this.userType = userType;
+    }
+
+    public String getIsBuy() {
+        return isBuy;
+    }
+
+    public void setIsBuy(String isBuy) {
+        this.isBuy = isBuy;
+    }
+
+    public String getIsTest() {
+        return isTest;
+    }
+
+    public void setIsTest(String isTest) {
+        this.isTest = isTest;
+    }
+
     protected SysUser(Parcel in) {
         if (in.readByte() == 0) {
             id = null;
@@ -258,10 +348,26 @@ public class SysUser implements Serializable, Parcelable {
         } else {
             version = in.readInt();
         }
+        countyid = in.readString();
+        countyname = in.readString();
+        taiquid = in.readString();
+        taiquname = in.readString();
+        if (in.readByte() == 0) {
+            userType = null;
+        } else {
+            userType = in.readInt();
+        }
+        isBuy = in.readString();
+        isTest = in.readString();
     }
 
-    @Generated(hash = 377029907)
-    public SysUser(Integer id, String avatar, String account, String password, String salt, String name, Date birthday, Integer sex, String email, String phone, String roleid, Integer deptid, Integer status, String createtime, Integer version) {
+    @Generated(hash = 899940022)
+    public SysUser(Integer id, String avatar, String account, String password,
+            String salt, String name, Date birthday, Integer sex, String email,
+            String phone, String roleid, Integer deptid, Integer status,
+            String createtime, Integer version, String countyid, String countyname,
+            String taiquid, String taiquname, Integer userType, String isBuy,
+            String isTest) {
         this.id = id;
         this.avatar = avatar;
         this.account = account;
@@ -277,6 +383,13 @@ public class SysUser implements Serializable, Parcelable {
         this.status = status;
         this.createtime = createtime;
         this.version = version;
+        this.countyid = countyid;
+        this.countyname = countyname;
+        this.taiquid = taiquid;
+        this.taiquname = taiquname;
+        this.userType = userType;
+        this.isBuy = isBuy;
+        this.isTest = isTest;
     }
 
     @Generated(hash = 1097522457)
@@ -341,5 +454,17 @@ public class SysUser implements Serializable, Parcelable {
             parcel.writeByte((byte) 1);
             parcel.writeInt(version);
         }
+        parcel.writeString(countyid);
+        parcel.writeString(countyname);
+        parcel.writeString(taiquid);
+        parcel.writeString(taiquname);
+        if (userType == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeInt(userType);
+        }
+        parcel.writeString(isBuy);
+        parcel.writeString(isTest);
     }
 }

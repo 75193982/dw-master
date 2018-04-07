@@ -89,6 +89,10 @@ public class G {
      */
     public static final String currentTransformName = "currentTransformName";
     /**
+     * 当前用户台区NAME
+     */
+    public static final String currentUserLoginPhone = "currentUserLoginPhone";
+    /**
      * 购电单号
      */
     public static final String currentOrderId = "currentOrderId";

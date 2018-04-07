@@ -32,18 +32,7 @@ public class SpotPricingPresenterImpl extends BasePresenter implements ISpotPric
         if (isEmpty(price.getPricename(), IBaseView, "电价名称不能为空")) return;
         if (isEmpty(price.getPricetype(), IBaseView, "请选择电价类型")) return;
         if (isEmpty(price.getTotalprice(), IBaseView, "电价总额不能为空")) return;
-        OkGo.<LzyResponse<Price>>post(URLs.getURL(URLs.PRICE_SAVE))
-                .params("id", checkIsNull(price.getId() + ""))
-                .params("pricename", checkIsNull(price.getPricename()))
-                .params("pricetype", checkIsNull(price.getPricetype() ))
-                .params("countyid", checkIsNull(price.getCountyid()))
-                .params("countyname", checkIsNull(price.getCountyname()))
-                .params("totalprice", checkIsNull(price.getTotalprice()))
-                .params("pricea", checkIsNull(price.getPricea()))
-                .params("priceb", checkIsNull(price.getPriceb()))
-                .params("pricec", checkIsNull(price.getPricec()))
-                .params("priced", checkIsNull(price.getPriced()))
-                .execute(new DialogCallback<LzyResponse<Price>>(IBaseView.getContext()) {
+        OkGo.<LzyResponse<Price>>post(URLs.getURL(URLs.PRICE_SAVE)).params("id", checkIsNull(price.getId() + "")).params("pricename", checkIsNull(price.getPricename())).params("pricetype", checkIsNull(price.getPricetype())).params("countyid", checkIsNull(price.getCountyid())).params("countyname", checkIsNull(price.getCountyname())).params("totalprice", checkIsNull(price.getTotalprice())).params("pricea", checkIsNull(price.getPricea())).params("priceb", checkIsNull(price.getPriceb())).params("pricec", checkIsNull(price.getPricec())).params("priced", checkIsNull(price.getPriced())).execute(new DialogCallback<LzyResponse<Price>>(IBaseView.getContext()) {
             @Override
             public void onSuccess(Response<LzyResponse<Price>> response) {
                 ToastUtils.showShort(response.body().message);

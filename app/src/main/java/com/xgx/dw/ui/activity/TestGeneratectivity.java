@@ -111,15 +111,15 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
             case 3:
                 setToolbarTitle("账号信息");
                 bean = UserBeanDaoHelper.getInstance().getDataById(id);
-                if (bean.getType().equals("10")) {
+                if ("10".equals(bean.getType())) {
                     storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
                     userAllInfo.setStoreBean(storebean);
-                } else if (bean.getType().equals("11")) {
+                } else if ("11".equals(bean.getType())) {
                     storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
                     transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
                     userAllInfo.setStoreBean(storebean);
                     userAllInfo.setTransformerBean(transbean);
-                } else if (bean.getType().equals("20")) {
+                } else if ("20".equals(bean.getType())) {
                     try {
                         spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
                     } catch (Exception e) {

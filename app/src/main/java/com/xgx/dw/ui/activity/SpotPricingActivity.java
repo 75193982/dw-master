@@ -105,18 +105,10 @@ public class SpotPricingActivity extends BaseAppCompatActivity implements ISpotP
         });
     }
 
-    @Override
-    protected void onActivityResult(int paramInt1, int paramInt2, Intent paramIntent) {
-        super.onActivityResult(paramInt1, paramInt2, paramIntent);
-        if (paramInt1 == REFRESH_RECYCLERVIEW) {
-            setDatas();
-        }
-    }
-
     private void setDatas() {
         Price price = new Price();
         price.setPricename(queryEt.getText().toString());
-        price.setCountyid("");
+        price.setCountyid(getIntent().getStringExtra("countyid"));
         this.presenter.searchSpotPricing(this, price);
     }
 

@@ -24,11 +24,13 @@ public class UserBean implements Serializable {
     private String currentRatio;
     private String price;
     private String phone;
+    private String mobile;
     private String createTime;
     private String remark;
     private String ime;
     private String ecodeType;
     private String priceName;
+    private String companyName;
 
     public UserBean() {
     }
@@ -74,6 +76,14 @@ public class UserBean implements Serializable {
         this.remark = remark;
         this.ime = ime;
         this.ecodeType = ecodeType;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getId() {
@@ -228,4 +238,11 @@ public class UserBean implements Serializable {
         this.ecodeType = ecodeType;
     }
 
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
 }

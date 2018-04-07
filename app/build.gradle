@@ -1,14 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.butterknife'
 apply plugin: 'org.greenrobot.greendao'
-apply plugin: 'com.mob.sdk'
 // 在MobSDK的扩展中注册SMSSDK的相关信息
-MobSDK {
-    appKey "250907ce71e1b"
-    appSecret "7de655d367becc0c410beaf3b7420c61"
-
-    SMSSDK {}
-}
 android {
     compileSdkVersion 24
     buildToolsVersion '26.0.2'
@@ -85,7 +78,4 @@ dependencies {
     // EventBus
     compile 'org.greenrobot:eventbus:3.0.0'
     //下拉刷新
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta1'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta1'
-    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta1'
 }

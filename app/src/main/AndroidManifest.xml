@@ -121,6 +121,7 @@
         <activity
             android:name=".wifi.WifiActivity"
             android:windowSoftInputMode="stateHidden"></activity>
+        <activity android:name=".ui.activity.PhoneCodeActivity"/>
     </application>
 
 </manifest>

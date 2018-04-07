@@ -1,15 +1,12 @@
 package com.xgx.dw.app;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Bundle;
 import android.util.DisplayMetrics;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheEntity;
@@ -20,7 +17,6 @@ import com.lzy.okgo.https.HttpsUtils;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
-import com.mob.MobSDK;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
@@ -74,6 +70,8 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        CrashHandler mCustomCrashHandler = CrashHandler.getInstance();
+        mCustomCrashHandler.setCustomCrashHanler(getApplicationContext());
         ZXingLibrary.initDisplayOpinion(this);
         mInstance = this;
         initImageLoader();
@@ -83,8 +81,6 @@ public class BaseApplication extends Application {
         //配置数据库
         setupDatabase();
         //初始化腾讯im
-
-        MobSDK.init(this);
     }
 
     /**

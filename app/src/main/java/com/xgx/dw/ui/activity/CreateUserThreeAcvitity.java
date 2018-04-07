@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.xgx.dw.PricingBean;
 import com.xgx.dw.R;
@@ -21,7 +22,6 @@ import com.xgx.dw.TransformerBean;
 import com.xgx.dw.UserBean;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
-import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.base.BaseEventBusActivity;
 import com.xgx.dw.base.EventCenter;
 import com.xgx.dw.bean.County;
@@ -41,7 +41,6 @@ import com.xgx.dw.utils.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,6 +61,8 @@ public class CreateUserThreeAcvitity extends BaseEventBusActivity implements IUs
     TextView priceTv;
     @BindView(R.id.phone)
     MaterialEditText phone;
+    @BindView(R.id.mobileTv)
+    MaterialEditText mobileTv;
     @BindView(R.id.action_save)
     LinearLayout actionSave;
     @BindView(R.id.contyTv)
@@ -160,12 +161,13 @@ public class CreateUserThreeAcvitity extends BaseEventBusActivity implements IUs
         priceTv.setText(checkText(bean.getPriceName()));
         priceTv.setTag(checkText(bean.getPrice()));
         phone.setText(checkText(bean.getPhone()));
+        mobileTv.setText(checkText(bean.getMobile()));
         currentRatio.setText(checkText(bean.getCurrentRatio()));
         voltageRatio.setText(checkText(bean.getVoltageRatio()));
         contyTv.setText(bean.getStoreName());
         contyTv.setContentDescription(bean.getStoreId());
         transformerTv.setText(bean.getTransformerName());
-        transformerTv.setText(bean.getTransformerId());
+        transformerTv.setContentDescription(bean.getTransformerId());
     }
 
 
@@ -178,6 +180,7 @@ public class CreateUserThreeAcvitity extends BaseEventBusActivity implements IUs
         userBean.setVoltageRatio(voltageRatio.getText().toString());
         userBean.setCurrentRatio(currentRatio.getText().toString());
         userBean.setPhone(phone.getText().toString());
+        userBean.setMobile(mobileTv.getText().toString());
         userBean.setPrice(priceTv.getTag() == null ? "" : priceTv.getTag().toString());
         userBean.setPriceName(priceTv.getText().toString());
         if (userId.getTag() != null && !TextUtils.isEmpty(userId.getTag().toString())) {
@@ -188,8 +191,7 @@ public class CreateUserThreeAcvitity extends BaseEventBusActivity implements IUs
         userBean.setTransformerName(transformerTv.getText().toString());
         userBean.setStoreId(contyTv.getContentDescription() != null ? contyTv.getContentDescription().toString() : "");
         userBean.setStoreName(contyTv.getText().toString());
-
-        this.presenter.saveUser(this, userBean, 20, isSave);
+        this.presenter.saveUser(this, userBean, 20);
     }
 
     @Override
@@ -199,7 +201,6 @@ public class CreateUserThreeAcvitity extends BaseEventBusActivity implements IUs
             showToast("保存成功");
             if (isSave) {
                 //进入购电界面
-
                 UserAllInfo userAllInfo = new UserAllInfo();
                 UserBean bean = new UserBean();
                 StoreBean storebean = new StoreBean();
@@ -292,6 +293,8 @@ public class CreateUserThreeAcvitity extends BaseEventBusActivity implements IUs
                 County county = (County) eventCenter.getData();
                 contyTv.setText(checkText(county.getCountyname()));
                 contyTv.setContentDescription(checkText(county.getCountyid()));
+                transformerTv.setText("");
+                transformerTv.setContentDescription("");
             } catch (Exception e) {
 
             }
@@ -299,8 +302,8 @@ public class CreateUserThreeAcvitity extends BaseEventBusActivity implements IUs
         if (EventCenter.TAIQU_SELECT == eventCenter.getEventCode()) {
             try {
                 Taiqu taiqu = (Taiqu) eventCenter.getData();
-                transformerTv.setText(checkText(taiqu.getCountyname()));
-                transformerTv.setContentDescription(checkText(taiqu.getCountyid()));
+                transformerTv.setText(checkText(taiqu.getName()));
+                transformerTv.setContentDescription(checkText(taiqu.getCode()));
             } catch (Exception e) {
 
             }
@@ -325,24 +328,37 @@ public class CreateUserThreeAcvitity extends BaseEventBusActivity implements IUs
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.price:
-                Intent priceintent = new Intent(CreateUserThreeAcvitity.this, SpotPricingActivity.class);
-                priceintent.putExtra("isSelect", true);
-                startActivity(priceintent);
+                if (contyTv.getContentDescription() != null && !TextUtils.isEmpty(contyTv.getContentDescription().toString())) {
 
+                    Intent priceintent = new Intent(CreateUserThreeAcvitity.this, SpotPricingActivity.class);
+                    priceintent.putExtra("isSelect", true);
+                    priceintent.putExtra("countyid", contyTv.getContentDescription().toString());
+                    startActivity(priceintent);
+                } else {
+                    ToastUtils.showShort("请选择营业厅");
+                }
                 break;
             case R.id.contyTv:
-                if (LoginInformation.getInstance().getUser().getType().equals("admin")) {
+                if (LoginInformation.getInstance().getUser().getType().equals("0")) {
                     Intent intent = new Intent(CreateUserThreeAcvitity.this, StoresMgrActivity.class);
                     intent.putExtra("isSelect", true);
+
                     startActivity(intent);
                 }
 
                 break;
             case R.id.transformerTv:
-                if (LoginInformation.getInstance().getUser().getType().equals("admin") || LoginInformation.getInstance().getUser().getType().equals("10")) {
-                    Intent taiquIntent = new Intent(CreateUserThreeAcvitity.this, TransformerActivity.class);
-                    taiquIntent.putExtra("isSelect", true);
-                    startActivity(taiquIntent);
+
+                if (LoginInformation.getInstance().getUser().getType().equals("0") || LoginInformation.getInstance().getUser().getType().equals("10")) {
+                    if (contyTv.getContentDescription() != null && !TextUtils.isEmpty(contyTv.getContentDescription().toString())) {
+                        Intent taiquIntent = new Intent(CreateUserThreeAcvitity.this, TransformerActivity.class);
+                        taiquIntent.putExtra("isSelect", true);
+                        taiquIntent.putExtra("countyid", contyTv.getContentDescription().toString());
+                        startActivity(taiquIntent);
+                    } else {
+                        ToastUtils.showShort("请选择营业厅");
+                    }
+
                 }
 
                 break;

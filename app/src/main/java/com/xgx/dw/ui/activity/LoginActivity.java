@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -33,6 +34,7 @@ import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.bean.LoginInformation;
+import com.xgx.dw.bean.MtzUsers;
 import com.xgx.dw.bean.SysUser;
 import com.xgx.dw.bean.UserAllInfo;
 import com.xgx.dw.dao.PricingDaoHelper;
@@ -96,8 +98,8 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                 Setting setting = new Setting(getContext());
                 boolean isInit = setting.loadBoolean("isInit");
                 if (!isInit) {
-                    UserBean localUserBean = new UserBean("0", "admin", "超级管理员", "888888", "admin", "867628025884339");
-                    UserBean localUserBean2 = new UserBean("1", "666666", "超级管理员", "888888", "admin", "866703036809590");
+                    UserBean localUserBean = new UserBean("0", "admin", "超级管理员", "888888", "0", "867628025884339");
+                    UserBean localUserBean2 = new UserBean("1", "666666", "超级管理员", "888888", "0", "866703036809590");
 //        UserBean localUserBean10 = new UserBean("4101001", "一级营业厅管理员", "888888", "10");
 //        UserBean localUserBean11 = new UserBean("4101101", "一级台区管理员", "888888", "11");
 //        UserBean localUserBean2 = new UserBean("4102001", "二级账户", "888888", "20");
@@ -142,6 +144,7 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
         setting.saveString(G.currentTransformName, userBean.getTransformerName());
         setting.saveString(G.currentPassword, userBean.getPassword());
         setting.saveString("user", new Gson().toJson(userBean));
+        UserBeanDaoHelper.getInstance().addData(userBean);
         LoginInformation.getInstance().setUser(userBean);
     }
 
@@ -197,20 +200,53 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                     @Override
                     public void onSuccess(Response<LzyResponse<SysUser>> response) {
                         String token = response.body().token;
+                        int userType = response.body().userType;
                         String randomKey = response.body().randomKey;
-                        SysUser user = ((JSONObject) response.body().model).toJavaObject(SysUser.class);
                         new Setting(LoginActivity.this).saveString("token", token);
                         HttpHeaders headerstemp = new HttpHeaders();
                         headerstemp.put(BaseApplication.token, "Bearer " + token);
                         OkGo.getInstance().addCommonHeaders(headerstemp);
-                        if (user != null) {
-                            UserBean localUserBean = new UserBean(user.getId() + "", user.getAccount(), user.getName(), loginPassword.getText().toString(), "admin", "866703036809590");
+                        if (userType == 0) {
+                            SysUser temp = ((JSONObject) response.body().model).toJavaObject(SysUser.class);
 
-                            setLoginInfomation(localUserBean);
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            if (temp != null) {
+                                UserBean bean = new UserBean();
+                                bean.setId(temp.getId() + "");
+                                bean.setUserName(temp.getName());
+                                bean.setUserId(temp.getAccount());
+                                bean.setStoreId(temp.getCountyid());
+                                bean.setStoreName(temp.getCountyname());
+                                bean.setTransformerId(temp.getTaiquid());
+                                bean.setTransformerName(temp.getTaiquname());
+                                bean.setRemark(temp.getEmail());
+                                bean.setIsBuy(temp.getIsBuy());
+                                bean.setIsTest(temp.getIsTest());
+                                bean.setType(temp.getUserType() + "");
+                                bean.setPhone(temp.getPhone());
+                                bean.setPassword(loginPassword.getText().toString());
+
+                                setLoginInfomation(bean);
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            } else {
+                                ToastUtils.showShort("账号不存在");
+                            }
                         } else {
-                            ToastUtils.showShort("账号不存在");
+                            UserBean user = ((JSONObject) response.body().model).toJavaObject(UserBean.class);
+                            if (user != null && !TextUtils.isEmpty(user.getPhone())) {
+                                Setting setting = new Setting(LoginActivity.this);
+                                boolean isValide = setting.loadBoolean(user.getUserId() + user.getPhone() + setting.loadString(G.currentUserLoginPhone));
+                                if (isValide) {
+                                    setLoginInfomation(user);
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                } else {
+                                    //进入手机验证阶段
+                                    startActivity(new Intent(LoginActivity.this, PhoneCodeActivity.class).putExtra("user", user));
+                                }
+                            } else {
+                                ToastUtils.showShort("账号不存在");
+                            }
                         }
+
 
                     }
 

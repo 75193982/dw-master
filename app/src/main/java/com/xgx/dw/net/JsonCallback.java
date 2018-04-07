@@ -62,7 +62,7 @@ public abstract class JsonCallback<T> extends AbsCallback<T> {
         // 还可以在这里对所有的参数进行加密，均在这里实现
         String token = new Setting(BaseApplication.getInstance()).loadString("token");
         request.headers(BaseApplication.token, "Bearer " + token);//
-//                .params("params1", "ParamsValue1")//
+        request.params("loginPhone", new Setting(BaseApplication.getInstance()).loadString(G.currentUserLoginPhone));//
 //                .params("token", "3215sdf13ad1f65asd4f3ads1f");
     }
 

@@ -8,7 +8,7 @@ import de.greenrobot.daogenerator.Schema;
 public class MyDaoGenerator {
 
     public static void main(String args[]) throws Exception {
-        Schema schema = new Schema(1, "com.xgx.dw");
+        Schema schema = new Schema(3, "com.xgx.dw");
         initUserBean(schema);
         initTransformerBean(schema);
         initSpotPricingBean(schema);
@@ -57,10 +57,13 @@ public class MyDaoGenerator {
         userBean.addStringProperty("currentRatio");
         userBean.addStringProperty("price");
         userBean.addStringProperty("phone");
+        userBean.addStringProperty("mobile");
         userBean.addStringProperty("createTime");
         userBean.addStringProperty("remark");
         userBean.addStringProperty("ime");
         userBean.addStringProperty("ecodeType");
+        userBean.addStringProperty("priceName");
+        userBean.addStringProperty("companyName");
     }
 
 
