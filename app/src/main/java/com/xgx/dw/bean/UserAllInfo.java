@@ -15,8 +15,8 @@ import java.util.List;
  */
 public class UserAllInfo implements Serializable {
     private UserBean user;
-    private StoreBean storeBean;
-    private TransformerBean transformerBean;
+    private County storeBean;
+    private Taiqu transformerBean;
     private int pricingSize;
     private PricingBean pricings;
     private SpotPricingBean spotBeans;
@@ -47,20 +47,19 @@ public class UserAllInfo implements Serializable {
         this.user = user;
     }
 
-    public StoreBean getStoreBean() {
-        return storeBean == null ? new StoreBean() : storeBean;
+    public County getStoreBean() {
+        return storeBean;
     }
 
-    public void setStoreBean(StoreBean storeBean) {
+    public void setStoreBean(County storeBean) {
         this.storeBean = storeBean;
     }
 
-    public TransformerBean getTransformerBean() {
-        return transformerBean == null ? new TransformerBean() : transformerBean;
-
+    public Taiqu getTransformerBean() {
+        return transformerBean;
     }
 
-    public void setTransformerBean(TransformerBean transformerBean) {
+    public void setTransformerBean(Taiqu transformerBean) {
         this.transformerBean = transformerBean;
     }
 

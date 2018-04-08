@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,6 +27,7 @@
             android:id="@+id/userInfoTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/common_list_item_selector"
             android:drawableRight="@drawable/edit"
             android:gravity="center_vertical"
             android:padding="10dp"
@@ -36,39 +37,29 @@
             android:id="@+id/userInfoBeilvTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:textColor="@color/Black"></TextView>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/Gray100"></View>
+            android:background="@drawable/common_list_item_selector"
+            android:padding="@dimen/dp_10"
+            android:textSize="@dimen/text_third"></TextView>
 
 
-        <fr.ganfra.materialspinner.MaterialSpinner
-            android:id="@id/spinner"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/buyTypeTv"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_10"
-            app:ms_alignLabels="false"
-            app:ms_arrowColor="@color/disabled_color"
-            app:ms_arrowSize="@dimen/text_third"
-            app:ms_baseColor="@color/disabled_color"
-            app:ms_enableErrorLabel="false"
-            app:ms_enableFloatingLabel="false"
-            app:ms_errorColor="@color/error_color"
-            app:ms_floatingLabelColor="@color/disabled_color"
-            app:ms_floatingLabelText="购电类型"
-            app:ms_highlightColor="@color/Green"
-            app:ms_hint="请选择购电类型"
-            app:ms_multiline="false"/>
+            android:background="@drawable/common_list_item_selector"
+            android:drawableLeft="@drawable/iconfont_must"
+            android:drawableRight="@drawable/arrow_gray_right"
+            android:gravity="center_vertical"
+            android:hint="请选择购电类型"
+            android:padding="@dimen/dp_10"
+            android:textSize="@dimen/text_third" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/actionsheet_single_normal"
-            android:orientation="vertical">
+            android:background="@drawable/common_list_item_selector"
+            android:orientation="vertical"
+            android:padding="@dimen/dp_10">
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/spotTv"
@@ -77,7 +68,7 @@
                 android:drawableLeft="@drawable/iconfont_must"
                 android:hint="请输入购电金额"
                 android:inputType="numberDecimal"
-                android:padding="10dp"
+                android:padding="@dimen/dp_10"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:met_baseColor="@color/Orange"
@@ -85,7 +76,7 @@
                 app:met_floatingLabelText="购电金额(元)"
                 app:met_floatingLabelTextColor="@color/Black"
                 app:met_hideUnderline="true"
-                app:met_singleLineEllipsis="true"/>
+                app:met_singleLineEllipsis="true" />
 
             <TextView
                 android:id="@+id/cnTv"
@@ -93,23 +84,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/text_margin"
                 android:textColor="@android:color/holo_red_light"></TextView>
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/actionsheet_single_normal"
-            android:orientation="vertical">
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/bjPriceTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/common_list_item_selector"
                 android:drawableLeft="@drawable/iconfont_must"
                 android:hint="请输入报警金额"
                 android:inputType="numberDecimal"
-                android:padding="10dp"
+                android:padding="@dimen/dp_10"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:met_baseColor="@color/Orange"
@@ -117,14 +102,15 @@
                 app:met_floatingLabelText="报警金额(元)"
                 app:met_floatingLabelTextColor="@color/Black"
                 app:met_hideUnderline="true"
-                app:met_singleLineEllipsis="true"/>
-        </LinearLayout>
+                app:met_singleLineEllipsis="true" />
 
+        </LinearLayout>
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/isChangeSwitch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:padding="20dp"
             android:text="是否同步倍率电价"
             android:textColor="@color/Gray600"></android.support.v7.widget.SwitchCompat>
@@ -152,7 +138,7 @@
                 android:gravity="center"
                 android:text="@string/save"
                 android:textColor="@color/White"
-                android:textSize="@dimen/text_second"/>
+                android:textSize="@dimen/text_second" />
         </LinearLayout>
 
     </LinearLayout>

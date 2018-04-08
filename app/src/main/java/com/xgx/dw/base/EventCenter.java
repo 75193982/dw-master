@@ -14,6 +14,7 @@ public class EventCenter<T> {
     public static int USER_SAVE = 5;
     public static int TAIQU_SELECT = 6;
     public static int PRICE_SELECT = 7;
+    public static int ADMIN_TOOLS = 99;//admin调试程序
 
     public EventCenter(int eventCode) {
         this(eventCode, null);

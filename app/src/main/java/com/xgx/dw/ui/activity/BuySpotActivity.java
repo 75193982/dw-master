@@ -1,6 +1,3 @@
-
-
-
 package com.xgx.dw.ui.activity;
 
 import android.content.Intent;
@@ -9,7 +6,9 @@ import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -36,7 +35,6 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import fr.ganfra.materialspinner.MaterialSpinner;
 
 /**
  * Created by Administrator on 2016/10/15 0015.
@@ -50,15 +48,17 @@ public class BuySpotActivity extends BaseAppCompatActivity {
     MaterialEditText spotTv;
     @BindView(R.id.bjPriceTv)
     MaterialEditText bjPriceTv;
-    @BindView(R.id.spinner)
-    MaterialSpinner spinner;
     @BindView(R.id.isChangeSwitch)
     SwitchCompat isChangeSwitch;
     @BindView(R.id.isTrSwitch)
     SwitchCompat isTrSwitch;
     @BindView(R.id.cnTv)
     TextView cnTv;
-    private UserAllInfo userAllInfo;
+    @BindView(R.id.buyTypeTv)
+    TextView buyTypeTv;
+    @BindView(R.id.action_save)
+    LinearLayout actionSave;
+    private UserBean user;
 
     @Override
     public void initContentView() {
@@ -68,9 +68,8 @@ public class BuySpotActivity extends BaseAppCompatActivity {
     @Override
     public void initView() {
         setToolbarTitle("用户购电");
-        userAllInfo = (UserAllInfo) getIntent().getSerializableExtra("userAllInfo");
-        if (userAllInfo != null) {
-            UserBean user = UserBeanDaoHelper.getInstance().getDataById(userAllInfo.getUser().getId());
+        user = (UserBean) getIntent().getSerializableExtra("user");
+        if (user != null) {
             if (TextUtils.isEmpty(user.getVoltageRatio()) && TextUtils.isEmpty(user.getCurrentRatio()) && TextUtils.isEmpty(user.getPrice())) {
                 showToast("该用户的电压倍率/电流倍率/电价信息不完整，请联系管理员");
                 finish();
@@ -81,12 +80,12 @@ public class BuySpotActivity extends BaseAppCompatActivity {
                     "\n" + "电流倍率：" + user.getCurrentRatio() +
                     "\n" + "电价id：" + user.getPrice());
         }
+        buyTypeTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        String[] arrayOfString = new String[]{"追加", "刷新"};
-        ArrayAdapter localArrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, arrayOfString);
-        localArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(localArrayAdapter);
-        spinner.setSelection(1);
+            }
+        });
         spotTv.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -127,11 +126,6 @@ public class BuySpotActivity extends BaseAppCompatActivity {
         //正在保存电价生成 二维码，并保存到表里
         try {
             PricingBean bean = new PricingBean();
-            UserBean user = UserBeanDaoHelper.getInstance().getDataById(userAllInfo.getUser().getId());
-            if (user == null) {
-                UserBeanDaoHelper.getInstance().addData(userAllInfo.getUser());
-                user = userAllInfo.getUser();
-            }
             String price = "";
             try {
                 price = AES.encrypt(G.appsecret, spotTv.getText().toString());
@@ -146,7 +140,7 @@ public class BuySpotActivity extends BaseAppCompatActivity {
             bean.setAdminPhone(LoginInformation.getInstance().getUser().getPhone());
             bean.setAdminName(LoginInformation.getInstance().getUser().getUserId());
             bean.setAdminNickName(LoginInformation.getInstance().getUser().getUserName());
-            bean.setType((String) spinner.getSelectedItem());
+            bean.setType(buyTypeTv.getText().toString());
             bean.setStoreId(user.getStoreId());
             bean.setStoreName(user.getStoreName());
             //根据storeid 获取store详情
@@ -182,11 +176,11 @@ public class BuySpotActivity extends BaseAppCompatActivity {
                 }
             }
             //这里要注意的是 需要带入 二维码传过来的ime
-            bean.setIme(userAllInfo.getUser().getIme());
+            bean.setIme(user.getIme());
             PricingDaoHelper.getInstance().addData(bean);
 
             int type = 5;
-            if (userAllInfo.getEcodeType().equals("6")) {
+            if (user.getEcodeType().equals("6")) {
                 type = 6;
             }
             startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", type).putExtra("id", bean.getUserPrimaryid()));
@@ -204,11 +198,11 @@ public class BuySpotActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.userInfoTv)
     public void onEditClick() {
-        UserBean user = UserBeanDaoHelper.getInstance().getDataById(userAllInfo.getUser().getId());
-        Intent localIntent = new Intent();
-        localIntent.putExtra("bean", user);
-        localIntent.setClass(getContext(), CreateUserThreeAcvitity.class);
-        startActivityForResult(localIntent, 1001);
+//        UserBean user = UserBeanDaoHelper.getInstance().getDataById(userAllInfo.getUser().getId());
+//        Intent localIntent = new Intent();
+//        localIntent.putExtra("bean", user);
+//        localIntent.setClass(getContext(), CreateUserThreeAcvitity.class);
+//        startActivityForResult(localIntent, 1001);
 
     }
 
@@ -216,12 +210,12 @@ public class BuySpotActivity extends BaseAppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1001) {
-            UserBean user = UserBeanDaoHelper.getInstance().getDataById(userAllInfo.getUser().getId());
-            if (TextUtils.isEmpty(user.getVoltageRatio()) && TextUtils.isEmpty(user.getCurrentRatio()) && TextUtils.isEmpty(user.getPrice())) {
-                showToast("该用户的电压倍率/电流倍率/电价信息不完整，请联系管理员");
-                finish();
-                return;
-            }
+//            UserBean user = UserBeanDaoHelper.getInstance().getDataById(userAllInfo.getUser().getId());
+//            if (TextUtils.isEmpty(user.getVoltageRatio()) && TextUtils.isEmpty(user.getCurrentRatio()) && TextUtils.isEmpty(user.getPrice())) {
+//                showToast("该用户的电压倍率/电流倍率/电价信息不完整，请联系管理员");
+//                finish();
+//                return;
+//            }
             userInfoTv.setText(user.getUserName());
             userInfoBeilvTv.setText("设备编号：" + user.getUserId() + "\n" + "电压倍率：" + user.getVoltageRatio() +
                     "\n" + "电流倍率：" + user.getCurrentRatio() +
@@ -229,4 +223,5 @@ public class BuySpotActivity extends BaseAppCompatActivity {
 
         }
     }
+
 }

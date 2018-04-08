@@ -179,8 +179,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                 startActivityForResult(intent, REQUEST_CODE);
             }
         });
-        Setting setting = new Setting(this);
-        currentUserType = setting.loadString(G.currentUserType);
+        currentUserType = LoginInformation.getInstance().getUser().getType();
         FragmentAdapter localFragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), currentUserType);
         if ("20".equals(currentUserType) || "30".equals(currentUserType) || "32".equals(currentUserType)) {//普通用户 不显示资源管理按钮
             viewId = new int[]{R.id.ll_address, R.id.ll_find, R.id.ll_me};
@@ -358,7 +357,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
 
     @Override
     public void switchAddressBook() {
-        if ("20,30,32".contains(currentUserType)) {
+        if ("20".equals(currentUserType) || "30".equals(currentUserType) || "32".equals(currentUserType)) {
             viewPage.setCurrentItem(0, false);
         } else {
             viewPage.setCurrentItem(1, false);
@@ -379,9 +378,9 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
 
     @Override
     public void switchFind() {
-        if ("31".contains(currentUserType)) {
+        if ("31".equals(currentUserType)) {
             viewPage.setCurrentItem(0, false);
-        } else if ("20,30,32".contains(currentUserType)) {
+        } else if ("20".equals(currentUserType) || "30".equals(currentUserType) || "32".equals(currentUserType)) {
             viewPage.setCurrentItem(1, false);
         } else {
             viewPage.setCurrentItem(2, false);
@@ -393,7 +392,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
 
     @Override
     public void switchMe() {
-        if ("20,30,32".contains(currentUserType)) {
+        if ("20".equals(currentUserType) || "30".equals(currentUserType) || "32".equals(currentUserType)) {
             viewPage.setCurrentItem(2, false);
         } else {
             viewPage.setCurrentItem(3, false);

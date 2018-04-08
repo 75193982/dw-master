@@ -34,7 +34,6 @@ import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.bean.LoginInformation;
-import com.xgx.dw.bean.MtzUsers;
 import com.xgx.dw.bean.SysUser;
 import com.xgx.dw.bean.UserAllInfo;
 import com.xgx.dw.dao.PricingDaoHelper;
@@ -51,7 +50,6 @@ import com.xgx.dw.presenter.interfaces.ILoginPresenter;
 import com.xgx.dw.presenter.interfaces.IUserPresenter;
 import com.xgx.dw.ui.view.interfaces.ILoginView;
 import com.xgx.dw.utils.Logger;
-import com.xgx.dw.utils.MD5Util;
 import com.xgx.dw.utils.MyUtils;
 import com.xgx.dw.vo.request.LoginRequest;
 
@@ -90,31 +88,8 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
     @Override
     public void initPresenter() {
         setToolbarTitle("登录");
-        Thread t = new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-                Setting setting = new Setting(getContext());
-                boolean isInit = setting.loadBoolean("isInit");
-                if (!isInit) {
-                    UserBean localUserBean = new UserBean("0", "admin", "超级管理员", "888888", "0", "867628025884339");
-                    UserBean localUserBean2 = new UserBean("1", "666666", "超级管理员", "888888", "0", "866703036809590");
-//        UserBean localUserBean10 = new UserBean("4101001", "一级营业厅管理员", "888888", "10");
-//        UserBean localUserBean11 = new UserBean("4101101", "一级台区管理员", "888888", "11");
-//        UserBean localUserBean2 = new UserBean("4102001", "二级账户", "888888", "20");
-//        UserBean localUserBean30 = new UserBean("4103001", "公司调试账户", "888888", "30");
-//        UserBean localUserBean31 = new UserBean("4103101", "供电局调试1", "888888", "31");
-//        UserBean localUserBean32 = new UserBean("4103201", "供电局调试2", "888888", "32");
-                    UserBeanDaoHelper.getInstance().addData(localUserBean);
-                    UserBeanDaoHelper.getInstance().addData(localUserBean2);
-                    setting.saveBoolean("isInit", true);
-                }
-
-            }
-        };
-        t.start();
         this.loginPresenter = new LoginPresenterImpl();
+
     }
 
     @Override
@@ -124,6 +99,15 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
         String password = setting.loadString(G.currentPassword);
         loginUsername.setText(checkText(username));
         loginPassword.setText(checkText(password));
+        try {
+            UserBean bean = JSON.parseObject(setting.loadString("user"), UserBean.class);
+            if (bean != null && bean.getUserId() != null) {
+                setLoginInfomation(bean);
+            }
+        } catch (Exception e) {
+
+        }
+
 
     }
 
@@ -131,7 +115,6 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
     public void loginCallback(UserBean userBean) {
         //登录成功后，将登录信息保存到偏好设置中
         setLoginInfomation(userBean);
-        startActivity(new Intent(this, MainActivity.class));
     }
 
     private void setLoginInfomation(UserBean userBean) {
@@ -146,6 +129,9 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
         setting.saveString("user", new Gson().toJson(userBean));
         UserBeanDaoHelper.getInstance().addData(userBean);
         LoginInformation.getInstance().setUser(userBean);
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        finish();
+
     }
 
 
@@ -226,7 +212,6 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                                 bean.setPassword(loginPassword.getText().toString());
 
                                 setLoginInfomation(bean);
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             } else {
                                 ToastUtils.showShort("账号不存在");
                             }
@@ -237,7 +222,6 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                                 boolean isValide = setting.loadBoolean(user.getUserId() + user.getPhone() + setting.loadString(G.currentUserLoginPhone));
                                 if (isValide) {
                                     setLoginInfomation(user);
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 } else {
                                     //进入手机验证阶段
                                     startActivity(new Intent(LoginActivity.this, PhoneCodeActivity.class).putExtra("user", user));

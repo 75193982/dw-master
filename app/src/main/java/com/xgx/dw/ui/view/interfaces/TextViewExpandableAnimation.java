@@ -50,7 +50,7 @@ public class TextViewExpandableAnimation extends LinearLayout
 
     /**
      * 底部是否折叠/收起的父类布局
-     * <br>shrink/expand layout parent
+     * <br>shrink/expand layout_admin_tools_foot parent
      */
     private RelativeLayout rlToggleLayout;
 

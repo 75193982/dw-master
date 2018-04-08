@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import com.google.gson.Gson;
+
 /**
  * 公共参数配置类
  *
@@ -133,4 +135,19 @@ public class Setting {
         mEditor.commit();
     }
 
+    /**
+     * 清空数据
+     */
+    public void clearLoginInfomation() {
+        if (mEditor == null) mEditor = mSharedPreferences.edit();
+        mEditor.remove(G.currentUsername);
+        mEditor.remove(G.currentUserType);
+        mEditor.remove(G.currentStoreId);
+        mEditor.remove(G.currentStoreName);
+        mEditor.remove(G.currentTransformId);
+        mEditor.remove(G.currentTransformName);
+        mEditor.remove(G.currentPassword);
+        mEditor.remove("user");
+        mEditor.commit();
+    }
 }

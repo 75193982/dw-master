@@ -77,8 +77,8 @@ public class CreateTransformerAcvitity extends BaseEventBusActivity implements I
 //            for (int j = 0; j < this.storebeans.size(); j++) {
 //                arrayOfString[j] = ((StoreBean) this.storebeans.get(j)).getName();
 //            }
-//            ArrayAdapter localArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, arrayOfString);
-//            localArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//            ArrayAdapter localArrayAdapter = new ArrayAdapter(this, android.R.layout_admin_tools_foot.simple_spinner_item, arrayOfString);
+//            localArrayAdapter.setDropDownViewResource(android.R.layout_admin_tools_foot.simple_spinner_dropdown_item);
 //            this.spinner.setAdapter(localArrayAdapter);
 //        }
         bean = ((Taiqu) getIntent().getSerializableExtra("bean"));

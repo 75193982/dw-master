@@ -201,27 +201,6 @@ public class CreateUserThreeAcvitity extends BaseEventBusActivity implements IUs
             showToast("保存成功");
             if (isSave) {
                 //进入购电界面
-                UserAllInfo userAllInfo = new UserAllInfo();
-                UserBean bean = new UserBean();
-                StoreBean storebean = new StoreBean();
-                TransformerBean transbean = new TransformerBean();
-                List<PricingBean> pricings = new ArrayList<>();
-                SpotPricingBean spotPricingBeans = new SpotPricingBean();
-                bean = UserBeanDaoHelper.getInstance().getDataById(id);
-                storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
-                transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
-                try {
-                    spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
-                } catch (Exception e) {
-                    Logger.e(e.getMessage());
-                }
-                userAllInfo.setSpotBeans(spotPricingBeans);
-                userAllInfo.setStoreBean(storebean);
-                userAllInfo.setTransformerBean(transbean);
-                pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getId());
-                userAllInfo.setPricingSize(pricings.size());
-                //  bean.setEcodeType(6 + "");
-                userAllInfo.setUser(bean);
                 //startActivity(new Intent(getContext(), BuySpotActivity.class).putExtra("userAllInfo", userAllInfo));
                 startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", 3).putExtra("id", id));
             }
@@ -252,24 +231,7 @@ public class CreateUserThreeAcvitity extends BaseEventBusActivity implements IUs
                 startActivity(intent);
                 break;
             case R.id.action_buy:
-                UserAllInfo userAllInfo = new UserAllInfo();
-                StoreBean storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
-                TransformerBean transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
-                SpotPricingBean spotPricingBeans = null;
-                try {
-                    spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
-                } catch (Exception e) {
-                    Logger.e(e.getMessage());
-                }
-                userAllInfo.setSpotBeans(spotPricingBeans);
-                userAllInfo.setStoreBean(storebean);
-                userAllInfo.setTransformerBean(transbean);
-                List<PricingBean> pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getId());
-                userAllInfo.setPricingSize(pricings.size());
-                bean.setEcodeType(4 + "");
-                userAllInfo.setUser(bean);
-                userAllInfo.setEcodeType("4");
-                startActivity(new Intent(getContext(), BuySpotActivity.class).putExtra("userAllInfo", userAllInfo));
+                startActivity(new Intent(getContext(), BuySpotActivity.class).putExtra("user", bean));
                 break;
         }
         return true;

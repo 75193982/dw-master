@@ -37,6 +37,7 @@ import com.xgx.dw.presenter.interfaces.IUserPresenter;
 import com.xgx.dw.ui.activity.DeviceListNewActivity;
 import com.xgx.dw.ui.activity.LoginActivity;
 import com.xgx.dw.ui.activity.MainActivity;
+import com.xgx.dw.ui.activity.SpecialAdminToolsActivity;
 import com.xgx.dw.ui.activity.SpecialOperationDetailActivity;
 import com.xgx.dw.ui.custom.TitleBar;
 import com.xgx.dw.ui.fragment.dummy.DummyContent;
@@ -75,14 +76,11 @@ public class SpecialOperationFragment extends BaseFragment implements MyOnItemCl
             }
         });
         ArrayList localArrayList = new ArrayList();
-        Setting setting = new Setting(getContext());
         String currentUserType = LoginInformation.getInstance().getUser().getType();
         if (currentUserType.equals("20")) {
             localArrayList.add(new DummyContent(0, "合闸", "合闸", this.drawableInt[0]));
             localArrayList.add(new DummyContent(1, "分闸", "分闸", this.drawableInt[1]));
             localArrayList.add(new DummyContent(7, "定值设置", "定值设置", this.drawableInt[6]));
-
-
             // localArrayList.add(new DummyContent(6, "电费录入", "电费录入", this.drawableInt[6]));
         } else if (currentUserType.equals("30")) {
             localArrayList.add(new DummyContent(0, "合闸", "合闸", this.drawableInt[0]));
@@ -111,6 +109,7 @@ public class SpecialOperationFragment extends BaseFragment implements MyOnItemCl
             localArrayList.add(new DummyContent(6, "电费录入", "电费录入", this.drawableInt[6]));
             localArrayList.add(new DummyContent(7, "定值设置", "定值设置", this.drawableInt[6]));
             localArrayList.add(new DummyContent(8, "超管调试", "超管调试", this.drawableInt[6]));
+            localArrayList.add(new DummyContent(9, "超管工具", "超管工具", this.drawableInt[6]));
         } else {
             if ("10,11".contains(currentUserType)) {
                 if (!LoginInformation.getInstance().getUser().getIsTest().equals("1")) {
@@ -168,6 +167,8 @@ public class SpecialOperationFragment extends BaseFragment implements MyOnItemCl
                 startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", paramInt));
 
             }
+        } else if (paramInt == 9) {
+            startActivity(new Intent(getActivity(), SpecialAdminToolsActivity.class).putExtra("type", paramInt));
         } else {
             startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", paramInt));
 
