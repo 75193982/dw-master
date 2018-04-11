@@ -1,39 +1,33 @@
 package com.xgx.dw.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.xgx.dw.PricingBean;
 import com.xgx.dw.R;
-import com.xgx.dw.StoreBean;
 import com.xgx.dw.UserBean;
-import com.xgx.dw.app.G;
 import com.xgx.dw.base.BaseAppCompatActivity;
-import com.xgx.dw.bean.LoginInformation;
-import com.xgx.dw.bean.UserAllInfo;
-import com.xgx.dw.dao.PricingDaoHelper;
-import com.xgx.dw.dao.StoreBeanDaoHelper;
-import com.xgx.dw.dao.UserBeanDaoHelper;
-import com.xgx.dw.utils.AES;
-import com.xgx.dw.utils.CommonUtils;
-import com.xgx.dw.utils.Logger;
+import com.xgx.dw.net.DialogCallback;
+import com.xgx.dw.net.LzyResponse;
+import com.xgx.dw.net.URLs;
 import com.xgx.dw.utils.NumberToCn;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.UUID;
+import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -83,7 +77,19 @@ public class BuySpotActivity extends BaseAppCompatActivity {
         buyTypeTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                final ArrayList<String> strList = new ArrayList<>();
+                strList.add("追加");
+                strList.add("刷新");
+                //条件选择器
+                OptionsPickerView pvOptions = new OptionsPickerBuilder(BuySpotActivity.this, new OnOptionsSelectListener() {
+                    @Override
+                    public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                        String tx = strList.get(options1);
+                        buyTypeTv.setText(tx);
+                    }
+                }).build();
+                pvOptions.setPicker(strList);
+                pvOptions.show();
             }
         });
         spotTv.addTextChangedListener(new TextWatcher() {
@@ -124,71 +130,82 @@ public class BuySpotActivity extends BaseAppCompatActivity {
             return;
         }
         //正在保存电价生成 二维码，并保存到表里
-        try {
-            PricingBean bean = new PricingBean();
-            String price = "";
-            try {
-                price = AES.encrypt(G.appsecret, spotTv.getText().toString());
-            } catch (Exception e) {
-                price = "";
-            }
-            bean.setPrice(price);
-            bean.setBjprice(bjPriceTv.getText().toString());
-            bean.setUserId(user.getUserId());
-            bean.setUserPrimaryid(user.getId());
-            bean.setUserName(user.getUserName());
-            bean.setAdminPhone(LoginInformation.getInstance().getUser().getPhone());
-            bean.setAdminName(LoginInformation.getInstance().getUser().getUserId());
-            bean.setAdminNickName(LoginInformation.getInstance().getUser().getUserName());
-            bean.setType(buyTypeTv.getText().toString());
-            bean.setStoreId(user.getStoreId());
-            bean.setStoreName(user.getStoreName());
-            //根据storeid 获取store详情
-            StoreBean storeBean = StoreBeanDaoHelper.getInstance().getDataById(user.getStoreId());
-            if (storeBean != null) {
-                bean.setStoreAddress(storeBean.getAddress());
-            }
-            bean.setTransformerId(user.getTransformerId());
-            bean.setTransformerName(user.getTransformerName());
-            bean.setPid(user.getPrice());
-            bean.setCreateTime(CommonUtils.parseDateTime(System.currentTimeMillis()));
-            //获取本地的电价列表
-            bean.setId(UUID.randomUUID().toString());
-            List<PricingBean> pricingBeanList = PricingDaoHelper.getInstance().queryByUserDeviceId(user.getUserId());
-            if (pricingBeanList != null && pricingBeanList.size() > 0) {
-                bean.setSpotpriceId((pricingBeanList.size() + 1) + "");
-            } else {
-                bean.setSpotpriceId("1");
-            }
-            if (isChangeSwitch.isChecked()) {
+        OkGo.<LzyResponse<PricingBean>>post(URLs.getURL(URLs.BUY_SPOT)).params("", "").execute(new DialogCallback<LzyResponse<PricingBean>>(this) {
+            @Override
+            public void onSuccess(Response<LzyResponse<PricingBean>> response) {
 
-                if (isTrSwitch.isChecked()) {
-                    bean.setFinishtype("1,3");
-                } else {
-                    bean.setFinishtype("1");
-                }
-            } else {
-
-                if (isTrSwitch.isChecked()) {
-                    bean.setFinishtype("0,3");
-                } else {
-                    bean.setFinishtype("0");
-                }
             }
-            //这里要注意的是 需要带入 二维码传过来的ime
-            bean.setIme(user.getIme());
-            PricingDaoHelper.getInstance().addData(bean);
 
-            int type = 5;
-            if (user.getEcodeType().equals("6")) {
-                type = 6;
+            @Override
+            public void onError(Response<LzyResponse<PricingBean>> response) {
+                super.onError(response);
             }
-            startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", type).putExtra("id", bean.getUserPrimaryid()));
-
-            finish();
-        } catch (Exception e) {
-            Logger.e(e.getMessage());
-        }
+        });
+//        try {
+//            PricingBean bean = new PricingBean();
+//            String price = "";
+//            try {
+//                price = AES.encrypt(G.appsecret, spotTv.getText().toString());
+//            } catch (Exception e) {
+//                price = "";
+//            }
+//            bean.setPrice(price);
+//            bean.setBjprice(bjPriceTv.getText().toString());
+//            bean.setUserId(user.getUserId());
+//            bean.setUserPrimaryid(user.getId());
+//            bean.setUserName(user.getUserName());
+//            bean.setAdminPhone(LoginInformation.getInstance().getUser().getPhone());
+//            bean.setAdminName(LoginInformation.getInstance().getUser().getUserId());
+//            bean.setAdminNickName(LoginInformation.getInstance().getUser().getUserName());
+//            bean.setType(buyTypeTv.getText().toString());
+//            bean.setStoreId(user.getStoreId());
+//            bean.setStoreName(user.getStoreName());
+//            //根据storeid 获取store详情
+//            StoreBean storeBean = StoreBeanDaoHelper.getInstance().getDataById(user.getStoreId());
+//            if (storeBean != null) {
+//                bean.setStoreAddress(storeBean.getAddress());
+//            }
+//            bean.setTransformerId(user.getTransformerId());
+//            bean.setTransformerName(user.getTransformerName());
+//            bean.setPid(user.getPrice());
+//            bean.setCreateTime(CommonUtils.parseDateTime(System.currentTimeMillis()));
+//            //获取本地的电价列表
+//            bean.setId(UUID.randomUUID().toString());
+//            List<PricingBean> pricingBeanList = PricingDaoHelper.getInstance().queryByUserDeviceId(user.getUserId());
+//            if (pricingBeanList != null && pricingBeanList.size() > 0) {
+//                bean.setSpotpriceId((pricingBeanList.size() + 1) + "");
+//            } else {
+//                bean.setSpotpriceId("1");
+//            }
+//            if (isChangeSwitch.isChecked()) {
+//
+//                if (isTrSwitch.isChecked()) {
+//                    bean.setFinishtype("1,3");
+//                } else {
+//                    bean.setFinishtype("1");
+//                }
+//            } else {
+//
+//                if (isTrSwitch.isChecked()) {
+//                    bean.setFinishtype("0,3");
+//                } else {
+//                    bean.setFinishtype("0");
+//                }
+//            }
+//            //这里要注意的是 需要带入 二维码传过来的ime
+//            bean.setIme(user.getIme());
+//            PricingDaoHelper.getInstance().addData(bean);
+//
+//            int type = 5;
+//            if (user.getEcodeType().equals("6")) {
+//                type = 6;
+//            }
+//            startActivity(new Intent(this, TestGeneratectivity.class).putExtra("type", type).putExtra("id", bean.getUserPrimaryid()));
+//
+//            finish();
+//        } catch (Exception e) {
+//            Logger.e(e.getMessage());
+//        }
 
         //获得spotpriceId
         //跳转到二维码界面
@@ -198,12 +215,12 @@ public class BuySpotActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.userInfoTv)
     public void onEditClick() {
+        //获取用户资料
 //        UserBean user = UserBeanDaoHelper.getInstance().getDataById(userAllInfo.getUser().getId());
 //        Intent localIntent = new Intent();
 //        localIntent.putExtra("bean", user);
 //        localIntent.setClass(getContext(), CreateUserThreeAcvitity.class);
 //        startActivityForResult(localIntent, 1001);
-
     }
 
     @Override

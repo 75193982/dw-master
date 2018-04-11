@@ -58,8 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/common_list_item_selector"
-            android:orientation="vertical"
-            android:padding="@dimen/dp_10">
+            android:orientation="vertical">
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/spotTv"
@@ -84,7 +83,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/text_margin"
                 android:textColor="@android:color/holo_red_light"></TextView>
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/common_list_item_selector"
+            android:orientation="vertical">
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/bjPriceTv"
@@ -106,22 +111,38 @@
 
         </LinearLayout>
 
-        <android.support.v7.widget.SwitchCompat
-            android:id="@+id/isChangeSwitch"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:padding="20dp"
-            android:text="是否同步倍率电价"
-            android:textColor="@color/Gray600"></android.support.v7.widget.SwitchCompat>
+            android:background="@drawable/common_list_item_selector"
+            android:orientation="vertical"
+            android:padding="@dimen/dp_10">
 
-        <android.support.v7.widget.SwitchCompat
-            android:id="@+id/isTrSwitch"
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/isChangeSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="20dp"
+                android:text="是否同步倍率电价"
+                android:textColor="@color/Gray600"></android.support.v7.widget.SwitchCompat>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:text="是否保电投入"
-            android:textColor="@color/Gray600"></android.support.v7.widget.SwitchCompat>
+            android:background="@drawable/common_list_item_selector"
+            android:orientation="vertical"
+            android:padding="@dimen/dp_10">
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/isTrSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:text="是否保电投入"
+                android:textColor="@color/Gray600"></android.support.v7.widget.SwitchCompat>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@id/action_save"

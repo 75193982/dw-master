@@ -469,9 +469,9 @@ public class MyUtils {
 
     public static String getuniqueId(Context context) {
 
-        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        //   TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
-        String imei = tm.getDeviceId();
+        //     String imei = tm.getDeviceId();
 
 //        String simSerialNumber = tm.getSimSerialNumber();
 //
@@ -482,7 +482,7 @@ public class MyUtils {
 //        UUID deviceUuid = new UUID(androidId.hashCode(), ((long) imei.hashCode() << 32) | simSerialNumber.hashCode());
 
         //       String uniqueId = deviceUuid.toString();
-        return imei;
+        return "";
     }
 
 }

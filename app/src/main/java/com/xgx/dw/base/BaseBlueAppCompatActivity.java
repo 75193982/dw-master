@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xgx.dw.R;
-import com.xgx.dw.net.AsyncHttpNetCenter;
 import com.xgx.dw.ui.custom.CustomConfirmDialog;
 
 import butterknife.BindView;
@@ -116,7 +115,6 @@ public abstract class BaseBlueAppCompatActivity extends AppCompatActivity implem
     @Override
     public void finish() {
         // 清除网络请求队列
-        AsyncHttpNetCenter.getInstance().clearRequestQueue(this);
         super.finish();
     }
 

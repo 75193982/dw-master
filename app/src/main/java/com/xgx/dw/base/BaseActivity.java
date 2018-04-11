@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
-import com.xgx.dw.net.AsyncHttpNetCenter;
 import com.xgx.dw.ui.custom.CustomConfirmDialog;
 
 import butterknife.ButterKnife;
@@ -54,7 +52,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseVie
     @Override
     public void finish() {
         // 清除网络请求队列
-        AsyncHttpNetCenter.getInstance().clearRequestQueue(this);
         super.finish();
     }
 

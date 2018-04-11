@@ -1,7 +1,6 @@
 package com.xgx.dw.ui.activity;
 
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -42,29 +41,22 @@ import com.xgx.dw.dao.PricingDaoHelper;
 import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
 import com.xgx.dw.dao.StoreBeanDaoHelper;
 import com.xgx.dw.dao.TransformerBeanDaoHelper;
-import com.xgx.dw.dao.UserBeanDaoHelper;
-import com.xgx.dw.presenter.impl.MainPresenterImpl;
 import com.xgx.dw.presenter.impl.UserPresenterImpl;
 import com.xgx.dw.presenter.interfaces.IMainPresenter;
 import com.xgx.dw.presenter.interfaces.IUserPresenter;
 import com.xgx.dw.ui.view.interfaces.IMainView;
 import com.xgx.dw.ui.view.interfaces.IUserView;
 import com.xgx.dw.upload.UploadResponse;
-import com.xgx.dw.utils.AES;
 import com.xgx.dw.utils.ApiLevelHelper;
 import com.xgx.dw.utils.Logger;
-import com.xgx.dw.utils.MyUtils;
 import com.xgx.dw.vo.request.UpdateVersionRequest;
-import com.xgx.dw.vo.response.UpdateVersionResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
-import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends BaseActivity implements IMainView, IUserView {
@@ -140,22 +132,6 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
-    private static final int REQUEST_CODE_QRCODE_PERMISSIONS = 1;
-
-    @AfterPermissionGranted(REQUEST_CODE_QRCODE_PERMISSIONS)
-    private void requestCodeQRCodePermissions() {
-        String[] perms = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        if (!EasyPermissions.hasPermissions(this, perms)) {
-            EasyPermissions.requestPermissions(this, "扫描二维码需要打开相机和散光灯的权限", REQUEST_CODE_QRCODE_PERMISSIONS, perms);
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        requestCodeQRCodePermissions();
-
-    }
 
     @Override
     public void initContentView() {
@@ -164,7 +140,6 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
 
     @Override
     public void initPresenter() {
-        mMainPresenter = new MainPresenterImpl(this);
     }
 
     @Override
