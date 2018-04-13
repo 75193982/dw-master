@@ -5,13 +5,11 @@ import android.widget.LinearLayout;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.xgx.dw.R;
-import com.xgx.dw.StoreBean;
 import com.xgx.dw.base.BaseAppCompatActivity;
-import com.xgx.dw.bean.County;
+import com.xgx.dw.bean.SysDept;
 import com.xgx.dw.presenter.impl.StorePresenterImpl;
 import com.xgx.dw.presenter.interfaces.IStoresPresenter;
 import com.xgx.dw.ui.view.interfaces.ICreateStoresView;
-import com.xgx.dw.vo.request.StoresRequest;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -33,7 +31,7 @@ public class CreateStoreActivity extends BaseAppCompatActivity implements ICreat
     @BindView(R.id.action_save)
     LinearLayout actionSave;
     private IStoresPresenter presenter;
-    private County bean;
+    private SysDept bean;
 
     @Override
     public void initContentView() {
@@ -47,12 +45,12 @@ public class CreateStoreActivity extends BaseAppCompatActivity implements ICreat
 
     @Override
     public void initView() {
-        bean = ((County) getIntent().getSerializableExtra("bean"));
+        bean = ((SysDept) getIntent().getSerializableExtra("bean"));
         if (this.bean != null && !TextUtils.isEmpty(this.bean.getCountyid())) {
             getSupportActionBar().setTitle(R.string.upgrade_store);
             this.storeId.setText(checkText(this.bean.getCountyid()));
             this.storeId.setEnabled(false);
-            this.storeName.setText(checkText(this.bean.getCountyname()));
+            this.storeName.setText(checkText(this.bean.getFullname()));
             this.storeAddress.setText(checkText(this.bean.getAddress()));
             this.storeLinkname.setText(checkText(this.bean.getContact()));
             this.storeContactWay.setText(checkText(this.bean.getTel()));
@@ -63,9 +61,9 @@ public class CreateStoreActivity extends BaseAppCompatActivity implements ICreat
 
     @OnClick({R.id.action_save})
     public void onSaveClick() {
-        County county = new County();
+        SysDept county = new SysDept();
         county.setCountyid(storeId.getText().toString());
-        county.setCountyname(storeName.getText().toString());
+        county.setFullname(storeName.getText().toString());
         county.setAddress(storeAddress.getText().toString());
         county.setContact(storeLinkname.getText().toString());
         county.setTel(storeContactWay.getText().toString());

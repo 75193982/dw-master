@@ -1,7 +1,6 @@
 package com.xgx.dw.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -18,16 +17,14 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.xgx.dw.R;
-import com.xgx.dw.StoreBean;
 import com.xgx.dw.adapter.StoresAdapter;
-import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.base.BaseEventBusActivity;
 import com.xgx.dw.base.EventCenter;
 import com.xgx.dw.bean.County;
+import com.xgx.dw.bean.SysDept;
 import com.xgx.dw.presenter.impl.StorePresenterImpl;
 import com.xgx.dw.presenter.interfaces.IStoresPresenter;
 import com.xgx.dw.ui.view.interfaces.IStoresView;
-import com.xgx.dw.vo.request.StoresRequest;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -36,14 +33,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class StoresMgrActivity extends BaseEventBusActivity implements IStoresView, Toolbar.OnMenuItemClickListener {
     private static int REFRESH_RECYCLERVIEW = 0;
     @BindView(R.id.query)
     EditText queryEt;
     private StoresAdapter adapter;
-    private List<County> beans;
+    private List<SysDept> beans;
     private IStoresPresenter presenter;
     @BindView(R.id.list)
     RecyclerView recyclerView;
@@ -77,7 +73,7 @@ public class StoresMgrActivity extends BaseEventBusActivity implements IStoresVi
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
                 if (getIntent().getBooleanExtra("isSelect", false)) {
-                    EventBus.getDefault().post(new EventCenter<County>(EventCenter.COUNTY_SELECT, adapter.getItem(i)));
+                    EventBus.getDefault().post(new EventCenter<SysDept>(EventCenter.COUNTY_SELECT, adapter.getItem(i)));
                     finish();
                 } else {
                     Intent localIntent = new Intent(getContext(), CreateStoreActivity.class);
@@ -112,8 +108,8 @@ public class StoresMgrActivity extends BaseEventBusActivity implements IStoresVi
     }
 
     private void getDatas() {
-        County county = new County();
-        county.setCountyname(queryEt.getText().toString());
+        SysDept county = new SysDept();
+        county.setFullname(queryEt.getText().toString());
         this.presenter.searchStores(this, county);
     }
 
@@ -135,7 +131,7 @@ public class StoresMgrActivity extends BaseEventBusActivity implements IStoresVi
     }
 
     @Override
-    public void searchStores(List<County> paramList) {
+    public void searchStores(List<SysDept> paramList) {
         this.beans = paramList;
         numTv.setText("共搜索到" + paramList.size() + "个营业厅");
         this.adapter.setNewData(this.beans);
