@@ -18,7 +18,13 @@ public class G {
      * 应用程序名
      */
     public static final String APPNAME = "Dw";
-
+    public static final String depRole = "9";
+    public static final String taiquRole = "10";
+    public static final String adminRole = "1";
+    public static final String userRole = "20";
+    public static final String testRole = "30";
+    public static final String test1Role = "31";
+    public static final String test2Role = "32";
     /**
      * 文件根目录
      */

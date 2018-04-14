@@ -1,39 +1,30 @@
 package com.xgx.dw.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.xgx.dw.R;
-import com.xgx.dw.StoreBean;
-import com.xgx.dw.TransformerBean;
 import com.xgx.dw.UserBean;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseEventBusActivity;
 import com.xgx.dw.base.EventCenter;
-import com.xgx.dw.bean.County;
 import com.xgx.dw.bean.LoginInformation;
-import com.xgx.dw.bean.Price;
+import com.xgx.dw.bean.SysDept;
 import com.xgx.dw.bean.Taiqu;
 import com.xgx.dw.presenter.impl.UserPresenterImpl;
 import com.xgx.dw.presenter.interfaces.IUserPresenter;
 import com.xgx.dw.ui.view.interfaces.IUserView;
 
-import java.util.List;
-import java.util.UUID;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class CreateUserTwoAcvitity extends BaseEventBusActivity implements IUserView, Toolbar.OnMenuItemClickListener {
@@ -97,7 +88,7 @@ public class CreateUserTwoAcvitity extends BaseEventBusActivity implements IUser
             } else if (bean.getIsTest().equals("1")) {
                 testSwitch.setChecked(true);
             }
-            if (!"10".equals(LoginInformation.getInstance().getUser().getType()) || "0".equals(LoginInformation.getInstance().getUser().getType())) {
+            if (!G.depRole.equals(LoginInformation.getInstance().getUser().getType()) || G.adminRole.equals(LoginInformation.getInstance().getUser().getType())) {
                 buySwitch.setEnabled(false);
                 testSwitch.setEnabled(false);
             }
@@ -107,7 +98,7 @@ public class CreateUserTwoAcvitity extends BaseEventBusActivity implements IUser
             taiquTv.setText(bean.getTransformerName());
             taiquTv.setContentDescription(bean.getTransformerId());
         } else {
-            if (LoginInformation.getInstance().getUser().getType().equals("10")) {//营业厅管理员
+            if (LoginInformation.getInstance().getUser().getType().equals(G.depRole)) {//营业厅管理员
                 contyTv.setText(LoginInformation.getInstance().getUser().getStoreName());
                 contyTv.setContentDescription(LoginInformation.getInstance().getUser().getStoreId());
             }
@@ -133,7 +124,7 @@ public class CreateUserTwoAcvitity extends BaseEventBusActivity implements IUser
         if (bean != null && !TextUtils.isEmpty(bean.getUserId())) {
             userBean.setId(bean.getId());
         }
-        this.presenter.saveUser(this, userBean, 11);
+        this.presenter.saveUser(this, userBean, G.taiquRole);
     }
 
     @Override
@@ -164,9 +155,9 @@ public class CreateUserTwoAcvitity extends BaseEventBusActivity implements IUser
     protected void onEventComming(EventCenter eventCenter) {
         if (EventCenter.COUNTY_SELECT == eventCenter.getEventCode()) {
             try {
-                County county = (County) eventCenter.getData();
-                contyTv.setText(checkText(county.getCountyname()));
-                contyTv.setContentDescription(checkText(county.getCountyid()));
+                SysDept county = (SysDept) eventCenter.getData();
+                contyTv.setText(checkText(county.getSimplename()));
+                contyTv.setContentDescription(checkText(county.getCountyid() + ""));
                 taiquTv.setText("");
                 taiquTv.setContentDescription("");
             } catch (Exception e) {
@@ -193,7 +184,7 @@ public class CreateUserTwoAcvitity extends BaseEventBusActivity implements IUser
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.contyTv:
-                if (LoginInformation.getInstance().getUser().getType().equals("0")) {
+                if (LoginInformation.getInstance().getUser().getType().equals(G.adminRole)) {
                     Intent intent = new Intent(CreateUserTwoAcvitity.this, StoresMgrActivity.class);
                     intent.putExtra("isSelect", true);
                     startActivity(intent);
@@ -202,11 +193,11 @@ public class CreateUserTwoAcvitity extends BaseEventBusActivity implements IUser
                 break;
             case R.id.taiquTv:
 
-                if (LoginInformation.getInstance().getUser().getType().equals("0") || LoginInformation.getInstance().getUser().getType().equals("10")) {
+                if (LoginInformation.getInstance().getUser().getType().equals(G.adminRole) || LoginInformation.getInstance().getUser().getType().equals(G.depRole)) {
                     if (contyTv.getContentDescription() != null && !TextUtils.isEmpty(contyTv.getContentDescription().toString())) {
                         Intent taiquIntent = new Intent(CreateUserTwoAcvitity.this, TransformerActivity.class);
                         taiquIntent.putExtra("isSelect", true);
-                        taiquIntent.putExtra("countyid", contyTv.getContentDescription().toString());
+                        taiquIntent.putExtra("countyid", contyTv.getContentDescription() != null ? contyTv.getContentDescription().toString() : "");
                         startActivity(taiquIntent);
                     } else {
                         ToastUtils.showShort("请选择营业厅");

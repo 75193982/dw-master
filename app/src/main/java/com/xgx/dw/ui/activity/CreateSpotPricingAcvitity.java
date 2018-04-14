@@ -1,8 +1,6 @@
 package com.xgx.dw.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,29 +9,18 @@ import android.widget.TextView;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.xgx.dw.R;
-import com.xgx.dw.SpotPricingBean;
-import com.xgx.dw.StoreBean;
-import com.xgx.dw.TransformerBean;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
-import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.base.BaseEventBusActivity;
 import com.xgx.dw.base.EventCenter;
-import com.xgx.dw.bean.County;
 import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.bean.Price;
-import com.xgx.dw.dao.StoreBeanDaoHelper;
-import com.xgx.dw.dao.TransformerBeanDaoHelper;
+import com.xgx.dw.bean.SysDept;
 import com.xgx.dw.presenter.impl.SpotPricingPresenterImpl;
 import com.xgx.dw.presenter.interfaces.ISpotPricingPresenter;
 import com.xgx.dw.ui.view.interfaces.ICreateSpotPricingView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
@@ -126,13 +113,13 @@ public class CreateSpotPricingAcvitity extends BaseEventBusActivity implements I
             contyTv.setContentDescription(checkText(bean.getCountyid()));
             getSupportActionBar().setTitle(R.string.upgrade_spotpricing);
         } else {
-            if (currentUserType.equals("10")) {
+            if (!currentUserType.equals(G.adminRole)) {
                 contyTv.setText(checkText(currentStoreName));
                 contyTv.setContentDescription(currentStoreId);
             }
             getSupportActionBar().setTitle(R.string.create_spotpricing);
         }
-        if (!currentUserType.equals("10")) {
+        if (currentUserType.equals(G.adminRole)) {
             contyTv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -176,8 +163,8 @@ public class CreateSpotPricingAcvitity extends BaseEventBusActivity implements I
     protected void onEventComming(EventCenter eventCenter) {
         if (EventCenter.COUNTY_SELECT == eventCenter.getEventCode()) {
             try {
-                County county = (County) eventCenter.getData();
-                contyTv.setText(checkText(county.getCountyname()));
+                SysDept county = (SysDept) eventCenter.getData();
+                contyTv.setText(checkText(county.getSimplename()));
                 contyTv.setContentDescription(checkText(county.getCountyid()));
             } catch (Exception e) {
 

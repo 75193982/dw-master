@@ -59,7 +59,7 @@ public class DataSearchFragment extends BaseFragment implements MyOnItemClickLis
         ArrayList localArrayList = new ArrayList();
         Setting setting = new Setting(getContext());
         String currentUserType = setting.loadString(G.currentUserType);
-        if ("31,32".contains(currentUserType)) {
+        if (G.test1Role.equals(currentUserType) || G.test2Role.contains(currentUserType)) {
             localArrayList.add(new DummyContent(1, "电费余额", "电费余额", this.drawableInt[1]));
             localArrayList.add(new DummyContent(2, "电量查询", "电量查询", this.drawableInt[2]));
             localArrayList.add(new DummyContent(3, "功率查询", "功率查询", this.drawableInt[3]));
@@ -81,7 +81,7 @@ public class DataSearchFragment extends BaseFragment implements MyOnItemClickLis
             localArrayList.add(new DummyContent(6, "倍率查询", "倍率查询", this.drawableInt[5]));
             localArrayList.add(new DummyContent(7, "电价查询", "电价查询", this.drawableInt[5]));
             localArrayList.add(new DummyContent(8, "个人资料", "个人资料", this.drawableInt[5]));
-            if ("0,10,11".contains(currentUserType)) {
+            if (G.adminRole.equals(currentUserType) || G.depRole.equals(currentUserType) || G.taiquRole.equals(currentUserType)) {
                 localArrayList.add(new DummyContent(9, "购电报表", "购电报表", this.drawableInt[5]));
             }
             localArrayList.add(new DummyContent(10, "故障查询", "故障查询", this.drawableInt[5]));

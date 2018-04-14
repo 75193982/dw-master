@@ -15,7 +15,6 @@ import java.util.List;
  */
 public class UserAllInfo implements Serializable {
     private UserBean user;
-    private County storeBean;
     private Taiqu transformerBean;
     private int pricingSize;
     private PricingBean pricings;
@@ -47,13 +46,6 @@ public class UserAllInfo implements Serializable {
         this.user = user;
     }
 
-    public County getStoreBean() {
-        return storeBean;
-    }
-
-    public void setStoreBean(County storeBean) {
-        this.storeBean = storeBean;
-    }
 
     public Taiqu getTransformerBean() {
         return transformerBean;

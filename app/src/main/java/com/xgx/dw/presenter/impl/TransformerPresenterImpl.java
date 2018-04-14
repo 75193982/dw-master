@@ -4,12 +4,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.blankj.utilcode.util.ToastUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
-import com.nostra13.universalimageloader.utils.L;
-import com.xgx.dw.StoreBean;
-import com.xgx.dw.TransformerBean;
 import com.xgx.dw.base.BasePresenter;
 import com.xgx.dw.base.EventCenter;
-import com.xgx.dw.bean.County;
 import com.xgx.dw.bean.Taiqu;
 import com.xgx.dw.dao.TransformerBeanDaoHelper;
 import com.xgx.dw.net.DialogCallback;
@@ -21,7 +17,6 @@ import com.xgx.dw.ui.view.interfaces.ITransformerView;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TransformerPresenterImpl extends BasePresenter implements ITransformerPresenter {
@@ -48,10 +43,7 @@ public class TransformerPresenterImpl extends BasePresenter implements ITransfor
 
     public void searchTransformer(final ITransformerView paramITransformerView, Taiqu taiqu) {
 
-        OkGo.<LzyResponse<Taiqu>>post(URLs.getURL(URLs.TAIQU_LIST))
-                .params("name", checkIsNull(taiqu.getName()))
-                .params("countyid", checkIsNull(taiqu.getCountyid()))
-                .execute(new DialogCallback<LzyResponse<Taiqu>>(paramITransformerView.getContext()) {
+        OkGo.<LzyResponse<Taiqu>>post(URLs.getURL(URLs.TAIQU_LIST)).params("name", checkIsNull(taiqu.getName())).params("countyid", checkIsNull(taiqu.getCountyid())).execute(new DialogCallback<LzyResponse<Taiqu>>(paramITransformerView.getContext()) {
             @Override
             public void onSuccess(Response<LzyResponse<Taiqu>> response) {
                 List<Taiqu> taiquList = ((JSONArray) response.body().model).toJavaList(Taiqu.class);

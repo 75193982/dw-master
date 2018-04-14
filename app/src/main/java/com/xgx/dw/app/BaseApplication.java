@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.multidex.MultiDex;
 import android.util.DisplayMetrics;
 
 import com.blankj.utilcode.util.Utils;
@@ -17,14 +18,6 @@ import com.lzy.okgo.https.HttpsUtils;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
-import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 import com.xgx.dw.THDatabaseLoader;
 import com.xgx.dw.bean.DaoMaster;
@@ -74,7 +67,6 @@ public class BaseApplication extends Application {
         mCustomCrashHandler.setCustomCrashHanler(getApplicationContext());
         ZXingLibrary.initDisplayOpinion(this);
         mInstance = this;
-        initImageLoader();
         initScreenSize();
         THDatabaseLoader.init();
         initOkGo();
@@ -95,6 +87,13 @@ public class BaseApplication extends Application {
         DaoMaster daoMaster = new DaoMaster(db);
         //获取Dao对象管理者
         daoSession = daoMaster.newSession();
+    }
+
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     public static String token = "Authorization";
@@ -202,30 +201,6 @@ public class BaseApplication extends Application {
         return new Setting(mInstance);
     }
 
-    /**
-     * 初始化imageloader
-     */
-    private void initImageLoader() {
-        File cacheDir = StorageUtils.getOwnCacheDirectory(getApplicationContext(), "imageloader/Cache");
-        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().cacheInMemory(true) // 加载图片时会在内存中加载缓存
-                .cacheOnDisk(true) // 加载图片时会在磁盘中加载缓存
-                .build();
-
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).threadPoolSize(3)
-                // default
-                .threadPriority(Thread.NORM_PRIORITY - 2)
-                // default
-                .tasksProcessingOrder(QueueProcessingType.FIFO)
-                // default
-                .denyCacheImageMultipleSizesInMemory().memoryCache(new LruMemoryCache(2 * 1024 * 1024)).memoryCacheSize(2 * 1024 * 1024).memoryCacheSizePercentage(13)
-                // default
-                .diskCache(new UnlimitedDiscCache(cacheDir))
-                // default
-                .diskCacheSize(20 * 1024 * 1024).diskCacheFileCount(100).diskCacheFileNameGenerator(new Md5FileNameGenerator()) // default
-                .defaultDisplayImageOptions(defaultOptions) // default
-                .writeDebugLogs().build();
-        ImageLoader.getInstance().init(config);
-    }
 
     public static Context getInstance() {
         return mInstance;

@@ -23,6 +23,7 @@ import com.xgx.dw.R;
 import com.xgx.dw.UserBean;
 import com.xgx.dw.adapter.DataSearchItemAdapter;
 import com.xgx.dw.adapter.DataSearchItemAdapter.MyOnItemClickListner;
+import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseFragment;
 import com.xgx.dw.bean.LoginInformation;
@@ -77,28 +78,28 @@ public class SpecialOperationFragment extends BaseFragment implements MyOnItemCl
         });
         ArrayList localArrayList = new ArrayList();
         String currentUserType = LoginInformation.getInstance().getUser().getType();
-        if (currentUserType.equals("20")) {
+        if (currentUserType.equals(G.userRole)) {
             localArrayList.add(new DummyContent(0, "合闸", "合闸", this.drawableInt[0]));
             localArrayList.add(new DummyContent(1, "分闸", "分闸", this.drawableInt[1]));
             localArrayList.add(new DummyContent(7, "定值设置", "定值设置", this.drawableInt[6]));
             // localArrayList.add(new DummyContent(6, "电费录入", "电费录入", this.drawableInt[6]));
-        } else if (currentUserType.equals("30")) {
+        } else if (currentUserType.equals(G.testRole)) {
             localArrayList.add(new DummyContent(0, "合闸", "合闸", this.drawableInt[0]));
             localArrayList.add(new DummyContent(1, "分闸", "分闸", this.drawableInt[1]));
             localArrayList.add(new DummyContent(3, "保电解除", "保电解除", this.drawableInt[3]));
 
-        } else if (currentUserType.equals("31")) {
+        } else if (currentUserType.equals(G.test1Role)) {
             localArrayList.add(new DummyContent(0, "合闸", "合闸", this.drawableInt[0]));
             localArrayList.add(new DummyContent(1, "分闸", "分闸", this.drawableInt[1]));
             localArrayList.add(new DummyContent(3, "保电解除", "保电解除", this.drawableInt[3]));
 
-        } else if (currentUserType.equals("32")) {
+        } else if (currentUserType.equals(G.test2Role)) {
             localArrayList.add(new DummyContent(0, "合闸", "合闸", this.drawableInt[0]));
             localArrayList.add(new DummyContent(1, "分闸", "分闸", this.drawableInt[1]));
             localArrayList.add(new DummyContent(2, "保电投入", "保电投入", this.drawableInt[2]));
             localArrayList.add(new DummyContent(3, "保电解除", "保电解除", this.drawableInt[3]));
 
-        } else if (currentUserType.equals("0")) {
+        } else if (currentUserType.equals(G.adminRole)) {
             localArrayList.add(new DummyContent(0, "合闸", "合闸", this.drawableInt[0]));
             localArrayList.add(new DummyContent(1, "分闸", "分闸", this.drawableInt[1]));
             localArrayList.add(new DummyContent(2, "保电投入", "保电投入", this.drawableInt[2]));
@@ -111,7 +112,7 @@ public class SpecialOperationFragment extends BaseFragment implements MyOnItemCl
             localArrayList.add(new DummyContent(8, "超管调试", "超管调试", this.drawableInt[6]));
             localArrayList.add(new DummyContent(9, "超管工具", "超管工具", this.drawableInt[6]));
         } else {
-            if ("10,11".contains(currentUserType)) {
+            if (G.depRole.equals(currentUserType) || G.taiquRole.equals(currentUserType)) {
                 if (!LoginInformation.getInstance().getUser().getIsTest().equals("1")) {
                     //你当前没有权限扫描购电信息
                     return;

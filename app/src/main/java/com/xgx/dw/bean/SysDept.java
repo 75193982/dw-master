@@ -1,5 +1,7 @@
 package com.xgx.dw.bean;
 
+import java.io.Serializable;
+
 /**
  * <p>
  * 部门表
@@ -8,10 +10,9 @@ package com.xgx.dw.bean;
  * @author xgx123
  * @since 2018-04-13
  */
-public class SysDept {
+public class SysDept implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = -6566293557098004716L;
     /**
      * 主键id
      */

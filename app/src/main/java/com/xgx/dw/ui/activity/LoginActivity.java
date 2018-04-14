@@ -186,15 +186,14 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                     @Override
                     public void onSuccess(Response<LzyResponse<SysUser>> response) {
                         String token = response.body().token;
-                        int userType = response.body().userType;
+                        String userType = response.body().userType;
                         String randomKey = response.body().randomKey;
                         new Setting(LoginActivity.this).saveString("token", token);
                         HttpHeaders headerstemp = new HttpHeaders();
                         headerstemp.put(BaseApplication.token, "Bearer " + token);
                         OkGo.getInstance().addCommonHeaders(headerstemp);
-                        if (userType == 0) {
+                        if (G.adminRole.equals(userType)) {
                             SysUser temp = ((JSONObject) response.body().model).toJavaObject(SysUser.class);
-
                             if (temp != null) {
                                 UserBean bean = new UserBean();
                                 bean.setId(temp.getId() + "");
@@ -315,9 +314,6 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                     //保存用户 方便登录
                     IUserPresenter presenter = new UserPresenterImpl();
                     presenter.saveOrUpdateUser(userAllInfo.getUser());
-                    if (userAllInfo.getStoreBean().getId() != null) {
-                        StoreBeanDaoHelper.getInstance().addData(userAllInfo.getStoreBean());
-                    }
                     if (userAllInfo.getTransformerBean().getId() != null) {
                         TransformerBeanDaoHelper.getInstance().addData(userAllInfo.getTransformerBean());
                     }

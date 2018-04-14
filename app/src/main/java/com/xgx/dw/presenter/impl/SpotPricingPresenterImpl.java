@@ -4,15 +4,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.blankj.utilcode.util.ToastUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
-import com.xgx.dw.SpotPricingBean;
-import com.xgx.dw.StoreBean;
 import com.xgx.dw.base.BasePresenter;
 import com.xgx.dw.base.EventCenter;
-import com.xgx.dw.base.IBaseView;
-import com.xgx.dw.bean.County;
 import com.xgx.dw.bean.Price;
-import com.xgx.dw.bean.Taiqu;
-import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
 import com.xgx.dw.net.DialogCallback;
 import com.xgx.dw.net.LzyResponse;
 import com.xgx.dw.net.URLs;
@@ -22,7 +16,6 @@ import com.xgx.dw.ui.view.interfaces.ISpotPricingView;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SpotPricingPresenterImpl extends BasePresenter implements ISpotPricingPresenter {

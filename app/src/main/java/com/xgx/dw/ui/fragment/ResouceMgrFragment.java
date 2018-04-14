@@ -56,14 +56,15 @@ public class ResouceMgrFragment extends BaseFragment implements MyOnItemClickLis
                 Toast.makeText(paramAnonymousView.getContext(), "测试", Toast.LENGTH_SHORT).show();
             }
         });
+
         ArrayList localArrayList = new ArrayList();
         Setting setting = new Setting(getContext());
         String currentUserType = setting.loadString(G.currentUserType);
-        if (currentUserType.equals("10")) {
+        if (currentUserType.equals(G.depRole)) {
             localArrayList.add(new DummyContent(1, "台区管理", "台区管理", this.drawableInt[1]));
             localArrayList.add(new DummyContent(2, "电价管理", "电价管理", this.drawableInt[2]));
             localArrayList.add(new DummyContent(3, "用户资料", "用户资料", this.drawableInt[3]));
-        } else if (currentUserType.equals("11")) {
+        } else if (currentUserType.equals(G.taiquRole)) {
             localArrayList.add(new DummyContent(2, "电价管理", "电价管理", this.drawableInt[2]));
             localArrayList.add(new DummyContent(3, "用户资料", "用户资料", this.drawableInt[3]));
         } else {

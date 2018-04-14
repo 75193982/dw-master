@@ -20,7 +20,6 @@ import com.xgx.dw.R;
 import com.xgx.dw.adapter.StoresAdapter;
 import com.xgx.dw.base.BaseEventBusActivity;
 import com.xgx.dw.base.EventCenter;
-import com.xgx.dw.bean.County;
 import com.xgx.dw.bean.SysDept;
 import com.xgx.dw.presenter.impl.StorePresenterImpl;
 import com.xgx.dw.presenter.interfaces.IStoresPresenter;
@@ -109,7 +108,7 @@ public class StoresMgrActivity extends BaseEventBusActivity implements IStoresVi
 
     private void getDatas() {
         SysDept county = new SysDept();
-        county.setFullname(queryEt.getText().toString());
+        county.setSimplename(queryEt.getText().toString());
         this.presenter.searchStores(this, county);
     }
 

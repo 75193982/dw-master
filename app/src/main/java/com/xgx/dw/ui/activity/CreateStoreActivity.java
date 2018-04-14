@@ -50,7 +50,7 @@ public class CreateStoreActivity extends BaseAppCompatActivity implements ICreat
             getSupportActionBar().setTitle(R.string.upgrade_store);
             this.storeId.setText(checkText(this.bean.getCountyid()));
             this.storeId.setEnabled(false);
-            this.storeName.setText(checkText(this.bean.getFullname()));
+            this.storeName.setText(checkText(this.bean.getSimplename()));
             this.storeAddress.setText(checkText(this.bean.getAddress()));
             this.storeLinkname.setText(checkText(this.bean.getContact()));
             this.storeContactWay.setText(checkText(this.bean.getTel()));
@@ -63,7 +63,7 @@ public class CreateStoreActivity extends BaseAppCompatActivity implements ICreat
     public void onSaveClick() {
         SysDept county = new SysDept();
         county.setCountyid(storeId.getText().toString());
-        county.setFullname(storeName.getText().toString());
+        county.setSimplename(storeName.getText().toString());
         county.setAddress(storeAddress.getText().toString());
         county.setContact(storeLinkname.getText().toString());
         county.setTel(storeContactWay.getText().toString());

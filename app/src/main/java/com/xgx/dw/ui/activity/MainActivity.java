@@ -41,6 +41,7 @@ import com.xgx.dw.dao.PricingDaoHelper;
 import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
 import com.xgx.dw.dao.StoreBeanDaoHelper;
 import com.xgx.dw.dao.TransformerBeanDaoHelper;
+import com.xgx.dw.presenter.impl.MainPresenterImpl;
 import com.xgx.dw.presenter.impl.UserPresenterImpl;
 import com.xgx.dw.presenter.interfaces.IMainPresenter;
 import com.xgx.dw.presenter.interfaces.IUserPresenter;
@@ -140,6 +141,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
 
     @Override
     public void initPresenter() {
+        mMainPresenter = new MainPresenterImpl(this);
     }
 
     @Override
@@ -156,7 +158,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
         });
         currentUserType = LoginInformation.getInstance().getUser().getType();
         FragmentAdapter localFragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), currentUserType);
-        if ("20".equals(currentUserType) || "30".equals(currentUserType) || "32".equals(currentUserType)) {//普通用户 不显示资源管理按钮
+        if ((G.userRole + "").equals(currentUserType) || (G.testRole + "").equals(currentUserType) || (G.test2Role + "").equals(currentUserType)) {//普通用户 不显示资源管理按钮
             viewId = new int[]{R.id.ll_address, R.id.ll_find, R.id.ll_me};
             llWx.setVisibility(View.GONE);
             mListImage.add(addressBookS);
@@ -167,7 +169,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
             mListText.add(tabMeS);
             addressBookS.setAlpha(1.0F);
             tabAddressS.setAlpha(1.0F);
-        } else if (currentUserType.equals("31")) {//供电局调试账户 不显示资源管理按钮
+        } else if (currentUserType.equals((G.test1Role + ""))) {//供电局调试账户 不显示资源管理按钮
             viewId = new int[]{R.id.ll_find};
             llWx.setVisibility(View.GONE);
             llAddress.setVisibility(View.GONE);
@@ -198,7 +200,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
         registerReceiver(localMainBoradcastReceiver, localIntentFilter);
         UpdateVersionRequest localUpdateVersionRequest = new UpdateVersionRequest();
         localUpdateVersionRequest.versionCode = BaseApplication.getVersionCode();
-        mMainPresenter.checkVersion(localUpdateVersionRequest, 1);
+        //   mMainPresenter.checkVersion(localUpdateVersionRequest, 1);
 
 
     }
@@ -332,7 +334,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
 
     @Override
     public void switchAddressBook() {
-        if ("20".equals(currentUserType) || "30".equals(currentUserType) || "32".equals(currentUserType)) {
+        if ((G.userRole + "").equals(currentUserType) || (G.testRole + "").equals(currentUserType) || (G.test2Role + "").equals(currentUserType)) {
             viewPage.setCurrentItem(0, false);
         } else {
             viewPage.setCurrentItem(1, false);
@@ -353,9 +355,9 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
 
     @Override
     public void switchFind() {
-        if ("31".equals(currentUserType)) {
+        if ((G.test1Role + "").equals(currentUserType)) {
             viewPage.setCurrentItem(0, false);
-        } else if ("20".equals(currentUserType) || "30".equals(currentUserType) || "32".equals(currentUserType)) {
+        } else if ((G.userRole + "").equals(currentUserType) || (G.test2Role + "").equals(currentUserType) || (G.testRole + "").equals(currentUserType)) {
             viewPage.setCurrentItem(1, false);
         } else {
             viewPage.setCurrentItem(2, false);
@@ -367,7 +369,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
 
     @Override
     public void switchMe() {
-        if ("20".equals(currentUserType) || "30".equals(currentUserType) || "32".equals(currentUserType)) {
+        if (((G.userRole + "").equals(currentUserType) || (G.test2Role + "").equals(currentUserType) || (G.testRole + "").equals(currentUserType))) {
             viewPage.setCurrentItem(2, false);
         } else {
             viewPage.setCurrentItem(3, false);
@@ -435,14 +437,14 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                         String type = LoginInformation.getInstance().getUser().getType();
                         //自动登录 比较 ime账号
                         if (userAllInfo.getEcodeType().equals("0") && type.equals("0")) {
-                            if ("0".equals(type)) {
+                            if ((G.adminRole + "").equals(type)) {
                                 startActivity(new Intent(getContext(), CreateUserOneAcvitity.class).putExtra("ime", bean.getIme()));
                             } else {
                                 showToast("当前账号没有权限创建营业厅管理员");
                             }
                             startActivity(new Intent(getContext(), CreateUserOneAcvitity.class).putExtra("ime", bean.getIme()));
                         } else if (userAllInfo.getEcodeType().equals("1")) {
-                            if ("0".contains(type) || "10".contains(type)) {
+                            if ((G.adminRole + "").equals(type) || (G.depRole + "").contains(type)) {
                                 startActivity(new Intent(getContext(), CreateUserTwoAcvitity.class).putExtra("ime", bean.getIme()));
                             } else {
                                 showToast("当前账号没有权限创建台区管理员");
@@ -453,30 +455,27 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                             //保存用户 方便登录
                             IUserPresenter presenter = new UserPresenterImpl();
                             presenter.saveOrUpdateUser(userAllInfo.getUser());
-                            if (userAllInfo.getStoreBean().getId() != null) {
-                                StoreBeanDaoHelper.getInstance().addData(userAllInfo.getStoreBean());
-                            }
                             if (userAllInfo.getTransformerBean().getId() != null) {
                                 TransformerBeanDaoHelper.getInstance().addData(userAllInfo.getTransformerBean());
                             }
                             if (userAllInfo.getSpotBeans().getId() != null) {
                                 SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());
                             }
-                        } else if (userAllInfo.getEcodeType().equals("4") && ("0,30,31,10,11").contains(type)) {
-                            if ("10,11".contains(type)) {
+                        } else if (userAllInfo.getEcodeType().equals("4") && ("0,30,31,9,10").contains(type)) {
+                            if (G.depRole.equals(type) || G.testRole.equals(type)) {
                                 if (!LoginInformation.getInstance().getUser().getIsBuy().equals("1")) {
                                     //你当前没有权限扫描购电信息
                                     showToast("你当前没有权限扫描购电信息");
                                     return;
                                 }
-                                if (type.equals("10")) {
+                                if (type.equals((G.depRole + ""))) {
                                     if (!bean.getStoreId().equals(LoginInformation.getInstance().getUser().getStoreId())) {
                                         //比较下当前是否在营业厅台区下
                                         showToast("该用户不在的营业厅下");
                                         return;
                                     }
                                 }
-                                if (type.equals("11")) {
+                                if (type.equals((G.taiquRole + ""))) {
                                     if (!bean.getTransformerId().equals(LoginInformation.getInstance().getUser().getTransformerId())) {
                                         //比较下当前是否在营业厅台区下
                                         showToast("该用户不在的台区下");

@@ -1,33 +1,25 @@
 package com.xgx.dw.ui.activity;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.Toolbar.OnMenuItemClickListener;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import butterknife.BindView;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.xgx.dw.R;
-import com.xgx.dw.TransformerBean;
 import com.xgx.dw.adapter.TransformerAdapter;
-import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.base.BaseEventBusActivity;
 import com.xgx.dw.base.EventCenter;
-import com.xgx.dw.bean.County;
 import com.xgx.dw.bean.Taiqu;
 import com.xgx.dw.presenter.impl.TransformerPresenterImpl;
 import com.xgx.dw.presenter.interfaces.ITransformerPresenter;
@@ -38,6 +30,8 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
 
 public class TransformerActivity extends BaseEventBusActivity implements ITransformerView, Toolbar.OnMenuItemClickListener {
     private static int REFRESH_RECYCLERVIEW = 0;

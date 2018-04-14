@@ -2,6 +2,8 @@ package com.xgx.dw.ui.fragment;
 
 import android.support.v4.app.Fragment;
 
+import com.xgx.dw.app.G;
+
 public class FragmentFactory {
     private Fragment mFragment;
     private int mSize;
@@ -11,7 +13,7 @@ public class FragmentFactory {
     }
 
     public Fragment createFragment(int paramInt, String type) {
-        if (type.equals("20") || type.equals("30") || type.equals("32")) {
+        if (type.equals(G.userRole) || type.equals(G.testRole) || type.equals(G.test2Role)) {
             switch (paramInt) {
                 case 0:
                     this.mFragment = new BuyItemFragment();
@@ -23,7 +25,7 @@ public class FragmentFactory {
                     this.mFragment = new DataSearchFragment();
                     break;
             }
-        } else if (type.equals("31")) {
+        } else if (type.equals(G.test1Role)) {
             switch (paramInt) {
                 case 0:
                     this.mFragment = new SpecialOperationFragment();

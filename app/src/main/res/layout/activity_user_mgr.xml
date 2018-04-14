@@ -4,7 +4,7 @@
               android:layout_height="fill_parent"
               android:orientation="vertical">
 
-    <include layout="@layout/search_layout" />
+    <include layout="@layout/search_layout"/>
 
     <TextView
         android:id="@+id/numTv"
@@ -12,9 +12,34 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/dp_10"
         android:textColor="@color/Green"></TextView>
+    <!-- 显示 pager -->
+    <FrameLayout
+        android:id="@+id/main_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        <RelativeLayout
+            android:id="@+id/bodyLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+        </RelativeLayout>
+
+
+    </FrameLayout>
+
 </LinearLayout>

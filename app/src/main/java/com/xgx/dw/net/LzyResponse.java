@@ -17,5 +17,5 @@ public class LzyResponse<T> implements Serializable {
     public String error = "";
     public String exception = "";
     public String path = "";
-    public int userType = 0;
+    public String userType = "";
 }

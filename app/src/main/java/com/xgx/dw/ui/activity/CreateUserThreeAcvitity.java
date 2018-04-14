@@ -1,7 +1,6 @@
 package com.xgx.dw.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -14,36 +13,24 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.rengwuxian.materialedittext.MaterialEditText;
-import com.xgx.dw.PricingBean;
 import com.xgx.dw.R;
 import com.xgx.dw.SpotPricingBean;
-import com.xgx.dw.StoreBean;
-import com.xgx.dw.TransformerBean;
 import com.xgx.dw.UserBean;
 import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseEventBusActivity;
 import com.xgx.dw.base.EventCenter;
-import com.xgx.dw.bean.County;
 import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.bean.Price;
+import com.xgx.dw.bean.SysDept;
 import com.xgx.dw.bean.Taiqu;
-import com.xgx.dw.bean.UserAllInfo;
-import com.xgx.dw.dao.PricingDaoHelper;
-import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
-import com.xgx.dw.dao.StoreBeanDaoHelper;
-import com.xgx.dw.dao.TransformerBeanDaoHelper;
 import com.xgx.dw.dao.UserBeanDaoHelper;
 import com.xgx.dw.presenter.impl.UserPresenterImpl;
 import com.xgx.dw.presenter.interfaces.IUserPresenter;
 import com.xgx.dw.ui.view.interfaces.IUserView;
 import com.xgx.dw.utils.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class CreateUserThreeAcvitity extends BaseEventBusActivity implements IUserView, Toolbar.OnMenuItemClickListener {
@@ -94,10 +81,10 @@ public class CreateUserThreeAcvitity extends BaseEventBusActivity implements IUs
         String ime = getIntent().getStringExtra("ime");
         imeTv.setText(checkText(ime));
         Setting setting = new Setting(this);
-        currentStoreId = setting.loadString(G.currentStoreId);
-        currentStoreName = setting.loadString(G.currentStoreName);
-        currentTransformId = setting.loadString(G.currentTransformId);
-        currentTransformName = setting.loadString(G.currentTransformName);
+        currentStoreId = LoginInformation.getInstance().getUser().getStoreId();
+        currentStoreName = LoginInformation.getInstance().getUser().getStoreName();
+        currentTransformId = LoginInformation.getInstance().getUser().getTransformerId();
+        currentTransformName = LoginInformation.getInstance().getUser().getTransformerName();
         bean = ((UserBean) getIntent().getSerializableExtra("bean"));
         isFirst = true;
         initEditInfo(bean);
@@ -116,7 +103,7 @@ public class CreateUserThreeAcvitity extends BaseEventBusActivity implements IUs
             public void afterTextChanged(Editable s) {
                 UserBean tempUser = UserBeanDaoHelper.getInstance().queryByTransFormUserId(s.toString());
                 isSave = true;
-                if (tempUser != null && tempUser.getType().equals("20")) {
+                if (tempUser != null && tempUser.getType().equals(G.userRole)) {
                     initUserInfo(tempUser);
                     userId.setTag(tempUser.getId());
                 } else {
@@ -135,12 +122,12 @@ public class CreateUserThreeAcvitity extends BaseEventBusActivity implements IUs
                 initUserInfo(bean);
                 isSave = false;
             } else {
-                if (LoginInformation.getInstance().getUser().getType().equals("11")) {//台区管理员
+                if (LoginInformation.getInstance().getUser().getType().equals(G.taiquRole)) {//台区管理员
                     contyTv.setText(currentStoreName);
                     contyTv.setContentDescription(currentStoreId);
                     transformerTv.setText(currentTransformName);
                     transformerTv.setContentDescription(currentTransformId);
-                } else if (LoginInformation.getInstance().getUser().getType().equals("10")) {//营业厅管理员
+                } else if (LoginInformation.getInstance().getUser().getType().equals(G.depRole)) {//营业厅管理员
                     contyTv.setText(currentStoreName);
                     contyTv.setContentDescription(currentStoreId);
                 } else {
@@ -191,7 +178,7 @@ public class CreateUserThreeAcvitity extends BaseEventBusActivity implements IUs
         userBean.setTransformerName(transformerTv.getText().toString());
         userBean.setStoreId(contyTv.getContentDescription() != null ? contyTv.getContentDescription().toString() : "");
         userBean.setStoreName(contyTv.getText().toString());
-        this.presenter.saveUser(this, userBean, 20);
+        this.presenter.saveUser(this, userBean, G.userRole);
     }
 
     @Override
@@ -252,8 +239,8 @@ public class CreateUserThreeAcvitity extends BaseEventBusActivity implements IUs
     protected void onEventComming(EventCenter eventCenter) {
         if (EventCenter.COUNTY_SELECT == eventCenter.getEventCode()) {
             try {
-                County county = (County) eventCenter.getData();
-                contyTv.setText(checkText(county.getCountyname()));
+                SysDept county = (SysDept) eventCenter.getData();
+                contyTv.setText(checkText(county.getSimplename()));
                 contyTv.setContentDescription(checkText(county.getCountyid()));
                 transformerTv.setText("");
                 transformerTv.setContentDescription("");
@@ -301,7 +288,7 @@ public class CreateUserThreeAcvitity extends BaseEventBusActivity implements IUs
                 }
                 break;
             case R.id.contyTv:
-                if (LoginInformation.getInstance().getUser().getType().equals("0")) {
+                if (LoginInformation.getInstance().getUser().getType().equals(G.adminRole)) {
                     Intent intent = new Intent(CreateUserThreeAcvitity.this, StoresMgrActivity.class);
                     intent.putExtra("isSelect", true);
 
@@ -311,7 +298,7 @@ public class CreateUserThreeAcvitity extends BaseEventBusActivity implements IUs
                 break;
             case R.id.transformerTv:
 
-                if (LoginInformation.getInstance().getUser().getType().equals("0") || LoginInformation.getInstance().getUser().getType().equals("10")) {
+                if (LoginInformation.getInstance().getUser().getType().equals(G.adminRole) || LoginInformation.getInstance().getUser().getType().equals(G.depRole)) {
                     if (contyTv.getContentDescription() != null && !TextUtils.isEmpty(contyTv.getContentDescription().toString())) {
                         Intent taiquIntent = new Intent(CreateUserThreeAcvitity.this, TransformerActivity.class);
                         taiquIntent.putExtra("isSelect", true);

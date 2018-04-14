@@ -13,10 +13,11 @@ import android.widget.TextView;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.xgx.dw.R;
 import com.xgx.dw.UserBean;
+import com.xgx.dw.app.G;
 import com.xgx.dw.base.BaseEventBusActivity;
 import com.xgx.dw.base.EventCenter;
-import com.xgx.dw.bean.County;
 import com.xgx.dw.bean.LoginInformation;
+import com.xgx.dw.bean.SysDept;
 import com.xgx.dw.presenter.impl.UserPresenterImpl;
 import com.xgx.dw.presenter.interfaces.IUserPresenter;
 import com.xgx.dw.ui.view.interfaces.IUserView;
@@ -101,11 +102,11 @@ public class CreateUserOneAcvitity extends BaseEventBusActivity implements IUser
         userBean.setPassword(userId.getText().toString());
         userBean.setStoreName(contyTv.getText().toString());
         userBean.setStoreId(contyTv.getContentDescription() != null ? contyTv.getContentDescription().toString() : "");
-        userBean.setType("10");
+        userBean.setType(G.depRole);
         if (bean != null && !TextUtils.isEmpty(bean.getUserId())) {
             userBean.setId(bean.getId());
         }
-        presenter.saveUser(this, userBean, 10);
+        presenter.saveUser(this, userBean, G.depRole);
 
     }
 
@@ -114,9 +115,10 @@ public class CreateUserOneAcvitity extends BaseEventBusActivity implements IUser
     protected void onEventComming(EventCenter eventCenter) {
         if (EventCenter.COUNTY_SELECT == eventCenter.getEventCode()) {
             try {
-                County county = (County) eventCenter.getData();
-                contyTv.setText(checkText(county.getCountyname()));
-                contyTv.setContentDescription(checkText(county.getCountyid()));
+                SysDept county = (SysDept) eventCenter.getData();
+                contyTv.setText(checkText(county.getSimplename()));
+                contyTv.setContentDescription(checkText(county.getId() + ""));
+                contyTv.setTag(checkText(county.getId() + ""));
             } catch (Exception e) {
 
             }

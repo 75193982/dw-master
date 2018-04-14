@@ -9,7 +9,7 @@ import com.xgx.dw.ui.view.interfaces.IUserListView;
 import com.xgx.dw.ui.view.interfaces.IUserView;
 
 public interface IUserPresenter {
-    void saveUser(IUserView IBaseView, UserBean userBean, int type);
+    void saveUser(IUserView IBaseView, UserBean userBean, String type);
 
     void searchUser(IUserListView IBaseView);
 

@@ -25,6 +25,7 @@ import com.xgx.dw.R;
 import com.xgx.dw.SpotPricingBean;
 import com.xgx.dw.adapter.SpotPricingAdapter;
 import com.xgx.dw.base.BaseAppCompatActivity;
+import com.xgx.dw.base.BaseEventBusActivity;
 import com.xgx.dw.base.EventCenter;
 import com.xgx.dw.bean.Price;
 import com.xgx.dw.presenter.impl.SpotPricingPresenterImpl;
@@ -37,7 +38,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpotPricingActivity extends BaseAppCompatActivity implements ISpotPricingView, Toolbar.OnMenuItemClickListener {
+public class SpotPricingActivity extends BaseEventBusActivity implements ISpotPricingView, Toolbar.OnMenuItemClickListener {
     private static int REFRESH_RECYCLERVIEW = 0;
     private SpotPricingAdapter adapter;
     private List<Price> beans;
@@ -126,6 +127,18 @@ public class SpotPricingActivity extends BaseAppCompatActivity implements ISpotP
                 startActivityForResult(new Intent(this, CreateSpotPricingAcvitity.class), REFRESH_RECYCLERVIEW);
                 break;
         }
+        return true;
+    }
+
+    @Override
+    protected void onEventComming(EventCenter eventCenter) {
+        if (EventCenter.PRICE_SAVE == eventCenter.getEventCode()) {
+            setDatas();
+        }
+    }
+
+    @Override
+    public boolean isBindEventBusHere() {
         return true;
     }
 
