@@ -9,15 +9,11 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
-import com.xgx.dw.PricingBean;
 import com.xgx.dw.R;
 import com.xgx.dw.SearchDlLog;
-import com.xgx.dw.SearchDlLogDao;
 import com.xgx.dw.adapter.SearchLogListAdapter;
-import com.xgx.dw.adapter.SpotListAdapter;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.bean.LoginInformation;
-import com.xgx.dw.dao.PricingDaoHelper;
 import com.xgx.dw.dao.SearchDlDaoHelper;
 
 import java.util.ArrayList;

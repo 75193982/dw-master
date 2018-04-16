@@ -6,7 +6,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
@@ -23,7 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
-import com.xgx.dw.PricingBean;
 import com.xgx.dw.R;
 import com.xgx.dw.SpotPricingBean;
 import com.xgx.dw.UserBean;
@@ -32,8 +30,8 @@ import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.bean.LoginInformation;
+import com.xgx.dw.bean.Purchase;
 import com.xgx.dw.ble.BlueOperationContact;
-import com.xgx.dw.dao.PricingDaoHelper;
 import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
 import com.xgx.dw.dao.UserBeanDaoHelper;
 import com.xgx.dw.utils.AES;
@@ -54,7 +52,6 @@ import java.util.List;
 import java.util.UUID;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 //import android.view.Menu;            //如使用菜单加入此三包
@@ -169,7 +166,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
     private int title;
     private String OperationStr = "";
     private int setp = 0;
-    private PricingBean dlbean;
+    private Purchase dlbean;
     private boolean isLuru = false;
     private boolean isWifi = false;
 
@@ -297,14 +294,14 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             case 66:
                 setToolbarTitle("电费录入");
                 isLuru = true;
-                dlbean = (PricingBean) getIntent().getSerializableExtra("dlbean");
+                dlbean = (Purchase) getIntent().getSerializableExtra("dlbean");
                 String price = "";
                 try {
-                    price = AES.decrypt(G.appsecret, dlbean.getPrice());
+                    price = AES.decrypt(G.appsecret, dlbean.getAmt());
                 } catch (Exception e) {
                     price = "";
                 }
-                changDlStr(price, dlbean.getBjprice(), "0", dlbean.getSpotpriceId(), dlbean.getType());
+                changDlStr(price, dlbean.getAmtbj(), "0", dlbean.getPriceid() + "", dlbean.getOptype());
                 break;
             case 41:
                 setToolbarTitle("电费查询");
@@ -494,20 +491,18 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         String temp = String.format(BlueOperationContact.DianfeiLuruSendTemp, newId, type, gdl, bjdl, tzdl, currentTime);
         OperationStr = String.format(BlueOperationContact.DianfeiLuruSend, newId, type, gdl, bjdl, tzdl, currentTime, MyUtils.getJyCode(temp));
         if (title == 66) {
-            SpotPricingBean spotPricingBean = SpotPricingBeanDaoHelper.getInstance().getDataById(dlbean.getPid());
             UserBean userBean = LoginInformation.getInstance().getUser();
             String voltageRatio = userBean.getVoltageRatio();
             String currentRatio = userBean.getCurrentRatio();
-            String price = spotPricingBean.getName();
             String priceNum = "";
             try {
-                priceNum = AES.decrypt(G.appsecret, dlbean.getPrice());
+                priceNum = dlbean.getAmt();
             } catch (Exception e) {
                 priceNum = "";
             }
 
             sendTv.setText("购电量：" + priceNum + "\n" + "电压倍率：" + voltageRatio +
-                    "\n" + "电量倍率：" + currentRatio + "\n" + "电价：" + price);
+                    "\n" + "电量倍率：" + currentRatio + "\n");
             sendTv.setVisibility(View.VISIBLE);
         } else {
             sendTv.setText(OperationStr);
@@ -747,11 +742,11 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                                             title = 66;
                                             String priceNum = "";
                                             try {
-                                                priceNum = AES.decrypt(G.appsecret, dlbean.getPrice());
+                                                priceNum = dlbean.getAmt();
                                             } catch (Exception e) {
                                                 priceNum = "";
                                             }
-                                            changDlStr(priceNum, dlbean.getBjprice(), "0", dlbean.getSpotpriceId(), dlbean.getType());
+                                            changDlStr(priceNum, dlbean.getAmtbj(), "0", dlbean.getPriceid() + "", dlbean.getOptype());
                                         } else {
                                             title = 6;
                                             changDlStr(gdlEt.getText().toString(), bjEt.getText().toString(), tzEt.getText().toString(), "1", "刷新");
@@ -767,13 +762,14 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                                         if (dlbean != null) {
 
                                             //购电成功后 检查是否要保电投入
-                                            if (dlbean.getFinishtype().contains("3")) {
+                                            if (dlbean.getStatus() == 3) {
                                                 title = 2;
                                                 OperationStr = BlueOperationContact.BaoDianTrSend;
                                                 sendData();
                                             }
-                                            dlbean.setFinishtype("2");
-                                            PricingDaoHelper.getInstance().addData(dlbean);
+                                            //TODO 保存入库
+                                            //dlbean.setFinishtype("2");
+                                            //PricingDaoHelper.getInstance().addData(dlbean);
                                         }
                                         btnTv.setText("购电成功");
                                         btnTv.setTextColor(ContextCompat.getColor(getContext(), R.color.Orange));
@@ -868,7 +864,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             }
         } else if (title == 66) {
             Setting setting = new Setting(getContext());
-            UserBean bean = UserBeanDaoHelper.getInstance().getDataById(dlbean.getUserPrimaryid());
+            UserBean bean = UserBeanDaoHelper.getInstance().getDataById(dlbean.getId() + "");
             if (bean.getType().equals("20")) {
                 String userId = bean.getUserId();
                 boolean isFirstBuy = setting.loadBoolean(userId + "_isFirstBuy");
@@ -885,7 +881,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                     title = 4;
                     changStr(dy, dl);
                 } else {
-                    if (dlbean.getFinishtype().contains("1")) {//表示需要重新上传电压倍率
+                    if (dlbean.getStatus() == 1) {//表示需要重新上传电压倍率
                         String dy = bean.getVoltageRatio();
                         String dl = bean.getCurrentRatio();
                         if (TextUtils.isEmpty(bean.getVoltageRatio()) || TextUtils.isEmpty(bean.getCurrentRatio()) || TextUtils.isEmpty(bean.getPrice())) {
@@ -897,11 +893,11 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                     } else {
                         String priceNum = "";
                         try {
-                            priceNum = AES.decrypt(G.appsecret, dlbean.getPrice());
+                            priceNum = dlbean.getAmt();
                         } catch (Exception e) {
                             priceNum = "";
                         }
-                        changDlStr(priceNum, dlbean.getBjprice(), "0", dlbean.getSpotpriceId(), dlbean.getType());
+                        changDlStr(priceNum, dlbean.getAmtbj(), "0", dlbean.getPriceid() + "", dlbean.getOptype());
                     }
                 }
             }

@@ -25,21 +25,29 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONArray;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.zxing.common.StringUtils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.xgx.dw.PricingBean;
 import com.xgx.dw.R;
 import com.xgx.dw.adapter.SpotListAdapter;
 import com.xgx.dw.app.G;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.bean.LoginInformation;
+import com.xgx.dw.bean.Purchase;
 import com.xgx.dw.dao.PricingDaoHelper;
+import com.xgx.dw.net.DialogCallback;
+import com.xgx.dw.net.LzyResponse;
+import com.xgx.dw.net.URLs;
 import com.xgx.dw.utils.AES;
 import com.xgx.dw.utils.MyStringUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,7 +69,7 @@ public class SpotListActivity extends BaseAppCompatActivity {
     SpotListAdapter adapter;
     @BindView(R.id.numTv)
     TextView numTv;
-    private List<PricingBean> beans;
+    private List<Purchase> beans;
     @BindView(R.id.startTimeTv)
     TextView startTimeTv;
     @BindView(R.id.endTimeTv)
@@ -91,10 +99,10 @@ public class SpotListActivity extends BaseAppCompatActivity {
         recyclerView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                if (!adapter.getItem(i).getFinishtype().equals("2")) {
+                if (adapter.getItem(i).getStatus() != 2) {
                     Intent intent = new Intent(SpotListActivity.this, SpecialOperationDetailActivity.class);
                     intent.putExtra("type", 66);
-                    intent.putExtra("dlbean", adapter.getItem(i));
+                    intent.putExtra("dlbean", (Serializable) adapter.getItem(i));
                     startActivityForResult(intent, 1001);
                 } else {
                     showToast("已完成购电");
@@ -115,7 +123,7 @@ public class SpotListActivity extends BaseAppCompatActivity {
                         new Handler().post(new Runnable() {
                             @Override
                             public void run() {
-                                viewSaveToImage(view, adapter.getItem(position).getUserPrimaryid() + "-" + adapter.getItem(position).getCreateTime());
+                                viewSaveToImage(view, adapter.getItem(position).getOpcode() + "-" + adapter.getItem(position).getCreatetime());
                             }
                         });
                     }
@@ -149,22 +157,28 @@ public class SpotListActivity extends BaseAppCompatActivity {
     }
 
     private void getDatas() {
-        String userid = LoginInformation.getInstance().getUser().getId();
-        beans = PricingDaoHelper.getInstance().queryByUserId(userid);
-        if (beans != null && beans.size() > 0) {
-            int num = 0;
-            for (int i = 0; i < beans.size(); i++) {
-                String price = "";
-                try {
-                    price = AES.decrypt(G.appsecret, beans.get(i).getPrice());
-                } catch (Exception e) {
-                    price = "";
-                }
-                num += MyStringUtils.toInt(price, 0);
-            }
-            numTv.setText(num + "元");
-        }
-        adapter.setNewData(beans);
+        Purchase purchase = new Purchase();
+        purchase.setUserid(LoginInformation.getInstance().getUser().getUserId());
+        OkGo.<LzyResponse<Purchase>>post(URLs.getURL(URLs.BUY_SPOT_LIST))
+                .upJson(URLs.getRequstJsonString(purchase))
+                .execute(new DialogCallback<LzyResponse<Purchase>>(this) {
+                    @Override
+                    public void onSuccess(Response<LzyResponse<Purchase>> response) {
+                        beans = ((JSONArray) response.body().model).toJavaList(Purchase.class);
+                        adapter.setNewData(beans);
+                        int num = 0;
+                        for (int i = 0; i < beans.size(); i++) {
+                            String price = "";
+                            try {
+                                price = beans.get(i).getAmt();
+                            } catch (Exception e) {
+                                price = "";
+                            }
+                            num += MyStringUtils.toInt(price, 0);
+                        }
+                        numTv.setText(num + "元");
+                    }
+                });
     }
 
     @OnClick({R.id.startTimeTv, R.id.endTimeTv, R.id.comfirmBtn})
@@ -187,9 +201,9 @@ public class SpotListActivity extends BaseAppCompatActivity {
                     showToast("请检查查询时间是否正确");
                     return;
                 }
-                List<PricingBean> tempList = new ArrayList<>();
+                List<Purchase> tempList = new ArrayList<>();
                 for (int j = 0; j < beans.size(); j++) {
-                    String createTime = beans.get(j).getCreateTime();
+                    String createTime = beans.get(j).getCreatetime();
                     int k1 = compare_date(createTime, starttime);
                     int k2 = compare_date(endTime, createTime);
                     if (k1 != -1 && k2 != -1) {
@@ -202,7 +216,7 @@ public class SpotListActivity extends BaseAppCompatActivity {
                     for (int t = 0; t < tempList.size(); t++) {
                         String price = "";
                         try {
-                            price = AES.decrypt(G.appsecret, tempList.get(t).getPrice());
+                            price = tempList.get(t).getAmt();
                         } catch (Exception e) {
                             price = "";
                         }

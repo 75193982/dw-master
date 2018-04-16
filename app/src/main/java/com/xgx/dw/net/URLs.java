@@ -1,13 +1,21 @@
 package com.xgx.dw.net;
 
+import com.alibaba.fastjson.JSON;
+import com.xgx.dw.app.BaseApplication;
+import com.xgx.dw.app.Setting;
+import com.xgx.dw.bean.LoginInformation;
+import com.xgx.dw.utils.Base64SecurityAction;
+import com.xgx.dw.utils.BaseTransferEntity;
+import com.xgx.dw.utils.MD5Util;
+
 /**
  * URL路径处理类
  *
  * @author Ht
  */
 public class URLs {
-    public static final String HOST = "http://192.168.0.116:8089/";
-    // public static final String HOST = "http://221.176.209.130:8089/";
+    public static final String HOST = "http://192.168.100.9:8089/";
+    //public static final String HOST = "http://221.176.209.130:8089/";
     public static final String PROJECT_NAME = "";
     public static final String API = "";
 
@@ -32,7 +40,8 @@ public class URLs {
     public static final String MTUSER_LIST = "mtzUser/mtzUserList"; //用户资料管理
     public static final String MTUSER_SAVE = "mtzUser/save"; //用户资料保存
     public static final String MTUSER_CODE = "mtzUser/getCode"; //获取验证码
-    public static final String BUY_SPOT = "mtzUser/buy"; //保存电费单
+    public static final String BUY_SPOT = "mtzPurchase/save"; //保存电费单
+    public static final String BUY_SPOT_LIST = "mtzPurchase/purchaseList"; //保存电费单
 
     public static final String USER_SIGNUP = "xxx";
 
@@ -46,4 +55,14 @@ public class URLs {
         return HOST + PROJECT_NAME + API + uri;
     }
 
+    public static String getRequstJsonString(Object obj) {
+        String json = JSON.toJSONString(obj);
+        String encode = new Base64SecurityAction().doAction(json);
+        // md5签名
+        String encrypt = MD5Util.encrypt(encode + new Setting(BaseApplication.getInstance()).loadString("randomKey"));
+        BaseTransferEntity baseTransferEntity = new BaseTransferEntity();
+        baseTransferEntity.setSign(encrypt);
+        baseTransferEntity.setObject(encode);
+        return JSON.toJSONString(baseTransferEntity);
+    }
 }

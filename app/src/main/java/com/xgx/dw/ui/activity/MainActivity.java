@@ -36,6 +36,7 @@ import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseActivity;
 import com.xgx.dw.base.FragmentAdapter;
 import com.xgx.dw.bean.LoginInformation;
+import com.xgx.dw.bean.Purchase;
 import com.xgx.dw.bean.UserAllInfo;
 import com.xgx.dw.dao.PricingDaoHelper;
 import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
@@ -498,29 +499,29 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                             startActivity(new Intent(getContext(), BuySpotActivity.class).putExtra("userAllInfo", userAllInfo));
                         } else if (userAllInfo.getEcodeType().equals("5") || userAllInfo.getEcodeType().equals("6")) {
                             //用户购电
-                            List<PricingBean> pricingBeen = PricingDaoHelper.getInstance().queryByUserId(LoginInformation.getInstance().getUser().getUserId(), userAllInfo.getPricings().getIme(), userAllInfo.getPricings().getId());
-                            if (pricingBeen.size() > 0) {
-                                showToast("不能扫描该二维码,已经扫过一次了");
-                            } else {
-                                Log.e("扫描结果-LoginInformation--", LoginInformation.getInstance().getUser().getUserId());
-                                Log.e("扫描结果--pricings--", userAllInfo.getPricings().getUserId());
-                                if (LoginInformation.getInstance().getUser().getUserId().equals(userAllInfo.getPricings().getUserId())) {
-
-                                    IUserPresenter presenter = new UserPresenterImpl();
-                                    if (userAllInfo.getUser() != null) {
-                                        presenter.saveOrUpdateUser(userAllInfo.getUser());
-                                        setLoginInfomation(bean);
-                                    }
-                                    if (userAllInfo.getSpotBeans().getId() != null) {
-                                        SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());
-                                    }
-                                    PricingDaoHelper.getInstance().addData(userAllInfo.getPricings());
-                                    showToast("扫描购电信息成功，请查看购电记录完成购电");
-                                } else {
-                                    showToast("该购电二维码不属于你");
-                                }
-
-                            }
+//                            List<Purchase> pricingBeen = PricingDaoHelper.getInstance().queryByUserId(LoginInformation.getInstance().getUser().getUserId(), userAllInfo.getPricings().getIme(), userAllInfo.getPricings().getId());
+//                            if (pricingBeen.size() > 0) {
+//                                showToast("不能扫描该二维码,已经扫过一次了");
+//                            } else {
+//                                Log.e("扫描结果-LoginInformation--", LoginInformation.getInstance().getUser().getUserId());
+//                                Log.e("扫描结果--pricings--", userAllInfo.getPricings().getUserId());
+//                                if (LoginInformation.getInstance().getUser().getUserId().equals(userAllInfo.getPricings().getUserId())) {
+//
+//                                    IUserPresenter presenter = new UserPresenterImpl();
+//                                    if (userAllInfo.getUser() != null) {
+//                                        presenter.saveOrUpdateUser(userAllInfo.getUser());
+//                                        setLoginInfomation(bean);
+//                                    }
+//                                    if (userAllInfo.getSpotBeans().getId() != null) {
+//                                        SpotPricingBeanDaoHelper.getInstance().addData(userAllInfo.getSpotBeans());
+//                                    }
+//                                    PricingDaoHelper.getInstance().addData(userAllInfo.getPricings());
+//                                    showToast("扫描购电信息成功，请查看购电记录完成购电");
+//                                } else {
+//                                    showToast("该购电二维码不属于你");
+//                                }
+//
+//                            }
                         } else {
                             showToast("不是有效的二维码");
                         }

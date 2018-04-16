@@ -12,13 +12,15 @@ import android.widget.TextView;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
+import com.blankj.utilcode.util.ToastUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.rengwuxian.materialedittext.MaterialEditText;
-import com.xgx.dw.PricingBean;
 import com.xgx.dw.R;
 import com.xgx.dw.UserBean;
 import com.xgx.dw.base.BaseAppCompatActivity;
+import com.xgx.dw.bean.LoginInformation;
+import com.xgx.dw.bean.Purchase;
 import com.xgx.dw.net.DialogCallback;
 import com.xgx.dw.net.LzyResponse;
 import com.xgx.dw.net.URLs;
@@ -46,8 +48,6 @@ public class BuySpotActivity extends BaseAppCompatActivity {
     SwitchCompat isChangeSwitch;
     @BindView(R.id.isTrSwitch)
     SwitchCompat isTrSwitch;
-    @BindView(R.id.cnTv)
-    TextView cnTv;
     @BindView(R.id.buyTypeTv)
     TextView buyTypeTv;
     @BindView(R.id.action_save)
@@ -70,9 +70,9 @@ public class BuySpotActivity extends BaseAppCompatActivity {
                 return;
             }
             userInfoTv.setText(user.getUserName());
-            userInfoBeilvTv.setText("设备编号：" + user.getUserId() + "\n" + "电压倍率：" + user.getVoltageRatio() +
+            userInfoBeilvTv.setText("设备编号：" + user.getUserId() + "    " + "电压倍率：" + user.getVoltageRatio() +
                     "\n" + "电流倍率：" + user.getCurrentRatio() +
-                    "\n" + "电价id：" + user.getPrice());
+                    "    " + "电价id：" + user.getPrice());
         }
         buyTypeTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +108,32 @@ public class BuySpotActivity extends BaseAppCompatActivity {
                 try {
                     BigDecimal numberOfMoney = new BigDecimal(s.toString());
                     String newStr = NumberToCn.number2CNMontrayUnit(numberOfMoney);
-                    cnTv.setText(newStr);
+                    spotTv.setHelperText(newStr);
+                    //  cnTv.setText(newStr);
+                } catch (Exception e) {
+
+                }
+
+            }
+        });
+        bjPriceTv.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    BigDecimal numberOfMoney = new BigDecimal(s.toString());
+                    String newStr = NumberToCn.number2CNMontrayUnit(numberOfMoney);
+                    bjPriceTv.setHelperText(newStr);
+                    //  cnTv.setText(newStr);
                 } catch (Exception e) {
 
                 }
@@ -129,18 +154,36 @@ public class BuySpotActivity extends BaseAppCompatActivity {
             showToast("请输入购电金额");
             return;
         }
+        Purchase purchase = new Purchase();
+        purchase.setAmt(checkText(spotTv.getText().toString()));
+        purchase.setAmtbj(bjPriceTv.getText().toString());
+        purchase.setCountyid(user.getStoreId());
+        purchase.setCountyname(user.getStoreName());
+        purchase.setTaiquname(user.getTransformerName());
+        purchase.setTerminalcode(user.getUserId());
+        purchase.setTerminalname(user.getUserName());
+        purchase.setOptype(buyTypeTv.getText().toString());
+        purchase.setOpuser(LoginInformation.getInstance().getUser().getUserName());
+        purchase.setUsername(user.getUserName());
+        purchase.setUserid(user.getUserId());
+        purchase.setDybl(user.getVoltageRatio());
+        purchase.setDlbl(user.getCurrentRatio());
+        purchase.setIsBd(isTrSwitch.isChecked() ? 1 : 0);
+        purchase.setIsBl(isChangeSwitch.isChecked() ? 1 : 0);
         //正在保存电价生成 二维码，并保存到表里
-        OkGo.<LzyResponse<PricingBean>>post(URLs.getURL(URLs.BUY_SPOT)).params("", "").execute(new DialogCallback<LzyResponse<PricingBean>>(this) {
-            @Override
-            public void onSuccess(Response<LzyResponse<PricingBean>> response) {
+        OkGo.<LzyResponse<Purchase>>post(URLs.getURL(URLs.BUY_SPOT))
+                .upJson(URLs.getRequstJsonString(purchase))
+                .execute(new DialogCallback<LzyResponse<Purchase>>(this) {
+                    @Override
+                    public void onSuccess(Response<LzyResponse<Purchase>> response) {
+                        ToastUtils.showShort("购电成功");
+                    }
 
-            }
-
-            @Override
-            public void onError(Response<LzyResponse<PricingBean>> response) {
-                super.onError(response);
-            }
-        });
+                    @Override
+                    public void onError(Response<LzyResponse<Purchase>> response) {
+                        super.onError(response);
+                    }
+                });
 //        try {
 //            PricingBean bean = new PricingBean();
 //            String price = "";

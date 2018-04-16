@@ -91,6 +91,7 @@ public class CreateTransformerAcvitity extends BaseEventBusActivity implements I
         taiqu.setName(transformerName.getText().toString());
         if (bean != null && bean.getId() != null) {
             taiqu.setId(bean.getId());
+            taiqu.setRecid(bean.getRecid());
         }
         this.presenter.saveTransformer(this, taiqu);
     }
@@ -111,7 +112,7 @@ public class CreateTransformerAcvitity extends BaseEventBusActivity implements I
             try {
                 SysDept county = (SysDept) eventCenter.getData();
                 contyTv.setText(checkText(county.getSimplename()));
-                contyTv.setContentDescription(checkText(county.getId() + ""));
+                contyTv.setContentDescription(checkText(county.getCountyid() + ""));
             } catch (Exception e) {
 
             }

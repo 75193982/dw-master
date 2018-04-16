@@ -189,6 +189,7 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                         String userType = response.body().userType;
                         String randomKey = response.body().randomKey;
                         new Setting(LoginActivity.this).saveString("token", token);
+                        new Setting(LoginActivity.this).saveString("randomKey", randomKey);
                         HttpHeaders headerstemp = new HttpHeaders();
                         headerstemp.put(BaseApplication.token, "Bearer " + token);
                         OkGo.getInstance().addCommonHeaders(headerstemp);

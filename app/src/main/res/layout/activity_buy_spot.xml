@@ -70,19 +70,16 @@
                 android:padding="@dimen/dp_10"
                 android:textSize="20sp"
                 android:textStyle="bold"
+
                 app:met_baseColor="@color/Orange"
                 app:met_floatingLabel="highlight"
                 app:met_floatingLabelText="购电金额(元)"
                 app:met_floatingLabelTextColor="@color/Black"
+                app:met_helperTextAlwaysShown="true"
+                app:met_helperTextColor="@android:color/holo_red_light"
                 app:met_hideUnderline="true"
                 app:met_singleLineEllipsis="true" />
 
-            <TextView
-                android:id="@+id/cnTv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/text_margin"
-                android:textColor="@android:color/holo_red_light"></TextView>
         </LinearLayout>
 
         <LinearLayout
@@ -106,6 +103,8 @@
                 app:met_floatingLabel="highlight"
                 app:met_floatingLabelText="报警金额(元)"
                 app:met_floatingLabelTextColor="@color/Black"
+                app:met_helperTextAlwaysShown="true"
+                app:met_helperTextColor="@android:color/holo_red_light"
                 app:met_hideUnderline="true"
                 app:met_singleLineEllipsis="true" />
 
@@ -122,8 +121,6 @@
                 android:id="@+id/isChangeSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="20dp"
                 android:text="是否同步倍率电价"
                 android:textColor="@color/Gray600"></android.support.v7.widget.SwitchCompat>
         </LinearLayout>
@@ -139,7 +136,6 @@
                 android:id="@+id/isTrSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="20dp"
                 android:text="是否保电投入"
                 android:textColor="@color/Gray600"></android.support.v7.widget.SwitchCompat>
         </LinearLayout>

@@ -2,8 +2,6 @@ package com.xgx.dw.dao;
 
 import android.text.TextUtils;
 
-import com.xgx.dw.PricingBean;
-import com.xgx.dw.PricingBeanDao;
 import com.xgx.dw.SearchDlLog;
 import com.xgx.dw.SearchDlLogDao;
 import com.xgx.dw.THDaoHelperInterface;

@@ -8,7 +8,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
@@ -17,20 +16,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONArray;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
-import com.xgx.dw.PricingBean;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.xgx.dw.R;
 import com.xgx.dw.adapter.SpotListAdapter;
-import com.xgx.dw.app.G;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.bean.LoginInformation;
-import com.xgx.dw.dao.PricingDaoHelper;
-import com.xgx.dw.utils.AES;
+import com.xgx.dw.bean.Purchase;
+import com.xgx.dw.net.DialogCallback;
+import com.xgx.dw.net.LzyResponse;
+import com.xgx.dw.net.URLs;
 import com.xgx.dw.utils.MyStringUtils;
 
 import java.io.File;
@@ -43,7 +44,6 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -63,7 +63,7 @@ public class BuyUserDataActivity extends BaseAppCompatActivity {
     @BindView(R.id.resultTv)
     TextView resultTv;
     private DatePickerDialog mDataPicker;
-    private List<PricingBean> beans;
+    private List<Purchase> beans;
     private SpotListAdapter adapter;
 
     @Override
@@ -101,7 +101,7 @@ public class BuyUserDataActivity extends BaseAppCompatActivity {
                         new Handler().post(new Runnable() {
                             @Override
                             public void run() {
-                                viewSaveToImage(view, adapter.getItem(position).getUserPrimaryid() + "-" + adapter.getItem(position).getCreateTime());
+                                viewSaveToImage(view, adapter.getItem(position).getOpcode() + "-" + adapter.getItem(position).getCreatetime());
                             }
                         });
                     }
@@ -128,22 +128,32 @@ public class BuyUserDataActivity extends BaseAppCompatActivity {
     }
 
     private void getData() {
-        String userid = LoginInformation.getInstance().getUser().getUserId();
-        beans = PricingDaoHelper.getInstance().queryByAdminId(userid);
-        int num = 0;
-        if (beans != null && beans.size() > 0) {
-            for (int i = 0; i < beans.size(); i++) {
-                String price = "";
-                try {
-                    price = AES.decrypt(G.appsecret, beans.get(i).getPrice());
-                } catch (Exception e) {
-                    price = "";
-                }
-                num += MyStringUtils.toInt(price, 0);
-            }
-            resultTv.setText("合计 " + num + "元\n购电用户 " + beans.size() + " 位");
-        }
-        adapter.setNewData(beans);
+        Purchase purchase = new Purchase();
+        purchase.setUserid(LoginInformation.getInstance().getUser().getUserId());
+        OkGo.<LzyResponse<Purchase>>post(URLs.getURL(URLs.BUY_SPOT_LIST))
+                .upJson(URLs.getRequstJsonString(purchase))
+                .execute(new DialogCallback<LzyResponse<Purchase>>(this) {
+                    @Override
+                    public void onSuccess(Response<LzyResponse<Purchase>> response) {
+                        List<Purchase> purchaseList = ((JSONArray) response.body().model).toJavaList(Purchase.class);
+                        adapter.setNewData(purchaseList);
+                    }
+                });
+//        beans = PricingDaoHelper.getInstance().queryByAdminId(userid);
+//        int num = 0;
+//        if (beans != null && beans.size() > 0) {
+//            for (int i = 0; i < beans.size(); i++) {
+//                String price = "";
+//                try {
+//                    price = AES.decrypt(G.appsecret, beans.get(i).getPrice());
+//                } catch (Exception e) {
+//                    price = "";
+//                }
+//                num += MyStringUtils.toInt(price, 0);
+//            }
+//            resultTv.setText("合计 " + num + "元\n购电用户 " + beans.size() + " 位");
+//        }
+//
     }
 
     @OnClick({R.id.startTimeTv, R.id.endTimeTv, R.id.comfirmBtn})
@@ -166,9 +176,9 @@ public class BuyUserDataActivity extends BaseAppCompatActivity {
                     showToast("请检查查询时间是否正确");
                     return;
                 }
-                List<PricingBean> tempList = new ArrayList<>();
+                List<Purchase> tempList = new ArrayList<>();
                 for (int j = 0; j < beans.size(); j++) {
-                    String createTime = beans.get(j).getCreateTime();
+                    String createTime = beans.get(j).getCreatetime();
                     int k1 = compare_date(createTime, starttime);
                     int k2 = compare_date(endTime, createTime);
                     if (k1 != -1 && k2 != -1) {
@@ -181,7 +191,7 @@ public class BuyUserDataActivity extends BaseAppCompatActivity {
                     for (int t = 0; t < tempList.size(); t++) {
                         String price = "";
                         try {
-                            price = AES.decrypt(G.appsecret, tempList.get(t).getPrice());
+                            price = tempList.get(t).getAmt();
                         } catch (Exception e) {
                             price = "";
                         }

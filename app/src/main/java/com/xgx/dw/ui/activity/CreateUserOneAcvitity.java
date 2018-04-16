@@ -82,7 +82,7 @@ public class CreateUserOneAcvitity extends BaseEventBusActivity implements IUser
             } else if (bean.getIsTest().equals("1")) {
                 testSwitch.setChecked(true);
             }
-            if (!LoginInformation.getInstance().getUser().getType().equals("0")) {
+            if (!LoginInformation.getInstance().getUser().getType().equals(G.adminRole)) {
                 buySwitch.setEnabled(false);
                 testSwitch.setEnabled(false);
             }
@@ -134,7 +134,7 @@ public class CreateUserOneAcvitity extends BaseEventBusActivity implements IUser
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.contyTv:
-                if (LoginInformation.getInstance().getUser().getType().equals("0")) {
+                if (LoginInformation.getInstance().getUser().getType().equals(G.adminRole)) {
                     Intent intent = new Intent(CreateUserOneAcvitity.this, StoresMgrActivity.class);
                     intent.putExtra("isSelect", true);
                     startActivity(intent);

@@ -252,7 +252,7 @@ public class CreateUserThreeAcvitity extends BaseEventBusActivity implements IUs
             try {
                 Taiqu taiqu = (Taiqu) eventCenter.getData();
                 transformerTv.setText(checkText(taiqu.getName()));
-                transformerTv.setContentDescription(checkText(taiqu.getCode()));
+                transformerTv.setContentDescription(checkText(taiqu.getRecid()));
             } catch (Exception e) {
 
             }

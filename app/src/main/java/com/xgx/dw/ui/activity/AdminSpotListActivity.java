@@ -13,28 +13,18 @@ import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
-import com.xgx.dw.PricingBean;
 import com.xgx.dw.R;
 import com.xgx.dw.adapter.SpotListAdapter;
-import com.xgx.dw.app.G;
 import com.xgx.dw.base.BaseAppCompatActivity;
-import com.xgx.dw.bean.LoginInformation;
-import com.xgx.dw.dao.PricingDaoHelper;
-import com.xgx.dw.utils.AES;
-import com.xgx.dw.utils.MyStringUtils;
+import com.xgx.dw.bean.Purchase;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -46,10 +36,7 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.BindView;
 import butterknife.OnClick;
-
-import static com.xgx.dw.R.id.resultTv;
 
 /**
  * Created by Administrator on 2016/10/16 0016.
@@ -58,7 +45,7 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     SpotListAdapter adapter;
-    private List<PricingBean> beans;
+    private List<Purchase> beans;
     @BindView(R.id.numTv)
     TextView numTv;
 
@@ -91,7 +78,7 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
             public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, final View view, int i) {
 
 
-                startActivity(new Intent(getContext(), TestGeneratectivity.class).putExtra("type", 5).putExtra("id", adapter.getItem(i).getUserPrimaryid()));
+                startActivity(new Intent(getContext(), TestGeneratectivity.class).putExtra("type", 5).putExtra("id", adapter.getItem(i).getOpcode()));
             }
 
             @Override
@@ -108,7 +95,7 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
                         new Handler().post(new Runnable() {
                             @Override
                             public void run() {
-                                viewSaveToImage(view, adapter.getItem(position).getUserPrimaryid() + "-" + adapter.getItem(position).getCreateTime());
+                                viewSaveToImage(view, adapter.getItem(position).getOpcode() + "-" + adapter.getItem(position).getCreatetime());
                             }
                         });
                     }
@@ -134,22 +121,22 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
     @Override
     public void initPresenter() {
         //查询电价
-        String userid = getIntent().getStringExtra("id");
-        beans = PricingDaoHelper.getInstance().queryByUserId(userid);
-        if (beans != null && beans.size() > 0) {
-            int num = 0;
-            for (int i = 0; i < beans.size(); i++) {
-                String price = "";
-                try {
-                    price = AES.decrypt(G.appsecret, beans.get(i).getPrice());
-                } catch (Exception e) {
-                    price = "";
-                }
-                num += MyStringUtils.toInt(price, 0);
-            }
-            numTv.setText(num + "元");
-        }
-        adapter.setNewData(beans);
+//        String userid = getIntent().getStringExtra("id");
+//        beans = PricingDaoHelper.getInstance().queryByUserId(userid);
+//        if (beans != null && beans.size() > 0) {
+//            int num = 0;
+//            for (int i = 0; i < beans.size(); i++) {
+//                String price = "";
+//                try {
+//                    price = AES.decrypt(G.appsecret, beans.get(i).getPrice());
+//                } catch (Exception e) {
+//                    price = "";
+//                }
+//                num += MyStringUtils.toInt(price, 0);
+//            }
+//            numTv.setText(num + "元");
+//        }
+//        adapter.setNewData(beans);
     }
 
     @OnClick({R.id.startTimeTv, R.id.endTimeTv, R.id.comfirmBtn})
@@ -172,29 +159,29 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
                     showToast("请检查查询时间是否正确");
                     return;
                 }
-                List<PricingBean> tempList = new ArrayList<>();
+                List<Purchase> tempList = new ArrayList<>();
                 for (int j = 0; j < beans.size(); j++) {
-                    String createTime = beans.get(j).getCreateTime();
+                    String createTime = beans.get(j).getCreatetime();
                     int k1 = compare_date(createTime, starttime);
                     int k2 = compare_date(endTime, createTime);
                     if (k1 != -1 && k2 != -1) {
                         tempList.add(beans.get(j));
                     }
                 }
-                int num = 0;
-                if (tempList != null && tempList.size() > 0) {
-
-                    for (int t = 0; t < tempList.size(); t++) {
-                        String price = "";
-                        try {
-                            price = AES.decrypt(G.appsecret, tempList.get(t).getPrice());
-                        } catch (Exception e) {
-                            price = "";
-                        }
-                        num += MyStringUtils.toInt(price, 0);
-                    }
-                }
-                numTv.setText(num + "元");
+//                int num = 0;
+//                if (tempList != null && tempList.size() > 0) {
+//
+//                    for (int t = 0; t < tempList.size(); t++) {
+//                        String price = "";
+//                        try {
+//                            price = AES.decrypt(tempList.get(t).getPrice());
+//                        } catch (Exception e) {
+//                            price = "";
+//                        }
+//                        num += MyStringUtils.toInt(price, 0);
+//                    }
+//                }
+//                numTv.setText(num + "元");
                 adapter.setNewData(tempList);
                 break;
         }
