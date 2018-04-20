@@ -1,6 +1,7 @@
 package com.xgx.dw.ble;
 
 import com.xgx.dw.UserBean;
+import com.xgx.dw.app.G;
 import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.utils.Logger;
 
@@ -65,7 +66,7 @@ public class BlueOperationContact {
     public static void reset() {
         //如果是管理员则 按00 00 FF FF 21来
 
-        if (!LoginInformation.getInstance().getUser().getType().equals("20")) {
+        if (!LoginInformation.getInstance().getUser().getType().equals(G.userRole)) {
             deviceId = "00 00 FF FF 21";
         } else {
             try {
