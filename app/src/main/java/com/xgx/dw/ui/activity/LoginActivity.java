@@ -42,6 +42,7 @@ import com.xgx.dw.dao.StoreBeanDaoHelper;
 import com.xgx.dw.dao.TransformerBeanDaoHelper;
 import com.xgx.dw.dao.UserBeanDaoHelper;
 import com.xgx.dw.net.DialogCallback;
+import com.xgx.dw.net.JsonCallback;
 import com.xgx.dw.net.LzyResponse;
 import com.xgx.dw.net.URLs;
 import com.xgx.dw.presenter.impl.LoginPresenterImpl;
@@ -102,6 +103,26 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
         try {
             UserBean bean = JSON.parseObject(setting.loadString("user"), UserBean.class);
             if (bean != null && bean.getUserId() != null) {
+
+                OkGo.<LzyResponse<SysUser>>post(URLs.getURL(URLs.USER_SIGNIN)).params("userName", bean.getUserId()).params("password", bean.getPassword()).execute(new JsonCallback<LzyResponse<SysUser>>() {
+                    @Override
+                    public void onSuccess(Response<LzyResponse<SysUser>> response) {
+                        String token = response.body().token;
+                        String randomKey = response.body().randomKey;
+                        new Setting(LoginActivity.this).saveString("token", token);
+                        new Setting(LoginActivity.this).saveString("randomKey", randomKey);
+                        HttpHeaders headerstemp = new HttpHeaders();
+                        headerstemp.put(BaseApplication.token, "Bearer " + token);
+                        OkGo.getInstance().addCommonHeaders(headerstemp);
+
+                    }
+
+                    @Override
+                    public void onError(Response<LzyResponse<SysUser>> response) {
+                        super.onError(response);
+                        ToastUtils.showShort(response.getException().getMessage());
+                    }
+                });
                 setLoginInfomation(bean);
             }
         } catch (Exception e) {

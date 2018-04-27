@@ -33,7 +33,6 @@ import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.bean.Purchase;
 import com.xgx.dw.ble.BlueOperationContact;
 import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
-import com.xgx.dw.dao.UserBeanDaoHelper;
 import com.xgx.dw.utils.AES;
 import com.xgx.dw.utils.CommonUtils;
 import com.xgx.dw.utils.Logger;
@@ -864,8 +863,8 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             }
         } else if (title == 66) {
             Setting setting = new Setting(getContext());
-            UserBean bean = UserBeanDaoHelper.getInstance().getDataById(dlbean.getId() + "");
-            if (bean.getType().equals("20")) {
+            UserBean bean = LoginInformation.getInstance().getUser();
+            if (G.userRole.equals(bean.getType())) {
                 String userId = bean.getUserId();
                 boolean isFirstBuy = setting.loadBoolean(userId + "_isFirstBuy");
                 if (!isFirstBuy) {
