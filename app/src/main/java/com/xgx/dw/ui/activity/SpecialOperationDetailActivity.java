@@ -623,19 +623,14 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
 
     }
 
-    private String fmsg;
-    private String smsg;
     //接收数据线程
     Thread ReadThread = new Thread() {
 
         public void run() {
             byte[] buffer = new byte[256];
             int bytes;
-
-            // Keep listening to the InputStream while connected
             while (true) {
                 try {
-                    // Read from the InputStream
                     bytes = is.read(buffer);
                     synchronized (mBuffer) {
                         for (int i = 0; i < bytes; i++) {
@@ -668,27 +663,6 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         }
     };
     List<Integer> mBuffer;
-    //消息处理队列
-//    Handler handler = new Handler() {
-//        public void handleMessage(Message msg) {
-//            super.handleMessage(msg);
-//            StringBuffer buf = new StringBuffer();
-//            synchronized (mBuffer) {
-//                for (int i : mBuffer) {
-//                    String hexStr = Integer.toHexString(i);
-//                    if (hexStr.length() == 1) {
-//                        hexStr = "0" + hexStr;
-//                    }
-//                    buf.append(hexStr);
-//                    buf.append(' ');
-//                }
-//            }
-//            //这里对接受到的数据进行解析
-//            //首先解析
-//            resultTv.setText(Html.fromHtml("报文返回数据为：" + buf.toString() + "<br/>" + MyUtils.decodeHex367(title, buf.toString())));   //显示数据
-//            mBuffer.clear();
-//        }
-//    };
     private boolean isPause = false;
 
     Handler handler = new Handler() {

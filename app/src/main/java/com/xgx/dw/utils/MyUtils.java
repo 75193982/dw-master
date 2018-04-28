@@ -278,8 +278,6 @@ public class MyUtils {
         resultString.append(String.format("当前峰无功电能(kvarh)：<big><font color='blue'>%.2f</font></big><br/>", Float.valueOf(mBuffer.get(8) + mBuffer.get(9) + mBuffer.get(10) + mBuffer.get(11)) / 100));
         resultString.append(String.format("当前平无功电能(kvarh)：<big><font color='blue'>%.2f</font></big><br/>", Float.valueOf(mBuffer.get(4) + mBuffer.get(5) + mBuffer.get(6) + mBuffer.get(7)) / 100));
         resultString.append(String.format("当前谷无功电能(kvarh)：<big><font color='blue'>%.2f</font></big><br/>", Float.valueOf(mBuffer.get(0) + mBuffer.get(1) + mBuffer.get(2) + mBuffer.get(3)) / 100));
-
-
     }
 
     private static void getHexDfTime(StringBuilder resultString, List<String> mBuffer) {
@@ -319,7 +317,6 @@ public class MyUtils {
         resultString.append(String.format("C相无功功率<big><font color='blue'>%.4f</font></big>kw<br/><br/>", Float.valueOf(mBuffer.get(23) + mBuffer.get(24) + mBuffer.get(25)) / 10000));
 
         resultString.append(String.format("总功率因数<big><font color='blue'>%.1f%%</font></big><br/>", Float.valueOf(mBuffer.get(21) + mBuffer.get(22)) / 10));
-        resultString.append(String.format("A相功率因数<big><font color='blue'>%.1f%%</font></big><br/>", Float.valueOf(mBuffer.get(19) + mBuffer.get(20)) / 10));
         resultString.append(String.format("A相功率因数<big><font color='blue'>%.1f%%</font></big><br/>", Float.valueOf(mBuffer.get(19) + mBuffer.get(20)) / 10));
         resultString.append(String.format("B相功率因数<big><font color='blue'>%.1f%%</font></big><br/>", Float.valueOf(mBuffer.get(17) + mBuffer.get(18)) / 10));
         resultString.append(String.format("C相功率因数<big><font color='blue'>%.1f%%</font></big><br/><br/>", Float.valueOf(mBuffer.get(15) + mBuffer.get(16)) / 10));
