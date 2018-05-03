@@ -1,6 +1,7 @@
 package com.xgx.dw.ui.activity;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -21,6 +22,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONArray;
+import com.blankj.utilcode.util.NetworkUtils;
+import com.blankj.utilcode.util.ToastUtils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.xgx.dw.R;
 import com.xgx.dw.SpotPricingBean;
@@ -30,9 +36,15 @@ import com.xgx.dw.app.G;
 import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.bean.LoginInformation;
+import com.xgx.dw.bean.Oplog;
 import com.xgx.dw.bean.Purchase;
+import com.xgx.dw.bean.PurchaseDao;
 import com.xgx.dw.ble.BlueOperationContact;
 import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
+import com.xgx.dw.net.DialogCallback;
+import com.xgx.dw.net.JsonCallback;
+import com.xgx.dw.net.LzyResponse;
+import com.xgx.dw.net.URLs;
 import com.xgx.dw.utils.AES;
 import com.xgx.dw.utils.CommonUtils;
 import com.xgx.dw.utils.Logger;
@@ -295,11 +307,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                 isLuru = true;
                 dlbean = (Purchase) getIntent().getSerializableExtra("dlbean");
                 String price = "";
-                try {
-                    price = AES.decrypt(G.appsecret, dlbean.getAmt());
-                } catch (Exception e) {
-                    price = "";
-                }
+                price = dlbean.getAmt();
                 changDlStr(price, dlbean.getAmtbj(), "0", dlbean.getPriceid() + "", dlbean.getOptype());
                 break;
             case 41:
@@ -490,9 +498,8 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         String temp = String.format(BlueOperationContact.DianfeiLuruSendTemp, newId, type, gdl, bjdl, tzdl, currentTime);
         OperationStr = String.format(BlueOperationContact.DianfeiLuruSend, newId, type, gdl, bjdl, tzdl, currentTime, MyUtils.getJyCode(temp));
         if (title == 66) {
-            UserBean userBean = LoginInformation.getInstance().getUser();
-            String voltageRatio = userBean.getVoltageRatio();
-            String currentRatio = userBean.getCurrentRatio();
+            String voltageRatio = dlbean.getDybl();
+            String currentRatio = dlbean.getDlbl();
             String priceNum = "";
             try {
                 priceNum = dlbean.getAmt();
@@ -501,7 +508,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
             }
 
             sendTv.setText("购电量：" + priceNum + "\n" + "电压倍率：" + voltageRatio +
-                    "\n" + "电量倍率：" + currentRatio + "\n");
+                    "\n" + "电量倍率：" + currentRatio + "\n" + OperationStr);
             sendTv.setVisibility(View.VISIBLE);
         } else {
             sendTv.setText(OperationStr);
@@ -665,6 +672,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
     List<Integer> mBuffer;
     private boolean isPause = false;
 
+    @SuppressLint("HandlerLeak")
     Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -695,16 +703,32 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                                         resultTv.setText(Html.fromHtml("报文返回数据为：" + buf.toString()));
                                         return;
                                     }
+                                    String content = MyUtils.decodeHex367(title, buf.toString());
                                     if (!bean.getType().equals("20")) {
-                                        resultTv.setText(Html.fromHtml("报文返回数据为：" + buf.toString() + "<br/>" + MyUtils.decodeHex367(title, buf.toString())));   //显示数据
+                                        resultTv.setText(Html.fromHtml("报文返回数据为：" + buf.toString() + "<br/>" + content));
                                     } else {
-                                        resultTv.setText(Html.fromHtml(MyUtils.decodeHex367(title, buf.toString())));   //显示数据
+                                        resultTv.setText(Html.fromHtml(content));   //显示数据
                                     }
                                     actionSave.setEnabled(false);
                                     btnTv.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.White));
                                     btnTv.setText("操作成功");
                                     btnTv.setTextColor(ContextCompat.getColor(getContext(), R.color.Orange));
-
+                                    //请求录入操作日志
+                                    Oplog log = new Oplog();
+                                    log.setCountyid(LoginInformation.getInstance().getUser().getStoreId());
+                                    log.setCountyname(LoginInformation.getInstance().getUser().getStoreName());
+                                    log.setOpresult(content);
+                                    log.setOptype(getToolbarTitle());
+                                    log.setTerminalcode(LoginInformation.getInstance().getUser().getUserId());
+                                    log.setSendcommand(OperationStr);
+                                    log.setReceivetext(buf.toString());
+                                    OkGo.<LzyResponse<Oplog>>post(URLs.getURL(URLs.OPLOG_SAVE))
+                                            .upJson(URLs.getRequstJsonString(log))
+                                            .execute(new JsonCallback<LzyResponse<Oplog>>() {
+                                                @Override
+                                                public void onSuccess(Response<LzyResponse<Oplog>> response) {
+                                                }
+                                            });
                                     if (title == 4 && isLuru == true) {//表示倍率录入成功
                                         String dj = bean.getPrice();
                                         title = 5;
@@ -740,9 +764,21 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                                                 OperationStr = BlueOperationContact.BaoDianTrSend;
                                                 sendData();
                                             }
-                                            //TODO 保存入库
-                                            //dlbean.setFinishtype("2");
-                                            //PricingDaoHelper.getInstance().addData(dlbean);
+                                            //判断当前是否有网络
+                                            if (NetworkUtils.isConnected()) {
+                                                dlbean.setStatus(2);
+                                                OkGo.<LzyResponse<Purchase>>post(URLs.getURL(URLs.BUY_SPOT))
+                                                        .upJson(URLs.getRequstJsonString(dlbean))
+                                                        .execute(new JsonCallback<LzyResponse<Purchase>>() {
+                                                            @Override
+                                                            public void onSuccess(Response<LzyResponse<Purchase>> response) {
+                                                                ToastUtils.showShort("购电成功");
+                                                            }
+                                                        });
+                                            } else {
+                                                dlbean.setStatus(9);
+                                                BaseApplication.getDaoSession().getPurchaseDao().insertOrReplace(dlbean);
+                                            }
                                         }
                                         btnTv.setText("购电成功");
                                         btnTv.setTextColor(ContextCompat.getColor(getContext(), R.color.Orange));
@@ -1092,6 +1128,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                 tmp[i] = (byte) Integer.parseInt(data[i], 16);
             }
             Logger.e(tmp.toString());
+
             os.write(tmp);
         } catch (Exception e) {
             Logger.e(e.getMessage());

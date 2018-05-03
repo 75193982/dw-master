@@ -108,7 +108,8 @@ public class Purchase implements Serializable, Parcelable {
     private String amtafter;
     /**
      * 购电状态
-     * 0 表示未上传，1 表示已同步
+     * 0 表示未上传，1 表示已同步,9表示已同步电表，但未同步服务器
+     *
      */
     @Property
     private Integer status;

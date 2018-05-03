@@ -57,7 +57,11 @@ public class BaseApplication extends Application {
      * 屏幕密度
      */
     public static float screenDensity;
-    private DaoSession daoSession;
+    public static DaoSession daoSession;
+
+    public static DaoSession getDaoSession() {
+        return daoSession;
+    }
 
 
     @Override

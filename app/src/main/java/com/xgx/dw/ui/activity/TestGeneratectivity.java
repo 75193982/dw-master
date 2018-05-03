@@ -86,10 +86,6 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
         String id = getIntent().getStringExtra("id");
 
         UserBean bean = new UserBean();
-        StoreBean storebean = new StoreBean();
-        TransformerBean transbean = new TransformerBean();
-        List<PricingBean> pricings = new ArrayList<>();
-        SpotPricingBean spotPricingBeans = new SpotPricingBean();
         switch (type) {
             case 0://1级账号
                 setToolbarTitle(getResources().getString(R.string.create_userone));
@@ -111,73 +107,22 @@ public class TestGeneratectivity extends BaseAppCompatActivity {
             case 3:
                 setToolbarTitle("账号信息");
                 bean = UserBeanDaoHelper.getInstance().getDataById(id);
-//                if ("10".equals(bean.getType())) {
-//                    storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
-//                    userAllInfo.setStoreBean(storebean);
-//                } else if ("11".equals(bean.getType())) {
-//                    storebean = StoreBeanDaoHelper.getInstance().getDataById(bean.getStoreId());
-//                    transbean = TransformerBeanDaoHelper.getInstance().getDataById(bean.getTransformerId());
-//                    userAllInfo.setStoreBean(storebean);
-//                    userAllInfo.setTransformerBean(transbean);
-//                } else if ("20".equals(bean.getType())) {
-//                    try {
-//                        spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
-//                    } catch (Exception e) {
-//                        Logger.e(e.getMessage());
-//                    }
-//                    userAllInfo.setSpotBeans(spotPricingBeans);
-//                }
                 userAllInfo.setUser(bean);
                 break;
             case 4:
                 setToolbarTitle("申请购电者信息");
                 bean = UserBeanDaoHelper.getInstance().getDataById(id);
                 bean.setIme(MyUtils.getuniqueId(this));
-                pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getId());
-                userAllInfo.setPricingSize(pricings.size());
                 userAllInfo.setUser(bean);
                 break;
             case 5:
                 setToolbarTitle("返回购电用户信息");
                 bean = UserBeanDaoHelper.getInstance().getDataById(id);
-                pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getId());
-                if (pricings.size() > 0) {
-                    userAllInfo.setPricings(pricings.get(0));
-//                    if (pricings.get(0).getFinishtype().contains("1")) {
-//                        userAllInfo.setUser(bean);
-//                        if (bean.getType().equals("20")) {
-//                            try {
-//                                spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
-//                            } catch (Exception e) {
-//                                Logger.e(e.getMessage());
-//                            }
-//                            userAllInfo.setSpotBeans(spotPricingBeans);
-//                        }
-//                    }
-                }
-                userAllInfo.setPricingSize(pricings.size());
+                userAllInfo.setUser(bean);
+
                 break;
             case 6:
                 setToolbarTitle("返回购电用户信息");
-                bean = UserBeanDaoHelper.getInstance().getDataById(id);
-                //  userAllInfo.setStoreBean(storebean);
-                // userAllInfo.setTransformerBean(transbean);
-                pricings = PricingDaoHelper.getInstance().queryByUserId(bean.getId());
-                if (pricings.size() > 0) {
-                    userAllInfo.setPricings(pricings.get(0));
-//                    if (pricings.get(0).getFinishtype().contains("1")) {
-//                        userAllInfo.setUser(bean);
-//                        if (bean.getType().equals("20")) {
-//                            try {
-//                                spotPricingBeans = SpotPricingBeanDaoHelper.getInstance().getDataById(bean.getPrice());
-//                            } catch (Exception e) {
-//                                Logger.e(e.getMessage());
-//                            }
-//                            userAllInfo.setSpotBeans(spotPricingBeans);
-//                        }
-//                    }
-                }
-                userAllInfo.setPricingSize(pricings.size());
                 break;
             case 7:
                 setToolbarTitle("定值设置二维码");

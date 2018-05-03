@@ -7,30 +7,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONArray;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.xgx.dw.R;
-import com.xgx.dw.SearchDlLog;
 import com.xgx.dw.adapter.SearchLogListAdapter;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.bean.LoginInformation;
-import com.xgx.dw.dao.SearchDlDaoHelper;
+import com.xgx.dw.bean.MtzRecordFront;
+import com.xgx.dw.net.DialogCallback;
+import com.xgx.dw.net.JsonCallback;
+import com.xgx.dw.net.LzyResponse;
+import com.xgx.dw.net.URLs;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 
-/**
- * Created by Administrator on 2016/10/16 0016.
- */
 public class SearchLogListActivity extends BaseAppCompatActivity {
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.numTv)
     TextView numTv;
     SearchLogListAdapter adapter;
-    private List<SearchDlLog> beans;
+    private List<MtzRecordFront> beans;
     private String type;
 
     @Override
@@ -64,10 +67,18 @@ public class SearchLogListActivity extends BaseAppCompatActivity {
     @Override
     public void initPresenter() {
         //查询电价
-        String userid = LoginInformation.getInstance().getUser().getUserId();
-        beans = SearchDlDaoHelper.getInstance().queryByUserId(type, userid);
-        adapter.setNewData(beans);
-        numTv.setText("共查出(" + beans.size() + ")条记录");
+        //查表记录
+        OkGo.<LzyResponse<MtzRecordFront>>post(URLs.getURL(URLs.RECORD_LIST))
+                .params("type", type)
+                .params("userId", LoginInformation.getInstance().getUser().getUserId())
+                .execute(new DialogCallback<LzyResponse<MtzRecordFront>>(this) {
+                    @Override
+                    public void onSuccess(Response<LzyResponse<MtzRecordFront>> response) {
+                        beans = ((JSONArray) response.body().model).toJavaList(MtzRecordFront.class);
+                        adapter.setNewData(beans);
+                        numTv.setText("共查出(" + beans.size() + ")条记录");
+                    }
+                });
 
     }
 

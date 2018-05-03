@@ -48,6 +48,7 @@ import com.xgx.dw.utils.MyStringUtils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -99,7 +100,8 @@ public class SpotListActivity extends BaseAppCompatActivity {
         recyclerView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                if (adapter.getItem(i).getStatus() != 2) {
+                if (adapter.getItem(i).getStatus() != 2 && adapter.getItem(i).getStatus() != 9) {
+
                     Intent intent = new Intent(SpotListActivity.this, SpecialOperationDetailActivity.class);
                     intent.putExtra("type", 66);
                     intent.putExtra("dlbean", (Serializable) adapter.getItem(i));
@@ -166,7 +168,7 @@ public class SpotListActivity extends BaseAppCompatActivity {
                     public void onSuccess(Response<LzyResponse<Purchase>> response) {
                         beans = ((JSONArray) response.body().model).toJavaList(Purchase.class);
                         adapter.setNewData(beans);
-                        int num = 0;
+                        BigDecimal num = new BigDecimal(0);
                         for (int i = 0; i < beans.size(); i++) {
                             String price = "";
                             try {
@@ -174,7 +176,7 @@ public class SpotListActivity extends BaseAppCompatActivity {
                             } catch (Exception e) {
                                 price = "";
                             }
-                            num += MyStringUtils.toInt(price, 0);
+                            num = new BigDecimal(price).add(num);
                         }
                         numTv.setText(num + "元");
                     }

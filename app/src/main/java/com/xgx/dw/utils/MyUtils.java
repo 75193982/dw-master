@@ -89,13 +89,6 @@ public class MyUtils {
                 try {
                     mBuffer = mBuffer.subList(48, 116);
                     getHexDlTime(resultString, mBuffer);
-                    SearchDlLog bean = new SearchDlLog();
-                    bean.setId(UUID.randomUUID().toString());
-                    bean.setType("1");
-                    bean.setUserId(LoginInformation.getInstance().getUser().getUserId());
-                    bean.setContent(resultString.toString());
-                    bean.setCreateTime(CommonUtils.parseDateTime(System.currentTimeMillis()));
-                    SearchDlDaoHelper.getInstance().addData(bean);
                 } catch (Exception e) {
                     resultString = new StringBuilder();
                     resultString.append("当前没有电量信息");
@@ -106,13 +99,6 @@ public class MyUtils {
                 try {
                     mBuffer = mBuffer.subList(23, 75);
                     getHexDyTime(resultString, mBuffer);
-                    SearchDlLog bean = new SearchDlLog();
-                    bean.setId(UUID.randomUUID().toString());
-                    bean.setType("2");
-                    bean.setUserId(LoginInformation.getInstance().getUser().getUserId());
-                    bean.setContent(resultString.toString());
-                    bean.setCreateTime(CommonUtils.parseDateTime(System.currentTimeMillis()));
-                    SearchDlDaoHelper.getInstance().addData(bean);
                 } catch (Exception e) {
                     resultString = new StringBuilder();
                     resultString.append("当前没有功率信息");
@@ -382,7 +368,7 @@ public class MyUtils {
     public static String changeDlStr(String dl) {
         String str = "";
         try {
-            str = dl;
+            str = dl.replace(".", "");
             if (str.length() == 0) {
                 str = "00 00 00";
             } else if (str.length() == 1) {

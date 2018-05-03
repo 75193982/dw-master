@@ -27,7 +27,6 @@
             card_view:tvea_expandLines="4"
             card_view:tvea_shrinkBitmap="@drawable/icon_green_arrow_up"
             card_view:tvea_textContentColor="@color/color_gray_light_content_text"
-            card_view:tvea_textContentSize="20sp"
             card_view:tvea_textExpand="@string/expand"
             card_view:tvea_textShrink="@string/shrink"
             card_view:tvea_textStateColor="@color/colorPrimary" />

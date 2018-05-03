@@ -41,7 +41,10 @@ public class URLs {
     public static final String MTUSER_SAVE = "mtzUser/save"; //用户资料保存
     public static final String MTUSER_CODE = "mtzUser/getCode"; //获取验证码
     public static final String BUY_SPOT = "mtzPurchase/save"; //保存电费单
+    public static final String BUY_SPOT_CHANGE_STATUS = "mtzPurchase/changeStatus"; //保存电费单
     public static final String BUY_SPOT_LIST = "mtzPurchase/purchaseList"; //保存电费单
+    public static final String OPLOG_SAVE = "mtzOplog/save"; //保存操作日志
+    public static final String RECORD_LIST = "recordFront/recordFrontList"; //电量报表
 
     public static final String USER_SIGNUP = "xxx";
 
