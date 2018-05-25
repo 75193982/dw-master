@@ -131,7 +131,7 @@ public class UserMgrActivity extends BaseEventBusActivity implements IUserListVi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        UserBeanDaoHelper.getInstance().deleteData(userbean.getId());
+                        // UserBeanDaoHelper.getInstance().deleteData(userbean.getId());
                         presenter.searchUser(UserMgrActivity.this);
 
                     }

@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.lzy.okgo.OkGo;
@@ -37,6 +38,7 @@ import com.xgx.dw.app.Setting;
 import com.xgx.dw.base.BaseAppCompatActivity;
 import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.bean.Oplog;
+import com.xgx.dw.bean.Price;
 import com.xgx.dw.bean.Purchase;
 import com.xgx.dw.bean.PurchaseDao;
 import com.xgx.dw.ble.BlueOperationContact;
@@ -536,6 +538,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
     private void connect(String address) {
 
         // 用服务号得到socket
+
         try {
             _device = _bluetooth.getRemoteDevice(address);
             _socket = _device.createRfcommSocketToServiceRecord(UUID.fromString(MY_UUID));
@@ -714,26 +717,46 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                                     btnTv.setText("操作成功");
                                     btnTv.setTextColor(ContextCompat.getColor(getContext(), R.color.Orange));
                                     //请求录入操作日志
-                                    Oplog log = new Oplog();
-                                    log.setCountyid(LoginInformation.getInstance().getUser().getStoreId());
-                                    log.setCountyname(LoginInformation.getInstance().getUser().getStoreName());
-                                    log.setOpresult(content);
-                                    log.setOptype(getToolbarTitle());
-                                    log.setTerminalcode(LoginInformation.getInstance().getUser().getUserId());
-                                    log.setSendcommand(OperationStr);
-                                    log.setReceivetext(buf.toString());
-                                    OkGo.<LzyResponse<Oplog>>post(URLs.getURL(URLs.OPLOG_SAVE))
-                                            .upJson(URLs.getRequstJsonString(log))
-                                            .execute(new JsonCallback<LzyResponse<Oplog>>() {
-                                                @Override
-                                                public void onSuccess(Response<LzyResponse<Oplog>> response) {
-                                                }
-                                            });
                                     if (title == 4 && isLuru == true) {//表示倍率录入成功
                                         String dj = bean.getPrice();
                                         title = 5;
-                                        changDjStr(dj);
-                                        sendData();
+                                        btnTv.setText("setp1:倍率同步成功，开始同步电价...");
+
+                                        OkGo.<LzyResponse<Price>>post(URLs.getURL(URLs.PRICE_INFO))
+                                                .params("id", dj)
+                                                .execute(new JsonCallback<LzyResponse<Price>>() {
+                                                    @Override
+                                                    public void onSuccess(Response<LzyResponse<Price>> response) {
+                                                        Price price = ((JSONObject) response.body().model).toJavaObject(Price.class);
+                                                        if (price != null) {
+                                                            String jdj = "";
+                                                            String fdj = "";
+                                                            String pdj = "";
+                                                            String gdj = "";
+                                                            if (price.getPricetype().equals("普通")) {
+                                                                jdj = price.getTotalprice();
+                                                                fdj = price.getTotalprice();
+                                                                pdj = price.getTotalprice();
+                                                                gdj = price.getTotalprice();
+                                                            } else if (price.getPricetype().equals("分时")) {
+                                                                jdj = price.getPricea();
+                                                                fdj = price.getPriceb();
+                                                                pdj = price.getPricec();
+                                                                gdj = price.getPriced();
+                                                            }
+
+                                                            fdj = MyUtils.changeDjStr(fdj);
+                                                            pdj = MyUtils.changeDjStr(pdj);
+                                                            gdj = MyUtils.changeDjStr(gdj);
+                                                            jdj = MyUtils.changeDjStr(jdj);
+                                                            String currentTime = CommonUtils.formatDateTime1(new Date());
+                                                            String temp = String.format(BlueOperationContact.DianjiaLuruSendTemp, jdj, fdj, pdj, gdj, currentTime);
+                                                            OperationStr = String.format(BlueOperationContact.DianjiaLuruSend, jdj, fdj, pdj, gdj, currentTime, MyUtils.getJyCode(temp));
+                                                            sendData();
+                                                        }
+                                                    }
+                                                });
+
                                     } else if (title == 5 && isLuru == true) {
                                         if (getIntent().getIntExtra("type", -1) == 66) {
                                             title = 66;
@@ -752,9 +775,10 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                                         Setting setting = new Setting(getContext());
                                         String userId = LoginInformation.getInstance().getUser().getUserId();
                                         setting.saveBoolean(userId + "_isFirstBuy", false);
-                                        btnTv.setText("购电成功");
-                                        btnTv.setTextColor(ContextCompat.getColor(getContext(), R.color.Orange));
 
+                                        btnTv.setText("setp2:电价同步成功，开始上传电费...");
+                                        btnTv.setTextColor(ContextCompat.getColor(getContext(), R.color.Orange));
+                                        saveLOG(buf, content);
                                     } else if (title == 66 || title == 6) {
                                         if (dlbean != null) {
 
@@ -767,7 +791,8 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                                             //判断当前是否有网络
                                             if (NetworkUtils.isConnected()) {
                                                 dlbean.setStatus(2);
-                                                OkGo.<LzyResponse<Purchase>>post(URLs.getURL(URLs.BUY_SPOT))
+                                                dlbean.setResult("成功");
+                                                OkGo.<LzyResponse<Purchase>>post(URLs.getURL(URLs.BUY_SPOT_CHANGE_STATUS))
                                                         .upJson(URLs.getRequstJsonString(dlbean))
                                                         .execute(new JsonCallback<LzyResponse<Purchase>>() {
                                                             @Override
@@ -775,14 +800,26 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                                                                 ToastUtils.showShort("购电成功");
                                                             }
                                                         });
+                                                try {
+                                                    BaseApplication.getDaoSession().getPurchaseDao().insertOrReplace(dlbean);
+                                                } catch (Exception e) {
+
+                                                }
+
                                             } else {
-                                                dlbean.setStatus(9);
-                                                BaseApplication.getDaoSession().getPurchaseDao().insertOrReplace(dlbean);
+                                                try {
+                                                    dlbean.setStatus(9);
+                                                    BaseApplication.getDaoSession().getPurchaseDao().insertOrReplace(dlbean);
+                                                } catch (Exception e) {
+                                                }
                                             }
                                         }
                                         btnTv.setText("购电成功");
                                         btnTv.setTextColor(ContextCompat.getColor(getContext(), R.color.Orange));
                                         setResult(1001);
+                                        saveLOG(buf, content);
+                                    } else {
+                                        saveLOG(buf, content);
                                     }
                                 }
                             }
@@ -798,6 +835,26 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                 default:
                     break;
             }
+        }
+
+        private void saveLOG(StringBuffer buf, String content) {
+            canSend = true;
+
+            Oplog log = new Oplog();
+            log.setCountyid(LoginInformation.getInstance().getUser().getStoreId());
+            log.setCountyname(LoginInformation.getInstance().getUser().getStoreName());
+            log.setOpresult(content);
+            log.setOptype(getToolbarTitle());
+            log.setTerminalcode(LoginInformation.getInstance().getUser().getUserId());
+            log.setSendcommand(OperationStr);
+            log.setReceivetext(buf.toString());
+            OkGo.<LzyResponse<Oplog>>post(URLs.getURL(URLs.OPLOG_SAVE))
+                    .upJson(URLs.getRequstJsonString(log))
+                    .execute(new JsonCallback<LzyResponse<Oplog>>() {
+                        @Override
+                        public void onSuccess(Response<LzyResponse<Oplog>> response) {
+                        }
+                    });
         }
 
     };
@@ -849,6 +906,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.action_save)
     public void onClick() {
+
         if (title == 6) {
             Setting setting = new Setting(getContext());
             UserBean bean = LoginInformation.getInstance().getUser();
@@ -917,7 +975,9 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                 return;
             }
         }
-        sendData();
+        if (canSend) {
+            sendData();
+        }
 
 
     }
@@ -1079,34 +1139,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
         return tzTime;
     }
 
-    private void changDjStr(String dj) {
-        //根据ID获取电价
-        SpotPricingBean pricingbean = SpotPricingBeanDaoHelper.getInstance().getDataById(dj);
-        String jdj = "";
-
-        String fdj = "";
-        String pdj = "";
-        String gdj = "";
-        if (pricingbean.getType().equals("普通")) {
-            jdj = pricingbean.getPrice_count();
-            fdj = pricingbean.getPrice_count();
-            pdj = pricingbean.getPrice_count();
-            gdj = pricingbean.getPrice_count();
-        } else if (pricingbean.getType().equals("分时")) {
-            jdj = pricingbean.getPointed_price();
-            fdj = pricingbean.getPeek_price();
-            pdj = pricingbean.getFlat_price();
-            gdj = pricingbean.getValley_price();
-        }
-
-        fdj = MyUtils.changeDjStr(fdj);
-        pdj = MyUtils.changeDjStr(pdj);
-        gdj = MyUtils.changeDjStr(gdj);
-        jdj = MyUtils.changeDjStr(jdj);
-        String currentTime = CommonUtils.formatDateTime1(new Date());
-        String temp = String.format(BlueOperationContact.DianjiaLuruSendTemp, jdj, fdj, pdj, gdj, currentTime);
-        OperationStr = String.format(BlueOperationContact.DianjiaLuruSend, jdj, fdj, pdj, gdj, currentTime, MyUtils.getJyCode(temp));
-    }
+    boolean canSend = true;
 
     private void sendData() {
         try {
@@ -1128,7 +1161,7 @@ public class SpecialOperationDetailActivity extends BaseAppCompatActivity {
                 tmp[i] = (byte) Integer.parseInt(data[i], 16);
             }
             Logger.e(tmp.toString());
-
+            canSend = false;
             os.write(tmp);
         } catch (Exception e) {
             Logger.e(e.getMessage());

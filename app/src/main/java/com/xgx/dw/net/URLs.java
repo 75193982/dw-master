@@ -27,12 +27,13 @@ public class URLs {
      * 第三方登陆
      */
     public static final String OAUTH_SIGNIN = "xxx";
-    public static final String UPDATE_VERSION = "commons/apkVersionCompare.do";
+    public static final String UPDATE_VERSION = "mtzApkFile/apkVersionCompare";
     public static final String USER_SIGNIN = "auth";
     public static final String COUNTY_LIST = "sysDept/list"; //营业厅列表
     public static final String COUNTY_SAVE = "sysDept/addOrUpdate"; //保存或者编辑营业厅
 
     public static final String PRICE_LIST = "mtzPrice/priceList";//电价列表
+    public static final String PRICE_INFO = "mtzPrice/getPriceById";//电价详情
     public static final String PRICE_SAVE = "mtzPrice/save";//保存或者编辑电价列表
 
     public static final String TAIQU_LIST = "mtzTaiqu/taiquList";//台区列表

@@ -5,10 +5,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,7 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+import com.melnykov.fab.FloatingActionButton;
 import com.xgx.dw.R;
 import com.xgx.dw.ui.custom.CustomConfirmDialog;
 
@@ -36,12 +34,13 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
     Toolbar toolbar;
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
+
     public static int REQUSET_CODE_WRITE_EXTERNAL_STORAGE = 1001;
+    @BindView(R.id.fab)
+    FloatingActionButton floatingActionButton;
 
     public FloatingActionButton getFab() {
-        return fab;
+        return floatingActionButton;
     }
 
     private ProgressDialog mProgressDialog;

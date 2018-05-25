@@ -62,6 +62,7 @@ public class BlueOperationContact {
 
     public final static String dingzhiShezhiTemp = "68 76 00 76 00 68 4A 00 00 FF FF 20 04 63 01 01 02 06";
     public final static String adminSend = "68 76 00 76 00 68";
+    public final static String adminDzSend = "68 92 00 92 00 68 4A 00 00 FF FF 20 04 63 01 01 02 06";
 
     public static void reset() {
         //如果是管理员则 按00 00 FF FF 21来

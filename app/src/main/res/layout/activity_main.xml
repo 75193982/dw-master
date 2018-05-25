@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:id="@id/coordinatorLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -252,15 +252,15 @@
             android:layout_above="@id/line" />
     </RelativeLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@id/fab"
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom|center"
-        android:layout_marginBottom="66.0dip"
-        android:layout_marginRight="@dimen/fab_margin"
-        android:src="@drawable/ic_bluetooth_searching_black_24dp"
-        android:tint="@color/White"
-        android:visibility="visible"
-        app:backgroundTint="@color/material_deep_teal_500" />
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="70dp"
+        android:layout_marginRight="@dimen/text_margin"
+        android:src="@drawable/ic_bluetooth_wihte"
+        fab:fab_colorNormal="@color/Green"
+        fab:fab_colorPressed="@color/Green"
+        fab:fab_colorRipple="@color/Green" />
 </android.support.design.widget.CoordinatorLayout>

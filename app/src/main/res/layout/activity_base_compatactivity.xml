@@ -1,48 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                 android:layout_width="fill_parent"
-                                                 android:layout_height="fill_parent"
-                                                 android:fitsSystemWindows="true">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
-
-            <TextView
-                android:id="@+id/toolbar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:singleLine="true"
-                android:textColor="@color/White"
-                android:textSize="20sp"/>
-        </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
-
-    <LinearLayout
-        android:id="@id/contentLayout"
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="?actionBarSize"
-        android:orientation="vertical"/>
+        android:fitsSystemWindows="true">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@id/fab"
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/White"
+                    android:textSize="20sp" />
+            </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.AppBarLayout>
+
+        <LinearLayout
+            android:id="@+id/contentLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="?actionBarSize"
+            android:orientation="vertical" />
+
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom|center"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_bluetooth_searching_black_24dp"
-        android:tint="@color/White"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="60dp"
+        android:layout_marginRight="16dp"
+        android:src="@drawable/ic_bluetooth_wihte"
         android:visibility="gone"
-        app:backgroundTint="@color/material_deep_teal_500"/>
-</android.support.design.widget.CoordinatorLayout>
+        fab:fab_colorNormal="@color/Green"
+        fab:fab_colorPressed="@color/Green"
+        fab:fab_colorRipple="@color/material_deep_teal_500" />
+</FrameLayout>

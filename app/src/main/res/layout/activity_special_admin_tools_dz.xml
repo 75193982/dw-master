@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/dp_10">
+
+        <TextView
+            android:id="@+id/sendTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_10"
+            android:text="发送参数"></TextView>
+
+        <TextView
+            android:id="@+id/sendTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_10"
+            android:textIsSelectable="true"
+            android:visibility="gone"></TextView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/Gray100"></View>
+
+        <LinearLayout
+            android:id="@+id/dingzhi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="速断电流：" />
+
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/sdEt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"
+                    android:maxEms="5"
+                    android:minWidth="50dp"
+                    android:textSize="@dimen/dp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:text="A" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/sdTimeEt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"
+                    android:maxEms="5"
+                    android:minWidth="50dp"
+                    android:textSize="@dimen/dp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:text="秒" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/sdTzSw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:minWidth="50dp"
+                    android:textOff="未投入"
+                    android:textOn="投入"
+                    android:textSize="@dimen/dp_14" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="零序电流：" />
+
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/lxEt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"
+                    android:maxEms="5"
+                    android:minWidth="50dp"
+                    android:textSize="@dimen/dp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:text="A" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/lxTimeEt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"
+                    android:maxEms="5"
+
+                    android:minWidth="50dp"
+                    android:textSize="@dimen/dp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:text="秒" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/lxTzSw"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:minWidth="50dp"
+                    android:textOff="未投入"
+                    android:textOn="投入"
+                    android:textSize="@dimen/dp_14" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="过流一段电流：" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/dzA1Et"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"
+                    android:maxEms="5"
+                    android:minWidth="50dp"
+                    android:textSize="@dimen/dp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:text="A" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/dzA1TEt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"
+                    android:maxEms="5"
+
+                    android:minWidth="50dp"
+                    android:textSize="@dimen/dp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:text="秒" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="过流二段电流：" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/dzA2Et"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"
+
+                    android:maxEms="5"
+                    android:minWidth="50dp"
+                    android:textSize="@dimen/dp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:text="A" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/dzA2TEt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"
+                    android:maxEms="5"
+
+                    android:minWidth="50dp"
+                    android:textSize="@dimen/dp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:text="秒" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="过流三段电流：" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/dzA3Et"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"
+                    android:maxEms="5"
+                    android:minWidth="50dp"
+                    android:textSize="@dimen/dp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:text="A" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/dzA3TEt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"
+                    android:maxEms="5"
+
+                    android:minWidth="50dp"
+                    android:textSize="@dimen/dp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:text="秒" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="过流跳闸：" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/glTzSw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:minWidth="50dp"
+                    android:textOff="未投入"
+                    android:textOn="投入"
+                    android:textSize="@dimen/dp_14" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="失压跳闸电压：" />
+
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/dzV1Et"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"
+
+                    android:maxEms="5"
+                    android:minWidth="50dp"
+                    android:textSize="@dimen/dp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:text="V" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/dzV1TEt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"
+                    android:maxEms="5"
+
+                    android:minWidth="50dp"
+                    android:textSize="@dimen/dp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:text="秒" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/dzS1Et"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:minWidth="50dp"
+                    android:textOff="未投入"
+
+                    android:textOn="投入"
+                    android:textSize="@dimen/dp_14" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="过压跳闸电压：" />
+
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/gyV1Et"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"
+
+                    android:maxEms="5"
+                    android:minWidth="50dp"
+                    android:textSize="@dimen/dp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:text="V" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/gyV1TEt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"
+                    android:maxEms="5"
+
+                    android:minWidth="50dp"
+                    android:textSize="@dimen/dp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:text="秒" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/gyS1Et"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:minWidth="50dp"
+                    android:textOff="未投入"
+
+                    android:textOn="投入"
+                    android:textSize="@dimen/dp_14" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="重  合  闸：" />
+
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/dzS2T1Et"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"
+                    android:maxEms="5"
+                    android:minWidth="50dp"
+
+                    android:textSize="@dimen/dp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:text="秒" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/dzS2T2Et"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"
+
+                    android:maxEms="5"
+                    android:minWidth="50dp"
+                    android:textSize="@dimen/dp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:text="秒" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/dzS2T3Et"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"
+
+                    android:maxEms="5"
+                    android:minWidth="50dp"
+                    android:textSize="@dimen/dp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:text="秒" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="重 合 闸：" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/dzS2Et"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:minWidth="50dp"
+                    android:textOff="未投入"
+
+                    android:textOn="投入"
+                    android:textSize="@dimen/dp_14" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="电池待机时间：" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/djt1TEt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"
+                    android:maxEms="5"
+                    android:minWidth="50dp"
+                    android:textSize="@dimen/dp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:text="秒" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/action_saveecode"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10.0dip">
+
+                <TextView
+                    android:id="@+id/saveTvTv"
+                    android:layout_width="fill_parent"
+                    android:layout_height="?android:actionBarSize"
+                    android:layout_centerInParent="true"
+                    android:background="@color/Green"
+                    android:gravity="center"
+                    android:text="保存二维码"
+                    android:textColor="@color/White"
+                    android:textSize="@dimen/text_second" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@id/action_save"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10.0dip">
+
+            <TextView
+                android:id="@+id/btnTv"
+                android:layout_width="fill_parent"
+                android:layout_height="?android:actionBarSize"
+                android:layout_centerInParent="true"
+                android:background="@color/Green"
+                android:gravity="center"
+                android:text="测试"
+                android:textColor="@color/White"
+                android:textSize="@dimen/text_second" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/deviceTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_10"></TextView>
+
+
+            <TextView
+                android:id="@+id/resultTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_10"
+                android:text="结果"></TextView>
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/resultTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_10"
+            android:textIsSelectable="true"></TextView>
+
+    </LinearLayout>
+</ScrollView>

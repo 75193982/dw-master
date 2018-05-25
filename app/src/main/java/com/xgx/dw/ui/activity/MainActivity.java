@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
@@ -25,6 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.lzy.okgo.OkGo;
+import com.melnykov.fab.FloatingActionButton;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.xgx.dw.PricingBean;
@@ -42,6 +43,7 @@ import com.xgx.dw.dao.PricingDaoHelper;
 import com.xgx.dw.dao.SpotPricingBeanDaoHelper;
 import com.xgx.dw.dao.StoreBeanDaoHelper;
 import com.xgx.dw.dao.TransformerBeanDaoHelper;
+import com.xgx.dw.net.URLs;
 import com.xgx.dw.presenter.impl.MainPresenterImpl;
 import com.xgx.dw.presenter.impl.UserPresenterImpl;
 import com.xgx.dw.presenter.interfaces.IMainPresenter;
@@ -51,6 +53,7 @@ import com.xgx.dw.ui.view.interfaces.IUserView;
 import com.xgx.dw.upload.UploadResponse;
 import com.xgx.dw.utils.ApiLevelHelper;
 import com.xgx.dw.utils.Logger;
+import com.xgx.dw.utils.MyUtils;
 import com.xgx.dw.vo.request.UpdateVersionRequest;
 
 import java.util.ArrayList;
@@ -149,7 +152,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
     public void initView() {
 
         fab.setVisibility(View.VISIBLE);
-        fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_erweima_searching_black_24dp));
+        fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_erweima_white));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -201,8 +204,9 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
         registerReceiver(localMainBoradcastReceiver, localIntentFilter);
         UpdateVersionRequest localUpdateVersionRequest = new UpdateVersionRequest();
         localUpdateVersionRequest.versionCode = BaseApplication.getVersionCode();
-        //   mMainPresenter.checkVersion(localUpdateVersionRequest, 1);
-
+        // mMainPresenter.checkVersion(localUpdateVersionRequest, 1);
+        // OkGo.post(URLs.getURL())
+        MyUtils.checkVersion(this, 0);
 
     }
 
@@ -242,9 +246,9 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                     final Setting setting = new Setting(getContext());
                     boolean isWifi = setting.loadBoolean("isWifi");
                     if (isWifi) {
-                        fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_signal_wifi_4_bar_black_24dp));
+                        fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_wifi_white));
                     } else {
-                        fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_bluetooth_searching_black_24dp));
+                        fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_bluetooth_wihte));
                     }
 
                     fab.setOnClickListener(new View.OnClickListener() {
@@ -277,7 +281,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                     }).start();
 
                 } else if (MainActivity.this.mListText.get(paramAnonymousInt).getText().toString().equals("资料管理")) {
-                    fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_erweima_searching_black_24dp));
+                    fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_erweima_white));
                     fab.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -297,7 +301,7 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
                         }
                     }).start();
                 } else if (MainActivity.this.mListText.get(paramAnonymousInt).getText().toString().equals("用户购电")) {
-                    fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_erweima_searching_black_24dp));
+                    fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_erweima_white));
                     fab.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {

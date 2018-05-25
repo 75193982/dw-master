@@ -2,11 +2,22 @@ package com.xgx.dw.utils;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Environment;
 import android.telephony.TelephonyManager;
 
+import com.allenliu.versionchecklib.core.AllenChecker;
+import com.allenliu.versionchecklib.core.VersionParams;
+import com.allenliu.versionchecklib.core.http.HttpParams;
+import com.allenliu.versionchecklib.core.http.HttpRequestMethod;
 import com.xgx.dw.SearchDlLog;
 import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.dao.SearchDlDaoHelper;
+import com.xgx.dw.net.URLs;
+import com.xgx.dw.ui.checkversion.CheckVersionService;
+import com.xgx.dw.ui.checkversion.CustomVersionDialogActivity;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -368,23 +379,29 @@ public class MyUtils {
     public static String changeDlStr(String dl) {
         String str = "";
         try {
-            str = dl.replace(".", "");
-            if (str.length() == 0) {
-                str = "00 00 00";
-            } else if (str.length() == 1) {
-                str = "0" + str + " 00 00";
-            } else if (str.length() == 2) {
-                str = str + " 00 00";
-            } else if (str.length() == 3) {
-                str = str.substring(1, 3) + " 0" + str.substring(0, 1) + " 00";
-            } else if (str.length() == 4) {
-                str = str.substring(2, 4) + " " + str.substring(0, 2) + " 00";
-            } else if (str.length() == 5) {
-                str = str.substring(3, 5) + " " + str.substring(1, 3) + " 0" + str.substring(0, 1);
-            } else if (str.length() == 6) {
-                str = str.substring(4, 6) + " " + str.substring(2, 4) + " " + str.substring(0, 2);
+            if (dl.contains(".")) {
+                str = dl.substring(0, dl.indexOf("."));
+            } else {
+                str = dl;
             }
-            str = str + " 40";
+            if (str.length() == 0) {
+                str = "00 00 00 40";
+            } else if (str.length() == 1) {
+                str = "0" + str + " 00 00 40";
+            } else if (str.length() == 2) {
+                str = str + " 00 00 40";
+            } else if (str.length() == 3) {
+                str = str.substring(1, 3) + " 0" + str.substring(0, 1) + " 00" + " 40";
+            } else if (str.length() == 4) {
+                str = str.substring(2, 4) + " " + str.substring(0, 2) + " 00" + " 40";
+            } else if (str.length() == 5) {
+                str = str.substring(3, 5) + " " + str.substring(1, 3) + " 0" + str.substring(0, 1) + " 40";
+            } else if (str.length() == 6) {
+                str = str.substring(4, 6) + " " + str.substring(2, 4) + " " + str.substring(0, 2) + " 40";
+            } else if (str.length() == 7) {
+                str = str.substring(5, 7) + " " + str.substring(3, 5) + " " + str.substring(1, 3) + " 4"
+                        + str.substring(0, 1);
+            }
         } catch (Exception e) {
             str = "00 00 00 40";
         }
@@ -466,6 +483,41 @@ public class MyUtils {
 
         //       String uniqueId = deviceUuid.toString();
         return "";
+    }
+
+    public static void checkVersion(final Context mContext, final int i) {
+
+        mContext.stopService(new Intent(mContext, CheckVersionService.class));
+
+        VersionParams.Builder builder = new VersionParams.Builder();
+        builder.setShowNotification(true);
+        builder.setShowDownloadingDialog(true);
+        HttpParams params = new HttpParams();
+        params.put("versionCode", getVersionCode(mContext) + "");
+        builder.setRequestParams(params);
+        builder.setRequestUrl(URLs.getURL(URLs.UPDATE_VERSION));
+        builder.setService(CheckVersionService.class);
+        builder.setRequestMethod(HttpRequestMethod.POST);
+        CustomVersionDialogActivity.customVersionDialogIndex = 2;
+        CustomVersionDialogActivity.isForceUpdate = false;
+        CustomVersionDialogActivity.isShowToast = i;
+        builder.setCustomDownloadActivityClass(CustomVersionDialogActivity.class);
+        builder.setDownloadAPKPath(Environment.getExternalStorageDirectory() + "/apk/");
+        builder.setOnlyDownload(false);
+        builder.setSilentDownload(false);
+        AllenChecker.startVersionCheck(mContext, builder.build());
+    }
+
+    public static int getVersionCode(Context context) {
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            PackageInfo packInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+            int versioncode = packInfo.versionCode;
+            return versioncode;
+        } catch (Exception e) {
+            return -1;
+        }
+
     }
 
 }

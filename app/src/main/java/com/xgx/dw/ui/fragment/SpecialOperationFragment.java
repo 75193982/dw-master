@@ -39,6 +39,8 @@ import com.xgx.dw.ui.activity.DeviceListNewActivity;
 import com.xgx.dw.ui.activity.LoginActivity;
 import com.xgx.dw.ui.activity.MainActivity;
 import com.xgx.dw.ui.activity.SpecialAdminToolsActivity;
+import com.xgx.dw.ui.activity.SpecialAdminToolsDzActivity;
+import com.xgx.dw.ui.activity.SpecialAdminToolsGzActivity;
 import com.xgx.dw.ui.activity.SpecialOperationDetailActivity;
 import com.xgx.dw.ui.custom.TitleBar;
 import com.xgx.dw.ui.fragment.dummy.DummyContent;
@@ -111,6 +113,8 @@ public class SpecialOperationFragment extends BaseFragment implements MyOnItemCl
             localArrayList.add(new DummyContent(7, "定值设置", "定值设置", this.drawableInt[6]));
             localArrayList.add(new DummyContent(8, "超管调试", "超管调试", this.drawableInt[6]));
             localArrayList.add(new DummyContent(9, "超管工具", "超管工具", this.drawableInt[6]));
+            localArrayList.add(new DummyContent(10, "新定值设置", "新定值设置", this.drawableInt[6]));
+            localArrayList.add(new DummyContent(11, "新故障设置", "新故障设置", this.drawableInt[6]));
         } else {
             if (G.depRole.equals(currentUserType) || G.taiquRole.equals(currentUserType)) {
                 if (!LoginInformation.getInstance().getUser().getIsTest().equals("1")) {
@@ -154,6 +158,7 @@ public class SpecialOperationFragment extends BaseFragment implements MyOnItemCl
                 return 1;
             }
         });
+        ((MainActivity) getActivity()).getFab().attachToRecyclerView(recyclerView);
     }
 
     public void onrRecyclerViewItemClick(int paramInt) {
@@ -170,6 +175,10 @@ public class SpecialOperationFragment extends BaseFragment implements MyOnItemCl
             }
         } else if (paramInt == 9) {
             startActivity(new Intent(getActivity(), SpecialAdminToolsActivity.class).putExtra("type", paramInt));
+        } else if (paramInt == 10) {
+            startActivity(new Intent(getActivity(), SpecialAdminToolsDzActivity.class).putExtra("type", paramInt));
+        } else if (paramInt == 11) {
+            startActivity(new Intent(getActivity(), SpecialAdminToolsGzActivity.class).putExtra("type", paramInt));
         } else {
             startActivity(new Intent(getActivity(), SpecialOperationDetailActivity.class).putExtra("type", paramInt));
 
@@ -202,7 +211,7 @@ public class SpecialOperationFragment extends BaseFragment implements MyOnItemCl
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    ((MainActivity) getActivity()).getFab().setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_bluetooth_searching_black_24dp));
+                    ((MainActivity) getActivity()).getFab().setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_bluetooth_wihte));
                     setting.saveBoolean("isWifi", false);
                 }
             });
@@ -221,7 +230,7 @@ public class SpecialOperationFragment extends BaseFragment implements MyOnItemCl
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    ((MainActivity) getActivity()).getFab().setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_signal_wifi_4_bar_black_24dp));
+                    ((MainActivity) getActivity()).getFab().setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_wifi_white));
                     setting.saveBoolean("isWifi", true);
                 }
             });

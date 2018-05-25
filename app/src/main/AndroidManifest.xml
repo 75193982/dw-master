@@ -123,6 +123,18 @@
             android:windowSoftInputMode="stateHidden"></activity>
         <activity android:name=".ui.activity.PhoneCodeActivity" />
         <activity android:name=".ui.activity.SpecialAdminToolsActivity" />
+
+        <service
+            android:name=".ui.checkversion.CheckVersionService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
+            android:name=".ui.checkversion.CustomVersionDialogActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/versionCheckLibvtransparentTheme" />
+        <activity android:name=".ui.activity.SpecialAdminToolsDzActivity" />
+        <activity android:name=".ui.activity.SpecialAdminToolsGzActivity" />
     </application>
 
 </manifest>
