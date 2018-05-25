@@ -214,6 +214,22 @@ public class SpecialAdminToolsGzActivity extends BaseEventBusActivity {
                 setDatas();
             }
         });
+        lenthEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                setDatas();
+            }
+        });
         setDatas();
     }
 
@@ -612,12 +628,12 @@ public class SpecialAdminToolsGzActivity extends BaseEventBusActivity {
                 + " " + codeStr + " " + addressStr + " 00 0E F3 00 00 01 00 0B 05 3E 3F"
                 + " " + eventStr + " " + lengthStr + " " + timeStr + " " + flagStr
                 + " " + type1Str + type2Str + " "
-                + contentStr;
+                + contentStr + " 0B 05 03 04 01 12 25 00";
         String OperationStrTemp = "E8"
                 + " " + codeStr + " " + addressStr + " 00 0E F3 00 00 01 00 0B 05 3E 3F"
                 + " " + eventStr + " " + lengthStr + " " + timeStr + " " + flagStr
                 + " " + type1Str + type2Str + " "
-                + contentStr;
+                + contentStr + " 0B 05 03 04 01 12 25 00";
         OperationStr = OperationStr + " " + MyUtils.getJyCode(OperationStrTemp) + " 16";
         sendTv.setText(OperationStr);
     }
