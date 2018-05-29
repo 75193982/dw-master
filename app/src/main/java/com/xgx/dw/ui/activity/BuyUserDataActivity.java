@@ -36,6 +36,7 @@ import com.xgx.dw.utils.MyStringUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -128,6 +129,7 @@ public class BuyUserDataActivity extends BaseAppCompatActivity {
     }
 
     private void getData() {
+
         Purchase purchase = new Purchase();
         purchase.setUserid(LoginInformation.getInstance().getUser().getUserId());
         OkGo.<LzyResponse<Purchase>>post(URLs.getURL(URLs.BUY_SPOT_LIST))
@@ -135,8 +137,19 @@ public class BuyUserDataActivity extends BaseAppCompatActivity {
                 .execute(new DialogCallback<LzyResponse<Purchase>>(this) {
                     @Override
                     public void onSuccess(Response<LzyResponse<Purchase>> response) {
-                        List<Purchase> purchaseList = ((JSONArray) response.body().model).toJavaList(Purchase.class);
-                        adapter.setNewData(purchaseList);
+                        beans = ((JSONArray) response.body().model).toJavaList(Purchase.class);
+                        adapter.setNewData(beans);
+                        BigDecimal num = new BigDecimal(0);
+                        for (int i = 0; i < beans.size(); i++) {
+                            String price = "";
+                            try {
+                                price = beans.get(i).getAmt();
+                            } catch (Exception e) {
+                                price = "";
+                            }
+                            num = new BigDecimal(price).add(num);
+                        }
+                        resultTv.setText("合计 " + num + "元\n购电数 " + beans.size() + " 位");
                     }
                 });
 //        beans = PricingDaoHelper.getInstance().queryByAdminId(userid);
@@ -185,20 +198,17 @@ public class BuyUserDataActivity extends BaseAppCompatActivity {
                         tempList.add(beans.get(j));
                     }
                 }
-                int num = 0;
-                if (tempList != null && tempList.size() > 0) {
-
-                    for (int t = 0; t < tempList.size(); t++) {
-                        String price = "";
-                        try {
-                            price = tempList.get(t).getAmt();
-                        } catch (Exception e) {
-                            price = "";
-                        }
-                        num += MyStringUtils.toInt(price, 0);
+                BigDecimal num = new BigDecimal(0);
+                for (int k = 0; k < tempList.size(); k++) {
+                    String price = "";
+                    try {
+                        price = tempList.get(k).getAmt();
+                    } catch (Exception e) {
+                        price = "";
                     }
+                    num = new BigDecimal(price).add(num);
                 }
-                resultTv.setText("合计 " + num + "元\n购电用户 " + tempList.size() + " 位");
+                resultTv.setText("合计 " + num + "元\n购电数 " + tempList.size() + " 位");
                 adapter.setNewData(tempList);
                 break;
         }
@@ -238,7 +248,7 @@ public class BuyUserDataActivity extends BaseAppCompatActivity {
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, monthOfYear, dayOfMonth);
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd  EE");
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                 switch (targetView.getId()) {
                     case R.id.startTimeTv:
                         startTimeTv.setText(df.format(calendar.getTime()));

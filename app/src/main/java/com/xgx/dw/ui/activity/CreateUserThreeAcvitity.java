@@ -214,7 +214,7 @@ public class CreateUserThreeAcvitity extends BaseEventBusActivity implements IUs
                 break;
             case R.id.action_spotInfo:
                 Intent intent = new Intent(getContext(), AdminSpotListActivity.class);
-                intent.putExtra("id", bean.getId());
+                intent.putExtra("id", bean.getUserId());
                 startActivity(intent);
                 break;
             case R.id.action_buy:

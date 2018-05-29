@@ -19,15 +19,23 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONArray;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.xgx.dw.R;
 import com.xgx.dw.adapter.SpotListAdapter;
 import com.xgx.dw.base.BaseAppCompatActivity;
+import com.xgx.dw.bean.LoginInformation;
 import com.xgx.dw.bean.Purchase;
+import com.xgx.dw.net.DialogCallback;
+import com.xgx.dw.net.LzyResponse;
+import com.xgx.dw.net.URLs;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -120,6 +128,7 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
 
     @Override
     public void initPresenter() {
+        getDatas();
         //查询电价
 //        String userid = getIntent().getStringExtra("id");
 //        beans = PricingDaoHelper.getInstance().queryByUserId(userid);
@@ -137,6 +146,31 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
 //            numTv.setText(num + "元");
 //        }
 //        adapter.setNewData(beans);
+    }
+
+    private void getDatas() {
+        Purchase purchase = new Purchase();
+        purchase.setUserid(getIntent().getStringExtra("id"));
+        OkGo.<LzyResponse<Purchase>>post(URLs.getURL(URLs.BUY_SPOT_LIST))
+                .upJson(URLs.getRequstJsonString(purchase))
+                .execute(new DialogCallback<LzyResponse<Purchase>>(this) {
+                    @Override
+                    public void onSuccess(Response<LzyResponse<Purchase>> response) {
+                        beans = ((JSONArray) response.body().model).toJavaList(Purchase.class);
+                        adapter.setNewData(beans);
+                        BigDecimal num = new BigDecimal(0);
+                        for (int i = 0; i < beans.size(); i++) {
+                            String price = "";
+                            try {
+                                price = beans.get(i).getAmt();
+                            } catch (Exception e) {
+                                price = "";
+                            }
+                            num = new BigDecimal(price).add(num);
+                        }
+                        numTv.setText(num + "元");
+                    }
+                });
     }
 
     @OnClick({R.id.startTimeTv, R.id.endTimeTv, R.id.comfirmBtn})
@@ -168,20 +202,17 @@ public class AdminSpotListActivity extends BaseAppCompatActivity {
                         tempList.add(beans.get(j));
                     }
                 }
-//                int num = 0;
-//                if (tempList != null && tempList.size() > 0) {
-//
-//                    for (int t = 0; t < tempList.size(); t++) {
-//                        String price = "";
-//                        try {
-//                            price = AES.decrypt(tempList.get(t).getPrice());
-//                        } catch (Exception e) {
-//                            price = "";
-//                        }
-//                        num += MyStringUtils.toInt(price, 0);
-//                    }
-//                }
-//                numTv.setText(num + "元");
+                BigDecimal num = new BigDecimal(0);
+                for (int k = 0; k < tempList.size(); k++) {
+                    String price = "";
+                    try {
+                        price = tempList.get(k).getAmt();
+                    } catch (Exception e) {
+                        price = "";
+                    }
+                    num = new BigDecimal(price).add(num);
+                }
+                numTv.setText(num + "元");
                 adapter.setNewData(tempList);
                 break;
         }

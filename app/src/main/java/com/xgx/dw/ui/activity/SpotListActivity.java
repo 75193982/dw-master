@@ -212,18 +212,15 @@ public class SpotListActivity extends BaseAppCompatActivity {
                         tempList.add(beans.get(j));
                     }
                 }
-                int num = 0;
-                if (tempList != null && tempList.size() > 0) {
-
-                    for (int t = 0; t < tempList.size(); t++) {
-                        String price = "";
-                        try {
-                            price = tempList.get(t).getAmt();
-                        } catch (Exception e) {
-                            price = "";
-                        }
-                        num += MyStringUtils.toInt(price, 0);
+                BigDecimal num = new BigDecimal(0);
+                for (int k = 0; k < tempList.size(); k++) {
+                    String price = "";
+                    try {
+                        price = tempList.get(k).getAmt();
+                    } catch (Exception e) {
+                        price = "";
                     }
+                    num = new BigDecimal(price).add(num);
                 }
                 numTv.setText(num + "元");
                 adapter.setNewData(tempList);

@@ -14,7 +14,7 @@ import com.xgx.dw.utils.MD5Util;
  * @author Ht
  */
 public class URLs {
-    // public static final String HOST = "http://192.168.100.9:8089/";
+    //public static final String HOST = "http://192.168.100.9:8089/";
     public static final String HOST = "http://221.176.209.130:8089/";
     public static final String PROJECT_NAME = "";
     public static final String API = "";
