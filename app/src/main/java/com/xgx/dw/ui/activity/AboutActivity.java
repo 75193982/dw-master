@@ -3,10 +3,12 @@ package com.xgx.dw.ui.activity;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.xgx.dw.R;
 import com.xgx.dw.base.BaseAppCompatActivity;
+import com.xgx.dw.utils.MyUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,6 +20,8 @@ import butterknife.OnClick;
 public class AboutActivity extends BaseAppCompatActivity {
     @BindView(R.id.flowTv)
     TextView flowTv;
+    @BindView(R.id.btn_update)
+    TextView btnUpdate;
 
     @Override
     public void initContentView() {
@@ -37,9 +41,17 @@ public class AboutActivity extends BaseAppCompatActivity {
     }
 
 
-    @OnClick(R.id.flowTv)
-    public void onClick() {
-        Intent intent = new Intent(this, H5WebActivity.class);
-        startActivity(intent);
+    @OnClick({R.id.flowTv, R.id.btn_update})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.flowTv:
+                Intent intent = new Intent(this, H5WebActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.btn_update:
+                MyUtils.checkVersion(this, 1);
+
+                break;
+        }
     }
 }

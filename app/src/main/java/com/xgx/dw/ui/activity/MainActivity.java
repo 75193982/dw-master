@@ -206,7 +206,6 @@ public class MainActivity extends BaseActivity implements IMainView, IUserView {
         localUpdateVersionRequest.versionCode = BaseApplication.getVersionCode();
         // mMainPresenter.checkVersion(localUpdateVersionRequest, 1);
         // OkGo.post(URLs.getURL())
-        MyUtils.checkVersion(this, 0);
 
     }
 

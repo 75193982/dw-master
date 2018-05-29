@@ -44,8 +44,6 @@ public class CreateUserTwoAcvitity extends BaseEventBusActivity implements IUser
     TextView taiquTv;
     private IUserPresenter presenter;
     private UserBean bean;
-    private String currentStoreId;
-    private String currentStoreName;
 
 
     @Override
@@ -65,8 +63,6 @@ public class CreateUserTwoAcvitity extends BaseEventBusActivity implements IUser
         imeTv.setText(checkText(ime));
         initEditInfo();
         Setting setting = new Setting(this);
-        currentStoreId = setting.loadString(G.currentStoreId);
-        currentStoreName = setting.loadString(G.currentStoreName);
     }
 
     private void initEditInfo() {

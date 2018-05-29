@@ -38,6 +38,15 @@
         android:text="点击可查看操作流程"
         android:textColor="@android:color/holo_blue_light"></TextView>
 
+    <TextView
+        android:id="@+id/btn_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/dp_10"
+        android:text="检查更新"
+        android:textColor="@android:color/holo_blue_light"></TextView>
+
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">

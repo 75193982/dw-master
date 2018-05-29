@@ -114,6 +114,7 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView, 
                         HttpHeaders headerstemp = new HttpHeaders();
                         headerstemp.put(BaseApplication.token, "Bearer " + token);
                         OkGo.getInstance().addCommonHeaders(headerstemp);
+                        MyUtils.checkVersion(LoginActivity.this, 0);
 
                     }
 
